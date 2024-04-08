@@ -1,0 +1,282 @@
+// @import 'bootstrap-import';
+@import './normalize.scss';
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+
+@import './colors.scss';
+@import './base.scss';
+@import './buttons.scss';
+
+.tvk-main-wrapper {
+  box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
+
+  display: flex;
+
+  min-height: var(--tvk-main-wrapper-min-height);
+  height: var(--tvk-main-wrapper-height);
+  max-height: var(--tvk-main-wrapper-max-height);
+
+  margin: var(--tvk-main-wrapper-margin);
+  padding: var(--tvk-main-wrapper-padding);
+
+  flex-direction: var(--tvk-main-wrapper-flex-direction);
+  gap: var(--tvk-main-wrapper-gap);
+
+  font-family: var(--tvk-font-family);
+  font-size: var(--tvk-base-font-size);
+  line-height: var(--tvk-main-wrapper-line-height);
+
+  background-color: var(--tvk-app-background-color);
+
+  // messages
+  .tvk-messages {
+    padding: var(--tvk-messages-padding);
+    overflow-y: auto;
+    flex-grow: 1;
+
+    // message
+    .tvk-message {
+      flex-grow: 1;
+      display: flex;
+
+      flex-wrap: var(--tvk-message-flex-wrap);
+
+      align-items: var(--tvk-message-align-items);
+
+      margin: var(--tvk-message-margin);
+
+      scroll-behavior: smooth;
+
+      .tvk-message-header {
+        display: flex;
+        gap: var(--tvk-message-header-gap);
+        align-items: var(--tvk-message-header-align-items);
+        margin: var(--tvk-message-header-margin);
+        font-size: var(--tvk-message-header-font-size);
+        font-weight: var(--tvk-message-header-font-weight);
+        color: var(--tvk-message-header-color);
+      }
+
+      .tvk-message-header-line-break {
+        width: var(--tvk-message-header-line-break-width);
+      }
+
+      .tvk-message-body {
+        display: inline-block;
+        flex-grow: var(--tvk-message-body-grow);
+        padding: var(--tvk-message-body-padding);
+        border-radius: var(--tvk-message-body-radius);
+      }
+
+      .tvk-message-body-from-app {
+        display: inline-block;
+        flex-grow: var(--tvk-message-body-grow);
+        padding: var(--tvk-message-body-padding);
+        border-radius: var(--tvk-message-body-radius);
+        width: 100%;
+
+        .tvk-message-loader {
+          position: relative;
+
+          margin: var(--tvk-message-loader-margin);
+
+          width: var(--tvk-message-loader-size);
+          height: var(--tvk-message-loader-size);
+
+          border-radius: 50%;
+
+          background-color: var(--tvk-message-loader-color-a);
+
+          box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-a),
+            calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-a);
+
+          animation: tvk-loader-animation 0.5s ease-out infinite alternate;
+        }
+      }
+
+      // USER
+      &.tvk-message-user {
+        justify-content: var(--tvk-message-user-justify-content);
+
+        .tvk-message-header {
+          flex-direction: var(--tvk-message-header-direction-user);
+
+          .tvk-message-header-avatar {
+            padding: var(--tvk-message-header-user-avatar-padding);
+            border-radius: var(--tvk-message-header-user-avatar-radius);
+            color: var(--tvk-message-header-user-avatar-color);
+            background-color: var(--tvk-message-header-user-avatar-background-color);
+          }
+
+          .tvk-message-header-label-bot {
+            display: none;
+          }
+        }
+
+        .tvk-message-body {
+          color: var(--tvk-text1);
+          background-color: var(--tvk-message-body-user-background-color);
+          border-top-left-radius: var(--tvk-message-body-user-radius-top-left);
+          border-top-right-radius: var(--tvk-message-body-user-radius-top-right);
+          border-bottom-left-radius: var(--tvk-message-body-user-radius-bottom-left);
+          border-bottom-right-radius: var(--tvk-message-body-user-radius-bottom-right);
+        }
+      }
+
+      // BOT
+      &.tvk-message-bot {
+        justify-content: var(--tvk-message-bot-justify-content);
+
+        .tvk-message-header {
+          flex-direction: var(--tvk-message-header-direction-bot);
+
+          .tvk-message-header-avatar {
+            padding: var(--tvk-message-header-bot-avatar-padding);
+            border-radius: var(--tvk-message-header-bot-avatar-radius);
+            color: var(--tvk-message-header-bot-avatar-color);
+            background-color: var(--tvk-message-header-bot-avatar-background-color);
+          }
+
+          .tvk-message-header-label-user {
+            display: none;
+          }
+        }
+
+        .tvk-message-body {
+          max-width: 100%;
+          white-space: pre-line;
+          color: var(--tvk-text2);
+          background-color: var(--tvk-message-body-bot-background-color);
+          border-top-left-radius: var(--tvk-message-body-bot-radius-top-left);
+          border-top-right-radius: var(--tvk-message-body-bot-radius-top-right);
+          border-bottom-left-radius: var(--tvk-message-body-bot-radius-bottom-left);
+          border-bottom-right-radius: var(--tvk-message-body-bot-radius-bottom-right);
+
+          .tvk-message-footnotes {
+            display: var(--tvk-message-footnotes-display);
+            flex-wrap: var(--tvk-message-footnotes-flex-wrap);
+            gap: var(--tvk-message-footnotes-gap);
+            align-items: var(--tvk-message-footnotes-align-items);
+            margin: var(--tvk-message-footnotes-margin);
+            font-size: var(--tvk-message-footnotes-font-size);
+            .tvk-message-footnote {
+              padding: var(--tvk-message-footnote-padding);
+              background-color: var(--tvk-message-footnote-background-color);
+              color: var(--tvk-message-footnote-color);
+              line-height: var(--tvk-message-footnote-line-height);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // question-bar
+  .tvk-question-bar {
+    display: flex;
+
+    gap: 0.5em;
+    align-items: center;
+
+    padding: var(--tvk-question-bar-padding);
+
+    border: var(--tvk-question-bar-border);
+
+    border-radius: var(--tvk-question-bar-radius);
+
+    background-color: var(--tvk-question-bar-background-color);
+
+    color: var(--tvk-question-bar-color);
+
+    .tvk-question-bar-clear-history {
+    }
+
+    .tvk-question-bar-form {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      margin: 0;
+
+      .tvk-question-bar-input {
+        flex-grow: 1;
+        width: 100%;
+        border: none;
+        resize: none;
+        cursor: text;
+        background-color: transparent;
+        color: inherit;
+
+        &:focus-visible {
+          outline: none;
+        }
+      }
+
+      .tvk-question-bar-chars-count {
+        font-size: var(--tvk-question-bar-chars-count-font-size);
+        color: var(--tvk-text-muted);
+      }
+    }
+  }
+}
+
+@keyframes tvk-loader-animation {
+  0% {
+    background-color: var(--tvk-message-loader-color-b);
+    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-b),
+      calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-a);
+  }
+  50% {
+    background-color: var(--tvk-message-loader-color-a);
+    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-b),
+      calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-b);
+  }
+  100% {
+    background-color: var(--tvk-message-loader-color-b);
+    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-a),
+      calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-b);
+  }
+}
+
+.tvk-img-thumbnail {
+  padding: var(--tvk-img-thumbnail-padding);
+  border-radius: var(--tvk-radius);
+  background-color: var(--tvk-img-thumbnail-background-color);
+  border: var(--tvk-img-thumbnail-border);
+  max-width: var(--tvk-img-thumbnail-max-width);
+  height: var(--tvk-img-thumbnail-height);
+  max-height: var(--tvk-img-thumbnail-max-height);
+}
+
+.tvk-card {
+  text-align: var(--tvk-card-text-align);
+}
+
+.tvk-carousel {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  // border: 1px dotted pink;
+
+  .tvk-carousel-inner {
+    display: flex;
+    align-items: center;
+    // border: 1px solid blue;
+
+    .tvk-carousel-card {
+      width: auto;
+      min-width: 10em;
+      padding-right: 0.5em;
+      // border: 1px dotted green;
+    }
+  }
+}
+
+.tvk-carousel-controls {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: space-between;
+}

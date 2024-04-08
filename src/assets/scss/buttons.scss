@@ -1,0 +1,81 @@
+:root {
+  --tvk-btn-radius: var(--tvk-radius);
+  --tvk-btn-rounded-radius: 50%;
+  --tvk-btn-base-font-size: var(--tvk-base-font-size);
+  --tvk-btn-padding: 0.1rem;
+}
+
+.tvk-btn {
+  cursor: pointer;
+  touch-action: manipulation;
+
+  padding: var(--tvk-btn-padding);
+
+  font-size: var(--tvk-btn-base-font-size);
+  background-color: transparent;
+  color: var(--tvk-text2);
+
+  border: none;
+  border-radius: var(--tvk-btn-radius);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 1ch;
+
+  font-weight: 700;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+
+  &:hover:not([disabled]) {
+    background-color: var(--tvk-neutral);
+    box-shadow: 0px 0px 0px 5px var(--tvk-neutral);
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+:root {
+  --tvk-btn-action-background-color: var(--tvk-surface1);
+  --tvk-btn-action-color: var(--tvk-text1);
+  --tvk-btn-action-padding: var(--tvk-base-spacing) calc(var(--tvk-base-spacing) * 2);
+  --tvk-btn-action-margin: var(--tvk-base-spacing) var(--tvk-base-spacing) 0 0;
+}
+
+.tvk-btn-action {
+  background-color: var(--tvk-btn-action-background-color);
+  color: var(--tvk-btn-action-color);
+  padding: var(--tvk-btn-action-padding);
+  margin: var(--tvk-btn-action-margin);
+
+  &:hover:not([disabled]) {
+    background-color: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) var(--tvk-brand-lightness) / 0.7);
+    box-shadow: 0px 0px 0px 5px var(--tvk-neutral);
+  }
+}
+
+:root {
+  --tvk-question-bar-btn-submit-background-color: var(--tvk-brand);
+  --tvk-question-bar-btn-submit-color: var(--tvk-text1);
+  --tvk-question-bar-btn-submit-border: 0 none var(--tvk-brand);
+  --tvk-question-bar-btn-submit-border-radius: 5em;
+  --tvk-question-bar-btn-padding: 0.5em;
+}
+
+.tvk-question-bar-btn-submit {
+  background-color: var(--tvk-question-bar-btn-submit-background-color);
+  color: var(--tvk-question-bar-btn-submit-color);
+  border: var(--tvk-question-bar-btn-submit-border);
+  border-radius: var(--tvk-question-bar-btn-submit-border-radius);
+  padding: var(--tvk-question-bar-btn-padding);
+
+  &[disabled] {
+    background-color: var(--tvk-neutral);
+  }
+}

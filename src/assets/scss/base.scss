@@ -1,0 +1,172 @@
+:root {
+  // Global variables
+  --tvk-base-font-size: 0.9rem;
+
+  --tvk-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --tvk-base-radius: 0.5em;
+  --tvk-base-spacing: 0.5em;
+
+  // Main wrapper
+  --tvk-main-wrapper-flex-direction: column;
+  --tvk-main-wrapper-gap: var(--tvk-base-spacing);
+
+  --tvk-main-wrapper-margin: 0em;
+  --tvk-main-wrapper-padding: calc(var(--tvk-base-spacing) * 2);
+
+  --tvk-main-wrapper-min-height: 0;
+  --tvk-main-wrapper-height: auto;
+  --tvk-main-wrapper-max-height: calc(100vh - calc(var(--tvk-main-wrapper-margin) * 2));
+
+  --tvk-main-wrapper-line-height: initial;
+
+  // Messages
+  --tvk-messages-padding: 0 var(--tvk-base-spacing) 0 0;
+
+  // Message
+  --tvk-message-margin: 0 0 0.5rem 0;
+  --tvk-message-align-items: center;
+  --tvk-message-flex-wrap: wrap;
+
+  // Message for user
+  --tvk-message-user-justify-content: end;
+  // Message for bot
+  --tvk-message-bot-justify-content: start;
+
+  // Message header
+  --tvk-message-header-font-size: 90%;
+  --tvk-message-header-font-weight: bold;
+  --tvk-message-header-color: var(--tvk-text2);
+  --tvk-message-header-gap: 0.5em;
+  --tvk-message-header-margin: 0 0 0.5em 0;
+  --tvk-message-header-align-items: center;
+
+  // Message header for user
+  --tvk-message-header-direction-user: row-reverse;
+
+  // Message header for bot
+  --tvk-message-header-direction-bot: row;
+
+  // Message header avatar
+  --tvk-message-header-avatar-padding: 0.3em;
+  --tvk-message-header-avatar-radius: 50%;
+
+  // Message header avatar for user
+  --tvk-message-header-user-avatar-color: var(--tvk-text1);
+  --tvk-message-header-user-avatar-background-color: var(--tvk-surface1);
+  --tvk-message-header-user-avatar-padding: var(--tvk-message-header-avatar-padding);
+  --tvk-message-header-user-avatar-radius: var(--tvk-message-header-avatar-radius);
+
+  // Message header avatar for bot
+  --tvk-message-header-bot-avatar-color: var(--tvk-text2);
+  --tvk-message-header-bot-avatar-background-color: var(--tvk-surface2);
+  --tvk-message-header-bot-avatar-padding: var(--tvk-message-header-avatar-padding);
+  --tvk-message-header-bot-avatar-radius: var(--tvk-message-header-avatar-radius);
+
+  // Message header line break
+  --tvk-message-header-line-break-width: 100%;
+
+  // Message body
+  --tvk-message-body-grow: inherit;
+  --tvk-message-body-padding: 0.8em;
+  --tvk-message-body-radius: var(--tvk-base-radius);
+
+  // Message body for user
+  --tvk-message-body-user-background-color: var(--tvk-surface1);
+  --tvk-message-body-user-radius-top-left: var(--tvk-message-body-radius);
+  --tvk-message-body-user-radius-top-right: 0;
+  --tvk-message-body-user-radius-bottom-left: var(--tvk-message-body-radius);
+  --tvk-message-body-user-radius-bottom-right: var(--tvk-message-body-radius);
+
+  // Message body for bot
+  --tvk-message-body-bot-background-color: var(--tvk-surface2);
+  --tvk-message-body-bot-radius-top-left: 0;
+  --tvk-message-body-bot-radius-top-right: var(--tvk-message-body-radius);
+  --tvk-message-body-bot-radius-bottom-left: var(--tvk-message-body-radius);
+  --tvk-message-body-bot-radius-bottom-right: var(--tvk-message-body-radius);
+
+  // Message footnotes
+  --tvk-message-footnotes-display: flex;
+  --tvk-message-footnotes-flex-wrap: wrap;
+  --tvk-message-footnotes-gap: var(--tvk-base-spacing);
+  --tvk-message-footnotes-align-items: center;
+  --tvk-message-footnotes-margin: 0.5em 0 0 0;
+  --tvk-message-footnotes-font-size: 0.7rem;
+
+  // Message footnote
+
+  --tvk-message-footnote-padding: 0.2em 0.5em;
+  --tvk-message-footnote-background-color: var(--tvk-neutral);
+  --tvk-message-footnote-color: var(--tvk-text2);
+  --tvk-message-footnote-line-height: inherit;
+
+  // Message loader
+  --tvk-message-loader-size: 8px;
+  --tvk-message-loader-margin: 0 0 0 var(--tvk-message-loader-size);
+  --tvk-message-loader-color-a: var(--tvk-surface1);
+  --tvk-message-loader-color-b: var(--tvk-surface2);
+
+  // Question bar
+  --tvk-question-bar-padding: var(--tvk-base-spacing);
+
+  --tvk-question-bar-border: 1px solid var(--tvk-surface2);
+
+  --tvk-question-bar-background-color: var(--tvk-surface2);
+
+  --tvk-question-bar-color: var(--tvk-text2);
+
+  --tvk-question-bar-radius: var(--tvk-base-radius);
+
+  --tvk-question-bar-chars-count-font-size: 80%;
+
+  --tvk-img-thumbnail-padding: 0.25em;
+  --tvk-img-thumbnail-background-color: white;
+  --tvk-img-thumbnail-border: 1px solid var(--tvk-neutral);
+  --tvk-img-thumbnail-max-width: 100%;
+  --tvk-img-thumbnail-height: auto;
+  --tvk-img-thumbnail-max-height: 15em;
+
+  --tvk-card-text-align: center;
+}
+
+// ScrollBars
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px var(--tvk-neutral);
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tvk-neutral-dim);
+  border-radius: 7px;
+}
+
+.tvk-main-wrapper {
+  color: var();
+
+  a:link {
+    color: var(--tvk-links);
+    text-decoration: none;
+  }
+
+  /* visited link */
+  a:visited {
+    color: var(--tvk-links);
+    text-decoration: none;
+  }
+
+  /* mouse over link */
+  a:hover {
+    color: var(--tvk-links);
+    text-decoration: underline;
+  }
+
+  /* selected link */
+  a:active {
+    color: var(--tvk-links);
+  }
+}

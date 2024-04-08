@@ -1,0 +1,81 @@
+html {
+  /* brand foundation */
+  --tvk-brand-hue: 0;
+  --tvk-brand-saturation: 0%;
+  --tvk-brand-lightness: 50%;
+
+  --tvk-danger-color: hsl(0 100% 50%);
+
+  /* light */
+  --tvk-neutral-light: hsl(var(--tvk-brand-hue) 5% 90%);
+  --tvk-neutral-dim-light: hsl(var(--tvk-brand-hue) 5% 70%);
+
+  --tvk-brand-light: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) var(--tvk-brand-lightness));
+
+  --tvk-surface1-light: var(--tvk-brand-light);
+  --tvk-text1-light: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) 100%);
+
+  --tvk-surface2-light: hsl(var(--tvk-brand-hue) 20% 99%);
+  --tvk-text2-light: hsl(var(--tvk-brand-hue) 30% 30%);
+
+  --tvk-text-muted-light: hsl(var(--tvk-brand-hue) 0% 50%);
+  --tvk-danger-light: var(--tvk-danger-color);
+
+  --tvk-links-light: var(--tvk-brand-light);
+
+  /* dark */
+  --tvk-neutral-dark: hsl(var(--tvk-brand-hue) 5% 20%);
+  --tvk-neutral-dim-dark: hsl(var(--tvk-brand-hue) 5% 30%);
+
+  --tvk-brand-dark: hsl(var(--tvk-brand-hue) calc(var(--tvk-brand-saturation) / 2) calc(var(--tvk-brand-lightness) / 1.5));
+
+  --tvk-surface1-dark: var(--tvk-brand-dark);
+  --tvk-text1-dark: hsl(var(--tvk-brand-hue) 15% 85%);
+
+  --tvk-surface2-dark: hsl(var(--tvk-brand-hue) 10% 15%);
+  --tvk-text2-dark: hsl(var(--tvk-brand-hue) 5% 65%);
+
+  --tvk-text-muted-dark: hsl(var(--tvk-brand-hue) 0% 50%);
+  --tvk-danger-dark: var(--tvk-danger-color);
+
+  --tvk-links-dark: var(--tvk-brand-dark);
+}
+
+:root {
+  color-scheme: light;
+
+  /* set defaults */
+  --tvk-neutral: var(--tvk-neutral-light);
+  --tvk-neutral-dim: var(--tvk-neutral-dim-light);
+  --tvk-app-background-color: var(--tvk-neutral-light);
+  --tvk-brand: var(--tvk-brand-light);
+  --tvk-surface1: var(--tvk-surface1-light);
+  --tvk-text1: var(--tvk-text1-light);
+  --tvk-surface2: var(--tvk-surface2-light);
+  --tvk-text2: var(--tvk-text2-light);
+  --tvk-text-muted: var(--tvk-text-muted-light);
+  --tvk-danger: var(--tvk-danger-light);
+  --tvk-links: var(--tvk-links-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --tvk-neutral: var(--tvk-neutral-dark);
+    --tvk-neutral-dim: var(--tvk-neutral-dim-dark);
+    --tvk-app-background-color: var(--tvk-neutral-dark);
+    --tvk-brand: var(--tvk-brand-dark);
+    --tvk-surface1: var(--tvk-surface1-dark);
+    --tvk-text1: var(--tvk-text1-dark);
+    --tvk-surface2: var(--tvk-surface2-dark);
+    --tvk-text2: var(--tvk-text2-dark);
+    --tvk-text-muted: var(--tvk-text-muted-dark);
+    --tvk-danger: var(--tvk-danger-dark);
+    --tvk-links: var(--tvk-links-dark);
+  }
+}
+
+.tvk-text-danger {
+  color: var(--tvk-danger) !important;
+}
