@@ -1,10 +1,10 @@
 // @import 'bootstrap-import';
-@import './normalize.scss';
-@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+@import "./normalize.scss";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
-@import './colors.scss';
-@import './base.scss';
-@import './buttons.scss';
+@import "./colors.scss";
+@import "./base.scss";
+@import "./buttons.scss";
 
 .tvk-main-wrapper {
   box-sizing: border-box;
@@ -89,8 +89,10 @@
 
           background-color: var(--tvk-message-loader-color-a);
 
-          box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-a),
-            calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-a);
+          box-shadow: calc(var(--tvk-message-loader-size) * 2) 0
+              var(--tvk-message-loader-color-a),
+            calc(var(--tvk-message-loader-size) * 2 * -1) 0
+              var(--tvk-message-loader-color-a);
 
           animation: tvk-loader-animation 0.5s ease-out infinite alternate;
         }
@@ -107,7 +109,9 @@
             padding: var(--tvk-message-header-user-avatar-padding);
             border-radius: var(--tvk-message-header-user-avatar-radius);
             color: var(--tvk-message-header-user-avatar-color);
-            background-color: var(--tvk-message-header-user-avatar-background-color);
+            background-color: var(
+              --tvk-message-header-user-avatar-background-color
+            );
           }
 
           .tvk-message-header-label-bot {
@@ -119,9 +123,15 @@
           color: var(--tvk-text1);
           background-color: var(--tvk-message-body-user-background-color);
           border-top-left-radius: var(--tvk-message-body-user-radius-top-left);
-          border-top-right-radius: var(--tvk-message-body-user-radius-top-right);
-          border-bottom-left-radius: var(--tvk-message-body-user-radius-bottom-left);
-          border-bottom-right-radius: var(--tvk-message-body-user-radius-bottom-right);
+          border-top-right-radius: var(
+            --tvk-message-body-user-radius-top-right
+          );
+          border-bottom-left-radius: var(
+            --tvk-message-body-user-radius-bottom-left
+          );
+          border-bottom-right-radius: var(
+            --tvk-message-body-user-radius-bottom-right
+          );
         }
       }
 
@@ -136,7 +146,9 @@
             padding: var(--tvk-message-header-bot-avatar-padding);
             border-radius: var(--tvk-message-header-bot-avatar-radius);
             color: var(--tvk-message-header-bot-avatar-color);
-            background-color: var(--tvk-message-header-bot-avatar-background-color);
+            background-color: var(
+              --tvk-message-header-bot-avatar-background-color
+            );
           }
 
           .tvk-message-header-label-user {
@@ -151,8 +163,12 @@
           background-color: var(--tvk-message-body-bot-background-color);
           border-top-left-radius: var(--tvk-message-body-bot-radius-top-left);
           border-top-right-radius: var(--tvk-message-body-bot-radius-top-right);
-          border-bottom-left-radius: var(--tvk-message-body-bot-radius-bottom-left);
-          border-bottom-right-radius: var(--tvk-message-body-bot-radius-bottom-right);
+          border-bottom-left-radius: var(
+            --tvk-message-body-bot-radius-bottom-left
+          );
+          border-bottom-right-radius: var(
+            --tvk-message-body-bot-radius-bottom-right
+          );
 
           .tvk-message-footnotes {
             display: var(--tvk-message-footnotes-display);
@@ -225,18 +241,24 @@
 @keyframes tvk-loader-animation {
   0% {
     background-color: var(--tvk-message-loader-color-b);
-    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-b),
-      calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-a);
+    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0
+        var(--tvk-message-loader-color-b),
+      calc(var(--tvk-message-loader-size) * 2 * -1) 0
+        var(--tvk-message-loader-color-a);
   }
   50% {
     background-color: var(--tvk-message-loader-color-a);
-    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-b),
-      calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-b);
+    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0
+        var(--tvk-message-loader-color-b),
+      calc(var(--tvk-message-loader-size) * 2 * -1) 0
+        var(--tvk-message-loader-color-b);
   }
   100% {
     background-color: var(--tvk-message-loader-color-b);
-    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0 var(--tvk-message-loader-color-a),
-      calc(var(--tvk-message-loader-size) * 2 * -1) 0 var(--tvk-message-loader-color-b);
+    box-shadow: calc(var(--tvk-message-loader-size) * 2) 0
+        var(--tvk-message-loader-color-a),
+      calc(var(--tvk-message-loader-size) * 2 * -1) 0
+        var(--tvk-message-loader-color-b);
   }
 }
 
@@ -258,18 +280,15 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  // border: 1px dotted pink;
 
   .tvk-carousel-inner {
     display: flex;
     align-items: center;
-    // border: 1px solid blue;
 
     .tvk-carousel-card {
       width: auto;
       min-width: 10em;
       padding-right: 0.5em;
-      // border: 1px dotted green;
     }
   }
 }
