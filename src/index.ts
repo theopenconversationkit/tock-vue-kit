@@ -8,7 +8,11 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { appInitialization } from "@/utils/initialization";
 
-function renderChat(target: string, tockEndPoint: string, options: appOptions) {
+function renderChat(
+  target: HTMLElement,
+  tockEndPoint: string,
+  options: appOptions
+) {
   const app = createApp(App);
 
   app.provide(tockEndpointKey, tockEndPoint);

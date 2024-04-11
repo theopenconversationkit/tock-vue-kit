@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import messageText from './message-text.vue';
-import messageCard from './message-card.vue';
-import messageCarousel from './message-carousel.vue';
-import messageImage from './message-image.vue';
-import { MessageAuthor, MessageType, type Message } from '../models/messages';
+import messageText from "./message-text.vue";
+import messageCard from "./message-card.vue";
+import messageCarousel from "./message-carousel.vue";
+import messageImage from "./message-image.vue";
+import { MessageAuthor, MessageType, type Message } from "../models/messages";
 
-import appOptionsSingleton from '../utils/app-options';
-import type { PropType } from 'vue';
+import appOptionsSingleton from "../utils/app-options";
+import type { PropType } from "vue";
 
 const appOptions = appOptionsSingleton.getInstance().options;
 
 const props = defineProps({
   message: {
-    type: Object as PropType<Message>
-  }
+    type: Object as PropType<Message>,
+  },
 });
 </script>
 
@@ -36,14 +36,22 @@ const props = defineProps({
         <i
           v-if="!appOptions.preferences.messages.message.header.avatar.userImage && appOptions.preferences.messages.message.header.avatar.userIcon && props.message!.author === MessageAuthor.user"
           class="tvk-message-header-avatar-user"
-          :class="appOptions.preferences.messages.message.header.avatar.userIcon"
+          :class="
+            appOptions.preferences.messages.message.header.avatar.userIcon
+          "
         ></i>
         <img
           v-if="appOptions.preferences.messages.message.header.avatar.userImage && props.message!.author === MessageAuthor.user"
-          :src="appOptions.preferences.messages.message.header.avatar.userImage.src"
+          :src="
+            appOptions.preferences.messages.message.header.avatar.userImage.src
+          "
           :style="{
-            width: appOptions.preferences.messages.message.header.avatar.userImage.width,
-            height: appOptions.preferences.messages.message.header.avatar.userImage.height
+            width:
+              appOptions.preferences.messages.message.header.avatar.userImage
+                .width,
+            height:
+              appOptions.preferences.messages.message.header.avatar.userImage
+                .height,
           }"
         />
 
@@ -54,10 +62,16 @@ const props = defineProps({
         ></i>
         <img
           v-if="appOptions.preferences.messages.message.header.avatar.botImage && props.message!.author === MessageAuthor.bot"
-          :src="appOptions.preferences.messages.message.header.avatar.botImage.src"
+          :src="
+            appOptions.preferences.messages.message.header.avatar.botImage.src
+          "
           :style="{
-            width: appOptions.preferences.messages.message.header.avatar.botImage.width,
-            height: appOptions.preferences.messages.message.header.avatar.botImage.height
+            width:
+              appOptions.preferences.messages.message.header.avatar.botImage
+                .width,
+            height:
+              appOptions.preferences.messages.message.header.avatar.botImage
+                .height,
           }"
         />
       </div>

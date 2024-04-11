@@ -11,8 +11,9 @@ A Vue 3 toolkit to easily embed [Tock](https://doc.tock.ai) into web pages.
 Include js and css files :
 
 ```html
-<link href="/dist/assets/index.css" rel="stylesheet" />
-<script src="/dist/assets/index.js"></script>
+<script src="https://unpkg.com/vue@3.4"></script>
+<link href="dist/style.css" rel="stylesheet" />
+<script src="dist/tock-vue-kit.umd.cjs"></script>
 ```
 
 Display chat app in desired target :

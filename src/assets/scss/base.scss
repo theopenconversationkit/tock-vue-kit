@@ -2,8 +2,9 @@
   // Global variables
   --tvk-base-font-size: 0.9rem;
 
-  --tvk-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --tvk-font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   --tvk-base-radius: 0.5em;
   --tvk-base-spacing: 0.5em;
@@ -17,9 +18,11 @@
 
   --tvk-main-wrapper-min-height: 0;
   --tvk-main-wrapper-height: auto;
-  --tvk-main-wrapper-max-height: calc(100vh - calc(var(--tvk-main-wrapper-margin) * 2));
+  --tvk-main-wrapper-max-height: calc(
+    100vh - calc(var(--tvk-main-wrapper-margin) * 2)
+  );
 
-  --tvk-main-wrapper-line-height: initial;
+  --tvk-main-wrapper-line-height: 1;
 
   // Messages
   --tvk-messages-padding: 0 var(--tvk-base-spacing) 0 0;
@@ -55,14 +58,22 @@
   // Message header avatar for user
   --tvk-message-header-user-avatar-color: var(--tvk-text1);
   --tvk-message-header-user-avatar-background-color: var(--tvk-surface1);
-  --tvk-message-header-user-avatar-padding: var(--tvk-message-header-avatar-padding);
-  --tvk-message-header-user-avatar-radius: var(--tvk-message-header-avatar-radius);
+  --tvk-message-header-user-avatar-padding: var(
+    --tvk-message-header-avatar-padding
+  );
+  --tvk-message-header-user-avatar-radius: var(
+    --tvk-message-header-avatar-radius
+  );
 
   // Message header avatar for bot
   --tvk-message-header-bot-avatar-color: var(--tvk-text2);
   --tvk-message-header-bot-avatar-background-color: var(--tvk-surface2);
-  --tvk-message-header-bot-avatar-padding: var(--tvk-message-header-avatar-padding);
-  --tvk-message-header-bot-avatar-radius: var(--tvk-message-header-avatar-radius);
+  --tvk-message-header-bot-avatar-padding: var(
+    --tvk-message-header-avatar-padding
+  );
+  --tvk-message-header-bot-avatar-radius: var(
+    --tvk-message-header-avatar-radius
+  );
 
   // Message header line break
   --tvk-message-header-line-break-width: 100%;

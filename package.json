@@ -1,11 +1,17 @@
 {
   "name": "tock-vue-kit",
   "version": "0.0.0",
-  "private": true,
+  "description": "Vue 3 client application for dialog with a Tock Bot REST API",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "main": "./dist/tock-vue-kit.umd.cjs",
   "module": "./dist/tock-vue-kit.js",
   "types": "./dist/index.d.ts",
+  "author": "Rodolphe Küffer <https://github.com/rkuffer>",
+  "homepage": "https://github.com/theopenconversationkit/tock-vue-kit",
+  "licence": "Apache-2.0",
   "scripts": {
     "dev": "vite build --mode development --watch",
     "build": "run-p type-check \"build-only {@}\" --",

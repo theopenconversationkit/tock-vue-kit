@@ -9,6 +9,7 @@ import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
+  console.log("The command : ", command);
   console.log("The mode : ", mode);
   return {
     plugins: [vue(), dts()],
@@ -28,6 +29,18 @@ export default defineConfig(({ command, mode }) => {
         // the proper extensions will be added
         fileName: "tock-vue-kit",
         // formats: ["es"],
+      },
+      rollupOptions: {
+        // make sure to externalize deps that shouldn't be bundled
+        // into your library
+        external: ["vue"],
+        output: {
+          // Provide global variables to use in the UMD build
+          // for externalized deps
+          globals: {
+            vue: "Vue",
+          },
+        },
       },
       // rollupOptions: {
       //   output: {
