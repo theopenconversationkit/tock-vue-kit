@@ -16,10 +16,16 @@
   --tvk-main-wrapper-margin: 0em;
   --tvk-main-wrapper-padding: calc(var(--tvk-base-spacing) * 2);
 
+  --tvk-main-wrapper-min-width: 20em;
+  --tvk-main-wrapper-width: 100%;
+  --tvk-main-wrapper-max-width-base: initial;
+
   --tvk-main-wrapper-min-height: 0;
   --tvk-main-wrapper-height: auto;
+  --tvk-main-wrapper-max-height-base: 70vh;
   --tvk-main-wrapper-max-height: calc(
-    100vh - calc(var(--tvk-main-wrapper-margin) * 2)
+    var(--tvk-main-wrapper-max-height-base) -
+      calc(var(--tvk-main-wrapper-margin) * 2)
   );
 
   --tvk-main-wrapper-line-height: 1;

@@ -1,10 +1,10 @@
-import type { appOptions } from '@/models/app-options';
-import { mergeDeep } from '@/utils/deep-merge';
+import type { appOptions } from "@/models/app-options";
+import { mergeDeep } from "@/utils/deep-merge";
 
 const defaultAppOptions: appOptions = {
   localStorage: {
     enabled: false,
-    maxNumberMessages: 20
+    maxNumberMessages: 20,
   },
   preferences: {
     messages: {
@@ -14,58 +14,67 @@ const defaultAppOptions: appOptions = {
           display: true,
           avatar: {
             display: true,
-            userIcon: 'bi bi-person-fill',
-            botIcon: 'bi bi-robot'
+            userIcon: "bi bi-person-fill",
+            botIcon: "bi bi-robot",
           },
           label: {
-            display: true
-          }
-        }
-      }
+            display: true,
+          },
+        },
+      },
     },
     questionBar: {
       maxUserInputLength: 500,
       clearHistory: {
         display: true,
-        icon: 'bi bi-trash-fill'
+        icon: "bi bi-trash-fill",
       },
       submit: {
-        icon: 'bi bi-send-fill'
-      }
-    }
+        icon: "bi bi-send-fill",
+      },
+    },
   },
   wording: {
     messages: {
       message: {
         header: {
-          labelUser: 'You',
-          labelBot: 'Bot'
-        }
-      }
+          labelUser: "You",
+          labelBot: "Bot",
+        },
+      },
     },
     questionBar: {
       clearHistory: {
-        labelBefore: '',
-        labelAfter: ''
+        labelBefore: "",
+        labelAfter: "",
       },
       input: {
-        placeholder: 'Ask me a question...'
+        placeholder: "Ask me a question...",
       },
       submit: {
-        labelBefore: '',
-        labelAfter: ''
-      }
-    }
-  }
+        labelBefore: "",
+        labelAfter: "",
+      },
+    },
+  },
 };
 
 class appOptionsSingleton {
-  private static instance: appOptionsSingleton;
+  private static instance: appOptionsSingleton | undefined;
 
   options: appOptions;
 
-  constructor(options: appOptions) {
-    this.options = mergeDeep(defaultAppOptions, options);
+  constructor(options: Partial<appOptions>) {
+    this.options = mergeDeep(
+      JSON.parse(JSON.stringify(defaultAppOptions)),
+      options
+    );
+  }
+
+  public static clearInstance(): void {
+    if (appOptionsSingleton.instance) {
+      appOptionsSingleton.instance = undefined;
+    }
   }
 
   public static getInstance(options?: appOptions): appOptionsSingleton {

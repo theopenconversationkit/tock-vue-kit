@@ -1,7 +1,7 @@
 var gs = Object.defineProperty;
 var ps = (e, t, s) => t in e ? gs(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
 var ht = (e, t, s) => (ps(e, typeof t != "symbol" ? t + "" : t, s), s);
-import { effectScope as Qt, ref as M, markRaw as Gt, hasInjectionContext as ms, inject as Jt, watch as bs, reactive as ys, isRef as Re, isReactive as Yt, toRaw as Ts, getCurrentScope as vs, onScopeDispose as ks, nextTick as Es, toRefs as Ss, computed as Xt, defineComponent as W, openBlock as p, createElementBlock as T, unref as u, createTextVNode as he, toDisplayString as H, normalizeClass as fe, createCommentVNode as C, normalizeStyle as de, createElementVNode as B, withModifiers as As, withDirectives as Cs, vModelText as Ds, Fragment as ge, renderList as ct, createBlock as X, withCtx as Is, createVNode as Zt, onMounted as Ns, createApp as _s } from "vue";
+import { effectScope as Qt, ref as M, markRaw as Gt, hasInjectionContext as ms, inject as Jt, watch as bs, reactive as ys, isRef as Re, isReactive as Yt, toRaw as Ts, getCurrentScope as vs, onScopeDispose as ks, nextTick as Es, toRefs as Ss, computed as Xt, defineComponent as F, openBlock as p, createElementBlock as T, unref as u, createTextVNode as he, toDisplayString as H, normalizeClass as fe, createCommentVNode as C, normalizeStyle as de, createElementVNode as B, withModifiers as As, withDirectives as Cs, vModelText as Ds, Fragment as ge, renderList as ct, createBlock as Z, withCtx as Is, createVNode as Zt, onMounted as Ns, createApp as _s } from "vue";
 var Ls = !1;
 /*!
  * pinia v2.1.7
@@ -73,7 +73,7 @@ const ws = (
 function xs(e) {
   return !bt(e) || !e.hasOwnProperty(ws);
 }
-const { assign: te } = Object;
+const { assign: se } = Object;
 function Ps(e) {
   return !!(Re(e) && e.effect);
 }
@@ -83,7 +83,7 @@ function Hs(e, t, s, i) {
   function f() {
     r || (s.state.value[e] = n ? n() : {});
     const b = Ss(s.state.value[e]);
-    return te(b, a, Object.keys(o || {}).reduce((g, d) => (g[d] = Gt(Xt(() => {
+    return se(b, a, Object.keys(o || {}).reduce((g, d) => (g[d] = Gt(Xt(() => {
       lt(s);
       const h = s._s.get(e);
       return o[d].call(h, h);
@@ -93,7 +93,7 @@ function Hs(e, t, s, i) {
 }
 function ns(e, t, s = {}, i, n, a) {
   let o;
-  const r = te({ actions: {} }, s), l = {
+  const r = se({ actions: {} }, s), l = {
     deep: !0
     // flush: 'post',
   };
@@ -121,7 +121,7 @@ function ns(e, t, s = {}, i, n, a) {
   const S = a ? function() {
     const { state: E } = s, U = E ? E() : {};
     this.$patch((V) => {
-      te(V, U);
+      se(V, U);
     });
   } : (
     /* istanbul ignore next */
@@ -133,12 +133,12 @@ function ns(e, t, s = {}, i, n, a) {
   function v(A, E) {
     return function() {
       lt(i);
-      const U = Array.from(arguments), V = [], Z = [];
+      const U = Array.from(arguments), V = [], ee = [];
       function me(L) {
         V.push(L);
       }
       function Ae(L) {
-        Z.push(L);
+        ee.push(L);
       }
       ce(d, {
         args: U,
@@ -151,9 +151,9 @@ function ns(e, t, s = {}, i, n, a) {
       try {
         J = E.apply(this && this.$id === e ? this : I, U);
       } catch (L) {
-        throw ce(Z, L), L;
+        throw ce(ee, L), L;
       }
-      return J instanceof Promise ? J.then((L) => (ce(V, L), L)).catch((L) => (ce(Z, L), Promise.reject(L))) : (ce(V, J), J);
+      return J instanceof Promise ? J.then((L) => (ce(V, L), L)).catch((L) => (ce(ee, L), Promise.reject(L))) : (ce(V, J), J);
     };
   }
   const x = {
@@ -164,13 +164,13 @@ function ns(e, t, s = {}, i, n, a) {
     $patch: D,
     $reset: S,
     $subscribe(A, E = {}) {
-      const U = Ht(g, A, E.detached, () => V()), V = o.run(() => bs(() => i.state.value[e], (Z) => {
+      const U = Ht(g, A, E.detached, () => V()), V = o.run(() => bs(() => i.state.value[e], (ee) => {
         (E.flush === "sync" ? b : f) && A({
           storeId: e,
           type: ye.direct,
           events: h
-        }, Z);
-      }, te({}, l, E)));
+        }, ee);
+      }, se({}, l, E)));
       return U;
     },
     $dispose: N
@@ -186,15 +186,15 @@ function ns(e, t, s = {}, i, n, a) {
       q[A] = U, r.actions[A] = E;
     }
   }
-  return te(I, q), te(Ts(I), q), Object.defineProperty(I, "$state", {
+  return se(I, q), se(Ts(I), q), Object.defineProperty(I, "$state", {
     get: () => i.state.value[e],
     set: (A) => {
       D((E) => {
-        te(E, A);
+        se(E, A);
       });
     }
   }), i._p.forEach((A) => {
-    te(I, o.run(() => A({
+    se(I, o.run(() => A({
       store: I,
       app: i._a,
       pinia: i,
@@ -288,22 +288,28 @@ const js = {
       }
     }
   }
-}, ae = class ae {
+}, X = class X {
   constructor(t) {
     ht(this, "options");
-    this.options = Tt(js, t);
+    this.options = Tt(
+      JSON.parse(JSON.stringify(js)),
+      t
+    );
+  }
+  static clearInstance() {
+    X.instance && (X.instance = void 0);
   }
   static getInstance(t) {
-    return ae.instance || (ae.instance = new ae(t)), ae.instance;
+    return X.instance || (X.instance = new X(t)), X.instance;
   }
 };
-ht(ae, "instance");
-let G = ae;
+ht(X, "instance");
+let W = X;
 const Us = "main", Bt = "main_storage", zs = () => ({
   userId: Ms(),
   messages: []
-}), ie = Bs(Us, () => {
-  const e = Jt(is), t = G.getInstance().options, s = M(i());
+}), ae = Bs(Us, () => {
+  const e = Jt(is), t = W.getInstance().options, s = M(i());
   function i() {
     if (t.localStorage.enabled) {
       const h = n();
@@ -329,29 +335,72 @@ const Us = "main", Bt = "main_storage", zs = () => ({
   function l() {
   }
   function f(h) {
-    const y = ie();
+    const y = ae();
     y.clearLoaderMessages(), y.scrollMessages(), b(h), s.value.messages.push(h);
   }
   function b(h) {
     function y() {
       const D = Math.max(Math.random(), 0.3), S = Math.max(Math.random(), 0.3), N = Math.ceil(D * 500), v = Math.ceil(S * 500), x = Math.ceil(1), I = Math.floor(1084);
-      return `https://picsum.photos/id/${Math.floor(Math.random() * (I - x) + x)}/${N}/${v}`;
+      return `https://picsum.photos/id/${Math.floor(
+        Math.random() * (I - x) + x
+      )}/${N}/${v}`;
     }
     h.type === w.card && (h.file.url = y()), h.type === w.carousel && h.cards.forEach((k) => {
       k.file.url = y();
     });
   }
   async function g(h, y = !0) {
-    const k = ie();
-    t.preferences.messages.clearOnNewRequest && (s.value.messages = []), y && k.addMessage({ type: w.message, author: R.user, text: h, date: Date.now() }), k.addMessage({ type: w.loader, author: R.app, date: Date.now() });
-    const D = navigator.language, S = { query: h, userId: s.value.userId, locale: D }, N = await (await fetch(e, { method: "post", body: JSON.stringify(S) })).json();
+    const k = ae();
+    t.preferences.messages.clearOnNewRequest && (s.value.messages = []), y && k.addMessage({
+      type: w.message,
+      author: R.user,
+      text: h,
+      date: Date.now()
+    }), k.addMessage({
+      type: w.loader,
+      author: R.app,
+      date: Date.now()
+    });
+    const D = navigator.language, S = {
+      query: h,
+      userId: s.value.userId,
+      locale: D
+    }, N = await (await fetch(e, {
+      method: "post",
+      body: JSON.stringify(S)
+    })).json();
     if (k.clearLoaderMessages(), N.responses.forEach((v) => {
-      delete v.type, delete v.version, "text" in v ? k.addMessage({ type: w.message, author: R.bot, date: Date.now(), ...v }) : "card" in v ? k.addMessage({ type: w.card, author: R.bot, date: Date.now(), ...v.card }) : "image" in v ? k.addMessage({ type: w.image, author: R.bot, date: Date.now(), ...v.image }) : "carousel" in v && k.addMessage({ type: w.carousel, author: R.bot, date: Date.now(), ...v.carousel });
+      delete v.type, delete v.version, "text" in v ? k.addMessage({
+        type: w.message,
+        author: R.bot,
+        date: Date.now(),
+        ...v
+      }) : "card" in v ? k.addMessage({
+        type: w.card,
+        author: R.bot,
+        date: Date.now(),
+        ...v.card
+      }) : "image" in v ? k.addMessage({
+        type: w.image,
+        author: R.bot,
+        date: Date.now(),
+        ...v.image
+      }) : "carousel" in v && k.addMessage({
+        type: w.carousel,
+        author: R.bot,
+        date: Date.now(),
+        ...v.carousel
+      });
     }), t.localStorage.enabled) {
       let v = JSON.stringify(s.value);
       if (t.localStorage.maxNumberMessages && s.value.messages.length > t.localStorage.maxNumberMessages) {
-        const x = JSON.parse(v), I = x.messages.length - parseInt(t.localStorage.maxNumberMessages);
-        I && (x.messages = x.messages.slice(I, x.messages.length + 1)), v = JSON.stringify(x);
+        const x = JSON.parse(v), I = x.messages.length - parseInt(
+          t.localStorage.maxNumberMessages
+        );
+        I && (x.messages = x.messages.slice(
+          I,
+          x.messages.length + 1
+        )), v = JSON.stringify(x);
       }
       localStorage.setItem(a(), v);
     }
@@ -369,10 +418,10 @@ const Us = "main", Bt = "main_storage", zs = () => ({
     clearLoaderMessages: r,
     scrollMessages: l
   };
-}), $s = ["src"], qs = ["maxlength", "placeholder"], Vs = ["disabled"], Ws = ["src"], Fs = /* @__PURE__ */ W({
+}), $s = ["src"], qs = ["maxlength", "placeholder"], Vs = ["disabled"], Ws = ["src"], Fs = /* @__PURE__ */ F({
   __name: "question-block",
   setup(e) {
-    const t = G.getInstance().options, s = ie(), i = t.preferences.questionBar.maxUserInputLength, n = M(null), a = M("");
+    const t = W.getInstance().options, s = ae(), i = t.preferences.questionBar.maxUserInputLength, n = M(null), a = M("");
     function o() {
       n != null && n.value && n.value.focus();
     }
@@ -601,7 +650,7 @@ j.prototype = {
     return n.j[e] = o, o;
   }
 };
-const m = (e, t, s, i, n) => e.ta(t, s, i, n), z = (e, t, s, i, n) => e.tr(t, s, i, n), jt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), Y = "WORD", At = "UWORD", Ee = "LOCALHOST", Ct = "TLD", Dt = "UTLD", Le = "SCHEME", ue = "SLASH_SCHEME", _t = "NUM", os = "WS", Lt = "NL", Te = "OPENBRACE", ve = "CLOSEBRACE", Oe = "OPENBRACKET", we = "CLOSEBRACKET", xe = "OPENPAREN", Pe = "CLOSEPAREN", He = "OPENANGLEBRACKET", Be = "CLOSEANGLEBRACKET", Me = "FULLWIDTHLEFTPAREN", je = "FULLWIDTHRIGHTPAREN", Ue = "LEFTCORNERBRACKET", ze = "RIGHTCORNERBRACKET", $e = "LEFTWHITECORNERBRACKET", qe = "RIGHTWHITECORNERBRACKET", Ve = "FULLWIDTHLESSTHAN", We = "FULLWIDTHGREATERTHAN", Fe = "AMPERSAND", Ke = "APOSTROPHE", Qe = "ASTERISK", se = "AT", Ge = "BACKSLASH", Je = "BACKTICK", Ye = "CARET", ne = "COLON", Rt = "COMMA", Xe = "DOLLAR", F = "DOT", Ze = "EQUALS", Ot = "EXCLAMATION", K = "HYPHEN", et = "PERCENT", tt = "PIPE", st = "PLUS", nt = "POUND", it = "QUERY", wt = "QUOTE", xt = "SEMI", Q = "SLASH", ke = "TILDE", at = "UNDERSCORE", rs = "EMOJI", ot = "SYM";
+const m = (e, t, s, i, n) => e.ta(t, s, i, n), z = (e, t, s, i, n) => e.tr(t, s, i, n), jt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), Y = "WORD", At = "UWORD", Ee = "LOCALHOST", Ct = "TLD", Dt = "UTLD", Le = "SCHEME", ue = "SLASH_SCHEME", _t = "NUM", os = "WS", Lt = "NL", Te = "OPENBRACE", ve = "CLOSEBRACE", Oe = "OPENBRACKET", we = "CLOSEBRACKET", xe = "OPENPAREN", Pe = "CLOSEPAREN", He = "OPENANGLEBRACKET", Be = "CLOSEANGLEBRACKET", Me = "FULLWIDTHLEFTPAREN", je = "FULLWIDTHRIGHTPAREN", Ue = "LEFTCORNERBRACKET", ze = "RIGHTCORNERBRACKET", $e = "LEFTWHITECORNERBRACKET", qe = "RIGHTWHITECORNERBRACKET", Ve = "FULLWIDTHLESSTHAN", We = "FULLWIDTHGREATERTHAN", Fe = "AMPERSAND", Ke = "APOSTROPHE", Qe = "ASTERISK", ne = "AT", Ge = "BACKSLASH", Je = "BACKTICK", Ye = "CARET", ie = "COLON", Rt = "COMMA", Xe = "DOLLAR", K = "DOT", Ze = "EQUALS", Ot = "EXCLAMATION", Q = "HYPHEN", et = "PERCENT", tt = "PIPE", st = "PLUS", nt = "POUND", it = "QUERY", wt = "QUOTE", xt = "SEMI", G = "SLASH", ke = "TILDE", at = "UNDERSCORE", rs = "EMOJI", ot = "SYM";
 var cs = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   WORD: Y,
@@ -633,17 +682,17 @@ var cs = /* @__PURE__ */ Object.freeze({
   AMPERSAND: Fe,
   APOSTROPHE: Ke,
   ASTERISK: Qe,
-  AT: se,
+  AT: ne,
   BACKSLASH: Ge,
   BACKTICK: Je,
   CARET: Ye,
-  COLON: ne,
+  COLON: ie,
   COMMA: Rt,
   DOLLAR: Xe,
-  DOT: F,
+  DOT: K,
   EQUALS: Ze,
   EXCLAMATION: Ot,
-  HYPHEN: K,
+  HYPHEN: Q,
   PERCENT: et,
   PIPE: tt,
   PLUS: st,
@@ -651,7 +700,7 @@ var cs = /* @__PURE__ */ Object.freeze({
   QUERY: it,
   QUOTE: wt,
   SEMI: xt,
-  SLASH: Q,
+  SLASH: G,
   TILDE: ke,
   UNDERSCORE: at,
   EMOJI: rs,
@@ -665,7 +714,7 @@ function tn(e) {
   const t = {};
   j.groups = t;
   const s = new j();
-  De == null && (De = $t(Ks)), Ie == null && (Ie = $t(Qs)), c(s, "'", Ke), c(s, "{", Te), c(s, "}", ve), c(s, "[", Oe), c(s, "]", we), c(s, "(", xe), c(s, ")", Pe), c(s, "<", He), c(s, ">", Be), c(s, "（", Me), c(s, "）", je), c(s, "「", Ue), c(s, "」", ze), c(s, "『", $e), c(s, "』", qe), c(s, "＜", Ve), c(s, "＞", We), c(s, "&", Fe), c(s, "*", Qe), c(s, "@", se), c(s, "`", Je), c(s, "^", Ye), c(s, ":", ne), c(s, ",", Rt), c(s, "$", Xe), c(s, ".", F), c(s, "=", Ze), c(s, "!", Ot), c(s, "-", K), c(s, "%", et), c(s, "|", tt), c(s, "+", st), c(s, "#", nt), c(s, "?", it), c(s, '"', wt), c(s, "/", Q), c(s, ";", xt), c(s, "~", ke), c(s, "_", at), c(s, "\\", Ge);
+  De == null && (De = $t(Ks)), Ie == null && (Ie = $t(Qs)), c(s, "'", Ke), c(s, "{", Te), c(s, "}", ve), c(s, "[", Oe), c(s, "]", we), c(s, "(", xe), c(s, ")", Pe), c(s, "<", He), c(s, ">", Be), c(s, "（", Me), c(s, "）", je), c(s, "「", Ue), c(s, "」", ze), c(s, "『", $e), c(s, "』", qe), c(s, "＜", Ve), c(s, "＞", We), c(s, "&", Fe), c(s, "*", Qe), c(s, "@", ne), c(s, "`", Je), c(s, "^", Ye), c(s, ":", ie), c(s, ",", Rt), c(s, "$", Xe), c(s, ".", K), c(s, "=", Ze), c(s, "!", Ot), c(s, "-", Q), c(s, "%", et), c(s, "|", tt), c(s, "+", st), c(s, "#", nt), c(s, "?", it), c(s, '"', wt), c(s, "/", G), c(s, ";", xt), c(s, "~", ke), c(s, "_", at), c(s, "\\", Ge);
   const i = z(s, pt, _t, {
     [vt]: !0
   });
@@ -692,16 +741,16 @@ function tn(e) {
   z(l, gt, r);
   const f = [[le, n]], b = [[le, null], [dt, a]];
   for (let g = 0; g < De.length; g++)
-    ee(s, De[g], Ct, Y, f);
+    te(s, De[g], Ct, Y, f);
   for (let g = 0; g < Ie.length; g++)
-    ee(s, Ie[g], Dt, At, b);
+    te(s, Ie[g], Dt, At, b);
   oe(Ct, {
     tld: !0,
     ascii: !0
   }, t), oe(Dt, {
     utld: !0,
     alpha: !0
-  }, t), ee(s, "file", Le, Y, f), ee(s, "mailto", Le, Y, f), ee(s, "http", ue, Y, f), ee(s, "https", ue, Y, f), ee(s, "ftp", ue, Y, f), ee(s, "ftps", ue, Y, f), oe(Le, {
+  }, t), te(s, "file", Le, Y, f), te(s, "mailto", Le, Y, f), te(s, "http", ue, Y, f), te(s, "https", ue, Y, f), te(s, "ftp", ue, Y, f), te(s, "ftps", ue, Y, f), oe(Le, {
     scheme: !0,
     ascii: !0
   }, t), oe(ue, {
@@ -754,7 +803,7 @@ function nn(e) {
   }
   return t;
 }
-function ee(e, t, s, i, n) {
+function te(e, t, s, i, n) {
   let a;
   const o = t.length;
   for (let r = 0; r < o - 1; r++) {
@@ -1010,42 +1059,42 @@ const Vt = ut("email", {
    */
   hasProtocol() {
     const e = this.tk;
-    return e.length >= 2 && e[0].t !== Ee && e[1].t === ne;
+    return e.length >= 2 && e[0].t !== Ee && e[1].t === ie;
   }
 }), $ = (e) => new j(e);
 function on(e) {
   let {
     groups: t
   } = e;
-  const s = t.domain.concat([Fe, Qe, se, Ge, Je, Ye, Xe, Ze, K, _t, et, tt, st, nt, Q, ot, ke, at]), i = [Ke, ne, Rt, F, Ot, it, wt, xt, He, Be, Te, ve, we, Oe, xe, Pe, Me, je, Ue, ze, $e, qe, Ve, We], n = [Fe, Ke, Qe, Ge, Je, Ye, Xe, Ze, K, Te, ve, et, tt, st, nt, it, Q, ot, ke, at], a = $(), o = c(a, ke);
+  const s = t.domain.concat([Fe, Qe, ne, Ge, Je, Ye, Xe, Ze, Q, _t, et, tt, st, nt, G, ot, ke, at]), i = [Ke, ie, Rt, K, Ot, it, wt, xt, He, Be, Te, ve, we, Oe, xe, Pe, Me, je, Ue, ze, $e, qe, Ve, We], n = [Fe, Ke, Qe, Ge, Je, Ye, Xe, Ze, Q, Te, ve, et, tt, st, nt, it, G, ot, ke, at], a = $(), o = c(a, ke);
   m(o, n, o), m(o, t.domain, o);
   const r = $(), l = $(), f = $();
   m(a, t.domain, r), m(a, t.scheme, l), m(a, t.slashscheme, f), m(r, n, o), m(r, t.domain, r);
-  const b = c(r, se);
-  c(o, se, b), c(l, se, b), c(f, se, b);
-  const g = c(o, F);
+  const b = c(r, ne);
+  c(o, ne, b), c(l, ne, b), c(f, ne, b);
+  const g = c(o, K);
   m(g, n, o), m(g, t.domain, o);
   const d = $();
   m(b, t.domain, d), m(d, t.domain, d);
-  const h = c(d, F);
+  const h = c(d, K);
   m(h, t.domain, d);
   const y = $(Vt);
   m(h, t.tld, y), m(h, t.utld, y), c(b, Ee, y);
-  const k = c(d, K);
-  m(k, t.domain, d), m(y, t.domain, d), c(y, F, h), c(y, K, k);
-  const D = c(y, ne);
+  const k = c(d, Q);
+  m(k, t.domain, d), m(y, t.domain, d), c(y, K, h), c(y, Q, k);
+  const D = c(y, ie);
   m(D, t.numeric, Vt);
-  const S = c(r, K), N = c(r, F);
+  const S = c(r, Q), N = c(r, K);
   m(S, t.domain, r), m(N, n, o), m(N, t.domain, r);
   const v = $(Ne);
-  m(N, t.tld, v), m(N, t.utld, v), m(v, t.domain, r), m(v, n, o), c(v, F, N), c(v, K, S), c(v, se, b);
-  const x = c(v, ne), I = $(Ne);
+  m(N, t.tld, v), m(N, t.utld, v), m(v, t.domain, r), m(v, n, o), c(v, K, N), c(v, Q, S), c(v, ne, b);
+  const x = c(v, ie), I = $(Ne);
   m(x, t.numeric, I);
   const _ = $(Ne), q = $();
-  m(_, s, _), m(_, i, q), m(q, s, _), m(q, i, q), c(v, Q, _), c(I, Q, _);
-  const A = c(l, ne), E = c(f, ne), U = c(E, Q), V = c(U, Q);
-  m(l, t.domain, r), c(l, F, N), c(l, K, S), m(f, t.domain, r), c(f, F, N), c(f, K, S), m(A, t.domain, _), c(A, Q, _), m(V, t.domain, _), m(V, s, _), c(V, Q, _);
-  const Z = [
+  m(_, s, _), m(_, i, q), m(q, s, _), m(q, i, q), c(v, G, _), c(I, G, _);
+  const A = c(l, ie), E = c(f, ie), U = c(E, G), V = c(U, G);
+  m(l, t.domain, r), c(l, K, N), c(l, Q, S), m(f, t.domain, r), c(f, K, N), c(f, Q, S), m(A, t.domain, _), c(A, G, _), m(V, t.domain, _), m(V, s, _), c(V, G, _);
+  const ee = [
     [Te, ve],
     // {}
     [Oe, we],
@@ -1063,8 +1112,8 @@ function on(e) {
     [Ve, We]
     // ＜＞
   ];
-  for (let me = 0; me < Z.length; me++) {
-    const [Ae, J] = Z[me], L = c(_, Ae);
+  for (let me = 0; me < ee.length; me++) {
+    const [Ae, J] = ee[me], L = c(_, Ae);
     c(q, Ae, L), c(L, J, _);
     const re = $(Ne);
     m(L, s, re);
@@ -1859,7 +1908,7 @@ function _n(e) {
   }
   return t;
 }
-const Ln = /* @__PURE__ */ W({
+const Ln = /* @__PURE__ */ F({
   __name: "button",
   props: {
     button: {
@@ -1867,7 +1916,7 @@ const Ln = /* @__PURE__ */ W({
     }
   },
   setup(e) {
-    const t = ie(), s = e;
+    const t = ae(), s = e;
     function i() {
       t.sendUserMessage(s.button.title);
     }
@@ -1876,7 +1925,7 @@ const Ln = /* @__PURE__ */ W({
       onClick: i
     }, H(s.button.title), 1));
   }
-}), Rn = ["href"], On = /* @__PURE__ */ W({
+}), Rn = ["href"], On = /* @__PURE__ */ F({
   __name: "footnote",
   props: {
     footnote: {
@@ -1891,7 +1940,7 @@ const Ln = /* @__PURE__ */ W({
       target: "_blank"
     }, H(t.footnote.title), 9, Rn));
   }
-}), wn = { class: "tvk-message-footnotes" }, xn = /* @__PURE__ */ W({
+}), wn = { class: "tvk-message-footnotes" }, xn = /* @__PURE__ */ F({
   __name: "footnotes",
   props: {
     footnotes: {
@@ -1902,10 +1951,10 @@ const Ln = /* @__PURE__ */ W({
     const t = e;
     return (s, i) => (p(), T("div", wn, [
       he(" Sources : "),
-      (p(!0), T(ge, null, ct(t.footnotes, (n) => (p(), X(On, { footnote: n }, null, 8, ["footnote"]))), 256))
+      (p(!0), T(ge, null, ct(t.footnotes, (n) => (p(), Z(On, { footnote: n }, null, 8, ["footnote"]))), 256))
     ]));
   }
-}), Pn = ["innerHTML"], Hn = /* @__PURE__ */ W({
+}), Pn = ["innerHTML"], Hn = /* @__PURE__ */ F({
   __name: "message-text",
   props: {
     message: {
@@ -1913,7 +1962,7 @@ const Ln = /* @__PURE__ */ W({
     }
   },
   setup(e) {
-    G.getInstance().options;
+    W.getInstance().options;
     const t = e;
     function s() {
       return An(t.message.text, { target: "_blank" });
@@ -1924,11 +1973,11 @@ const Ln = /* @__PURE__ */ W({
         B("div", {
           innerHTML: s()
         }, null, 8, Pn),
-        (a = t.message.footnotes) != null && a.length ? (p(), X(xn, {
+        (a = t.message.footnotes) != null && a.length ? (p(), Z(xn, {
           key: 0,
           footnotes: t.message.footnotes
         }, null, 8, ["footnotes"])) : C("", !0),
-        (p(!0), T(ge, null, ct(t.message.buttons, (o) => (p(), X(Ln, { button: o }, {
+        (p(!0), T(ge, null, ct(t.message.buttons, (o) => (p(), Z(Ln, { button: o }, {
           default: Is(() => [
             he(H(o.title), 1)
           ]),
@@ -1937,7 +1986,7 @@ const Ln = /* @__PURE__ */ W({
       ], 64);
     };
   }
-}), Bn = { class: "tvk-card" }, Mn = ["src", "alt"], jn = { key: 1 }, Un = { key: 2 }, zn = { key: 3 }, ds = /* @__PURE__ */ W({
+}), Bn = { class: "tvk-card" }, Mn = ["src", "alt"], jn = { key: 1 }, Un = { key: 2 }, zn = { key: 3 }, ds = /* @__PURE__ */ F({
   __name: "message-card",
   props: {
     card: {
@@ -1946,8 +1995,8 @@ const Ln = /* @__PURE__ */ W({
   },
   setup(e) {
     var a, o, r;
-    const t = ie();
-    G.getInstance().options;
+    const t = ae();
+    W.getInstance().options;
     const s = e, i = ((o = (a = s.card) == null ? void 0 : a.file) == null ? void 0 : o.description) ?? ((r = s.card) == null ? void 0 : r.title);
     function n(l) {
       s.card.file._loaded || (s.card.file._loaded = !0, t.scrollMessages());
@@ -1970,7 +2019,7 @@ const Ln = /* @__PURE__ */ W({
       ]);
     };
   }
-}), Kt = "transform 0.2s", $n = /* @__PURE__ */ W({
+}), Kt = "transform 0.2s", $n = /* @__PURE__ */ F({
   __name: "message-carousel",
   props: {
     carousel: {
@@ -2076,11 +2125,11 @@ const Ln = /* @__PURE__ */ W({
       ])
     ], 64));
   }
-}), qn = /* @__PURE__ */ W({
+}), qn = /* @__PURE__ */ F({
   __name: "message-image",
   props: { message: Object },
   setup(e) {
-    return G.getInstance().options, (t, s) => "Image type not yet implemented";
+    return W.getInstance().options, (t, s) => "Image type not yet implemented";
   }
 }), Vn = {
   key: 0,
@@ -2100,7 +2149,7 @@ const Ln = /* @__PURE__ */ W({
 }, ei = {
   key: 0,
   class: "tvk-message-loader"
-}, ti = /* @__PURE__ */ W({
+}, ti = /* @__PURE__ */ F({
   __name: "message",
   props: {
     message: {
@@ -2108,7 +2157,7 @@ const Ln = /* @__PURE__ */ W({
     }
   },
   setup(e) {
-    const t = G.getInstance().options, s = e;
+    const t = W.getInstance().options, s = e;
     return (i, n) => (p(), T("div", {
       class: fe(["tvk-message", {
         "tvk-message-user": s.message.author === u(R).user,
@@ -2152,19 +2201,19 @@ const Ln = /* @__PURE__ */ W({
       ])) : C("", !0),
       Yn,
       s.message.author !== u(R).app ? (p(), T("div", Xn, [
-        s.message.type === u(w).message ? (p(), X(Hn, {
+        s.message.type === u(w).message ? (p(), Z(Hn, {
           key: 0,
           message: s.message
         }, null, 8, ["message"])) : C("", !0),
-        s.message.type === u(w).card ? (p(), X(ds, {
+        s.message.type === u(w).card ? (p(), Z(ds, {
           key: 1,
           card: s.message
         }, null, 8, ["card"])) : C("", !0),
-        s.message.type === u(w).carousel ? (p(), X($n, {
+        s.message.type === u(w).carousel ? (p(), Z($n, {
           key: 2,
           carousel: s.message
         }, null, 8, ["carousel"])) : C("", !0),
-        s.message.type === u(w).image ? (p(), X(qn, {
+        s.message.type === u(w).image ? (p(), Z(qn, {
           key: 3,
           message: s.message
         }, null, 8, ["message"])) : C("", !0)
@@ -2174,10 +2223,10 @@ const Ln = /* @__PURE__ */ W({
       ])) : C("", !0)
     ], 2));
   }
-}), si = /* @__PURE__ */ W({
+}), si = /* @__PURE__ */ F({
   __name: "messages",
   setup(e) {
-    const t = ie(), s = M();
+    const t = ae(), s = M();
     function i() {
       setTimeout(() => {
         s.value.scrollTop = s.value.scrollHeight;
@@ -2196,24 +2245,24 @@ const Ln = /* @__PURE__ */ W({
       ref: s,
       class: "tvk-messages"
     }, [
-      (p(!0), T(ge, null, ct(u(t).getMessages, (o) => (p(), X(ti, { message: o }, null, 8, ["message"]))), 256))
+      (p(!0), T(ge, null, ct(u(t).getMessages, (o) => (p(), Z(ti, { message: o }, null, 8, ["message"]))), 256))
     ], 512));
   }
-}), ni = { class: "tvk-main-wrapper" }, ii = /* @__PURE__ */ W({
+}), ni = { class: "tvk-main-wrapper" }, ii = /* @__PURE__ */ F({
   __name: "App",
   setup(e) {
-    const t = ie();
+    const t = ae();
     return (s, i) => (p(), T("main", ni, [
-      u(t).getMessages.length ? (p(), X(si, { key: 0 })) : C("", !0),
+      u(t).getMessages.length ? (p(), Z(si, { key: 0 })) : C("", !0),
       Zt(Fs)
     ]));
   }
 });
 function ai() {
   var t, s;
-  const e = G.getInstance().options;
+  const e = W.getInstance().options;
   if ((t = e == null ? void 0 : e.initialization) != null && t.welcomeMessage || (s = e == null ? void 0 : e.initialization) != null && s.openingMessage) {
-    const i = ie(), n = i.getStoredState();
+    const i = ae(), n = i.getStoredState();
     (!n || !n.messages.length) && (e.initialization.welcomeMessage && i.addMessage({
       type: w.message,
       author: R.bot,
@@ -2224,9 +2273,9 @@ function ai() {
 }
 function ci(e, t, s) {
   const i = _s(ii);
-  i.provide(is, t), G.getInstance(s);
+  i.provide(is, t), W.clearInstance(), W.getInstance(s);
   const n = Rs();
-  i.use(n), i.mount(e), ai();
+  return i.use(n), i.mount(e), ai(), i;
 }
 export {
   ci as renderChat

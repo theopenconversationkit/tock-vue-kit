@@ -23,18 +23,6 @@ function renderChat(target: string, tockEndPoint: string, options: appOptions) {
   appInitialization();
 }
 
-declare global {
-  interface Window {
-    TockVueKit: {
-      renderChat: (
-        target: string,
-        tockEndPoint: string,
-        options: appOptions
-      ) => void;
-    };
-  }
-}
-
 // window.TockVueKit = { renderChat };
 
 export { renderChat };

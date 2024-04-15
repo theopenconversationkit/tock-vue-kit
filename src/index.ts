@@ -17,14 +17,16 @@ function renderChat(
 
   app.provide(tockEndpointKey, tockEndPoint);
 
+  appOptionsSingleton.clearInstance();
   appOptionsSingleton.getInstance(options);
 
   const pinia = createPinia();
   app.use(pinia);
 
   app.mount(target);
-
   appInitialization();
+
+  return app;
 }
 
 declare global {
@@ -34,11 +36,9 @@ declare global {
         target: string,
         tockEndPoint: string,
         options: appOptions
-      ) => void;
+      ) => any;
     };
   }
 }
-
-// window.TockVueKit = { renderChat };
 
 export { renderChat };
