@@ -106,6 +106,8 @@
       &.tvk-message-user {
         justify-content: var(--tvk-message-user-justify-content);
 
+        margin: var(--tvk-message-user-margin);
+
         .tvk-message-header {
           flex-direction: var(--tvk-message-header-direction-user);
 
@@ -142,7 +144,7 @@
       // BOT
       &.tvk-message-bot {
         justify-content: var(--tvk-message-bot-justify-content);
-
+        margin: var(--tvk-message-bot-margin);
         .tvk-message-header {
           flex-direction: var(--tvk-message-header-direction-bot);
 

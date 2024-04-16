@@ -40,8 +40,10 @@
 
   // Message for user
   --tvk-message-user-justify-content: end;
+  --tvk-message-user-margin: var(--tvk-message-margin);
   // Message for bot
   --tvk-message-bot-justify-content: start;
+  --tvk-message-bot-margin: var(--tvk-message-margin);
 
   // Message header
   --tvk-message-header-font-size: 90%;
