@@ -120,8 +120,8 @@ function ns(e, t, s = {}, i, n, a) {
   }
   const S = a ? function() {
     const { state: E } = s, U = E ? E() : {};
-    this.$patch((V) => {
-      se(V, U);
+    this.$patch((W) => {
+      se(W, U);
     });
   } : (
     /* istanbul ignore next */
@@ -133,9 +133,9 @@ function ns(e, t, s = {}, i, n, a) {
   function v(A, E) {
     return function() {
       lt(i);
-      const U = Array.from(arguments), V = [], ee = [];
+      const U = Array.from(arguments), W = [], ee = [];
       function me(L) {
-        V.push(L);
+        W.push(L);
       }
       function Ae(L) {
         ee.push(L);
@@ -153,7 +153,7 @@ function ns(e, t, s = {}, i, n, a) {
       } catch (L) {
         throw ce(ee, L), L;
       }
-      return J instanceof Promise ? J.then((L) => (ce(V, L), L)).catch((L) => (ce(ee, L), Promise.reject(L))) : (ce(V, J), J);
+      return J instanceof Promise ? J.then((L) => (ce(W, L), L)).catch((L) => (ce(ee, L), Promise.reject(L))) : (ce(W, J), J);
     };
   }
   const x = {
@@ -164,7 +164,7 @@ function ns(e, t, s = {}, i, n, a) {
     $patch: D,
     $reset: S,
     $subscribe(A, E = {}) {
-      const U = Ht(g, A, E.detached, () => V()), V = o.run(() => bs(() => i.state.value[e], (ee) => {
+      const U = Ht(g, A, E.detached, () => W()), W = o.run(() => bs(() => i.state.value[e], (ee) => {
         (E.flush === "sync" ? b : f) && A({
           storeId: e,
           type: ye.direct,
@@ -176,17 +176,17 @@ function ns(e, t, s = {}, i, n, a) {
     $dispose: N
   }, I = ys(x);
   i._s.set(e, I);
-  const q = (i._a && i._a.runWithContext || Os)(() => i._e.run(() => (o = Qt()).run(t)));
-  for (const A in q) {
-    const E = q[A];
+  const V = (i._a && i._a.runWithContext || Os)(() => i._e.run(() => (o = Qt()).run(t)));
+  for (const A in V) {
+    const E = V[A];
     if (Re(E) && !Ps(E) || Yt(E))
       a || (y && xs(E) && (Re(E) ? E.value = y[A] : yt(E, y[A])), i.state.value[e][A] = E);
     else if (typeof E == "function") {
       const U = v(A, E);
-      q[A] = U, r.actions[A] = E;
+      V[A] = U, r.actions[A] = E;
     }
   }
-  return se(I, q), se(Ts(I), q), Object.defineProperty(I, "$state", {
+  return se(I, V), se(Ts(I), V), Object.defineProperty(I, "$state", {
     get: () => i.state.value[e],
     set: (A) => {
       D((E) => {
@@ -271,6 +271,9 @@ const js = {
         header: {
           labelUser: "You",
           labelBot: "Bot"
+        },
+        footnotes: {
+          sources: "Sources :"
         }
       }
     },
@@ -304,12 +307,12 @@ const js = {
   }
 };
 ht(X, "instance");
-let W = X;
+let q = X;
 const Us = "main", Bt = "main_storage", zs = () => ({
   userId: Ms(),
   messages: []
 }), ae = Bs(Us, () => {
-  const e = Jt(is), t = W.getInstance().options, s = M(i());
+  const e = Jt(is), t = q.getInstance().options, s = M(i());
   function i() {
     if (t.localStorage.enabled) {
       const h = n();
@@ -421,7 +424,7 @@ const Us = "main", Bt = "main_storage", zs = () => ({
 }), $s = ["src"], qs = ["maxlength", "placeholder"], Vs = ["disabled"], Ws = ["src"], Fs = /* @__PURE__ */ F({
   __name: "question-block",
   setup(e) {
-    const t = W.getInstance().options, s = ae(), i = t.preferences.questionBar.maxUserInputLength, n = M(null), a = M("");
+    const t = q.getInstance().options, s = ae(), i = t.preferences.questionBar.maxUserInputLength, n = M(null), a = M("");
     function o() {
       n != null && n.value && n.value.focus();
     }
@@ -1090,10 +1093,10 @@ function on(e) {
   m(N, t.tld, v), m(N, t.utld, v), m(v, t.domain, r), m(v, n, o), c(v, K, N), c(v, Q, S), c(v, ne, b);
   const x = c(v, ie), I = $(Ne);
   m(x, t.numeric, I);
-  const _ = $(Ne), q = $();
-  m(_, s, _), m(_, i, q), m(q, s, _), m(q, i, q), c(v, G, _), c(I, G, _);
-  const A = c(l, ie), E = c(f, ie), U = c(E, G), V = c(U, G);
-  m(l, t.domain, r), c(l, K, N), c(l, Q, S), m(f, t.domain, r), c(f, K, N), c(f, Q, S), m(A, t.domain, _), c(A, G, _), m(V, t.domain, _), m(V, s, _), c(V, G, _);
+  const _ = $(Ne), V = $();
+  m(_, s, _), m(_, i, V), m(V, s, _), m(V, i, V), c(v, G, _), c(I, G, _);
+  const A = c(l, ie), E = c(f, ie), U = c(E, G), W = c(U, G);
+  m(l, t.domain, r), c(l, K, N), c(l, Q, S), m(f, t.domain, r), c(f, K, N), c(f, Q, S), m(A, t.domain, _), c(A, G, _), m(W, t.domain, _), m(W, s, _), c(W, G, _);
   const ee = [
     [Te, ve],
     // {}
@@ -1114,7 +1117,7 @@ function on(e) {
   ];
   for (let me = 0; me < ee.length; me++) {
     const [Ae, J] = ee[me], L = c(_, Ae);
-    c(q, Ae, L), c(L, J, _);
+    c(V, Ae, L), c(L, J, _);
     const re = $(Ne);
     m(L, s, re);
     const be = $();
@@ -1948,10 +1951,10 @@ const Ln = /* @__PURE__ */ F({
     }
   },
   setup(e) {
-    const t = e;
-    return (s, i) => (p(), T("div", wn, [
-      he(" Sources : "),
-      (p(!0), T(ge, null, ct(t.footnotes, (n) => (p(), Z(On, { footnote: n }, null, 8, ["footnote"]))), 256))
+    const t = q.getInstance().options, s = e;
+    return (i, n) => (p(), T("div", wn, [
+      he(H(u(t).wording.messages.message.footnotes.sources) + " ", 1),
+      (p(!0), T(ge, null, ct(s.footnotes, (a) => (p(), Z(On, { footnote: a }, null, 8, ["footnote"]))), 256))
     ]));
   }
 }), Pn = ["innerHTML"], Hn = /* @__PURE__ */ F({
@@ -1962,7 +1965,7 @@ const Ln = /* @__PURE__ */ F({
     }
   },
   setup(e) {
-    W.getInstance().options;
+    q.getInstance().options;
     const t = e;
     function s() {
       return An(t.message.text, { target: "_blank" });
@@ -1996,7 +1999,7 @@ const Ln = /* @__PURE__ */ F({
   setup(e) {
     var a, o, r;
     const t = ae();
-    W.getInstance().options;
+    q.getInstance().options;
     const s = e, i = ((o = (a = s.card) == null ? void 0 : a.file) == null ? void 0 : o.description) ?? ((r = s.card) == null ? void 0 : r.title);
     function n(l) {
       s.card.file._loaded || (s.card.file._loaded = !0, t.scrollMessages());
@@ -2129,7 +2132,7 @@ const Ln = /* @__PURE__ */ F({
   __name: "message-image",
   props: { message: Object },
   setup(e) {
-    return W.getInstance().options, (t, s) => "Image type not yet implemented";
+    return q.getInstance().options, (t, s) => "Image type not yet implemented";
   }
 }), Vn = {
   key: 0,
@@ -2157,7 +2160,7 @@ const Ln = /* @__PURE__ */ F({
     }
   },
   setup(e) {
-    const t = W.getInstance().options, s = e;
+    const t = q.getInstance().options, s = e;
     return (i, n) => (p(), T("div", {
       class: fe(["tvk-message", {
         "tvk-message-user": s.message.author === u(R).user,
@@ -2260,7 +2263,7 @@ const Ln = /* @__PURE__ */ F({
 });
 function ai() {
   var t, s;
-  const e = W.getInstance().options;
+  const e = q.getInstance().options;
   if ((t = e == null ? void 0 : e.initialization) != null && t.welcomeMessage || (s = e == null ? void 0 : e.initialization) != null && s.openingMessage) {
     const i = ae(), n = i.getStoredState();
     (!n || !n.messages.length) && (e.initialization.welcomeMessage && i.addMessage({
@@ -2273,7 +2276,7 @@ function ai() {
 }
 function ci(e, t, s) {
   const i = _s(ii);
-  i.provide(is, t), W.clearInstance(), W.getInstance(s);
+  i.provide(is, t), q.clearInstance(), q.getInstance(s);
   const n = Rs();
   return i.use(n), i.mount(e), ai(), i;
 }

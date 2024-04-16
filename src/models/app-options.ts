@@ -100,6 +100,9 @@ export interface wording {
         labelUser: string;
         labelBot: string;
       };
+      footnotes: {
+        sources: string;
+      };
     };
   };
   questionBar: {

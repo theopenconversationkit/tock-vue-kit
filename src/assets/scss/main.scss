@@ -178,11 +178,13 @@
 
           .tvk-message-footnotes {
             display: var(--tvk-message-footnotes-display);
+            flex-direction: var(--tvk-message-footnotes-flex-direction);
             flex-wrap: var(--tvk-message-footnotes-flex-wrap);
             gap: var(--tvk-message-footnotes-gap);
             align-items: var(--tvk-message-footnotes-align-items);
             margin: var(--tvk-message-footnotes-margin);
             font-size: var(--tvk-message-footnotes-font-size);
+
             .tvk-message-footnote {
               padding: var(--tvk-message-footnote-padding);
               background-color: var(--tvk-message-footnote-background-color);

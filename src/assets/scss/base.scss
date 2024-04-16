@@ -107,6 +107,7 @@
 
   // Message footnotes
   --tvk-message-footnotes-display: flex;
+  --tvk-message-footnotes-flex-direction: row;
   --tvk-message-footnotes-flex-wrap: wrap;
   --tvk-message-footnotes-gap: var(--tvk-base-spacing);
   --tvk-message-footnotes-align-items: center;

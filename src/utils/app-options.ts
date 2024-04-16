@@ -41,6 +41,9 @@ const defaultAppOptions: appOptions = {
           labelUser: "You",
           labelBot: "Bot",
         },
+        footnotes: {
+          sources: "Sources :",
+        },
       },
     },
     questionBar: {
