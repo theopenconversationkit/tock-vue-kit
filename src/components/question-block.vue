@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useMainStore } from '../stores/main-state';
-import appOptionsSingleton from '../utils/app-options';
+import { ref } from "vue";
+import { useMainStore } from "../stores/main-state";
+import appOptionsSingleton from "../utils/app-options";
 
 const appOptions = appOptionsSingleton.getInstance().options;
 
@@ -11,7 +11,7 @@ const maxChars = appOptions.preferences.questionBar.maxUserInputLength;
 
 const input = ref<HTMLInputElement | null>(null);
 
-const typedChars = ref<string>('');
+const typedChars = ref<string>("");
 
 function handleClick() {
   if (input?.value) input.value.focus();
@@ -28,7 +28,9 @@ function userInputExceedLenth() {
 function onSubmit() {
   if (nbTypedChars() && !userInputExceedLenth()) {
     mainStore.sendUserMessage(typedChars.value);
-    typedChars.value = '';
+    if (appOptions.preferences.questionBar.clearTypedCharsOnSubmit) {
+      typedChars.value = "";
+    }
   }
 }
 
@@ -38,10 +40,7 @@ function onClearHistory() {
 </script>
 
 <template>
-  <div
-    class="tvk-question-bar"
-    @click="handleClick"
-  >
+  <div class="tvk-question-bar" @click="handleClick">
     <button
       v-if="appOptions.preferences.questionBar.clearHistory?.display"
       class="tvk-btn tvk-question-bar-clear-history"
@@ -49,7 +48,10 @@ function onClearHistory() {
     >
       {{ appOptions.wording.questionBar.clearHistory.labelBefore }}
       <i
-        v-if="!appOptions.preferences.questionBar.clearHistory.image && appOptions.preferences.questionBar.clearHistory.icon"
+        v-if="
+          !appOptions.preferences.questionBar.clearHistory.image &&
+          appOptions.preferences.questionBar.clearHistory.icon
+        "
         :class="appOptions.preferences.questionBar.clearHistory.icon"
       ></i>
 
@@ -58,16 +60,13 @@ function onClearHistory() {
         :src="appOptions.preferences.questionBar.clearHistory.image.src"
         :style="{
           width: appOptions.preferences.questionBar.clearHistory.image.width,
-          height: appOptions.preferences.questionBar.clearHistory.image.height
+          height: appOptions.preferences.questionBar.clearHistory.image.height,
         }"
       />
       {{ appOptions.wording.questionBar.clearHistory.labelAfter }}
     </button>
 
-    <form
-      @submit.prevent="onSubmit"
-      class="tvk-question-bar-form"
-    >
+    <form @submit.prevent="onSubmit" class="tvk-question-bar-form">
       <input
         ref="input"
         class="tvk-question-bar-input"
@@ -90,7 +89,10 @@ function onClearHistory() {
     >
       {{ appOptions.wording.questionBar.submit.labelBefore }}
       <i
-        v-if="!appOptions.preferences.questionBar.submit.image && appOptions.preferences.questionBar.submit.icon"
+        v-if="
+          !appOptions.preferences.questionBar.submit.image &&
+          appOptions.preferences.questionBar.submit.icon
+        "
         :class="appOptions.preferences.questionBar.submit.icon"
       ></i>
 
@@ -99,7 +101,7 @@ function onClearHistory() {
         :src="appOptions.preferences.questionBar.submit.image.src"
         :style="{
           width: appOptions.preferences.questionBar.submit.image.width,
-          height: appOptions.preferences.questionBar.submit.image.height
+          height: appOptions.preferences.questionBar.submit.image.height,
         }"
       />
       {{ appOptions.wording.questionBar.submit.labelAfter }}

@@ -19,6 +19,7 @@ const props = defineProps({
 
 <template>
   <div
+    v-if="props.message!.author !== MessageAuthor.user || !appOptions.preferences.messages.message.hideUserMessages"
     class="tvk-message"
     :class="{
       'tvk-message-user': props.message!.author === MessageAuthor.user,

@@ -9,7 +9,9 @@ const defaultAppOptions: appOptions = {
   preferences: {
     messages: {
       clearOnNewRequest: false,
+      hideIfNoMessages: true,
       message: {
+        hideUserMessages: false,
         header: {
           display: true,
           avatar: {
@@ -24,6 +26,7 @@ const defaultAppOptions: appOptions = {
       },
     },
     questionBar: {
+      clearTypedCharsOnSubmit: true,
       maxUserInputLength: 500,
       clearHistory: {
         display: true,

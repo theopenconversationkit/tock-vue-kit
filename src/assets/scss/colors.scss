@@ -1,4 +1,4 @@
-html {
+:root {
   /* brand foundation */
   --tvk-brand-hue: 0;
   --tvk-brand-saturation: 0%;
@@ -10,7 +10,9 @@ html {
   --tvk-neutral-light: hsl(var(--tvk-brand-hue) 5% 90%);
   --tvk-neutral-dim-light: hsl(var(--tvk-brand-hue) 5% 70%);
 
-  --tvk-brand-light: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) var(--tvk-brand-lightness));
+  --tvk-brand-light: hsl(
+    var(--tvk-brand-hue) var(--tvk-brand-saturation) var(--tvk-brand-lightness)
+  );
 
   --tvk-surface1-light: var(--tvk-brand-light);
   --tvk-text1-light: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) 100%);
@@ -27,7 +29,10 @@ html {
   --tvk-neutral-dark: hsl(var(--tvk-brand-hue) 5% 20%);
   --tvk-neutral-dim-dark: hsl(var(--tvk-brand-hue) 5% 30%);
 
-  --tvk-brand-dark: hsl(var(--tvk-brand-hue) calc(var(--tvk-brand-saturation) / 2) calc(var(--tvk-brand-lightness) / 1.5));
+  --tvk-brand-dark: hsl(
+    var(--tvk-brand-hue) calc(var(--tvk-brand-saturation) / 2)
+      calc(var(--tvk-brand-lightness) / 1.5)
+  );
 
   --tvk-surface1-dark: var(--tvk-brand-dark);
   --tvk-text1-dark: hsl(var(--tvk-brand-hue) 15% 85%);

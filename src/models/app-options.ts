@@ -29,7 +29,13 @@ export interface preferences {
     /* if true, deletes previous messages when a new user request is sent */
     clearOnNewRequest: boolean;
 
+    /* Hide messages container if there is no messages to display. Default : true */
+    hideIfNoMessages: boolean;
+
     message: {
+      /* if true, user messages are not displayed. Default : false */
+      hideUserMessages: boolean;
+
       header: {
         /* display a header above message */
         display: boolean;
@@ -58,6 +64,9 @@ export interface preferences {
     };
   };
   questionBar: {
+    /* whether or not the question input should be cleared on submit. Default : true */
+    clearTypedCharsOnSubmit: boolean;
+
     /* max length of the user input message string */
     maxUserInputLength: number;
 

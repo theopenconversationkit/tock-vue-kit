@@ -22,11 +22,11 @@
   height: var(--tvk-main-wrapper-height);
   max-height: var(--tvk-main-wrapper-max-height);
 
-  margin: var(--tvk-main-wrapper-margin);
-  padding: var(--tvk-main-wrapper-padding);
-
   flex-direction: var(--tvk-main-wrapper-flex-direction);
   gap: var(--tvk-main-wrapper-gap);
+
+  margin: var(--tvk-main-wrapper-margin);
+  padding: var(--tvk-main-wrapper-padding);
 
   font-family: var(--tvk-font-family);
   font-size: var(--tvk-base-font-size);
@@ -34,10 +34,13 @@
 
   background-color: var(--tvk-app-background-color);
 
+  border: var(--tvk-main-wrapper-border);
+  border-radius: var(--tvk-main-wrapper-border-radius);
+
   // messages
   .tvk-messages {
     padding: var(--tvk-messages-padding);
-    overflow-y: auto;
+    overflow: var(--tvk-messages-overflow);
     flex-grow: 1;
 
     // message
@@ -138,6 +141,10 @@
           border-bottom-right-radius: var(
             --tvk-message-body-user-radius-bottom-right
           );
+
+          border: var(--tvk-message-body-user-border);
+
+          box-shadow: var(--tvk-message-body-user-box-shadow);
         }
       }
 
@@ -167,6 +174,7 @@
           white-space: pre-line;
           color: var(--tvk-text2);
           background-color: var(--tvk-message-body-bot-background-color);
+
           border-top-left-radius: var(--tvk-message-body-bot-radius-top-left);
           border-top-right-radius: var(--tvk-message-body-bot-radius-top-right);
           border-bottom-left-radius: var(
@@ -175,6 +183,10 @@
           border-bottom-right-radius: var(
             --tvk-message-body-bot-radius-bottom-right
           );
+
+          border: var(--tvk-message-body-bot-border);
+
+          box-shadow: var(--tvk-message-body-bot-box-shadow);
 
           .tvk-message-footnotes {
             display: var(--tvk-message-footnotes-display);
@@ -204,6 +216,7 @@
     gap: 0.5em;
     align-items: center;
 
+    margin: var(--tvk-question-bar-margin);
     padding: var(--tvk-question-bar-padding);
 
     border: var(--tvk-question-bar-border);
@@ -213,6 +226,8 @@
     background-color: var(--tvk-question-bar-background-color);
 
     color: var(--tvk-question-bar-color);
+
+    box-shadow: var(--tvk-question-bar-box-shadow);
 
     .tvk-question-bar-clear-history {
     }
@@ -239,6 +254,7 @@
       }
 
       .tvk-question-bar-chars-count {
+        display: var(--tvk-question-bar-chars-count-display);
         font-size: var(--tvk-question-bar-chars-count-font-size);
         color: var(--tvk-text-muted);
       }
