@@ -1,22 +1,22 @@
 :root {
-  --tvk-btn-radius: var(--tvk-radius);
-  --tvk-btn-rounded-radius: 50%;
-  --tvk-btn-base-font-size: var(--tvk-base-font-size);
-  --tvk-btn-padding: 0.1rem;
+  --tvk_button_radius: var(--tvk_base_radius);
+  --tvk_button_rounded-radius: 50%;
+  --tvk_button_base-font-size: var(--tvk_base_font-size);
+  --tvk_button_padding: 0.1rem;
 }
 
 .tvk-btn {
   cursor: pointer;
   touch-action: manipulation;
 
-  padding: var(--tvk-btn-padding);
+  padding: var(--tvk_button_padding);
 
-  font-size: var(--tvk-btn-base-font-size);
+  font-size: var(--tvk_button_base-font-size);
   background-color: transparent;
-  color: var(--tvk-text2);
+  color: var(--tvk_colors_text2);
 
   border: none;
-  border-radius: var(--tvk-btn-radius);
+  border-radius: var(--tvk_button_radius);
 
   display: inline-flex;
   justify-content: center;
@@ -31,8 +31,8 @@
   -webkit-touch-callout: none;
 
   &:hover:not([disabled]) {
-    background-color: var(--tvk-neutral);
-    box-shadow: 0px 0px 0px 5px var(--tvk-neutral);
+    background-color: var(--tvk_colors_neutral);
+    box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
   }
 
   &[disabled] {
@@ -42,40 +42,45 @@
 }
 
 :root {
-  --tvk-btn-action-background-color: var(--tvk-surface1);
-  --tvk-btn-action-color: var(--tvk-text1);
-  --tvk-btn-action-padding: var(--tvk-base-spacing) calc(var(--tvk-base-spacing) * 2);
-  --tvk-btn-action-margin: var(--tvk-base-spacing) var(--tvk-base-spacing) 0 0;
+  --tvk_button_action-background-color: var(--tvk_colors_surface1);
+  --tvk_button_action-color: var(--tvk_colors_text1);
+  --tvk_button_action-padding: var(--tvk_base_spacing)
+    calc(var(--tvk_base_spacing) * 2);
+  --tvk_button_action-margin: var(--tvk_base_spacing) var(--tvk_base_spacing) 0
+    0;
 }
 
 .tvk-btn-action {
-  background-color: var(--tvk-btn-action-background-color);
-  color: var(--tvk-btn-action-color);
-  padding: var(--tvk-btn-action-padding);
-  margin: var(--tvk-btn-action-margin);
+  background-color: var(--tvk_button_action-background-color);
+  color: var(--tvk_button_action-color);
+  padding: var(--tvk_button_action-padding);
+  margin: var(--tvk_button_action-margin);
 
   &:hover:not([disabled]) {
-    background-color: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) var(--tvk-brand-lightness) / 0.7);
-    box-shadow: 0px 0px 0px 5px var(--tvk-neutral);
+    background-color: hsl(
+      var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
+        var(--tvk_colors_brand-lightness) / 0.7
+    );
+    box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
   }
 }
 
 :root {
-  --tvk-question-bar-btn-submit-background-color: var(--tvk-brand);
-  --tvk-question-bar-btn-submit-color: var(--tvk-text1);
-  --tvk-question-bar-btn-submit-border: 0 none var(--tvk-brand);
-  --tvk-question-bar-btn-submit-border-radius: 5em;
-  --tvk-question-bar-btn-padding: 0.5em;
+  --tvk_question_btn-submit-background-color: var(--tvk_colors_brand);
+  --tvk_question_btn-submit-color: var(--tvk_colors_text1);
+  --tvk_question_btn-submit-border: 0 none var(--tvk_colors_brand);
+  --tvk_question_btn-submit-border-radius: 5em;
+  --tvk_question_btn-padding: 0.5em;
 }
 
 .tvk-question-bar-btn-submit {
-  background-color: var(--tvk-question-bar-btn-submit-background-color);
-  color: var(--tvk-question-bar-btn-submit-color);
-  border: var(--tvk-question-bar-btn-submit-border);
-  border-radius: var(--tvk-question-bar-btn-submit-border-radius);
-  padding: var(--tvk-question-bar-btn-padding);
+  background-color: var(--tvk_question_btn-submit-background-color);
+  color: var(--tvk_question_btn-submit-color);
+  border: var(--tvk_question_btn-submit-border);
+  border-radius: var(--tvk_question_btn-submit-border-radius);
+  padding: var(--tvk_question_btn-padding);
 
   &[disabled] {
-    background-color: var(--tvk-neutral);
+    background-color: var(--tvk_colors_neutral);
   }
 }

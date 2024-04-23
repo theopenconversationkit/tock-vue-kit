@@ -8,7 +8,7 @@ const mainStore = useMainStore();
 </script>
 
 <template>
-  <main class="tvk-main-wrapper">
+  <main class="tvk-wrapper">
     <messages
       v-if="
         mainStore.getMessages.length ||

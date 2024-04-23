@@ -1,7 +1,7 @@
 var gs = Object.defineProperty;
 var ps = (e, t, s) => t in e ? gs(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
 var ht = (e, t, s) => (ps(e, typeof t != "symbol" ? t + "" : t, s), s);
-import { effectScope as Qt, ref as B, markRaw as Gt, hasInjectionContext as ms, inject as Jt, watch as bs, reactive as ys, isRef as Oe, isReactive as Yt, toRaw as Ts, getCurrentScope as vs, onScopeDispose as ks, nextTick as Es, toRefs as Ss, computed as Xt, defineComponent as F, openBlock as p, createElementBlock as T, unref as l, createTextVNode as he, toDisplayString as H, normalizeClass as fe, createCommentVNode as A, normalizeStyle as de, createElementVNode as M, withModifiers as As, withDirectives as Cs, vModelText as Ds, Fragment as ge, renderList as ct, createBlock as Z, withCtx as Is, createVNode as Zt, onMounted as Ns, createApp as _s } from "vue";
+import { effectScope as Qt, ref as B, markRaw as Gt, hasInjectionContext as ms, inject as Jt, watch as bs, reactive as ys, isRef as Oe, isReactive as Yt, toRaw as Ts, getCurrentScope as vs, onScopeDispose as ks, nextTick as Es, toRefs as Ss, computed as Xt, defineComponent as F, openBlock as p, createElementBlock as T, unref as l, createTextVNode as he, toDisplayString as H, normalizeClass as be, createCommentVNode as A, normalizeStyle as fe, createElementVNode as M, withModifiers as As, withDirectives as Cs, vModelText as Ds, Fragment as de, renderList as ct, createBlock as Z, withCtx as Is, createVNode as Zt, onMounted as Ns, createApp as _s } from "vue";
 var Ls = !1;
 /*!
  * pinia v2.1.7
@@ -134,7 +134,7 @@ function ns(e, t, s = {}, i, n, a) {
     return function() {
       lt(i);
       const z = Array.from(arguments), W = [], ee = [];
-      function me(O) {
+      function pe(O) {
         W.push(O);
       }
       function Ae(O) {
@@ -144,7 +144,7 @@ function ns(e, t, s = {}, i, n, a) {
         args: z,
         name: C,
         store: I,
-        after: me,
+        after: pe,
         onError: Ae
       });
       let J;
@@ -424,7 +424,7 @@ const Us = "main", Mt = "main_storage", zs = () => ({
     clearLoaderMessages: r,
     scrollMessages: u
   };
-}), $s = ["src"], qs = ["maxlength", "placeholder"], Vs = ["disabled"], Ws = ["src"], Fs = /* @__PURE__ */ F({
+}), $s = ["src"], qs = ["maxlength", "placeholder"], Vs = { class: "tvk-question-bar-chars-count" }, Ws = ["disabled"], Fs = ["src"], Ks = /* @__PURE__ */ F({
   __name: "question-block",
   setup(e) {
     const t = U.getInstance().options, s = ae(), i = t.preferences.questionBar.maxUserInputLength, n = B(null), a = B("");
@@ -457,12 +457,12 @@ const Us = "main", Mt = "main_storage", zs = () => ({
           he(H(l(t).wording.questionBar.clearHistory.labelBefore) + " ", 1),
           !l(t).preferences.questionBar.clearHistory.image && l(t).preferences.questionBar.clearHistory.icon ? (p(), T("i", {
             key: 0,
-            class: fe(l(t).preferences.questionBar.clearHistory.icon)
+            class: be(l(t).preferences.questionBar.clearHistory.icon)
           }, null, 2)) : A("", !0),
           l(t).preferences.questionBar.clearHistory.image ? (p(), T("img", {
             key: 1,
             src: l(t).preferences.questionBar.clearHistory.image.src,
-            style: de({
+            style: fe({
               width: l(t).preferences.questionBar.clearHistory.image.width,
               height: l(t).preferences.questionBar.clearHistory.image.height
             })
@@ -483,9 +483,7 @@ const Us = "main", Mt = "main_storage", zs = () => ({
           }, null, 8, qs), [
             [Ds, a.value]
           ]),
-          M("div", {
-            class: fe(["tvk-question-bar-chars-count", { "tvk-text-danger": u() }])
-          }, H(r()) + "/" + H(l(i)), 3)
+          M("div", Vs, H(r()) + "/" + H(l(i)), 1)
         ], 32),
         M("button", {
           onClick: f,
@@ -495,37 +493,37 @@ const Us = "main", Mt = "main_storage", zs = () => ({
           he(H(l(t).wording.questionBar.submit.labelBefore) + " ", 1),
           !l(t).preferences.questionBar.submit.image && l(t).preferences.questionBar.submit.icon ? (p(), T("i", {
             key: 0,
-            class: fe(l(t).preferences.questionBar.submit.icon)
+            class: be(l(t).preferences.questionBar.submit.icon)
           }, null, 2)) : A("", !0),
           l(t).preferences.questionBar.submit.image ? (p(), T("img", {
             key: 1,
             src: l(t).preferences.questionBar.submit.image.src,
-            style: de({
+            style: fe({
               width: l(t).preferences.questionBar.submit.image.width,
               height: l(t).preferences.questionBar.submit.image.height
             })
-          }, null, 12, Ws)) : A("", !0),
+          }, null, 12, Fs)) : A("", !0),
           he(" " + H(l(t).wording.questionBar.submit.labelAfter), 1)
-        ], 8, Vs)
+        ], 8, Ws)
       ]);
     };
   }
-}), Ks = "aaa1rp3bb0ott3vie4c1le2ogado5udhabi7c0ademy5centure6ountant0s9o1tor4d0s1ult4e0g1ro2tna4f0l1rica5g0akhan5ency5i0g1rbus3force5tel5kdn3l0ibaba4pay4lfinanz6state5y2sace3tom5m0azon4ericanexpress7family11x2fam3ica3sterdam8nalytics7droid5quan4z2o0l2partments8p0le4q0uarelle8r0ab1mco4chi3my2pa2t0e3s0da2ia2sociates9t0hleta5torney7u0ction5di0ble3o3spost5thor3o0s4vianca6w0s2x0a2z0ure5ba0by2idu3namex3narepublic11d1k2r0celona5laycard4s5efoot5gains6seball5ketball8uhaus5yern5b0c1t1va3cg1n2d1e0ats2uty4er2ntley5rlin4st0buy5t2f1g1h0arti5i0ble3d1ke2ng0o3o1z2j1lack0friday9ockbuster8g1omberg7ue3m0s1w2n0pparibas9o0ats3ehringer8fa2m1nd2o0k0ing5sch2tik2on4t1utique6x2r0adesco6idgestone9oadway5ker3ther5ussels7s1t1uild0ers6siness6y1zz3v1w1y1z0h3ca0b1fe2l0l1vinklein9m0era3p2non3petown5ital0one8r0avan4ds2e0er0s4s2sa1e1h1ino4t0ering5holic7ba1n1re3c1d1enter4o1rn3f0a1d2g1h0anel2nel4rity4se2t2eap3intai5ristmas6ome4urch5i0priani6rcle4sco3tadel4i0c2y3k1l0aims4eaning6ick2nic1que6othing5ud3ub0med6m1n1o0ach3des3ffee4llege4ogne5m0cast4mbank4unity6pany2re3uter5sec4ndos3struction8ulting7tact3ractors9oking4l1p2rsica5untry4pon0s4rses6pa2r0edit0card4union9icket5own3s1uise0s6u0isinella9v1w1x1y0mru3ou3z2dabur3d1nce3ta1e1ing3sun4y2clk3ds2e0al0er2s3gree4livery5l1oitte5ta3mocrat6ntal2ist5si0gn4v2hl2iamonds6et2gital5rect0ory7scount3ver5h2y2j1k1m1np2o0cs1tor4g1mains5t1wnload7rive4tv2ubai3nlop4pont4rban5vag2r2z2earth3t2c0o2deka3u0cation8e1g1mail3erck5nergy4gineer0ing9terprises10pson4quipment8r0icsson6ni3s0q1tate5t1u0rovision8s2vents5xchange6pert3osed4ress5traspace10fage2il1rwinds6th3mily4n0s2rm0ers5shion4t3edex3edback6rrari3ero6i0delity5o2lm2nal1nce1ial7re0stone6mdale6sh0ing5t0ness6j1k1lickr3ghts4r2orist4wers5y2m1o0o0d1tball6rd1ex2sale4um3undation8x2r0ee1senius7l1ogans4ntier7tr2ujitsu5n0d2rniture7tbol5yi3ga0l0lery3o1up4me0s3p1rden4y2b0iz3d0n2e0a1nt0ing5orge5f1g0ee3h1i0ft0s3ves2ing5l0ass3e1obal2o4m0ail3bh2o1x2n1odaddy5ld0point6f2o0dyear5g0le4p1t1v2p1q1r0ainger5phics5tis4een3ipe3ocery4up4s1t1u0ardian6cci3ge2ide2tars5ru3w1y2hair2mburg5ngout5us3bo2dfc0bank7ealth0care8lp1sinki6re1mes5iphop4samitsu7tachi5v2k0t2m1n1ockey4ldings5iday5medepot5goods5s0ense7nda3rse3spital5t0ing5t0els3mail5use3w2r1sbc3t1u0ghes5yatt3undai7ibm2cbc2e1u2d1e0ee3fm2kano4l1m0amat4db2mo0bilien9n0c1dustries8finiti5o2g1k1stitute6urance4e4t0ernational10uit4vestments10o1piranga7q1r0ish4s0maili5t0anbul7t0au2v3jaguar4va3cb2e0ep2tzt3welry6io2ll2m0p2nj2o0bs1urg4t1y2p0morgan6rs3uegos4niper7kaufen5ddi3e0rryhotels6logistics9properties14fh2g1h1i0a1ds2m1ndle4tchen5wi3m1n1oeln3matsu5sher5p0mg2n2r0d1ed3uokgroup8w1y0oto4z2la0caixa5mborghini8er3ncaster6d0rover6xess5salle5t0ino3robe5w0yer5b1c1ds2ease3clerc5frak4gal2o2xus4gbt3i0dl2fe0insurance9style7ghting6ke2lly3mited4o2ncoln4k2psy3ve1ing5k1lc1p2oan0s3cker3us3l1ndon4tte1o3ve3pl0financial11r1s1t0d0a3u0ndbeck6xe1ury5v1y2ma0drid4if1son4keup4n0agement7go3p1rket0ing3s4riott5shalls7ttel5ba2c0kinsey7d1e0d0ia3et2lbourne7me1orial6n0u2rckmsd7g1h1iami3crosoft7l1ni1t2t0subishi9k1l0b1s2m0a2n1o0bi0le4da2e1i1m1nash3ey2ster5rmon3tgage6scow4to0rcycles9v0ie4p1q1r1s0d2t0n1r2u0seum3ic4v1w1x1y1z2na0b1goya4me2tura4vy3ba2c1e0c1t0bank4flix4work5ustar5w0s2xt0direct7us4f0l2g0o2hk2i0co2ke1on3nja3ssan1y5l1o0kia3rton4w0ruz3tv4p1r0a1w2tt2u1yc2z2obi1server7ffice5kinawa6layan0group9dnavy5lo3m0ega4ne1g1l0ine5oo2pen3racle3nge4g0anic5igins6saka4tsuka4t2vh3pa0ge2nasonic7ris2s1tners4s1y3y2ccw3e0t2f0izer5g1h0armacy6d1ilips5one2to0graphy6s4ysio5ics1tet2ures6d1n0g1k2oneer5zza4k1l0ace2y0station9umbing5s3m1n0c2ohl2ker3litie5rn2st3r0america6xi3ess3ime3o0d0uctions8f1gressive8mo2perties3y5tection8u0dential9s1t1ub2w0c2y2qa1pon3uebec3st5racing4dio4e0ad1lestate6tor2y4cipes5d0stone5umbrella9hab3ise0n3t2liance6n0t0als5pair3ort3ublican8st0aurant8view0s5xroth6ich0ardli6oh3l1o1p2o0cks3deo3gers4om3s0vp3u0gby3hr2n2w0e2yukyu6sa0arland6fe0ty4kura4le1on3msclub4ung5ndvik0coromant12ofi4p1rl2s1ve2xo3b0i1s2c0a1b1haeffler7midt4olarships8ol3ule3warz5ience5ot3d1e0arch3t2cure1ity6ek2lect4ner3rvices6ven3w1x0y3fr2g1h0angrila6rp2w2ell3ia1ksha5oes2p0ping5uji3w3i0lk2na1gles5te3j1k0i0n2y0pe4l0ing4m0art3ile4n0cf3o0ccer3ial4ftbank4ware6hu2lar2utions7ng1y2y2pa0ce3ort2t3r0l2s1t0ada2ples4r1tebank4farm7c0group6ockholm6rage3e3ream4udio2y3yle4u0cks3pplies3y2ort5rf1gery5zuki5v1watch4iss4x1y0dney4stems6z2tab1ipei4lk2obao4rget4tamotors6r2too4x0i3c0i2d0k2eam2ch0nology8l1masek5nnis4va3f1g1h0d1eater2re6iaa2ckets5enda4ps2res2ol4j0maxx4x2k0maxx5l1m0all4n1o0day3kyo3ols3p1ray3shiba5tal3urs3wn2yota3s3r0ade1ing4ining5vel0ers0insurance16ust3v2t1ube2i1nes3shu4v0s2w1z2ua1bank3s2g1k1nicom3versity8o2ol2ps2s1y1z2va0cations7na1guard7c1e0gas3ntures6risign5mögensberater2ung14sicherung10t2g1i0ajes4deo3g1king4llas4n1p1rgin4sa1ion4va1o3laanderen9n1odka3lvo3te1ing3o2yage5u2wales2mart4ter4ng0gou5tch0es6eather0channel12bcam3er2site5d0ding5ibo2r3f1hoswho6ien2ki2lliamhill9n0dows4e1ners6me2olterskluwer11odside6rk0s2ld3w2s1tc1f3xbox3erox4finity6ihuan4n2xx2yz3yachts4hoo3maxun5ndex5e1odobashi7ga2kohama6u0tube6t1un3za0ppos4ra3ero3ip2m1one3uerich6w2", Qs = "ελ1υ2бг1ел3дети4ею2католик6ом3мкд2он1сква6онлайн5рг3рус2ф2сайт3рб3укр3қаз3հայ3ישראל5קום3ابوظبي5رامكو5لاردن4بحرين5جزائر5سعودية6عليان5مغرب5مارات5یران5بارت2زار4يتك3ھارت5تونس4سودان3رية5شبكة4عراق2ب2مان4فلسطين6قطر3كاثوليك6وم3مصر2ليسيا5وريتانيا7قع4همراه5پاکستان7ڀارت4कॉम3नेट3भारत0म्3ोत5संगठन5বাংলা5ভারত2ৰত4ਭਾਰਤ4ભારત4ଭାରତ4இந்தியா6லங்கை6சிங்கப்பூர்11భారత్5ಭಾರತ4ഭാരതം5ලංකා4คอม3ไทย3ລາວ3გე2みんな3アマゾン4クラウド4グーグル4コム2ストア3セール3ファッション6ポイント4世界2中信1国1國1文网3亚马逊3企业2佛山2信息2健康2八卦2公司1益2台湾1灣2商城1店1标2嘉里0大酒店5在线2大拿2天主教3娱乐2家電2广东2微博2慈善2我爱你3手机2招聘2政务1府2新加坡2闻2时尚2書籍2机构2淡马锡3游戏2澳門2点看2移动2组织机构4网址1店1站1络2联通2谷歌2购物2通販2集团2電訊盈科4飞利浦3食品2餐厅2香格里拉3港2닷넷1컴2삼성2한국2", pe = (e, t) => {
+}), Qs = "aaa1rp3bb0ott3vie4c1le2ogado5udhabi7c0ademy5centure6ountant0s9o1tor4d0s1ult4e0g1ro2tna4f0l1rica5g0akhan5ency5i0g1rbus3force5tel5kdn3l0ibaba4pay4lfinanz6state5y2sace3tom5m0azon4ericanexpress7family11x2fam3ica3sterdam8nalytics7droid5quan4z2o0l2partments8p0le4q0uarelle8r0ab1mco4chi3my2pa2t0e3s0da2ia2sociates9t0hleta5torney7u0ction5di0ble3o3spost5thor3o0s4vianca6w0s2x0a2z0ure5ba0by2idu3namex3narepublic11d1k2r0celona5laycard4s5efoot5gains6seball5ketball8uhaus5yern5b0c1t1va3cg1n2d1e0ats2uty4er2ntley5rlin4st0buy5t2f1g1h0arti5i0ble3d1ke2ng0o3o1z2j1lack0friday9ockbuster8g1omberg7ue3m0s1w2n0pparibas9o0ats3ehringer8fa2m1nd2o0k0ing5sch2tik2on4t1utique6x2r0adesco6idgestone9oadway5ker3ther5ussels7s1t1uild0ers6siness6y1zz3v1w1y1z0h3ca0b1fe2l0l1vinklein9m0era3p2non3petown5ital0one8r0avan4ds2e0er0s4s2sa1e1h1ino4t0ering5holic7ba1n1re3c1d1enter4o1rn3f0a1d2g1h0anel2nel4rity4se2t2eap3intai5ristmas6ome4urch5i0priani6rcle4sco3tadel4i0c2y3k1l0aims4eaning6ick2nic1que6othing5ud3ub0med6m1n1o0ach3des3ffee4llege4ogne5m0cast4mbank4unity6pany2re3uter5sec4ndos3struction8ulting7tact3ractors9oking4l1p2rsica5untry4pon0s4rses6pa2r0edit0card4union9icket5own3s1uise0s6u0isinella9v1w1x1y0mru3ou3z2dabur3d1nce3ta1e1ing3sun4y2clk3ds2e0al0er2s3gree4livery5l1oitte5ta3mocrat6ntal2ist5si0gn4v2hl2iamonds6et2gital5rect0ory7scount3ver5h2y2j1k1m1np2o0cs1tor4g1mains5t1wnload7rive4tv2ubai3nlop4pont4rban5vag2r2z2earth3t2c0o2deka3u0cation8e1g1mail3erck5nergy4gineer0ing9terprises10pson4quipment8r0icsson6ni3s0q1tate5t1u0rovision8s2vents5xchange6pert3osed4ress5traspace10fage2il1rwinds6th3mily4n0s2rm0ers5shion4t3edex3edback6rrari3ero6i0delity5o2lm2nal1nce1ial7re0stone6mdale6sh0ing5t0ness6j1k1lickr3ghts4r2orist4wers5y2m1o0o0d1tball6rd1ex2sale4um3undation8x2r0ee1senius7l1ogans4ntier7tr2ujitsu5n0d2rniture7tbol5yi3ga0l0lery3o1up4me0s3p1rden4y2b0iz3d0n2e0a1nt0ing5orge5f1g0ee3h1i0ft0s3ves2ing5l0ass3e1obal2o4m0ail3bh2o1x2n1odaddy5ld0point6f2o0dyear5g0le4p1t1v2p1q1r0ainger5phics5tis4een3ipe3ocery4up4s1t1u0ardian6cci3ge2ide2tars5ru3w1y2hair2mburg5ngout5us3bo2dfc0bank7ealth0care8lp1sinki6re1mes5iphop4samitsu7tachi5v2k0t2m1n1ockey4ldings5iday5medepot5goods5s0ense7nda3rse3spital5t0ing5t0els3mail5use3w2r1sbc3t1u0ghes5yatt3undai7ibm2cbc2e1u2d1e0ee3fm2kano4l1m0amat4db2mo0bilien9n0c1dustries8finiti5o2g1k1stitute6urance4e4t0ernational10uit4vestments10o1piranga7q1r0ish4s0maili5t0anbul7t0au2v3jaguar4va3cb2e0ep2tzt3welry6io2ll2m0p2nj2o0bs1urg4t1y2p0morgan6rs3uegos4niper7kaufen5ddi3e0rryhotels6logistics9properties14fh2g1h1i0a1ds2m1ndle4tchen5wi3m1n1oeln3matsu5sher5p0mg2n2r0d1ed3uokgroup8w1y0oto4z2la0caixa5mborghini8er3ncaster6d0rover6xess5salle5t0ino3robe5w0yer5b1c1ds2ease3clerc5frak4gal2o2xus4gbt3i0dl2fe0insurance9style7ghting6ke2lly3mited4o2ncoln4k2psy3ve1ing5k1lc1p2oan0s3cker3us3l1ndon4tte1o3ve3pl0financial11r1s1t0d0a3u0ndbeck6xe1ury5v1y2ma0drid4if1son4keup4n0agement7go3p1rket0ing3s4riott5shalls7ttel5ba2c0kinsey7d1e0d0ia3et2lbourne7me1orial6n0u2rckmsd7g1h1iami3crosoft7l1ni1t2t0subishi9k1l0b1s2m0a2n1o0bi0le4da2e1i1m1nash3ey2ster5rmon3tgage6scow4to0rcycles9v0ie4p1q1r1s0d2t0n1r2u0seum3ic4v1w1x1y1z2na0b1goya4me2tura4vy3ba2c1e0c1t0bank4flix4work5ustar5w0s2xt0direct7us4f0l2g0o2hk2i0co2ke1on3nja3ssan1y5l1o0kia3rton4w0ruz3tv4p1r0a1w2tt2u1yc2z2obi1server7ffice5kinawa6layan0group9dnavy5lo3m0ega4ne1g1l0ine5oo2pen3racle3nge4g0anic5igins6saka4tsuka4t2vh3pa0ge2nasonic7ris2s1tners4s1y3y2ccw3e0t2f0izer5g1h0armacy6d1ilips5one2to0graphy6s4ysio5ics1tet2ures6d1n0g1k2oneer5zza4k1l0ace2y0station9umbing5s3m1n0c2ohl2ker3litie5rn2st3r0america6xi3ess3ime3o0d0uctions8f1gressive8mo2perties3y5tection8u0dential9s1t1ub2w0c2y2qa1pon3uebec3st5racing4dio4e0ad1lestate6tor2y4cipes5d0stone5umbrella9hab3ise0n3t2liance6n0t0als5pair3ort3ublican8st0aurant8view0s5xroth6ich0ardli6oh3l1o1p2o0cks3deo3gers4om3s0vp3u0gby3hr2n2w0e2yukyu6sa0arland6fe0ty4kura4le1on3msclub4ung5ndvik0coromant12ofi4p1rl2s1ve2xo3b0i1s2c0a1b1haeffler7midt4olarships8ol3ule3warz5ience5ot3d1e0arch3t2cure1ity6ek2lect4ner3rvices6ven3w1x0y3fr2g1h0angrila6rp2w2ell3ia1ksha5oes2p0ping5uji3w3i0lk2na1gles5te3j1k0i0n2y0pe4l0ing4m0art3ile4n0cf3o0ccer3ial4ftbank4ware6hu2lar2utions7ng1y2y2pa0ce3ort2t3r0l2s1t0ada2ples4r1tebank4farm7c0group6ockholm6rage3e3ream4udio2y3yle4u0cks3pplies3y2ort5rf1gery5zuki5v1watch4iss4x1y0dney4stems6z2tab1ipei4lk2obao4rget4tamotors6r2too4x0i3c0i2d0k2eam2ch0nology8l1masek5nnis4va3f1g1h0d1eater2re6iaa2ckets5enda4ps2res2ol4j0maxx4x2k0maxx5l1m0all4n1o0day3kyo3ols3p1ray3shiba5tal3urs3wn2yota3s3r0ade1ing4ining5vel0ers0insurance16ust3v2t1ube2i1nes3shu4v0s2w1z2ua1bank3s2g1k1nicom3versity8o2ol2ps2s1y1z2va0cations7na1guard7c1e0gas3ntures6risign5mögensberater2ung14sicherung10t2g1i0ajes4deo3g1king4llas4n1p1rgin4sa1ion4va1o3laanderen9n1odka3lvo3te1ing3o2yage5u2wales2mart4ter4ng0gou5tch0es6eather0channel12bcam3er2site5d0ding5ibo2r3f1hoswho6ien2ki2lliamhill9n0dows4e1ners6me2olterskluwer11odside6rk0s2ld3w2s1tc1f3xbox3erox4finity6ihuan4n2xx2yz3yachts4hoo3maxun5ndex5e1odobashi7ga2kohama6u0tube6t1un3za0ppos4ra3ero3ip2m1one3uerich6w2", Gs = "ελ1υ2бг1ел3дети4ею2католик6ом3мкд2он1сква6онлайн5рг3рус2ф2сайт3рб3укр3қаз3հայ3ישראל5קום3ابوظبي5رامكو5لاردن4بحرين5جزائر5سعودية6عليان5مغرب5مارات5یران5بارت2زار4يتك3ھارت5تونس4سودان3رية5شبكة4عراق2ب2مان4فلسطين6قطر3كاثوليك6وم3مصر2ليسيا5وريتانيا7قع4همراه5پاکستان7ڀارت4कॉम3नेट3भारत0म्3ोत5संगठन5বাংলা5ভারত2ৰত4ਭਾਰਤ4ભારત4ଭାରତ4இந்தியா6லங்கை6சிங்கப்பூர்11భారత్5ಭಾರತ4ഭാരതം5ලංකා4คอม3ไทย3ລາວ3გე2みんな3アマゾン4クラウド4グーグル4コム2ストア3セール3ファッション6ポイント4世界2中信1国1國1文网3亚马逊3企业2佛山2信息2健康2八卦2公司1益2台湾1灣2商城1店1标2嘉里0大酒店5在线2大拿2天主教3娱乐2家電2广东2微博2慈善2我爱你3手机2招聘2政务1府2新加坡2闻2时尚2書籍2机构2淡马锡3游戏2澳門2点看2移动2组织机构4网址1店1站1络2联通2谷歌2购物2通販2集团2電訊盈科4飞利浦3食品2餐厅2香格里拉3港2닷넷1컴2삼성2한국2", ge = (e, t) => {
   for (const s in t)
     e[s] = t[s];
   return e;
-}, vt = "numeric", kt = "ascii", Et = "alpha", _e = "asciinumeric", Ce = "alphanumeric", St = "domain", as = "emoji", Gs = "scheme", Js = "slashscheme", Bt = "whitespace";
-function Ys(e, t) {
+}, vt = "numeric", kt = "ascii", Et = "alpha", _e = "asciinumeric", Ce = "alphanumeric", St = "domain", as = "emoji", Js = "scheme", Ys = "slashscheme", Bt = "whitespace";
+function Xs(e, t) {
   return e in t || (t[e] = []), t[e];
 }
 function oe(e, t, s) {
   t[vt] && (t[_e] = !0, t[Ce] = !0), t[kt] && (t[_e] = !0, t[Et] = !0), t[_e] && (t[Ce] = !0), t[Et] && (t[Ce] = !0), t[Ce] && (t[St] = !0), t[as] && (t[St] = !0);
   for (const i in t) {
-    const n = Ys(i, s);
+    const n = Xs(i, s);
     n.indexOf(e) < 0 && n.push(e);
   }
 }
-function Xs(e, t) {
+function Zs(e, t) {
   const s = {};
   for (const i in t)
     t[i].indexOf(e) >= 0 && (s[i] = !0);
@@ -644,10 +642,10 @@ j.prototype = {
       return n.j[e] = t, t;
     const a = t;
     let o, r = n.go(e);
-    if (r ? (o = new j(), pe(o.j, r.j), o.jr.push.apply(o.jr, r.jr), o.jd = r.jd, o.t = r.t) : o = new j(), a) {
+    if (r ? (o = new j(), ge(o.j, r.j), o.jr.push.apply(o.jr, r.jr), o.jd = r.jd, o.t = r.t) : o = new j(), a) {
       if (i)
         if (o.t && typeof o.t == "string") {
-          const u = pe(Xs(o.t, i), s);
+          const u = ge(Zs(o.t, i), s);
           oe(a, u, i);
         } else
           s && oe(a, s, i);
@@ -713,14 +711,14 @@ var cs = /* @__PURE__ */ Object.freeze({
   SYM: ot
 });
 const le = /[a-z]/, dt = new RegExp("\\p{L}", "u"), gt = new RegExp("\\p{Emoji}", "u"), pt = /\d/, Ut = /\s/, zt = `
-`, Zs = "️", en = "‍";
+`, en = "️", tn = "‍";
 let De = null, Ie = null;
-function tn(e) {
+function sn(e) {
   e === void 0 && (e = []);
   const t = {};
   j.groups = t;
   const s = new j();
-  De == null && (De = $t(Ks)), Ie == null && (Ie = $t(Qs)), c(s, "'", Ke), c(s, "{", Te), c(s, "}", ve), c(s, "[", Re), c(s, "]", we), c(s, "(", xe), c(s, ")", Pe), c(s, "<", He), c(s, ">", Me), c(s, "（", Be), c(s, "）", je), c(s, "「", Ue), c(s, "」", ze), c(s, "『", $e), c(s, "』", qe), c(s, "＜", Ve), c(s, "＞", We), c(s, "&", Fe), c(s, "*", Qe), c(s, "@", ne), c(s, "`", Je), c(s, "^", Ye), c(s, ":", ie), c(s, ",", Ot), c(s, "$", Xe), c(s, ".", K), c(s, "=", Ze), c(s, "!", Rt), c(s, "-", Q), c(s, "%", et), c(s, "|", tt), c(s, "+", st), c(s, "#", nt), c(s, "?", it), c(s, '"', wt), c(s, "/", G), c(s, ";", xt), c(s, "~", ke), c(s, "_", at), c(s, "\\", Ge);
+  De == null && (De = $t(Qs)), Ie == null && (Ie = $t(Gs)), c(s, "'", Ke), c(s, "{", Te), c(s, "}", ve), c(s, "[", Re), c(s, "]", we), c(s, "(", xe), c(s, ")", Pe), c(s, "<", He), c(s, ">", Me), c(s, "（", Be), c(s, "）", je), c(s, "「", Ue), c(s, "」", ze), c(s, "『", $e), c(s, "』", qe), c(s, "＜", Ve), c(s, "＞", We), c(s, "&", Fe), c(s, "*", Qe), c(s, "@", ne), c(s, "`", Je), c(s, "^", Ye), c(s, ":", ie), c(s, ",", Ot), c(s, "$", Xe), c(s, ".", K), c(s, "=", Ze), c(s, "!", Rt), c(s, "-", Q), c(s, "%", et), c(s, "|", tt), c(s, "+", st), c(s, "#", nt), c(s, "?", it), c(s, '"', wt), c(s, "/", G), c(s, ";", xt), c(s, "~", ke), c(s, "_", at), c(s, "\\", Ge);
   const i = $(s, pt, _t, {
     [vt]: !0
   });
@@ -742,8 +740,8 @@ function tn(e) {
   const r = $(s, gt, rs, {
     [as]: !0
   });
-  $(r, gt, r), c(r, Zs, r);
-  const u = c(r, en);
+  $(r, gt, r), c(r, en, r);
+  const u = c(r, tn);
   $(u, gt, r);
   const f = [[le, n]], b = [[le, null], [dt, a]];
   for (let g = 0; g < De.length; g++)
@@ -765,9 +763,9 @@ function tn(e) {
   }, t), e = e.sort((g, d) => g[0] > d[0] ? 1 : -1);
   for (let g = 0; g < e.length; g++) {
     const d = e[g][0], y = e[g][1] ? {
-      [Gs]: !0
-    } : {
       [Js]: !0
+    } : {
+      [Ys]: !0
     };
     d.indexOf("-") >= 0 ? y[St] = !0 : le.test(d) ? pt.test(d) ? y[_e] = !0 : y[kt] = !0 : y[vt] = !0, jt(s, d, d, y);
   }
@@ -775,13 +773,13 @@ function tn(e) {
     ascii: !0
   }), s.jd = new j(ot), {
     start: s,
-    tokens: pe({
+    tokens: ge({
       groups: t
     }, cs)
   };
 }
-function sn(e, t) {
-  const s = nn(t.replace(/[A-Z]/g, (r) => r.toLowerCase())), i = s.length, n = [];
+function nn(e, t) {
+  const s = an(t.replace(/[A-Z]/g, (r) => r.toLowerCase())), i = s.length, n = [];
   let a = 0, o = 0;
   for (; o < i; ) {
     let r = e, u = null, f = 0, b = null, g = -1, d = -1;
@@ -800,7 +798,7 @@ function sn(e, t) {
   }
   return n;
 }
-function nn(e) {
+function an(e) {
   const t = [], s = e.length;
   let i = 0;
   for (; i < s; ) {
@@ -853,8 +851,8 @@ const Se = {
 };
 function Pt(e, t) {
   t === void 0 && (t = null);
-  let s = pe({}, Se);
-  e && (s = pe(s, e instanceof Pt ? e.o : e));
+  let s = ge({}, Se);
+  e && (s = ge(s, e instanceof Pt ? e.o : e));
   const i = s.ignoreTags, n = [];
   for (let a = 0; a < i.length; a++)
     n.push(i[a].toUpperCase());
@@ -1024,7 +1022,7 @@ ls.prototype = {
    */
   render(e) {
     const t = this, s = this.toHref(e.get("defaultProtocol")), i = e.get("formatHref", s, this), n = e.get("tagName", s, t), a = this.toFormattedString(e), o = {}, r = e.get("className", s, t), u = e.get("target", s, t), f = e.get("rel", s, t), b = e.getObj("attributes", s, t), g = e.getObj("events", s, t);
-    return o.href = i, r && (o.class = r), u && (o.target = u), f && (o.rel = f), b && pe(o, b), {
+    return o.href = i, r && (o.class = r), u && (o.target = u), f && (o.rel = f), b && ge(o, b), {
       tagName: n,
       attributes: o,
       content: a,
@@ -1047,7 +1045,7 @@ const Vt = ut("email", {
   toHref() {
     return "mailto:" + this.toString();
   }
-}), Wt = ut("text"), an = ut("nl"), Ne = ut("url", {
+}), Wt = ut("text"), on = ut("nl"), Ne = ut("url", {
   isLink: !0,
   /**
   	Lowercases relevant parts of the domain and adds the protocol if
@@ -1068,7 +1066,7 @@ const Vt = ut("email", {
     return e.length >= 2 && e[0].t !== Ee && e[1].t === ie;
   }
 }), q = (e) => new j(e);
-function on(e) {
+function rn(e) {
   let {
     groups: t
   } = e;
@@ -1118,20 +1116,20 @@ function on(e) {
     [Ve, We]
     // ＜＞
   ];
-  for (let me = 0; me < ee.length; me++) {
-    const [Ae, J] = ee[me], O = c(L, Ae);
+  for (let pe = 0; pe < ee.length; pe++) {
+    const [Ae, J] = ee[pe], O = c(L, Ae);
     c(V, Ae, O), c(O, J, L);
     const re = q(Ne);
     m(O, s, re);
-    const be = q();
-    m(O, i), m(re, s, re), m(re, i, be), m(be, s, re), m(be, i, be), c(re, J, L), c(be, J, L);
+    const me = q();
+    m(O, i), m(re, s, re), m(re, i, me), m(me, s, re), m(me, i, me), c(re, J, L), c(me, J, L);
   }
-  return c(a, Ee, v), c(a, Lt, an), {
+  return c(a, Ee, v), c(a, Lt, on), {
     start: a,
     tokens: cs
   };
 }
-function rn(e, t, s) {
+function cn(e, t, s) {
   let i = s.length, n = 0, a = [], o = [];
   for (; n < i; ) {
     let r = e, u = null, f = null, b = 0, g = null, d = -1;
@@ -1161,13 +1159,13 @@ const P = {
   customSchemes: [],
   initialized: !1
 };
-function cn() {
-  P.scanner = tn(P.customSchemes);
+function ln() {
+  P.scanner = sn(P.customSchemes);
   for (let e = 0; e < P.tokenQueue.length; e++)
     P.tokenQueue[e][1]({
       scanner: P.scanner
     });
-  P.parser = on(P.scanner.tokens);
+  P.parser = rn(P.scanner.tokens);
   for (let e = 0; e < P.pluginQueue.length; e++)
     P.pluginQueue[e][1]({
       scanner: P.scanner,
@@ -1175,10 +1173,10 @@ function cn() {
     });
   P.initialized = !0;
 }
-function ln(e) {
-  return P.initialized || cn(), rn(P.parser.start, e, sn(P.scanner.start, e));
+function un(e) {
+  return P.initialized || ln(), cn(P.parser.start, e, nn(P.scanner.start, e));
 }
-var un = {
+var hn = {
   // We don't need the complete named character reference because linkifyHtml
   // does not modify the escape sequences. We do need &nbsp; so that
   // whitespace is parsed properly. Other types of whitespace should already
@@ -1188,7 +1186,7 @@ var un = {
   lt: "<",
   nbsp: " ",
   quot: '"'
-}, hn = /^#[xX]([A-Fa-f0-9]+)$/, fn = /^#([0-9]+)$/, dn = /^([A-Za-z0-9]+)$/, gn = (
+}, fn = /^#[xX]([A-Fa-f0-9]+)$/, dn = /^#([0-9]+)$/, gn = /^([A-Za-z0-9]+)$/, pn = (
   /** @class */
   function() {
     function e(t) {
@@ -1196,28 +1194,28 @@ var un = {
     }
     return e.prototype.parse = function(t) {
       if (t) {
-        var s = t.match(hn);
+        var s = t.match(fn);
         if (s)
           return String.fromCharCode(parseInt(s[1], 16));
-        if (s = t.match(fn), s)
-          return String.fromCharCode(parseInt(s[1], 10));
         if (s = t.match(dn), s)
+          return String.fromCharCode(parseInt(s[1], 10));
+        if (s = t.match(gn), s)
           return this.named[s[1]] || "&" + s[1] + ";";
       }
     }, e;
   }()
-), pn = /[\t\n\f ]/, mn = /[A-Za-z]/, bn = /\r\n?/g;
+), mn = /[\t\n\f ]/, bn = /[A-Za-z]/, yn = /\r\n?/g;
 function R(e) {
-  return pn.test(e);
-}
-function Ft(e) {
   return mn.test(e);
 }
-function yn(e) {
-  return e.replace(bn, `
+function Ft(e) {
+  return bn.test(e);
+}
+function Tn(e) {
+  return e.replace(yn, `
 `);
 }
-var Tn = (
+var vn = (
   /** @class */
   function() {
     function e(t, s, i) {
@@ -1634,7 +1632,7 @@ var Tn = (
     }, e.prototype.tokenize = function(t) {
       this.reset(), this.tokenizePart(t), this.tokenizeEOF();
     }, e.prototype.tokenizePart = function(t) {
-      for (this.input += yn(t); this.index < this.input.length; ) {
+      for (this.input += Tn(t); this.index < this.input.length; ) {
         var s = this.states[this.state];
         if (s !== void 0)
           s.call(this);
@@ -1673,11 +1671,11 @@ var Tn = (
       return t === "title" && this.input.substring(this.index, this.index + 8) !== "</title>" || t === "style" && this.input.substring(this.index, this.index + 8) !== "</style>" || t === "script" && this.input.substring(this.index, this.index + 9) !== "<\/script>";
     }, e;
   }()
-), vn = (
+), kn = (
   /** @class */
   function() {
     function e(t, s) {
-      s === void 0 && (s = {}), this.options = s, this.token = null, this.startLine = 1, this.startColumn = 0, this.tokens = [], this.tokenizer = new Tn(this, t, s.mode), this._currentAttribute = void 0;
+      s === void 0 && (s = {}), this.options = s, this.token = null, this.startLine = 1, this.startColumn = 0, this.tokens = [], this.tokenizer = new vn(this, t, s.mode), this._currentAttribute = void 0;
     }
     return e.prototype.tokenize = function(t) {
       return this.tokens = [], this.tokenizer.tokenize(t), this.tokens;
@@ -1804,14 +1802,14 @@ var Tn = (
     }, e;
   }()
 );
-function kn(e, t) {
-  var s = new vn(new gn(un), t);
+function En(e, t) {
+  var s = new kn(new pn(hn), t);
   return s.tokenize(e);
 }
-const us = "LinkifyResult", rt = "StartTag", hs = "EndTag", It = "Chars", En = "Comment", Sn = "Doctype";
-function An(e, t) {
+const us = "LinkifyResult", rt = "StartTag", hs = "EndTag", It = "Chars", Sn = "Comment", An = "Doctype";
+function Cn(e, t) {
   t === void 0 && (t = {});
-  const s = kn(e), i = [], n = [], a = new Pt(t, In);
+  const s = En(e), i = [], n = [], a = new Pt(t, Nn);
   for (let o = 0; o < s.length; o++) {
     const r = s[o];
     if (r.type === rt) {
@@ -1820,11 +1818,11 @@ function An(e, t) {
       if (!(u === "A" || a.ignoreTags.indexOf(u) >= 0))
         continue;
       let b = i.length;
-      Dn(u, s, ++o, i), o += i.length - b - 1;
+      In(u, s, ++o, i), o += i.length - b - 1;
     } else if (r.type !== It)
       i.push(r);
     else {
-      const u = Cn(r.chars, a);
+      const u = Dn(r.chars, a);
       i.push.apply(i, u);
     }
   }
@@ -1836,7 +1834,7 @@ function An(e, t) {
         break;
       case rt: {
         let u = "<" + r.tagName;
-        r.attributes.length > 0 && (u += " " + _n(r.attributes).join(" ")), r.selfClosing && (u += " /"), u += ">", n.push(u);
+        r.attributes.length > 0 && (u += " " + Ln(r.attributes).join(" ")), r.selfClosing && (u += " /"), u += ">", n.push(u);
         break;
       }
       case hs:
@@ -1845,10 +1843,10 @@ function An(e, t) {
       case It:
         n.push(Nt(r.chars));
         break;
-      case En:
+      case Sn:
         n.push(`<!--${Nt(r.chars)}-->`);
         break;
-      case Sn: {
+      case An: {
         let u = `<!DOCTYPE ${r.name}`;
         r.publicIdentifier && (u += ` PUBLIC "${r.publicIdentifier}"`), r.systemIdentifier && (u += ` "${r.systemIdentifier}"`), u += ">", n.push(u);
         break;
@@ -1857,8 +1855,8 @@ function An(e, t) {
   }
   return n.join("");
 }
-function Cn(e, t) {
-  const s = ln(e), i = [];
+function Dn(e, t) {
+  const s = un(e), i = [];
   for (let n = 0; n < s.length; n++) {
     const a = s[n];
     a.t === "nl" && t.get("nl2br") ? i.push({
@@ -1876,7 +1874,7 @@ function Cn(e, t) {
   }
   return i;
 }
-function Dn(e, t, s, i) {
+function In(e, t, s, i) {
   let n = 1;
   for (; s < t.length && n > 0; ) {
     let a = t[s];
@@ -1884,13 +1882,13 @@ function Dn(e, t, s, i) {
   }
   return i;
 }
-function In(e) {
+function Nn(e) {
   let {
     tagName: t,
     attributes: s,
     content: i
   } = e;
-  return `<${t} ${Nn(s)}>${Nt(i)}</${t}>`;
+  return `<${t} ${_n(s)}>${Nt(i)}</${t}>`;
 }
 function Nt(e) {
   return e.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -1898,7 +1896,7 @@ function Nt(e) {
 function fs(e) {
   return e.replace(/"/g, "&quot;");
 }
-function Nn(e) {
+function _n(e) {
   const t = [];
   for (const s in e) {
     const i = e[s] + "";
@@ -1906,7 +1904,7 @@ function Nn(e) {
   }
   return t.join(" ");
 }
-function _n(e) {
+function Ln(e) {
   const t = [];
   for (let s = 0; s < e.length; s++) {
     const i = e[s][0], n = e[s][1] + "";
@@ -1914,7 +1912,7 @@ function _n(e) {
   }
   return t;
 }
-const Ln = /* @__PURE__ */ F({
+const On = /* @__PURE__ */ F({
   __name: "button",
   props: {
     button: {
@@ -1931,7 +1929,7 @@ const Ln = /* @__PURE__ */ F({
       onClick: i
     }, H(s.button.title), 1));
   }
-}), On = ["href"], Rn = /* @__PURE__ */ F({
+}), Rn = ["href"], wn = /* @__PURE__ */ F({
   __name: "footnote",
   props: {
     footnote: {
@@ -1944,9 +1942,9 @@ const Ln = /* @__PURE__ */ F({
       class: "tvk-message-footnote",
       href: t.footnote.url,
       target: "_blank"
-    }, H(t.footnote.title), 9, On));
+    }, H(t.footnote.title), 9, Rn));
   }
-}), wn = { class: "tvk-message-footnotes" }, xn = /* @__PURE__ */ F({
+}), xn = { class: "tvk-message-footnotes" }, Pn = /* @__PURE__ */ F({
   __name: "footnotes",
   props: {
     footnotes: {
@@ -1955,12 +1953,12 @@ const Ln = /* @__PURE__ */ F({
   },
   setup(e) {
     const t = U.getInstance().options, s = e;
-    return (i, n) => (p(), T("div", wn, [
+    return (i, n) => (p(), T("div", xn, [
       he(H(l(t).wording.messages.message.footnotes.sources) + " ", 1),
-      (p(!0), T(ge, null, ct(s.footnotes, (a) => (p(), Z(Rn, { footnote: a }, null, 8, ["footnote"]))), 256))
+      (p(!0), T(de, null, ct(s.footnotes, (a) => (p(), Z(wn, { footnote: a }, null, 8, ["footnote"]))), 256))
     ]));
   }
-}), Pn = ["innerHTML"], Hn = /* @__PURE__ */ F({
+}), Hn = ["innerHTML"], Mn = /* @__PURE__ */ F({
   __name: "message-text",
   props: {
     message: {
@@ -1971,19 +1969,19 @@ const Ln = /* @__PURE__ */ F({
     U.getInstance().options;
     const t = e;
     function s() {
-      return An(t.message.text, { target: "_blank" });
+      return Cn(t.message.text, { target: "_blank" });
     }
     return (i, n) => {
       var a;
-      return p(), T(ge, null, [
+      return p(), T(de, null, [
         M("div", {
           innerHTML: s()
-        }, null, 8, Pn),
-        (a = t.message.footnotes) != null && a.length ? (p(), Z(xn, {
+        }, null, 8, Hn),
+        (a = t.message.footnotes) != null && a.length ? (p(), Z(Pn, {
           key: 0,
           footnotes: t.message.footnotes
         }, null, 8, ["footnotes"])) : A("", !0),
-        (p(!0), T(ge, null, ct(t.message.buttons, (o) => (p(), Z(Ln, { button: o }, {
+        (p(!0), T(de, null, ct(t.message.buttons, (o) => (p(), Z(On, { button: o }, {
           default: Is(() => [
             he(H(o.title), 1)
           ]),
@@ -1992,7 +1990,7 @@ const Ln = /* @__PURE__ */ F({
       ], 64);
     };
   }
-}), Mn = { class: "tvk-card" }, Bn = ["src", "alt"], jn = { key: 1 }, Un = { key: 2 }, zn = { key: 3 }, ds = /* @__PURE__ */ F({
+}), Bn = { class: "tvk-card" }, jn = ["src", "alt"], Un = { key: 1 }, zn = { key: 2 }, $n = { key: 3 }, ds = /* @__PURE__ */ F({
   __name: "message-card",
   props: {
     card: {
@@ -2009,23 +2007,23 @@ const Ln = /* @__PURE__ */ F({
     }
     return (u, f) => {
       var b, g, d, h, y, k, D, S, N, v, x, I;
-      return p(), T("div", Mn, [
+      return p(), T("div", Bn, [
         (g = (b = s.card) == null ? void 0 : b.file) != null && g.url ? (p(), T("img", {
           key: 0,
           src: (h = (d = s.card) == null ? void 0 : d.file) == null ? void 0 : h.url,
           alt: l(i),
           onLoad: n,
-          class: "tvk-img-thumbnail"
-        }, null, 40, Bn)) : A("", !0),
-        (y = s.card) != null && y.title ? (p(), T("div", jn, [
+          class: "tvk-thumbnail"
+        }, null, 40, jn)) : A("", !0),
+        (y = s.card) != null && y.title ? (p(), T("div", Un, [
           M("strong", null, H((k = s.card) == null ? void 0 : k.title), 1)
         ])) : A("", !0),
-        (D = s.card) != null && D.subTitle ? (p(), T("div", Un, H((S = s.card) == null ? void 0 : S.subTitle), 1)) : A("", !0),
-        (v = (N = s.card) == null ? void 0 : N.file) != null && v.description ? (p(), T("div", zn, H((I = (x = s.card) == null ? void 0 : x.file) == null ? void 0 : I.description), 1)) : A("", !0)
+        (D = s.card) != null && D.subTitle ? (p(), T("div", zn, H((S = s.card) == null ? void 0 : S.subTitle), 1)) : A("", !0),
+        (v = (N = s.card) == null ? void 0 : N.file) != null && v.description ? (p(), T("div", $n, H((I = (x = s.card) == null ? void 0 : x.file) == null ? void 0 : I.description), 1)) : A("", !0)
       ]);
     };
   }
-}), Kt = "transform 0.2s", $n = /* @__PURE__ */ F({
+}), Kt = "transform 0.2s", qn = /* @__PURE__ */ F({
   __name: "message-carousel",
   props: {
     carousel: {
@@ -2095,20 +2093,20 @@ const Ln = /* @__PURE__ */ F({
         transform: "translateX(0)"
       };
     }
-    return (k, D) => (p(), T(ge, null, [
+    return (k, D) => (p(), T(de, null, [
       M("div", {
         class: "tvk-carousel",
         ref_key: "carouselRef",
         ref: n,
-        style: de(o.value)
+        style: fe(o.value)
       }, [
         M("div", {
           class: "tvk-carousel-inner",
           ref_key: "innerRef",
           ref: a,
-          style: de(r.value)
+          style: fe(r.value)
         }, [
-          (p(!0), T(ge, null, ct(s.value, (S) => (p(), T("div", {
+          (p(!0), T(de, null, ct(s.value, (S) => (p(), T("div", {
             class: "tvk-carousel-card",
             key: JSON.stringify(S),
             ref_for: !0,
@@ -2131,31 +2129,31 @@ const Ln = /* @__PURE__ */ F({
       ])
     ], 64));
   }
-}), qn = /* @__PURE__ */ F({
+}), Vn = /* @__PURE__ */ F({
   __name: "message-image",
   props: { message: Object },
   setup(e) {
     return U.getInstance().options, (t, s) => "Image type not yet implemented";
   }
-}), Vn = {
+}), Wn = {
   key: 0,
   class: "tvk-message-header"
-}, Wn = {
+}, Fn = {
   key: 0,
   class: "tvk-message-header-avatar"
-}, Fn = ["src"], Kn = ["src"], Qn = {
+}, Kn = ["src"], Qn = ["src"], Gn = {
   key: 1,
   class: "tvk-message-header-label"
-}, Gn = { class: "tvk-message-header-label-user" }, Jn = { class: "tvk-message-header-label-bot" }, Yn = /* @__PURE__ */ M("div", { class: "tvk-message-header-line-break" }, null, -1), Xn = {
+}, Jn = { class: "tvk-message-header-label-user" }, Yn = { class: "tvk-message-header-label-bot" }, Xn = /* @__PURE__ */ M("div", { class: "tvk-message-header-line-break" }, null, -1), Zn = {
   key: 1,
   class: "tvk-message-body"
-}, Zn = {
+}, ei = {
   key: 2,
   class: "tvk-message-body-from-app"
-}, ei = {
+}, ti = {
   key: 0,
   class: "tvk-message-loader"
-}, ti = /* @__PURE__ */ F({
+}, si = /* @__PURE__ */ F({
   __name: "message",
   props: {
     message: {
@@ -2166,16 +2164,16 @@ const Ln = /* @__PURE__ */ F({
     const t = U.getInstance().options, s = e;
     return (i, n) => s.message.author !== l(_).user || !l(t).preferences.messages.message.hideUserMessages ? (p(), T("div", {
       key: 0,
-      class: fe(["tvk-message", {
+      class: be(["tvk-message", {
         "tvk-message-user": s.message.author === l(_).user,
         "tvk-message-bot": s.message.author === l(_).bot
       }])
     }, [
-      l(t).preferences.messages.message.header.display && s.message.author !== l(_).app ? (p(), T("div", Vn, [
-        l(t).preferences.messages.message.header.avatar.display ? (p(), T("div", Wn, [
+      l(t).preferences.messages.message.header.display && s.message.author !== l(_).app ? (p(), T("div", Wn, [
+        l(t).preferences.messages.message.header.avatar.display ? (p(), T("div", Fn, [
           !l(t).preferences.messages.message.header.avatar.userImage && l(t).preferences.messages.message.header.avatar.userIcon && s.message.author === l(_).user ? (p(), T("i", {
             key: 0,
-            class: fe([
+            class: be([
               "tvk-message-header-avatar-user",
               l(t).preferences.messages.message.header.avatar.userIcon
             ])
@@ -2183,32 +2181,32 @@ const Ln = /* @__PURE__ */ F({
           l(t).preferences.messages.message.header.avatar.userImage && s.message.author === l(_).user ? (p(), T("img", {
             key: 1,
             src: l(t).preferences.messages.message.header.avatar.userImage.src,
-            style: de({
+            style: fe({
               width: l(t).preferences.messages.message.header.avatar.userImage.width,
               height: l(t).preferences.messages.message.header.avatar.userImage.height
             })
-          }, null, 12, Fn)) : A("", !0),
+          }, null, 12, Kn)) : A("", !0),
           !l(t).preferences.messages.message.header.avatar.botImage && l(t).preferences.messages.message.header.avatar.botIcon && s.message.author === l(_).bot ? (p(), T("i", {
             key: 2,
-            class: fe(["tvk-message-header-avatar-bot", l(t).preferences.messages.message.header.avatar.botIcon])
+            class: be(["tvk-message-header-avatar-bot", l(t).preferences.messages.message.header.avatar.botIcon])
           }, null, 2)) : A("", !0),
           l(t).preferences.messages.message.header.avatar.botImage && s.message.author === l(_).bot ? (p(), T("img", {
             key: 3,
             src: l(t).preferences.messages.message.header.avatar.botImage.src,
-            style: de({
+            style: fe({
               width: l(t).preferences.messages.message.header.avatar.botImage.width,
               height: l(t).preferences.messages.message.header.avatar.botImage.height
             })
-          }, null, 12, Kn)) : A("", !0)
+          }, null, 12, Qn)) : A("", !0)
         ])) : A("", !0),
-        l(t).preferences.messages.message.header.label.display ? (p(), T("div", Qn, [
-          M("span", Gn, H(l(t).wording.messages.message.header.labelUser), 1),
-          M("span", Jn, H(l(t).wording.messages.message.header.labelBot), 1)
+        l(t).preferences.messages.message.header.label.display ? (p(), T("div", Gn, [
+          M("span", Jn, H(l(t).wording.messages.message.header.labelUser), 1),
+          M("span", Yn, H(l(t).wording.messages.message.header.labelBot), 1)
         ])) : A("", !0)
       ])) : A("", !0),
-      Yn,
-      s.message.author !== l(_).app ? (p(), T("div", Xn, [
-        s.message.type === l(w).message ? (p(), Z(Hn, {
+      Xn,
+      s.message.author !== l(_).app ? (p(), T("div", Zn, [
+        s.message.type === l(w).message ? (p(), Z(Mn, {
           key: 0,
           message: s.message
         }, null, 8, ["message"])) : A("", !0),
@@ -2216,21 +2214,21 @@ const Ln = /* @__PURE__ */ F({
           key: 1,
           card: s.message
         }, null, 8, ["card"])) : A("", !0),
-        s.message.type === l(w).carousel ? (p(), Z($n, {
+        s.message.type === l(w).carousel ? (p(), Z(qn, {
           key: 2,
           carousel: s.message
         }, null, 8, ["carousel"])) : A("", !0),
-        s.message.type === l(w).image ? (p(), Z(qn, {
+        s.message.type === l(w).image ? (p(), Z(Vn, {
           key: 3,
           message: s.message
         }, null, 8, ["message"])) : A("", !0)
       ])) : A("", !0),
-      s.message.author === l(_).app ? (p(), T("div", Zn, [
-        s.message.type === l(w).loader ? (p(), T("div", ei)) : A("", !0)
+      s.message.author === l(_).app ? (p(), T("div", ei, [
+        s.message.type === l(w).loader ? (p(), T("div", ti)) : A("", !0)
       ])) : A("", !0)
     ], 2)) : A("", !0);
   }
-}), si = /* @__PURE__ */ F({
+}), ni = /* @__PURE__ */ F({
   __name: "messages",
   setup(e) {
     const t = ae(), s = B();
@@ -2252,20 +2250,20 @@ const Ln = /* @__PURE__ */ F({
       ref: s,
       class: "tvk-messages"
     }, [
-      (p(!0), T(ge, null, ct(l(t).getMessages, (o) => (p(), Z(ti, { message: o }, null, 8, ["message"]))), 256))
+      (p(!0), T(de, null, ct(l(t).getMessages, (o) => (p(), Z(si, { message: o }, null, 8, ["message"]))), 256))
     ], 512));
   }
-}), ni = { class: "tvk-main-wrapper" }, ii = /* @__PURE__ */ F({
+}), ii = { class: "tvk-wrapper" }, ai = /* @__PURE__ */ F({
   __name: "App",
   setup(e) {
     const t = U.getInstance().options, s = ae();
-    return (i, n) => (p(), T("main", ni, [
-      l(s).getMessages.length || !l(t).preferences.messages.hideIfNoMessages ? (p(), Z(si, { key: 0 })) : A("", !0),
-      Zt(Fs)
+    return (i, n) => (p(), T("main", ii, [
+      l(s).getMessages.length || !l(t).preferences.messages.hideIfNoMessages ? (p(), Z(ni, { key: 0 })) : A("", !0),
+      Zt(Ks)
     ]));
   }
 });
-function ai() {
+function oi() {
   var t, s;
   const e = U.getInstance().options;
   if ((t = e == null ? void 0 : e.initialization) != null && t.welcomeMessage || (s = e == null ? void 0 : e.initialization) != null && s.openingMessage) {
@@ -2278,12 +2276,12 @@ function ai() {
     }), e.initialization.openingMessage && i.sendUserMessage(e.initialization.openingMessage, !1));
   }
 }
-function ci(e, t, s) {
-  const i = _s(ii);
+function li(e, t, s) {
+  const i = _s(ai);
   i.provide(is, t), U.clearInstance(), U.getInstance(s);
   const n = Os();
-  return i.use(n), i.mount(e), ai(), i;
+  return i.use(n), i.mount(e), oi(), i;
 }
 export {
-  ci as renderChat
+  li as renderChat
 };

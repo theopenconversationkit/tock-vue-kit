@@ -1,86 +1,77 @@
 :root {
   /* brand foundation */
-  --tvk-brand-hue: 0;
-  --tvk-brand-saturation: 0%;
-  --tvk-brand-lightness: 50%;
-
-  --tvk-danger-color: hsl(0 100% 50%);
+  --tvk_colors_brand-hue: 0;
+  --tvk_colors_brand-saturation: 0%;
+  --tvk_colors_brand-lightness: 50%;
 
   /* light */
-  --tvk-neutral-light: hsl(var(--tvk-brand-hue) 5% 90%);
-  --tvk-neutral-dim-light: hsl(var(--tvk-brand-hue) 5% 70%);
+  --tvk_colors_light_neutral: hsl(var(--tvk_colors_brand-hue) 5% 90%);
+  --tvk_colors_light_neutral-dim: hsl(var(--tvk_colors_brand-hue) 5% 70%);
 
-  --tvk-brand-light: hsl(
-    var(--tvk-brand-hue) var(--tvk-brand-saturation) var(--tvk-brand-lightness)
+  --tvk_colors_light_brand: hsl(
+    var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
+      var(--tvk_colors_brand-lightness)
   );
 
-  --tvk-surface1-light: var(--tvk-brand-light);
-  --tvk-text1-light: hsl(var(--tvk-brand-hue) var(--tvk-brand-saturation) 100%);
+  --tvk_colors_light_surface1: var(--tvk_colors_light_brand);
+  --tvk_colors_light_text1: hsl(
+    var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation) 100%
+  );
 
-  --tvk-surface2-light: hsl(var(--tvk-brand-hue) 20% 99%);
-  --tvk-text2-light: hsl(var(--tvk-brand-hue) 30% 30%);
+  --tvk_colors_light_surface2: hsl(var(--tvk_colors_brand-hue) 20% 99%);
+  --tvk_colors_light_text2: hsl(var(--tvk_colors_brand-hue) 30% 30%);
 
-  --tvk-text-muted-light: hsl(var(--tvk-brand-hue) 0% 50%);
-  --tvk-danger-light: var(--tvk-danger-color);
+  --tvk_colors_light_text-muted: hsl(var(--tvk_colors_brand-hue) 0% 50%);
 
-  --tvk-links-light: var(--tvk-brand-light);
+  --tvk_colors_light_links: var(--tvk_colors_light_brand);
 
   /* dark */
-  --tvk-neutral-dark: hsl(var(--tvk-brand-hue) 5% 20%);
-  --tvk-neutral-dim-dark: hsl(var(--tvk-brand-hue) 5% 30%);
+  --tvk_colors_dark_neutral: hsl(var(--tvk_colors_brand-hue) 5% 20%);
+  --tvk_colors_dark_neutral-dim: hsl(var(--tvk_colors_brand-hue) 5% 30%);
 
-  --tvk-brand-dark: hsl(
-    var(--tvk-brand-hue) calc(var(--tvk-brand-saturation) / 2)
-      calc(var(--tvk-brand-lightness) / 1.5)
+  --tvk_colors_dark_brand: hsl(
+    var(--tvk_colors_brand-hue) calc(var(--tvk_colors_brand-saturation) / 2)
+      calc(var(--tvk_colors_brand-lightness) / 1.5)
   );
 
-  --tvk-surface1-dark: var(--tvk-brand-dark);
-  --tvk-text1-dark: hsl(var(--tvk-brand-hue) 15% 85%);
+  --tvk_colors_dark_surface1: var(--tvk_colors_dark_brand);
+  --tvk_colors_dark_text1: hsl(var(--tvk_colors_brand-hue) 15% 85%);
 
-  --tvk-surface2-dark: hsl(var(--tvk-brand-hue) 10% 15%);
-  --tvk-text2-dark: hsl(var(--tvk-brand-hue) 5% 65%);
+  --tvk_colors_dark_surface2: hsl(var(--tvk_colors_brand-hue) 10% 15%);
+  --tvk_colors_dark_text2: hsl(var(--tvk_colors_brand-hue) 5% 65%);
 
-  --tvk-text-muted-dark: hsl(var(--tvk-brand-hue) 0% 50%);
-  --tvk-danger-dark: var(--tvk-danger-color);
+  --tvk_colors_dark_text-muted: hsl(var(--tvk_colors_brand-hue) 0% 50%);
 
-  --tvk-links-dark: var(--tvk-brand-dark);
-}
+  --tvk_colors_dark_links: var(--tvk_colors_dark_brand);
 
-:root {
+  /* set colors defaults */
   color-scheme: light;
 
-  /* set defaults */
-  --tvk-neutral: var(--tvk-neutral-light);
-  --tvk-neutral-dim: var(--tvk-neutral-dim-light);
-  --tvk-app-background-color: var(--tvk-neutral-light);
-  --tvk-brand: var(--tvk-brand-light);
-  --tvk-surface1: var(--tvk-surface1-light);
-  --tvk-text1: var(--tvk-text1-light);
-  --tvk-surface2: var(--tvk-surface2-light);
-  --tvk-text2: var(--tvk-text2-light);
-  --tvk-text-muted: var(--tvk-text-muted-light);
-  --tvk-danger: var(--tvk-danger-light);
-  --tvk-links: var(--tvk-links-light);
+  --tvk_colors_neutral: var(--tvk_colors_light_neutral);
+  --tvk_colors_neutral-dim: var(--tvk_colors_light_neutral-dim);
+  --tvk_colors_app-background-color: var(--tvk_colors_light_neutral);
+  --tvk_colors_brand: var(--tvk_colors_light_brand);
+  --tvk_colors_surface1: var(--tvk_colors_light_surface1);
+  --tvk_colors_text1: var(--tvk_colors_light_text1);
+  --tvk_colors_surface2: var(--tvk_colors_light_surface2);
+  --tvk_colors_text2: var(--tvk_colors_light_text2);
+  --tvk_colors_text-muted: var(--tvk_colors_light_text-muted);
+  --tvk_colors_links: var(--tvk_colors_light_links);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
 
-    --tvk-neutral: var(--tvk-neutral-dark);
-    --tvk-neutral-dim: var(--tvk-neutral-dim-dark);
-    --tvk-app-background-color: var(--tvk-neutral-dark);
-    --tvk-brand: var(--tvk-brand-dark);
-    --tvk-surface1: var(--tvk-surface1-dark);
-    --tvk-text1: var(--tvk-text1-dark);
-    --tvk-surface2: var(--tvk-surface2-dark);
-    --tvk-text2: var(--tvk-text2-dark);
-    --tvk-text-muted: var(--tvk-text-muted-dark);
-    --tvk-danger: var(--tvk-danger-dark);
-    --tvk-links: var(--tvk-links-dark);
+    --tvk_colors_neutral: var(--tvk_colors_dark_neutral);
+    --tvk_colors_neutral-dim: var(--tvk_colors_dark_neutral-dim);
+    --tvk_colors_app-background-color: var(--tvk_colors_dark_neutral);
+    --tvk_colors_brand: var(--tvk_colors_dark_brand);
+    --tvk_colors_surface1: var(--tvk_colors_dark_surface1);
+    --tvk_colors_text1: var(--tvk_colors_dark_text1);
+    --tvk_colors_surface2: var(--tvk_colors_dark_surface2);
+    --tvk_colors_text2: var(--tvk_colors_dark_text2);
+    --tvk_colors_text-muted: var(--tvk_colors_dark_text-muted);
+    --tvk_colors_links: var(--tvk_colors_dark_links);
   }
-}
-
-.tvk-text-danger {
-  color: var(--tvk-danger) !important;
 }

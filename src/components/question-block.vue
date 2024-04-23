@@ -74,10 +74,7 @@ function onClearHistory() {
         :placeholder="appOptions.wording.questionBar.input.placeholder"
         v-model="typedChars"
       />
-      <div
-        class="tvk-question-bar-chars-count"
-        :class="{ 'tvk-text-danger': userInputExceedLenth() }"
-      >
+      <div class="tvk-question-bar-chars-count">
         {{ nbTypedChars() }}/{{ maxChars }}
       </div>
     </form>
