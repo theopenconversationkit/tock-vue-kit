@@ -44,8 +44,8 @@
     position: relative;
     padding: var(--tvk_messages_padding);
     overflow: var(--tvk_messages_overflow);
-    // flex-grow: 1;
 
+    // messages shaders
     .tvk-shader {
       pointer-events: none;
       height: 15px;
@@ -89,6 +89,7 @@
 
       scroll-behavior: smooth;
 
+      // message header
       .tvk-message-header {
         display: flex;
         gap: var(--tvk_message_header_gap);
@@ -107,11 +108,13 @@
         width: var(--tvk_message_header_line-break-width);
       }
 
+      // message body
       .tvk-message-body {
         display: inline-block;
         flex-grow: var(--tvk_message_body_grow);
         padding: var(--tvk_message_body_padding);
         border-radius: var(--tvk_message_body_radius);
+        line-height: var(--tvk_message_body_line-height);
       }
 
       .tvk-message-body-from-app {
