@@ -1,7 +1,7 @@
 import type { appOptions } from "@/models/app-options";
 import { mergeDeep } from "@/utils/deep-merge";
 
-const defaultAppOptions: appOptions = {
+export const defaultAppOptions: appOptions = {
   localStorage: {
     enabled: false,
     maxNumberMessages: 20,
@@ -65,7 +65,7 @@ const defaultAppOptions: appOptions = {
   },
 };
 
-class appOptionsSingleton {
+export class appOptionsSingleton {
   private static instance: appOptionsSingleton | undefined;
 
   options: appOptions;
@@ -91,5 +91,3 @@ class appOptionsSingleton {
     return appOptionsSingleton.instance;
   }
 }
-
-export default appOptionsSingleton;

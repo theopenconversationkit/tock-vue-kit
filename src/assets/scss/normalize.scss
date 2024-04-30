@@ -9,10 +9,10 @@
    * 2. Prevent adjustments of font size after orientation changes in iOS.
    */
 
-  html {
-    line-height: 1.15; /* 1 */
-    -webkit-text-size-adjust: 100%; /* 2 */
-  }
+  // html {
+  //   line-height: 1.15; /* 1 */
+  //   -webkit-text-size-adjust: 100%; /* 2 */
+  // }
 
   /* Sections
      ========================================================================== */
@@ -21,27 +21,27 @@
    * Remove the margin in all browsers.
    */
 
-  body {
-    margin: 0;
-  }
+  // body {
+  //   margin: 0;
+  // }
 
   /**
    * Render the `main` element consistently in IE.
    */
 
-  main {
-    display: block;
-  }
+  // main {
+  //   display: block;
+  // }
 
   /**
    * Correct the font size and margin on `h1` elements within `section` and
    * `article` contexts in Chrome, Firefox, and Safari.
    */
 
-  h1 {
-    font-size: 2em;
-    margin: 0.67em 0;
-  }
+  // h1 {
+  //   font-size: 2em;
+  //   margin: 0.67em 0;
+  // }
 
   /* Grouping content
      ========================================================================== */
@@ -51,11 +51,11 @@
    * 2. Show the overflow in Edge and IE.
    */
 
-  hr {
-    box-sizing: content-box; /* 1 */
-    height: 0; /* 1 */
-    overflow: visible; /* 2 */
-  }
+  // hr {
+  //   box-sizing: content-box; /* 1 */
+  //   height: 0; /* 1 */
+  //   overflow: visible; /* 2 */
+  // }
 
   /**
    * 1. Correct the inheritance and scaling of font size in all browsers.
@@ -146,9 +146,9 @@
    * Remove the border on images inside links in IE 10.
    */
 
-  img {
-    border-style: none;
-  }
+  // img {
+  //   border-style: none;
+  // }
 
   /* Forms
      ========================================================================== */
@@ -308,10 +308,10 @@
    * 2. Change font properties to `inherit` in Safari.
    */
 
-  ::-webkit-file-upload-button {
-    -webkit-appearance: button; /* 1 */
-    font: inherit; /* 2 */
-  }
+  // ::-webkit-file-upload-button {
+  //   -webkit-appearance: button; /* 1 */
+  //   font: inherit; /* 2 */
+  // }
 
   /* Interactive
      ========================================================================== */

@@ -4,7 +4,7 @@ import { computed, inject, ref, type Ref } from "vue";
 import { tockEndpointKey } from "../keys/app-keys";
 import type { mainState } from "../models/main-state";
 import { MessageAuthor, MessageType, type Message } from "../models/messages";
-import appOptionsSingleton from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options";
 import type { TockQuery } from "../models/query";
 
 const MAIN_STORE_NAME = "main";

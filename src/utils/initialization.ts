@@ -1,11 +1,14 @@
-import appOptionsSingleton from '@/utils/app-options';
-import { useMainStore } from '@/stores/main-state';
-import { MessageAuthor, MessageType } from '@/models/messages';
+import { appOptionsSingleton } from "@/utils/app-options";
+import { useMainStore } from "@/stores/main-state";
+import { MessageAuthor, MessageType } from "@/models/messages";
 
 export function appInitialization(): void {
   const appOptions = appOptionsSingleton.getInstance().options;
 
-  if (appOptions?.initialization?.welcomeMessage || appOptions?.initialization?.openingMessage) {
+  if (
+    appOptions?.initialization?.welcomeMessage ||
+    appOptions?.initialization?.openingMessage
+  ) {
     const mainStore = useMainStore();
     const storedState = mainStore.getStoredState();
 
@@ -15,12 +18,15 @@ export function appInitialization(): void {
           type: MessageType.message,
           author: MessageAuthor.bot,
           date: Date.now(),
-          text: appOptions.initialization.welcomeMessage
+          text: appOptions.initialization.welcomeMessage,
         });
       }
 
       if (appOptions.initialization.openingMessage) {
-        mainStore.sendUserMessage(appOptions.initialization.openingMessage, false);
+        mainStore.sendUserMessage(
+          appOptions.initialization.openingMessage,
+          false
+        );
       }
     }
   }

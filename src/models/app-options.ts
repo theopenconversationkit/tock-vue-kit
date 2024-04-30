@@ -37,11 +37,11 @@ export interface preferences {
       hideUserMessages: boolean;
 
       header: {
-        /* display a header above message */
+        /* display a header above message. Default : true  */
         display: boolean;
 
         avatar: {
-          /* display an avatar in message header */
+          /* display an avatar in message header. Default : true  */
           display: boolean;
 
           /* icon class name of the user avatar (displayed only if no userImage is defined) */
@@ -57,7 +57,7 @@ export interface preferences {
           botImage?: imageDef;
         };
         label: {
-          /* display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content) */
+          /* display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content). Default : true  */
           display: boolean;
         };
       };

@@ -12,7 +12,7 @@ export default defineConfig(({ command, mode }) => {
   console.log("The command : ", command);
   console.log("The mode : ", mode);
   return {
-    plugins: [vue(), dts()],
+    plugins: [vue(), dts({ insertTypesEntry: true })],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),

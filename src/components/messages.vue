@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useMainStore } from '../stores/main-state';
-import message from './message.vue';
+import { onMounted, ref } from "vue";
+import { useMainStore } from "../stores/main-state";
+import message from "./message.vue";
 
 const mainStore = useMainStore();
 const messagesWrapper = ref();
@@ -17,7 +17,7 @@ onMounted(() => {
 });
 
 mainStore.$onAction(({ name, store, args, after }) => {
-  if (name === 'scrollMessages') {
+  if (name === "scrollMessages") {
     after(() => {
       setTimeout(() => {
         scrollBottom();
@@ -28,14 +28,10 @@ mainStore.$onAction(({ name, store, args, after }) => {
 </script>
 
 <template>
-  <div
-    ref="messagesWrapper"
-    class="tvk-messages"
-  >
-    <message
-      v-for="mssg in mainStore.getMessages"
-      :message="mssg"
-    ></message>
+  <div ref="messagesWrapper" class="tvk-messages">
+    <div class="tvk-shader tvk-shader-top"></div>
+    <message v-for="mssg in mainStore.getMessages" :message="mssg"></message>
+    <div class="tvk-shader tvk-shader-bottom"></div>
   </div>
 </template>
 

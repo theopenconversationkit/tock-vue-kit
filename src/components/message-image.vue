@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { MessageAuthor, MessageType } from '../models/messages';
+import { MessageAuthor, MessageType } from "../models/messages";
 
-import appOptionsSingleton from '../utils/app-options';
+import { appOptionsSingleton } from "../utils/app-options";
 
 const appOptions = appOptionsSingleton.getInstance().options;
 

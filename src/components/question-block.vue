@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useMainStore } from "../stores/main-state";
-import appOptionsSingleton from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options";
 
 const appOptions = appOptionsSingleton.getInstance().options;
 

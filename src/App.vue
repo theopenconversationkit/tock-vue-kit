@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import questionBlock from "./components/question-block.vue";
 import messages from "./components/messages.vue";
-import appOptionsSingleton from "./utils/app-options";
+import { appOptionsSingleton } from "./utils/app-options";
 import { useMainStore } from "./stores/main-state";
 const appOptions = appOptionsSingleton.getInstance().options;
 const mainStore = useMainStore();

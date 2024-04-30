@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import appOptionsSingleton from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options";
 import { useMainStore } from "../stores/main-state";
 import type { CardMessage } from "../models/messages";
 import type { PropType } from "vue";
