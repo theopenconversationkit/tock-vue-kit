@@ -6,4 +6,5 @@ export interface TockQuery {
   ref?: String;
   connectorId?: String;
   returnsHistory?: Boolean;
+  sourceWithContent?: Boolean;
 }

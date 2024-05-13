@@ -6,7 +6,7 @@ import message from "./message.vue";
 const mainStore = useMainStore();
 const messagesWrapper = ref();
 
-function scrollBottom() {
+function scrollBottom(): void {
   setTimeout(() => {
     messagesWrapper.value.scrollTop = messagesWrapper.value.scrollHeight;
   }, 100);

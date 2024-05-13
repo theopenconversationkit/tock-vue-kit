@@ -7,9 +7,9 @@ import { MessageAuthor, MessageType, type Message } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options";
 import type { TockQuery } from "../models/query";
 
-const MAIN_STORE_NAME = "main";
+const MAIN_STORE_NAME: string = "main";
 
-const STORE_NAME = "main_storage";
+const STORE_NAME: string = "main_storage";
 
 const initNewState = (): mainState => ({
   userId: forgeNewUserId(),
@@ -22,6 +22,10 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   const appOptions = appOptionsSingleton.getInstance().options;
 
   const state: Ref<mainState> = ref(getState());
+
+  function updateApplication() {
+    // empty action watched by App component to refresh app
+  }
 
   function getState(): mainState {
     if (appOptions.localStorage.enabled) {
@@ -126,6 +130,8 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       query: message,
       userId: state.value.userId,
       locale: locale,
+      sourceWithContent:
+        appOptions.preferences.messages.footNotes.requireSourcesContent,
     };
 
     const res = await (
@@ -210,6 +216,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
   return {
     state,
+    updateApplication,
     getStoredState,
     getMessages,
     sendUserMessage,

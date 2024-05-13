@@ -1,18 +1,23 @@
-export type Message = LoaderMessage | TextMessage | CardMessage | CarouselMessage | ImageMessage;
+export type Message =
+  | LoaderMessage
+  | TextMessage
+  | CardMessage
+  | CarouselMessage
+  | ImageMessage;
 
 export enum MessageAuthor {
-  bot = 'bot',
-  user = 'user',
-  app = 'app'
+  bot = "bot",
+  user = "user",
+  app = "app",
 }
 
 export enum MessageType {
-  message = 'message',
-  card = 'card',
-  carousel = 'carousel',
-  image = 'image',
+  message = "message",
+  card = "card",
+  carousel = "carousel",
+  image = "image",
 
-  loader = 'loader'
+  loader = "loader",
 }
 
 interface MessageBase {
@@ -59,6 +64,7 @@ export interface MessageFootnote {
   identifier: string;
   title: string;
   url: string;
+  content?: string;
 }
 
 export interface WebMediaFile {
@@ -70,9 +76,9 @@ export interface WebMediaFile {
 }
 
 export enum ButtonType {
-  web_url = 'web_url',
-  postback = 'postback',
-  quick_reply = 'quick_reply'
+  web_url = "web_url",
+  postback = "postback",
+  quick_reply = "quick_reply",
 }
 
 export interface Button {

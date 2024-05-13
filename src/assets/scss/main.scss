@@ -48,7 +48,7 @@
     // messages shaders
     .tvk-shader {
       pointer-events: none;
-      height: 15px;
+      height: 10px;
       position: sticky;
       left: 0;
       right: 0;
@@ -60,7 +60,6 @@
       background: linear-gradient(
         180deg,
         var(--tvk_colors_app-background-color) 0%,
-        var(--tvk_colors_app-background-color) 20%,
         transparent 100%
       );
     }
@@ -71,7 +70,6 @@
       background: linear-gradient(
         0deg,
         var(--tvk_colors_app-background-color) 0%,
-        var(--tvk_colors_app-background-color) 20%,
         transparent 100%
       );
     }

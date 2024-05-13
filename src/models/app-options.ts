@@ -32,6 +32,11 @@ export interface preferences {
     /* Hide messages container if there is no messages to display. Default : true */
     hideIfNoMessages: boolean;
 
+    footNotes: {
+      /* For RAG answers, request the textual content of the source in addition to the source title and link. Default : false */
+      requireSourcesContent: boolean;
+    };
+
     message: {
       /* if true, user messages are not displayed. Default : false */
       hideUserMessages: boolean;

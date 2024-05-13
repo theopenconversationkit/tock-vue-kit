@@ -3,12 +3,33 @@ import questionBlock from "./components/question-block.vue";
 import messages from "./components/messages.vue";
 import { appOptionsSingleton } from "./utils/app-options";
 import { useMainStore } from "./stores/main-state";
+import { ref } from "vue";
+
 const appOptions = appOptionsSingleton.getInstance().options;
 const mainStore = useMainStore();
+
+let randomKey = ref(getRandomKey());
+let isDisplayed = ref(true);
+
+function getRandomKey() {
+  return (Math.random() + 1).toString(36).substring(7);
+}
+
+mainStore.$onAction(({ name, store, args, after }) => {
+  if (name === "updateApplication") {
+    after(() => {
+      randomKey.value = getRandomKey();
+      isDisplayed.value = false;
+      setTimeout(() => {
+        isDisplayed.value = true;
+      });
+    });
+  }
+});
 </script>
 
 <template>
-  <main class="tvk-wrapper">
+  <main class="tvk-wrapper" :key="randomKey" v-if="isDisplayed">
     <messages
       v-if="
         mainStore.getMessages.length ||
