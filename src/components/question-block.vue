@@ -44,6 +44,7 @@ function onClearHistory() {
     <button
       v-if="appOptions.preferences.questionBar.clearHistory?.display"
       class="tvk-btn tvk-question-bar-btn-clear-history"
+      :aria-label="appOptions.wording.questionBar.clearHistoryAriaLabel"
       @click="onClearHistory"
     >
       <i
@@ -79,9 +80,10 @@ function onClearHistory() {
     </form>
 
     <button
-      @click="onSubmit"
       :disabled="!typedChars.trim().length || userInputExceedLenth()"
       class="tvk-btn tvk-question-bar-btn-submit"
+      :aria-label="appOptions.wording.questionBar.submitAriaLabel"
+      @click="onSubmit"
     >
       <i
         v-if="

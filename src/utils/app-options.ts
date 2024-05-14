@@ -223,6 +223,12 @@ export const AppOptionsModel: AppOptionsModel = {
         title: "Clear history button label",
         description: undefined,
       },
+      clearHistoryAriaLabel: {
+        type: "string",
+        default: "Clear discussion and history button",
+        title: "Clear history button Aria label",
+        description: undefined,
+      },
       input: {
         placeholder: {
           type: "string",
@@ -235,6 +241,12 @@ export const AppOptionsModel: AppOptionsModel = {
         type: "string",
         default: "",
         title: "Submit button label",
+        description: undefined,
+      },
+      submitAriaLabel: {
+        type: "string",
+        default: "Submit button",
+        title: "Submit button Aria label",
         description: undefined,
       },
     },

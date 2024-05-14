@@ -121,9 +121,11 @@ export interface wording {
   };
   questionBar: {
     clearHistory: string;
+    clearHistoryAriaLabel: string;
     input: {
       placeholder: string;
     };
     submit: string;
+    submitAriaLabel: string;
   };
 }
