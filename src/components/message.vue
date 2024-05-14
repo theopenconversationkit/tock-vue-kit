@@ -54,6 +54,7 @@ const props = defineProps({
               appOptions.preferences.messages.message.header.avatar.userImage
                 .height,
           }"
+          role="none"
         />
 
         <i
@@ -74,6 +75,7 @@ const props = defineProps({
               appOptions.preferences.messages.message.header.avatar.botImage
                 .height,
           }"
+          role="none"
         />
       </div>
 

@@ -53,15 +53,6 @@ export const AppOptionsModel: AppOptionsModel = {
   },
   preferences: {
     messages: {
-      footNotes: {
-        requireSourcesContent: {
-          type: "boolean",
-          default: false,
-          title: "Request textual content of sources",
-          description:
-            "For RAG answers, request the textual content of the source in addition to the source title and link.",
-        },
-      },
       clearOnNewRequest: {
         type: "boolean",
         default: false,
@@ -133,6 +124,15 @@ export const AppOptionsModel: AppOptionsModel = {
                 "Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content).",
             },
           },
+        },
+      },
+      footNotes: {
+        requireSourcesContent: {
+          type: "boolean",
+          default: false,
+          title: "Request textual content of sources",
+          description:
+            "For RAG answers, request the textual content of the source in addition to the source title and link.",
         },
       },
     },
@@ -218,18 +218,10 @@ export const AppOptionsModel: AppOptionsModel = {
     },
     questionBar: {
       clearHistory: {
-        labelBefore: {
-          type: "string",
-          default: "",
-          title: "Clear history label (before icon)",
-          description: undefined,
-        },
-        labelAfter: {
-          type: "string",
-          default: "",
-          title: "Clear history label (after icon)",
-          description: undefined,
-        },
+        type: "string",
+        default: "",
+        title: "Clear history button label",
+        description: undefined,
       },
       input: {
         placeholder: {
@@ -240,18 +232,10 @@ export const AppOptionsModel: AppOptionsModel = {
         },
       },
       submit: {
-        labelBefore: {
-          type: "string",
-          default: "",
-          title: "Submit button label (before icon)",
-          description: undefined,
-        },
-        labelAfter: {
-          type: "string",
-          default: "",
-          title: "Submit button label (after icon)",
-          description: undefined,
-        },
+        type: "string",
+        default: "",
+        title: "Submit button label",
+        description: undefined,
       },
     },
   },

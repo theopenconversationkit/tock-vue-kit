@@ -43,10 +43,9 @@ function onClearHistory() {
   <div class="tvk-question-bar" @click="handleClick">
     <button
       v-if="appOptions.preferences.questionBar.clearHistory?.display"
-      class="tvk-btn tvk-question-bar-clear-history"
+      class="tvk-btn tvk-question-bar-btn-clear-history"
       @click="onClearHistory"
     >
-      {{ appOptions.wording.questionBar.clearHistory.labelBefore }}
       <i
         v-if="
           !appOptions.preferences.questionBar.clearHistory.image &&
@@ -63,7 +62,7 @@ function onClearHistory() {
           height: appOptions.preferences.questionBar.clearHistory.image.height,
         }"
       />
-      {{ appOptions.wording.questionBar.clearHistory.labelAfter }}
+      {{ appOptions.wording.questionBar.clearHistory }}
     </button>
 
     <form @submit.prevent="onSubmit" class="tvk-question-bar-form">
@@ -84,7 +83,6 @@ function onClearHistory() {
       :disabled="!typedChars.trim().length || userInputExceedLenth()"
       class="tvk-btn tvk-question-bar-btn-submit"
     >
-      {{ appOptions.wording.questionBar.submit.labelBefore }}
       <i
         v-if="
           !appOptions.preferences.questionBar.submit.image &&
@@ -101,7 +99,7 @@ function onClearHistory() {
           height: appOptions.preferences.questionBar.submit.image.height,
         }"
       />
-      {{ appOptions.wording.questionBar.submit.labelAfter }}
+      {{ appOptions.wording.questionBar.submit }}
     </button>
   </div>
 </template>

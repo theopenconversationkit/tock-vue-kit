@@ -20,7 +20,7 @@ function getLinkyfiedText() {
 </script>
 
 <template>
-  <div v-html="getLinkyfiedText()"></div>
+  <div v-html="getLinkyfiedText()" tabindex="1"></div>
 
   <Footnotes
     v-if="props.message!.footnotes?.length"

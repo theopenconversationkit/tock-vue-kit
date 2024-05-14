@@ -63,23 +63,3 @@
     box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
   }
 }
-
-:root {
-  --tvk_question_btn-submit-background-color: var(--tvk_colors_brand);
-  --tvk_question_btn-submit-color: var(--tvk_colors_text1);
-  --tvk_question_btn-submit-border: 0 none var(--tvk_colors_brand);
-  --tvk_question_btn-submit-border-radius: 5em;
-  --tvk_question_btn-padding: 0.5em;
-}
-
-.tvk-question-bar-btn-submit {
-  background-color: var(--tvk_question_btn-submit-background-color);
-  color: var(--tvk_question_btn-submit-color);
-  border: var(--tvk_question_btn-submit-border);
-  border-radius: var(--tvk_question_btn-submit-border-radius);
-  padding: var(--tvk_question_btn-padding);
-
-  &[disabled] {
-    background-color: var(--tvk_colors_neutral);
-  }
-}

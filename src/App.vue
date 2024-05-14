@@ -29,7 +29,7 @@ mainStore.$onAction(({ name, store, args, after }) => {
 </script>
 
 <template>
-  <main class="tvk-wrapper" :key="randomKey" v-if="isDisplayed">
+  <div class="tvk-wrapper" :key="randomKey" v-if="isDisplayed">
     <messages
       v-if="
         mainStore.getMessages.length ||
@@ -37,7 +37,7 @@ mainStore.$onAction(({ name, store, args, after }) => {
       "
     ></messages>
     <questionBlock></questionBlock>
-  </main>
+  </div>
 </template>
 
 <style lang="scss"></style>

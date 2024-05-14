@@ -120,16 +120,10 @@ export interface wording {
     };
   };
   questionBar: {
-    clearHistory: {
-      labelBefore: string;
-      labelAfter: string;
-    };
+    clearHistory: string;
     input: {
       placeholder: string;
     };
-    submit: {
-      labelBefore: string;
-      labelAfter: string;
-    };
+    submit: string;
   };
 }
