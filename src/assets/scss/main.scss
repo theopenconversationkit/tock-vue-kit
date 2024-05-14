@@ -44,6 +44,7 @@
     position: relative;
     padding: var(--tvk_messages_padding);
     overflow: var(--tvk_messages_overflow);
+    flex-grow: var(--tvk_messages_flex-grow);
 
     // messages shaders
     .tvk-shader {
