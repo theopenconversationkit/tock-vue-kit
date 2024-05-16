@@ -1,25 +1,25 @@
 import "./assets/scss/main.scss";
 
-import App from "@/App.vue";
-import { tockEndpointKey } from "@/keys/app-keys";
-import type { appOptions } from "@/models/app-options";
-import { AppOptionsModel, appOptionsSingleton } from "@/utils/app-options";
-import { createApp } from "vue";
+import { createApp, type App } from "vue";
 import { createPinia } from "pinia";
+import TvkApp from "@/App.vue";
+import { tockEndpointKey } from "@/keys/app-keys";
+import { appOptionsSingleton } from "@/utils/app-options-singleton";
 import { appInitialization } from "@/utils/initialization";
-import { useMainStore } from "./stores/main-state";
+import { useMainStore } from "@/stores/main-state";
+import { appOptionsModel, type AppOptions } from "@/utils/app-options-model";
 
 function renderChat(
   target: HTMLElement,
   tockEndPoint: string,
-  options: appOptions
-) {
-  const app = createApp(App);
+  options: AppOptions
+): App<Element> {
+  const app = createApp(TvkApp);
 
   app.provide(tockEndpointKey, tockEndPoint);
 
   appOptionsSingleton.clearInstance();
-  appOptionsSingleton.getInstance(options);
+  appOptionsSingleton.setOptions(options);
 
   const pinia = createPinia();
   app.use(pinia);
@@ -30,16 +30,19 @@ function renderChat(
   return app;
 }
 
-function getTvkDefaultOptions() {
-  return JSON.parse(JSON.stringify(AppOptionsModel));
+function getTvkDefaultOptions(): AppOptions {
+  return JSON.parse(JSON.stringify(appOptionsModel));
 }
 
-function getTvkCurrentOptions() {
-  return JSON.parse(JSON.stringify(appOptionsSingleton.getInstance().options));
+function getTvkCurrentOptions(): AppOptions {
+  return JSON.parse(JSON.stringify(appOptionsSingleton.getOptions()));
 }
 
-function updateTvkOption(pathString: string, value: string | number | boolean) {
-  const options = appOptionsSingleton.getInstance().options;
+function updateTvkOption(
+  pathString: string,
+  value: string | number | boolean
+): void {
+  const options = appOptionsSingleton.getOptions();
   const path = pathString.split(".");
 
   let pointer = options;
@@ -67,11 +70,11 @@ declare global {
       renderChat: (
         target: string,
         tockEndPoint: string,
-        options: appOptions
-      ) => any;
-      getTvkDefaultOptions: () => appOptions;
-      getTvkCurrentOptions: () => appOptions;
-      updateTvkOption: (path: string, value: string | number | boolean) => null;
+        options: AppOptions
+      ) => App<Element>;
+      getTvkDefaultOptions: () => AppOptions;
+      getTvkCurrentOptions: () => AppOptions;
+      updateTvkOption: (path: string, value: string | number | boolean) => void;
     };
   }
 }

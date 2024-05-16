@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useMainStore } from "../stores/main-state";
-import { appOptionsSingleton } from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 
-const appOptions = appOptionsSingleton.getInstance().options;
+const appOptions = appOptionsSingleton.getOptions();
 
 const mainStore = useMainStore();
 
@@ -105,3 +105,4 @@ function onClearHistory() {
     </button>
   </div>
 </template>
+../utils/app-options-singleton

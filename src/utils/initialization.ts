@@ -1,9 +1,9 @@
-import { appOptionsSingleton } from "@/utils/app-options";
+import { appOptionsSingleton } from "@/utils/app-options-singleton";
 import { useMainStore } from "@/stores/main-state";
 import { MessageAuthor, MessageType } from "@/models/messages";
 
 export function appInitialization(): void {
-  const appOptions = appOptionsSingleton.getInstance().options;
+  const appOptions = appOptionsSingleton.getOptions();
 
   if (
     appOptions?.initialization?.welcomeMessage ||

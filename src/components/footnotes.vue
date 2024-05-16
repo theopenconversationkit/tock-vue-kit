@@ -2,9 +2,9 @@
 import type { PropType } from "vue";
 import Footnote from "./footnote.vue";
 import type { MessageFootnote } from "../models/messages";
-import { appOptionsSingleton } from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 
-const appOptions = appOptionsSingleton.getInstance().options;
+const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps({
   footnotes: {

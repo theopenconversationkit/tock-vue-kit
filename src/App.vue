@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import questionBlock from "./components/question-block.vue";
 import messages from "./components/messages.vue";
-import { appOptionsSingleton } from "./utils/app-options";
+import { appOptionsSingleton } from "./utils/app-options-singleton";
 import { useMainStore } from "./stores/main-state";
 import { ref } from "vue";
 
-const appOptions = appOptionsSingleton.getInstance().options;
+const appOptions = appOptionsSingleton.getOptions();
 const mainStore = useMainStore();
 
 let randomKey = ref(getRandomKey());
@@ -41,3 +41,4 @@ mainStore.$onAction(({ name, store, args, after }) => {
 </template>
 
 <style lang="scss"></style>
+./utils/app-options-singleton

@@ -2,11 +2,11 @@
 import linkifyHtml from "linkify-html";
 import Button from "./button.vue";
 import Footnotes from "./footnotes.vue";
-import { appOptionsSingleton } from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 import type { TextMessage } from "../models/messages";
 import type { PropType } from "vue";
 
-const appOptions = appOptionsSingleton.getInstance().options;
+const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps({
   message: {

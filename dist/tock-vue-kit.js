@@ -1,7 +1,7 @@
-var ys = Object.defineProperty;
-var bs = (e, t, s) => t in e ? ys(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
-var ht = (e, t, s) => (bs(e, typeof t != "symbol" ? t + "" : t, s), s);
-import { effectScope as Qt, ref as M, markRaw as Gt, hasInjectionContext as vs, inject as Jt, watch as Ts, reactive as ks, isRef as Le, isReactive as Yt, toRaw as Ss, getCurrentScope as Es, onScopeDispose as Cs, nextTick as As, toRefs as Ds, computed as Xt, defineComponent as K, openBlock as p, createElementBlock as b, unref as l, normalizeClass as me, createCommentVNode as S, normalizeStyle as he, createTextVNode as Oe, toDisplayString as U, createElementVNode as R, withModifiers as Is, withDirectives as Ns, vModelText as _s, Fragment as fe, renderList as ct, createBlock as Z, withCtx as Ls, createVNode as Zt, onMounted as Os, createApp as ws } from "vue";
+var bs = Object.defineProperty;
+var ys = (e, t, s) => t in e ? bs(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
+var ft = (e, t, s) => (ys(e, typeof t != "symbol" ? t + "" : t, s), s);
+import { effectScope as Qt, ref as M, markRaw as Gt, hasInjectionContext as vs, inject as Jt, watch as Ts, reactive as ks, isRef as Le, isReactive as Yt, toRaw as Ss, getCurrentScope as Es, onScopeDispose as Cs, nextTick as As, toRefs as Ds, computed as Xt, defineComponent as K, openBlock as p, createElementBlock as y, unref as l, normalizeClass as me, createCommentVNode as S, normalizeStyle as he, createTextVNode as we, toDisplayString as j, createElementVNode as R, withModifiers as Is, withDirectives as Ns, vModelText as Os, Fragment as fe, renderList as lt, createBlock as Z, withCtx as _s, createVNode as Zt, onMounted as Ls, createApp as ws } from "vue";
 var Rs = !1;
 /*!
  * pinia v2.1.7
@@ -9,23 +9,23 @@ var Rs = !1;
  * @license MIT
  */
 let es;
-const lt = (e) => es = e, ts = (
+const ut = (e) => es = e, ts = (
   /* istanbul ignore next */
   Symbol()
 );
-function yt(e) {
+function bt(e) {
   return e && typeof e == "object" && Object.prototype.toString.call(e) === "[object Object]" && typeof e.toJSON != "function";
 }
-var ye;
+var be;
 (function(e) {
   e.direct = "direct", e.patchObject = "patch object", e.patchFunction = "patch function";
-})(ye || (ye = {}));
+})(be || (be = {}));
 function xs() {
   const e = Qt(!0), t = e.run(() => M({}));
   let s = [], i = [];
   const n = Gt({
     install(a) {
-      lt(n), n._a = a, a.provide(ts, n), a.config.globalProperties.$pinia = n, i.forEach((o) => s.push(o)), i = [];
+      ut(n), n._a = a, a.provide(ts, n), a.config.globalProperties.$pinia = n, i.forEach((o) => s.push(o)), i = [];
     },
     use(a) {
       return !this._a && !Rs ? i.push(a) : s.push(a), this;
@@ -56,13 +56,13 @@ function ce(e, ...t) {
   });
 }
 const Ps = (e) => e();
-function bt(e, t) {
+function yt(e, t) {
   e instanceof Map && t instanceof Map && t.forEach((s, i) => e.set(i, s)), e instanceof Set && t instanceof Set && t.forEach(e.add, e);
   for (const s in t) {
     if (!t.hasOwnProperty(s))
       continue;
     const i = t[s], n = e[s];
-    yt(n) && yt(i) && e.hasOwnProperty(s) && !Le(i) && !Yt(i) ? e[s] = bt(n, i) : e[s] = i;
+    bt(n) && bt(i) && e.hasOwnProperty(s) && !Le(i) && !Yt(i) ? e[s] = yt(n, i) : e[s] = i;
   }
   return e;
 }
@@ -71,20 +71,20 @@ const Hs = (
   Symbol()
 );
 function Ms(e) {
-  return !yt(e) || !e.hasOwnProperty(Hs);
+  return !bt(e) || !e.hasOwnProperty(Hs);
 }
 const { assign: ne } = Object;
 function Bs(e) {
   return !!(Le(e) && e.effect);
 }
-function js(e, t, s, i) {
+function Us(e, t, s, i) {
   const { state: n, actions: a, getters: o } = t, r = s.state.value[e];
   let u;
   function f() {
     r || (s.state.value[e] = n ? n() : {});
-    const y = Ds(s.state.value[e]);
-    return ne(y, a, Object.keys(o || {}).reduce((g, d) => (g[d] = Gt(Xt(() => {
-      lt(s);
+    const b = Ds(s.state.value[e]);
+    return ne(b, a, Object.keys(o || {}).reduce((g, d) => (g[d] = Gt(Xt(() => {
+      ut(s);
       const C = s._s.get(e);
       return o[d].call(C, C);
     })), g), {}));
@@ -97,18 +97,18 @@ function ns(e, t, s = {}, i, n, a) {
     deep: !0
     // flush: 'post',
   };
-  let f, y, g = [], d = [], C;
+  let f, b, g = [], d = [], C;
   const h = i.state.value[e];
   !a && !h && (i.state.value[e] = {}), M({});
   let T;
   function v(D) {
     let k;
-    f = y = !1, typeof D == "function" ? (D(i.state.value[e]), k = {
-      type: ye.patchFunction,
+    f = b = !1, typeof D == "function" ? (D(i.state.value[e]), k = {
+      type: be.patchFunction,
       storeId: e,
       events: C
-    }) : (bt(i.state.value[e], D), k = {
-      type: ye.patchObject,
+    }) : (yt(i.state.value[e], D), k = {
+      type: be.patchObject,
       payload: D,
       storeId: e,
       events: C
@@ -116,7 +116,7 @@ function ns(e, t, s = {}, i, n, a) {
     const $ = T = Symbol();
     As().then(() => {
       T === $ && (f = !0);
-    }), y = !0, ce(g, k, i.state.value[e]);
+    }), b = !0, ce(g, k, i.state.value[e]);
   }
   const E = a ? function() {
     const { state: k } = s, $ = k ? k() : {};
@@ -127,12 +127,12 @@ function ns(e, t, s = {}, i, n, a) {
     /* istanbul ignore next */
     ss
   );
-  function _() {
+  function O() {
     o.stop(), g = [], d = [], i._s.delete(e);
   }
-  function L(D, k) {
+  function _(D, k) {
     return function() {
-      lt(i);
+      ut(i);
       const $ = Array.from(arguments), W = [], te = [];
       function pe(w) {
         W.push(w);
@@ -165,24 +165,24 @@ function ns(e, t, s = {}, i, n, a) {
     $reset: E,
     $subscribe(D, k = {}) {
       const $ = Ht(g, D, k.detached, () => W()), W = o.run(() => Ts(() => i.state.value[e], (te) => {
-        (k.flush === "sync" ? y : f) && D({
+        (k.flush === "sync" ? b : f) && D({
           storeId: e,
-          type: ye.direct,
+          type: be.direct,
           events: C
         }, te);
       }, ne({}, u, k)));
       return $;
     },
-    $dispose: _
+    $dispose: O
   }, A = ks(I);
   i._s.set(e, A);
   const z = (i._a && i._a.runWithContext || Ps)(() => i._e.run(() => (o = Qt()).run(t)));
   for (const D in z) {
     const k = z[D];
     if (Le(k) && !Bs(k) || Yt(k))
-      a || (h && Ms(k) && (Le(k) ? k.value = h[D] : bt(k, h[D])), i.state.value[e][D] = k);
+      a || (h && Ms(k) && (Le(k) ? k.value = h[D] : yt(k, h[D])), i.state.value[e][D] = k);
     else if (typeof k == "function") {
-      const $ = L(D, k);
+      const $ = _(D, k);
       z[D] = $, r.actions[D] = k;
     }
   }
@@ -200,9 +200,9 @@ function ns(e, t, s = {}, i, n, a) {
       pinia: i,
       options: r
     })));
-  }), h && a && s.hydrate && s.hydrate(A.$state, h), f = !0, y = !0, A;
+  }), h && a && s.hydrate && s.hydrate(A.$state, h), f = !0, b = !0, A;
 }
-function Us(e, t, s) {
+function js(e, t, s) {
   let i, n;
   const a = typeof t == "function";
   typeof e == "string" ? (i = e, n = a ? s : t) : (n = e, i = e.id);
@@ -210,7 +210,7 @@ function Us(e, t, s) {
     const f = vs();
     return r = // in test mode, ignore the argument provided as we can always retrieve a
     // pinia instance with getActivePinia()
-    r || (f ? Jt(ts, null) : null), r && lt(r), r = es, r._s.has(i) || (a ? ns(i, t, n, r) : js(i, n, r)), r._s.get(i);
+    r || (f ? Jt(ts, null) : null), r && ut(r), r = es, r._s.has(i) || (a ? ns(i, t, n, r) : Us(i, n, r)), r._s.get(i);
   }
   return o.$id = i, o;
 }
@@ -219,254 +219,251 @@ function zs() {
   return (e + t).toUpperCase();
 }
 const is = Symbol("tockEndpointKey");
-var O = /* @__PURE__ */ ((e) => (e.bot = "bot", e.user = "user", e.app = "app", e))(O || {}), P = /* @__PURE__ */ ((e) => (e.message = "message", e.card = "card", e.carousel = "carousel", e.image = "image", e.loader = "loader", e))(P || {});
-function ft(e) {
-  return e && typeof e == "object" && !Array.isArray(e);
+var L = /* @__PURE__ */ ((e) => (e.bot = "bot", e.user = "user", e.app = "app", e))(L || {}), P = /* @__PURE__ */ ((e) => (e.message = "message", e.card = "card", e.carousel = "carousel", e.image = "image", e.loader = "loader", e))(P || {});
+function Ne(e) {
+  return !!(e && typeof e == "object" && !Array.isArray(e));
 }
 function vt(e, ...t) {
   if (!t.length)
     return e;
   const s = t.shift();
-  if (ft(e) && ft(s))
+  if (Ne(e) && Ne(s))
     for (const i in s)
-      ft(s[i]) ? (e[i] || Object.assign(e, { [i]: {} }), vt(e[i], s[i])) : Object.assign(e, { [i]: s[i] });
+      Ne(s[i]) ? (e[i] || Object.assign(e, { [i]: {} }), vt(e[i], s[i])) : Object.assign(e, { [i]: s[i] });
   return vt(e, ...t);
 }
-function $s(e) {
-  return !!(e && typeof e == "object" && !Array.isArray(e));
-}
-const as = {
-  localStorage: {
-    enabled: {
+const $s = {
+  enabled: {
+    type: "boolean",
+    default: !1,
+    title: "Local storage",
+    description: "Retain conversation history in local storage"
+  },
+  maxNumberMessages: {
+    type: "number",
+    default: 20,
+    title: "Maximum messages",
+    description: "Maximum number of messages to store in local storage"
+  },
+  prefix: {
+    type: "string",
+    default: void 0,
+    title: "Local storage prefix",
+    description: "Prefix for local storage keys allowing communication with different bots from the same domain"
+  }
+}, qs = {
+  welcomeMessage: {
+    type: "string",
+    default: void 0,
+    title: "Welcome message",
+    description: "Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any."
+  },
+  openingMessage: {
+    type: "string",
+    default: void 0,
+    title: "Opening message",
+    description: "Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any."
+  }
+}, Vs = {
+  messages: {
+    clearOnNewRequest: {
       type: "boolean",
       default: !1,
-      title: "Local storage",
-      description: "Retain conversation history in local storage"
+      title: "Clear on new message",
+      description: "If true, deletes previous messages when a new user request is sent"
     },
-    maxNumberMessages: {
-      type: "number",
-      default: 20,
-      title: "Maximum messages",
-      description: "Maximum number of messages to store in local storage"
+    hideIfNoMessages: {
+      type: "boolean",
+      default: !0,
+      title: "Hide messages if no messages",
+      description: "Hide messages container if there is no messages to display."
     },
-    prefix: {
-      type: "string",
-      default: void 0,
-      title: "Local storage prefix",
-      description: "Prefix for local storage keys allowing communication with different bots from the same domain"
-    }
-  },
-  initialization: {
-    welcomeMessage: {
-      type: "string",
-      default: void 0,
-      title: "Welcome message",
-      description: "Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any."
-    },
-    openingMessage: {
-      type: "string",
-      default: void 0,
-      title: "Opening message",
-      description: "Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any."
-    }
-  },
-  preferences: {
-    messages: {
-      clearOnNewRequest: {
+    message: {
+      hideUserMessages: {
         type: "boolean",
         default: !1,
-        title: "Clear on new message",
-        description: "If true, deletes previous messages when a new user request is sent"
+        title: "Hide user messages",
+        description: "If true, user messages are not displayed."
       },
-      hideIfNoMessages: {
-        type: "boolean",
-        default: !0,
-        title: "Hide messages if no messages",
-        description: "Hide messages container if there is no messages to display."
-      },
-      message: {
-        hideUserMessages: {
-          type: "boolean",
-          default: !1,
-          title: "Hide user messages",
-          description: "If true, user messages are not displayed."
-        },
-        header: {
-          display: {
-            type: "boolean",
-            default: !0,
-            title: "Display header",
-            description: "Display a header above message."
-          },
-          avatar: {
-            display: {
-              type: "boolean",
-              default: !0,
-              title: "Display header avatar",
-              description: "Display an avatar in message header."
-            },
-            userIcon: {
-              type: "string",
-              default: "bi bi-person-fill",
-              title: "User icon",
-              description: "Class name of the user avatar icon (displayed only if User image is not defined)."
-            },
-            userImage: {
-              type: "imageDef",
-              default: void 0,
-              title: "User image",
-              description: "Image of the user avatar"
-            },
-            botIcon: {
-              type: "string",
-              default: "bi bi-robot",
-              title: "Bot icon",
-              description: "Class name of the bot avatar icon (displayed only if Bot image is not defined)."
-            },
-            botImage: {
-              type: "imageDef",
-              default: void 0,
-              title: "Bot image",
-              description: "Image of the bot avatar"
-            }
-          },
-          label: {
-            display: {
-              type: "boolean",
-              default: !0,
-              title: "Display header label",
-              description: "Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content)."
-            }
-          }
-        }
-      },
-      footNotes: {
-        requireSourcesContent: {
-          type: "boolean",
-          default: !1,
-          title: "Request textual content of sources",
-          description: "For RAG answers, request the textual content of the source in addition to the source title and link."
-        }
-      }
-    },
-    questionBar: {
-      clearTypedCharsOnSubmit: {
-        type: "boolean",
-        default: !0,
-        title: "Clear input on submit",
-        description: "Whether or not the question input should be cleared on submit."
-      },
-      maxUserInputLength: {
-        type: "number",
-        default: 500,
-        title: "Max user message length",
-        description: "Max length of the user input message string"
-      },
-      clearHistory: {
+      header: {
         display: {
           type: "boolean",
           default: !0,
-          title: "Show clear history button",
-          description: "Display the control allowing user to clear discussion history and local storage history, if any"
+          title: "Display header",
+          description: "Display a header above message."
         },
-        icon: {
-          type: "string",
-          default: "bi bi-trash-fill",
-          title: "Clear history button icon",
-          description: "Class name of the clear history control icon (displayed only if no image is defined)"
-        },
-        image: {
-          type: "imageDef",
-          default: void 0,
-          title: "Clear history button image",
-          description: "Image of the clearHistory control"
-        }
-      },
-      submit: {
-        icon: {
-          type: "string",
-          default: "bi bi-send-fill",
-          title: "Submit button icon",
-          description: "Class name of the submit control icon (displayed only if no image is defined)"
-        },
-        image: {
-          type: "imageDef",
-          default: void 0,
-          title: "Submit button image",
-          description: "Image of the submit control"
-        }
-      }
-    }
-  },
-  wording: {
-    messages: {
-      message: {
-        header: {
-          labelUser: {
-            type: "string",
-            default: "You",
-            title: "Message header user label",
-            description: void 0
+        avatar: {
+          display: {
+            type: "boolean",
+            default: !0,
+            title: "Display header avatar",
+            description: "Display an avatar in message header."
           },
-          labelBot: {
+          userIcon: {
             type: "string",
-            default: "Bot",
-            title: "Message header bot label",
-            description: void 0
+            default: "bi bi-person-fill",
+            title: "User icon",
+            description: "Class name of the user avatar icon (displayed only if User image is not defined)."
+          },
+          userImage: {
+            type: "ImageDef",
+            default: void 0,
+            title: "User image",
+            description: "Image of the user avatar"
+          },
+          botIcon: {
+            type: "string",
+            default: "bi bi-robot",
+            title: "Bot icon",
+            description: "Class name of the bot avatar icon (displayed only if Bot image is not defined)."
+          },
+          botImage: {
+            type: "ImageDef",
+            default: void 0,
+            title: "Bot image",
+            description: "Image of the bot avatar"
           }
         },
-        footnotes: {
-          sources: {
-            type: "string",
-            default: "Sources :",
-            title: "Footnotes label",
-            description: void 0
+        label: {
+          display: {
+            type: "boolean",
+            default: !0,
+            title: "Display header label",
+            description: "Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content)."
           }
         }
       }
     },
-    questionBar: {
-      clearHistory: {
-        type: "string",
-        default: "",
-        title: "Clear history button label",
-        description: void 0
+    footNotes: {
+      requireSourcesContent: {
+        type: "boolean",
+        default: !1,
+        title: "Request textual content of sources",
+        description: "For RAG answers, request the textual content of the source in addition to the source title and link."
+      }
+    }
+  },
+  questionBar: {
+    clearTypedCharsOnSubmit: {
+      type: "boolean",
+      default: !0,
+      title: "Clear input on submit",
+      description: "Whether or not the question input should be cleared on submit."
+    },
+    maxUserInputLength: {
+      type: "number",
+      default: 500,
+      title: "Max user message length",
+      description: "Max length of the user input message string"
+    },
+    clearHistory: {
+      display: {
+        type: "boolean",
+        default: !0,
+        title: "Show clear history button",
+        description: "Display the control allowing user to clear discussion history and local storage history, if any"
       },
-      clearHistoryAriaLabel: {
+      icon: {
         type: "string",
-        default: "Clear discussion and history button",
-        title: "Clear history button Aria label",
-        description: void 0
+        default: "bi bi-trash-fill",
+        title: "Clear history button icon",
+        description: "Class name of the clear history control icon (displayed only if no image is defined)"
       },
-      input: {
-        placeholder: {
-          type: "string",
-          default: "Ask me a question...",
-          title: "User input placeholder",
-          description: void 0
-        }
-      },
-      submit: {
+      image: {
+        type: "ImageDef",
+        default: void 0,
+        title: "Clear history button image",
+        description: "Image of the clearHistory control"
+      }
+    },
+    submit: {
+      icon: {
         type: "string",
-        default: "",
-        title: "Submit button label",
-        description: void 0
+        default: "bi bi-send-fill",
+        title: "Submit button icon",
+        description: "Class name of the submit control icon (displayed only if no image is defined)"
       },
-      submitAriaLabel: {
-        type: "string",
-        default: "Submit button",
-        title: "Submit button Aria label",
-        description: void 0
+      image: {
+        type: "ImageDef",
+        default: void 0,
+        title: "Submit button image",
+        description: "Image of the submit control"
       }
     }
   }
+}, Ws = {
+  messages: {
+    message: {
+      header: {
+        labelUser: {
+          type: "string",
+          default: "You",
+          title: "Message header user label",
+          description: void 0
+        },
+        labelBot: {
+          type: "string",
+          default: "Bot",
+          title: "Message header bot label",
+          description: void 0
+        }
+      },
+      footnotes: {
+        sources: {
+          type: "string",
+          default: "Sources :",
+          title: "Footnotes label",
+          description: void 0
+        }
+      }
+    }
+  },
+  questionBar: {
+    clearHistory: {
+      type: "string",
+      default: "",
+      title: "Clear history button label",
+      description: void 0
+    },
+    clearHistoryAriaLabel: {
+      type: "string",
+      default: "Clear discussion and history button",
+      title: "Clear history button Aria label",
+      description: void 0
+    },
+    input: {
+      placeholder: {
+        type: "string",
+        default: "Ask me a question...",
+        title: "User input placeholder",
+        description: void 0
+      }
+    },
+    submit: {
+      type: "string",
+      default: "",
+      title: "Submit button label",
+      description: void 0
+    },
+    submitAriaLabel: {
+      type: "string",
+      default: "Submit button",
+      title: "Submit button Aria label",
+      description: void 0
+    }
+  }
+}, as = {
+  localStorage: $s,
+  initialization: qs,
+  preferences: Vs,
+  wording: Ws
 };
-function qs(e) {
+function Ks(e) {
   return "type" in e && "default" in e && "title" in e && "description" in e;
 }
 function os(e, t = {}) {
-  if ($s(e)) {
-    if (qs(e))
+  if (Ne(e)) {
+    if (Ks(e))
       return e.default;
     {
       const s = Object.entries(e);
@@ -480,26 +477,29 @@ function os(e, t = {}) {
 }
 const X = class X {
   constructor(t) {
-    ht(this, "options");
-    const s = os(
-      as
-    );
+    ft(this, "options");
+    const s = os(as);
     this.options = vt(s, t);
   }
   static clearInstance() {
     X.instance && (X.instance = void 0);
   }
-  static getInstance(t) {
-    return X.instance || (X.instance = new X(t)), X.instance;
+  static setOptions(t) {
+    X.instance = new X(t);
+  }
+  static getOptions() {
+    if (!X.instance)
+      throw new Error("No TVK instance avalaible.");
+    return X.instance.options;
   }
 };
-ht(X, "instance");
+ft(X, "instance");
 let B = X;
-const Vs = "main", Mt = "main_storage", Ws = () => ({
+const Fs = "main", Mt = "main_storage", Qs = () => ({
   userId: zs(),
   messages: []
-}), ee = Us(Vs, () => {
-  const e = Jt(is), t = B.getInstance().options, s = M(n());
+}), ee = js(Fs, () => {
+  const e = Jt(is), t = B.getOptions(), s = M(n());
   function i() {
   }
   function n() {
@@ -508,7 +508,7 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
       if (h)
         return h;
     }
-    return Ws();
+    return Qs();
   }
   function a() {
     if (!t.localStorage.enabled)
@@ -526,16 +526,16 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
   }
   function f() {
   }
-  function y(h) {
+  function b(h) {
     const T = ee();
     T.clearLoaderMessages(), T.scrollMessages(), g(h), s.value.messages.push(h);
   }
   function g(h) {
     function T() {
-      const E = Math.max(Math.random(), 0.3), _ = Math.max(Math.random(), 0.3), L = Math.ceil(E * 500), I = Math.ceil(_ * 500), A = Math.ceil(1), N = Math.floor(1084);
+      const E = Math.max(Math.random(), 0.3), O = Math.max(Math.random(), 0.3), _ = Math.ceil(E * 500), I = Math.ceil(O * 500), A = Math.ceil(1), N = Math.floor(1084);
       return `https://picsum.photos/id/${Math.floor(
         Math.random() * (N - A) + A
-      )}/${L}/${I}`;
+      )}/${_}/${I}`;
     }
     h.type === P.card && (h.file.url = T()), h.type === P.carousel && h.cards.forEach((v) => {
       v.file.url = T();
@@ -545,42 +545,42 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
     const v = ee();
     t.preferences.messages.clearOnNewRequest && (s.value.messages = []), T && v.addMessage({
       type: P.message,
-      author: O.user,
+      author: L.user,
       text: h,
       date: Date.now()
     }), v.addMessage({
       type: P.loader,
-      author: O.app,
+      author: L.app,
       date: Date.now()
     });
-    const E = navigator.language, _ = {
+    const E = navigator.language, O = {
       query: h,
       userId: s.value.userId,
       locale: E,
       sourceWithContent: t.preferences.messages.footNotes.requireSourcesContent
-    }, L = await (await fetch(e, {
+    }, _ = await (await fetch(e, {
       method: "post",
-      body: JSON.stringify(_)
+      body: JSON.stringify(O)
     })).json();
-    if (v.clearLoaderMessages(), L.responses.forEach((I) => {
+    if (v.clearLoaderMessages(), _.responses.forEach((I) => {
       delete I.type, delete I.version, "text" in I ? v.addMessage({
         type: P.message,
-        author: O.bot,
+        author: L.bot,
         date: Date.now(),
         ...I
       }) : "card" in I ? v.addMessage({
         type: P.card,
-        author: O.bot,
+        author: L.bot,
         date: Date.now(),
         ...I.card
       }) : "image" in I ? v.addMessage({
         type: P.image,
-        author: O.bot,
+        author: L.bot,
         date: Date.now(),
         ...I.image
       }) : "carousel" in I && v.addMessage({
         type: P.carousel,
-        author: O.bot,
+        author: L.bot,
         date: Date.now(),
         ...I.carousel
       });
@@ -607,15 +607,15 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
     getStoredState: a,
     getMessages: r,
     sendUserMessage: d,
-    addMessage: y,
+    addMessage: b,
     clearHistory: C,
     clearLoaderMessages: u,
     scrollMessages: f
   };
-}), Ks = ["aria-label"], Fs = ["src"], Qs = ["maxlength", "placeholder"], Gs = { class: "tvk-question-bar-chars-count" }, Js = ["disabled", "aria-label"], Ys = ["src"], Xs = /* @__PURE__ */ K({
+}), Gs = ["aria-label"], Js = ["src"], Ys = ["maxlength", "placeholder"], Xs = { class: "tvk-question-bar-chars-count" }, Zs = ["disabled", "aria-label"], en = ["src"], tn = /* @__PURE__ */ K({
   __name: "question-block",
   setup(e) {
-    const t = B.getInstance().options, s = ee(), i = t.preferences.questionBar.maxUserInputLength, n = M(null), a = M("");
+    const t = B.getOptions(), s = ee(), i = t.preferences.questionBar.maxUserInputLength, n = M(null), a = M("");
     function o() {
       n != null && n.value && n.value.focus();
     }
@@ -628,35 +628,35 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
     function f() {
       r() && !u() && (s.sendUserMessage(a.value), t.preferences.questionBar.clearTypedCharsOnSubmit && (a.value = ""));
     }
-    function y() {
+    function b() {
       s.clearHistory();
     }
     return (g, d) => {
       var C;
-      return p(), b("div", {
+      return p(), y("div", {
         class: "tvk-question-bar",
         onClick: o
       }, [
-        (C = l(t).preferences.questionBar.clearHistory) != null && C.display ? (p(), b("button", {
+        (C = l(t).preferences.questionBar.clearHistory) != null && C.display ? (p(), y("button", {
           key: 0,
           class: "tvk-btn tvk-question-bar-btn-clear-history",
           "aria-label": l(t).wording.questionBar.clearHistoryAriaLabel,
-          onClick: y
+          onClick: b
         }, [
-          !l(t).preferences.questionBar.clearHistory.image && l(t).preferences.questionBar.clearHistory.icon ? (p(), b("i", {
+          !l(t).preferences.questionBar.clearHistory.image && l(t).preferences.questionBar.clearHistory.icon ? (p(), y("i", {
             key: 0,
             class: me(l(t).preferences.questionBar.clearHistory.icon)
           }, null, 2)) : S("", !0),
-          l(t).preferences.questionBar.clearHistory.image ? (p(), b("img", {
+          l(t).preferences.questionBar.clearHistory.image ? (p(), y("img", {
             key: 1,
             src: l(t).preferences.questionBar.clearHistory.image.src,
             style: he({
               width: l(t).preferences.questionBar.clearHistory.image.width,
               height: l(t).preferences.questionBar.clearHistory.image.height
             })
-          }, null, 12, Fs)) : S("", !0),
-          Oe(" " + U(l(t).wording.questionBar.clearHistory), 1)
-        ], 8, Ks)) : S("", !0),
+          }, null, 12, Js)) : S("", !0),
+          we(" " + j(l(t).wording.questionBar.clearHistory), 1)
+        ], 8, Gs)) : S("", !0),
         R("form", {
           onSubmit: Is(f, ["prevent"]),
           class: "tvk-question-bar-form"
@@ -668,10 +668,10 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
             maxlength: l(t).preferences.questionBar.maxUserInputLength,
             placeholder: l(t).wording.questionBar.input.placeholder,
             "onUpdate:modelValue": d[0] || (d[0] = (h) => a.value = h)
-          }, null, 8, Qs), [
-            [_s, a.value]
+          }, null, 8, Ys), [
+            [Os, a.value]
           ]),
-          R("div", Gs, U(r()) + "/" + U(l(i)), 1)
+          R("div", Xs, j(r()) + "/" + j(l(i)), 1)
         ], 32),
         R("button", {
           disabled: !a.value.trim().length || u(),
@@ -679,49 +679,49 @@ const Vs = "main", Mt = "main_storage", Ws = () => ({
           "aria-label": l(t).wording.questionBar.submitAriaLabel,
           onClick: f
         }, [
-          !l(t).preferences.questionBar.submit.image && l(t).preferences.questionBar.submit.icon ? (p(), b("i", {
+          !l(t).preferences.questionBar.submit.image && l(t).preferences.questionBar.submit.icon ? (p(), y("i", {
             key: 0,
             class: me(l(t).preferences.questionBar.submit.icon)
           }, null, 2)) : S("", !0),
-          l(t).preferences.questionBar.submit.image ? (p(), b("img", {
+          l(t).preferences.questionBar.submit.image ? (p(), y("img", {
             key: 1,
             src: l(t).preferences.questionBar.submit.image.src,
             style: he({
               width: l(t).preferences.questionBar.submit.image.width,
               height: l(t).preferences.questionBar.submit.image.height
             })
-          }, null, 12, Ys)) : S("", !0),
-          Oe(" " + U(l(t).wording.questionBar.submit), 1)
-        ], 8, Js)
+          }, null, 12, en)) : S("", !0),
+          we(" " + j(l(t).wording.questionBar.submit), 1)
+        ], 8, Zs)
       ]);
     };
   }
-}), Zs = "aaa1rp3bb0ott3vie4c1le2ogado5udhabi7c0ademy5centure6ountant0s9o1tor4d0s1ult4e0g1ro2tna4f0l1rica5g0akhan5ency5i0g1rbus3force5tel5kdn3l0ibaba4pay4lfinanz6state5y2sace3tom5m0azon4ericanexpress7family11x2fam3ica3sterdam8nalytics7droid5quan4z2o0l2partments8p0le4q0uarelle8r0ab1mco4chi3my2pa2t0e3s0da2ia2sociates9t0hleta5torney7u0ction5di0ble3o3spost5thor3o0s4vianca6w0s2x0a2z0ure5ba0by2idu3namex3narepublic11d1k2r0celona5laycard4s5efoot5gains6seball5ketball8uhaus5yern5b0c1t1va3cg1n2d1e0ats2uty4er2ntley5rlin4st0buy5t2f1g1h0arti5i0ble3d1ke2ng0o3o1z2j1lack0friday9ockbuster8g1omberg7ue3m0s1w2n0pparibas9o0ats3ehringer8fa2m1nd2o0k0ing5sch2tik2on4t1utique6x2r0adesco6idgestone9oadway5ker3ther5ussels7s1t1uild0ers6siness6y1zz3v1w1y1z0h3ca0b1fe2l0l1vinklein9m0era3p2non3petown5ital0one8r0avan4ds2e0er0s4s2sa1e1h1ino4t0ering5holic7ba1n1re3c1d1enter4o1rn3f0a1d2g1h0anel2nel4rity4se2t2eap3intai5ristmas6ome4urch5i0priani6rcle4sco3tadel4i0c2y3k1l0aims4eaning6ick2nic1que6othing5ud3ub0med6m1n1o0ach3des3ffee4llege4ogne5m0cast4mbank4unity6pany2re3uter5sec4ndos3struction8ulting7tact3ractors9oking4l1p2rsica5untry4pon0s4rses6pa2r0edit0card4union9icket5own3s1uise0s6u0isinella9v1w1x1y0mru3ou3z2dabur3d1nce3ta1e1ing3sun4y2clk3ds2e0al0er2s3gree4livery5l1oitte5ta3mocrat6ntal2ist5si0gn4v2hl2iamonds6et2gital5rect0ory7scount3ver5h2y2j1k1m1np2o0cs1tor4g1mains5t1wnload7rive4tv2ubai3nlop4pont4rban5vag2r2z2earth3t2c0o2deka3u0cation8e1g1mail3erck5nergy4gineer0ing9terprises10pson4quipment8r0icsson6ni3s0q1tate5t1u0rovision8s2vents5xchange6pert3osed4ress5traspace10fage2il1rwinds6th3mily4n0s2rm0ers5shion4t3edex3edback6rrari3ero6i0delity5o2lm2nal1nce1ial7re0stone6mdale6sh0ing5t0ness6j1k1lickr3ghts4r2orist4wers5y2m1o0o0d1tball6rd1ex2sale4um3undation8x2r0ee1senius7l1ogans4ntier7tr2ujitsu5n0d2rniture7tbol5yi3ga0l0lery3o1up4me0s3p1rden4y2b0iz3d0n2e0a1nt0ing5orge5f1g0ee3h1i0ft0s3ves2ing5l0ass3e1obal2o4m0ail3bh2o1x2n1odaddy5ld0point6f2o0dyear5g0le4p1t1v2p1q1r0ainger5phics5tis4een3ipe3ocery4up4s1t1u0ardian6cci3ge2ide2tars5ru3w1y2hair2mburg5ngout5us3bo2dfc0bank7ealth0care8lp1sinki6re1mes5iphop4samitsu7tachi5v2k0t2m1n1ockey4ldings5iday5medepot5goods5s0ense7nda3rse3spital5t0ing5t0els3mail5use3w2r1sbc3t1u0ghes5yatt3undai7ibm2cbc2e1u2d1e0ee3fm2kano4l1m0amat4db2mo0bilien9n0c1dustries8finiti5o2g1k1stitute6urance4e4t0ernational10uit4vestments10o1piranga7q1r0ish4s0maili5t0anbul7t0au2v3jaguar4va3cb2e0ep2tzt3welry6io2ll2m0p2nj2o0bs1urg4t1y2p0morgan6rs3uegos4niper7kaufen5ddi3e0rryhotels6logistics9properties14fh2g1h1i0a1ds2m1ndle4tchen5wi3m1n1oeln3matsu5sher5p0mg2n2r0d1ed3uokgroup8w1y0oto4z2la0caixa5mborghini8er3ncaster6d0rover6xess5salle5t0ino3robe5w0yer5b1c1ds2ease3clerc5frak4gal2o2xus4gbt3i0dl2fe0insurance9style7ghting6ke2lly3mited4o2ncoln4k2psy3ve1ing5k1lc1p2oan0s3cker3us3l1ndon4tte1o3ve3pl0financial11r1s1t0d0a3u0ndbeck6xe1ury5v1y2ma0drid4if1son4keup4n0agement7go3p1rket0ing3s4riott5shalls7ttel5ba2c0kinsey7d1e0d0ia3et2lbourne7me1orial6n0u2rckmsd7g1h1iami3crosoft7l1ni1t2t0subishi9k1l0b1s2m0a2n1o0bi0le4da2e1i1m1nash3ey2ster5rmon3tgage6scow4to0rcycles9v0ie4p1q1r1s0d2t0n1r2u0seum3ic4v1w1x1y1z2na0b1goya4me2tura4vy3ba2c1e0c1t0bank4flix4work5ustar5w0s2xt0direct7us4f0l2g0o2hk2i0co2ke1on3nja3ssan1y5l1o0kia3rton4w0ruz3tv4p1r0a1w2tt2u1yc2z2obi1server7ffice5kinawa6layan0group9dnavy5lo3m0ega4ne1g1l0ine5oo2pen3racle3nge4g0anic5igins6saka4tsuka4t2vh3pa0ge2nasonic7ris2s1tners4s1y3y2ccw3e0t2f0izer5g1h0armacy6d1ilips5one2to0graphy6s4ysio5ics1tet2ures6d1n0g1k2oneer5zza4k1l0ace2y0station9umbing5s3m1n0c2ohl2ker3litie5rn2st3r0america6xi3ess3ime3o0d0uctions8f1gressive8mo2perties3y5tection8u0dential9s1t1ub2w0c2y2qa1pon3uebec3st5racing4dio4e0ad1lestate6tor2y4cipes5d0stone5umbrella9hab3ise0n3t2liance6n0t0als5pair3ort3ublican8st0aurant8view0s5xroth6ich0ardli6oh3l1o1p2o0cks3deo3gers4om3s0vp3u0gby3hr2n2w0e2yukyu6sa0arland6fe0ty4kura4le1on3msclub4ung5ndvik0coromant12ofi4p1rl2s1ve2xo3b0i1s2c0a1b1haeffler7midt4olarships8ol3ule3warz5ience5ot3d1e0arch3t2cure1ity6ek2lect4ner3rvices6ven3w1x0y3fr2g1h0angrila6rp2w2ell3ia1ksha5oes2p0ping5uji3w3i0lk2na1gles5te3j1k0i0n2y0pe4l0ing4m0art3ile4n0cf3o0ccer3ial4ftbank4ware6hu2lar2utions7ng1y2y2pa0ce3ort2t3r0l2s1t0ada2ples4r1tebank4farm7c0group6ockholm6rage3e3ream4udio2y3yle4u0cks3pplies3y2ort5rf1gery5zuki5v1watch4iss4x1y0dney4stems6z2tab1ipei4lk2obao4rget4tamotors6r2too4x0i3c0i2d0k2eam2ch0nology8l1masek5nnis4va3f1g1h0d1eater2re6iaa2ckets5enda4ps2res2ol4j0maxx4x2k0maxx5l1m0all4n1o0day3kyo3ols3p1ray3shiba5tal3urs3wn2yota3s3r0ade1ing4ining5vel0ers0insurance16ust3v2t1ube2i1nes3shu4v0s2w1z2ua1bank3s2g1k1nicom3versity8o2ol2ps2s1y1z2va0cations7na1guard7c1e0gas3ntures6risign5mögensberater2ung14sicherung10t2g1i0ajes4deo3g1king4llas4n1p1rgin4sa1ion4va1o3laanderen9n1odka3lvo3te1ing3o2yage5u2wales2mart4ter4ng0gou5tch0es6eather0channel12bcam3er2site5d0ding5ibo2r3f1hoswho6ien2ki2lliamhill9n0dows4e1ners6me2olterskluwer11odside6rk0s2ld3w2s1tc1f3xbox3erox4finity6ihuan4n2xx2yz3yachts4hoo3maxun5ndex5e1odobashi7ga2kohama6u0tube6t1un3za0ppos4ra3ero3ip2m1one3uerich6w2", en = "ελ1υ2бг1ел3дети4ею2католик6ом3мкд2он1сква6онлайн5рг3рус2ф2сайт3рб3укр3қаз3հայ3ישראל5קום3ابوظبي5رامكو5لاردن4بحرين5جزائر5سعودية6عليان5مغرب5مارات5یران5بارت2زار4يتك3ھارت5تونس4سودان3رية5شبكة4عراق2ب2مان4فلسطين6قطر3كاثوليك6وم3مصر2ليسيا5وريتانيا7قع4همراه5پاکستان7ڀارت4कॉम3नेट3भारत0म्3ोत5संगठन5বাংলা5ভারত2ৰত4ਭਾਰਤ4ભારત4ଭାରତ4இந்தியா6லங்கை6சிங்கப்பூர்11భారత్5ಭಾರತ4ഭാരതം5ලංකා4คอม3ไทย3ລາວ3გე2みんな3アマゾン4クラウド4グーグル4コム2ストア3セール3ファッション6ポイント4世界2中信1国1國1文网3亚马逊3企业2佛山2信息2健康2八卦2公司1益2台湾1灣2商城1店1标2嘉里0大酒店5在线2大拿2天主教3娱乐2家電2广东2微博2慈善2我爱你3手机2招聘2政务1府2新加坡2闻2时尚2書籍2机构2淡马锡3游戏2澳門2点看2移动2组织机构4网址1店1站1络2联通2谷歌2购物2通販2集团2電訊盈科4飞利浦3食品2餐厅2香格里拉3港2닷넷1컴2삼성2한국2", de = (e, t) => {
+}), sn = "aaa1rp3bb0ott3vie4c1le2ogado5udhabi7c0ademy5centure6ountant0s9o1tor4d0s1ult4e0g1ro2tna4f0l1rica5g0akhan5ency5i0g1rbus3force5tel5kdn3l0ibaba4pay4lfinanz6state5y2sace3tom5m0azon4ericanexpress7family11x2fam3ica3sterdam8nalytics7droid5quan4z2o0l2partments8p0le4q0uarelle8r0ab1mco4chi3my2pa2t0e3s0da2ia2sociates9t0hleta5torney7u0ction5di0ble3o3spost5thor3o0s4vianca6w0s2x0a2z0ure5ba0by2idu3namex3narepublic11d1k2r0celona5laycard4s5efoot5gains6seball5ketball8uhaus5yern5b0c1t1va3cg1n2d1e0ats2uty4er2ntley5rlin4st0buy5t2f1g1h0arti5i0ble3d1ke2ng0o3o1z2j1lack0friday9ockbuster8g1omberg7ue3m0s1w2n0pparibas9o0ats3ehringer8fa2m1nd2o0k0ing5sch2tik2on4t1utique6x2r0adesco6idgestone9oadway5ker3ther5ussels7s1t1uild0ers6siness6y1zz3v1w1y1z0h3ca0b1fe2l0l1vinklein9m0era3p2non3petown5ital0one8r0avan4ds2e0er0s4s2sa1e1h1ino4t0ering5holic7ba1n1re3c1d1enter4o1rn3f0a1d2g1h0anel2nel4rity4se2t2eap3intai5ristmas6ome4urch5i0priani6rcle4sco3tadel4i0c2y3k1l0aims4eaning6ick2nic1que6othing5ud3ub0med6m1n1o0ach3des3ffee4llege4ogne5m0cast4mbank4unity6pany2re3uter5sec4ndos3struction8ulting7tact3ractors9oking4l1p2rsica5untry4pon0s4rses6pa2r0edit0card4union9icket5own3s1uise0s6u0isinella9v1w1x1y0mru3ou3z2dabur3d1nce3ta1e1ing3sun4y2clk3ds2e0al0er2s3gree4livery5l1oitte5ta3mocrat6ntal2ist5si0gn4v2hl2iamonds6et2gital5rect0ory7scount3ver5h2y2j1k1m1np2o0cs1tor4g1mains5t1wnload7rive4tv2ubai3nlop4pont4rban5vag2r2z2earth3t2c0o2deka3u0cation8e1g1mail3erck5nergy4gineer0ing9terprises10pson4quipment8r0icsson6ni3s0q1tate5t1u0rovision8s2vents5xchange6pert3osed4ress5traspace10fage2il1rwinds6th3mily4n0s2rm0ers5shion4t3edex3edback6rrari3ero6i0delity5o2lm2nal1nce1ial7re0stone6mdale6sh0ing5t0ness6j1k1lickr3ghts4r2orist4wers5y2m1o0o0d1tball6rd1ex2sale4um3undation8x2r0ee1senius7l1ogans4ntier7tr2ujitsu5n0d2rniture7tbol5yi3ga0l0lery3o1up4me0s3p1rden4y2b0iz3d0n2e0a1nt0ing5orge5f1g0ee3h1i0ft0s3ves2ing5l0ass3e1obal2o4m0ail3bh2o1x2n1odaddy5ld0point6f2o0dyear5g0le4p1t1v2p1q1r0ainger5phics5tis4een3ipe3ocery4up4s1t1u0ardian6cci3ge2ide2tars5ru3w1y2hair2mburg5ngout5us3bo2dfc0bank7ealth0care8lp1sinki6re1mes5iphop4samitsu7tachi5v2k0t2m1n1ockey4ldings5iday5medepot5goods5s0ense7nda3rse3spital5t0ing5t0els3mail5use3w2r1sbc3t1u0ghes5yatt3undai7ibm2cbc2e1u2d1e0ee3fm2kano4l1m0amat4db2mo0bilien9n0c1dustries8finiti5o2g1k1stitute6urance4e4t0ernational10uit4vestments10o1piranga7q1r0ish4s0maili5t0anbul7t0au2v3jaguar4va3cb2e0ep2tzt3welry6io2ll2m0p2nj2o0bs1urg4t1y2p0morgan6rs3uegos4niper7kaufen5ddi3e0rryhotels6logistics9properties14fh2g1h1i0a1ds2m1ndle4tchen5wi3m1n1oeln3matsu5sher5p0mg2n2r0d1ed3uokgroup8w1y0oto4z2la0caixa5mborghini8er3ncaster6d0rover6xess5salle5t0ino3robe5w0yer5b1c1ds2ease3clerc5frak4gal2o2xus4gbt3i0dl2fe0insurance9style7ghting6ke2lly3mited4o2ncoln4k2psy3ve1ing5k1lc1p2oan0s3cker3us3l1ndon4tte1o3ve3pl0financial11r1s1t0d0a3u0ndbeck6xe1ury5v1y2ma0drid4if1son4keup4n0agement7go3p1rket0ing3s4riott5shalls7ttel5ba2c0kinsey7d1e0d0ia3et2lbourne7me1orial6n0u2rckmsd7g1h1iami3crosoft7l1ni1t2t0subishi9k1l0b1s2m0a2n1o0bi0le4da2e1i1m1nash3ey2ster5rmon3tgage6scow4to0rcycles9v0ie4p1q1r1s0d2t0n1r2u0seum3ic4v1w1x1y1z2na0b1goya4me2tura4vy3ba2c1e0c1t0bank4flix4work5ustar5w0s2xt0direct7us4f0l2g0o2hk2i0co2ke1on3nja3ssan1y5l1o0kia3rton4w0ruz3tv4p1r0a1w2tt2u1yc2z2obi1server7ffice5kinawa6layan0group9dnavy5lo3m0ega4ne1g1l0ine5oo2pen3racle3nge4g0anic5igins6saka4tsuka4t2vh3pa0ge2nasonic7ris2s1tners4s1y3y2ccw3e0t2f0izer5g1h0armacy6d1ilips5one2to0graphy6s4ysio5ics1tet2ures6d1n0g1k2oneer5zza4k1l0ace2y0station9umbing5s3m1n0c2ohl2ker3litie5rn2st3r0america6xi3ess3ime3o0d0uctions8f1gressive8mo2perties3y5tection8u0dential9s1t1ub2w0c2y2qa1pon3uebec3st5racing4dio4e0ad1lestate6tor2y4cipes5d0stone5umbrella9hab3ise0n3t2liance6n0t0als5pair3ort3ublican8st0aurant8view0s5xroth6ich0ardli6oh3l1o1p2o0cks3deo3gers4om3s0vp3u0gby3hr2n2w0e2yukyu6sa0arland6fe0ty4kura4le1on3msclub4ung5ndvik0coromant12ofi4p1rl2s1ve2xo3b0i1s2c0a1b1haeffler7midt4olarships8ol3ule3warz5ience5ot3d1e0arch3t2cure1ity6ek2lect4ner3rvices6ven3w1x0y3fr2g1h0angrila6rp2w2ell3ia1ksha5oes2p0ping5uji3w3i0lk2na1gles5te3j1k0i0n2y0pe4l0ing4m0art3ile4n0cf3o0ccer3ial4ftbank4ware6hu2lar2utions7ng1y2y2pa0ce3ort2t3r0l2s1t0ada2ples4r1tebank4farm7c0group6ockholm6rage3e3ream4udio2y3yle4u0cks3pplies3y2ort5rf1gery5zuki5v1watch4iss4x1y0dney4stems6z2tab1ipei4lk2obao4rget4tamotors6r2too4x0i3c0i2d0k2eam2ch0nology8l1masek5nnis4va3f1g1h0d1eater2re6iaa2ckets5enda4ps2res2ol4j0maxx4x2k0maxx5l1m0all4n1o0day3kyo3ols3p1ray3shiba5tal3urs3wn2yota3s3r0ade1ing4ining5vel0ers0insurance16ust3v2t1ube2i1nes3shu4v0s2w1z2ua1bank3s2g1k1nicom3versity8o2ol2ps2s1y1z2va0cations7na1guard7c1e0gas3ntures6risign5mögensberater2ung14sicherung10t2g1i0ajes4deo3g1king4llas4n1p1rgin4sa1ion4va1o3laanderen9n1odka3lvo3te1ing3o2yage5u2wales2mart4ter4ng0gou5tch0es6eather0channel12bcam3er2site5d0ding5ibo2r3f1hoswho6ien2ki2lliamhill9n0dows4e1ners6me2olterskluwer11odside6rk0s2ld3w2s1tc1f3xbox3erox4finity6ihuan4n2xx2yz3yachts4hoo3maxun5ndex5e1odobashi7ga2kohama6u0tube6t1un3za0ppos4ra3ero3ip2m1one3uerich6w2", nn = "ελ1υ2бг1ел3дети4ею2католик6ом3мкд2он1сква6онлайн5рг3рус2ф2сайт3рб3укр3қаз3հայ3ישראל5קום3ابوظبي5رامكو5لاردن4بحرين5جزائر5سعودية6عليان5مغرب5مارات5یران5بارت2زار4يتك3ھارت5تونس4سودان3رية5شبكة4عراق2ب2مان4فلسطين6قطر3كاثوليك6وم3مصر2ليسيا5وريتانيا7قع4همراه5پاکستان7ڀارت4कॉम3नेट3भारत0म्3ोत5संगठन5বাংলা5ভারত2ৰত4ਭਾਰਤ4ભારત4ଭାରତ4இந்தியா6லங்கை6சிங்கப்பூர்11భారత్5ಭಾರತ4ഭാരതം5ලංකා4คอม3ไทย3ລາວ3გე2みんな3アマゾン4クラウド4グーグル4コム2ストア3セール3ファッション6ポイント4世界2中信1国1國1文网3亚马逊3企业2佛山2信息2健康2八卦2公司1益2台湾1灣2商城1店1标2嘉里0大酒店5在线2大拿2天主教3娱乐2家電2广东2微博2慈善2我爱你3手机2招聘2政务1府2新加坡2闻2时尚2書籍2机构2淡马锡3游戏2澳門2点看2移动2组织机构4网址1店1站1络2联通2谷歌2购物2通販2集团2電訊盈科4飞利浦3食品2餐厅2香格里拉3港2닷넷1컴2삼성2한국2", de = (e, t) => {
   for (const s in t)
     e[s] = t[s];
   return e;
-}, Tt = "numeric", kt = "ascii", St = "alpha", Ne = "asciinumeric", Ce = "alphanumeric", Et = "domain", rs = "emoji", tn = "scheme", sn = "slashscheme", Bt = "whitespace";
-function nn(e, t) {
+}, Tt = "numeric", kt = "ascii", St = "alpha", Oe = "asciinumeric", Ce = "alphanumeric", Et = "domain", rs = "emoji", an = "scheme", on = "slashscheme", Bt = "whitespace";
+function rn(e, t) {
   return e in t || (t[e] = []), t[e];
 }
 function oe(e, t, s) {
-  t[Tt] && (t[Ne] = !0, t[Ce] = !0), t[kt] && (t[Ne] = !0, t[St] = !0), t[Ne] && (t[Ce] = !0), t[St] && (t[Ce] = !0), t[Ce] && (t[Et] = !0), t[rs] && (t[Et] = !0);
+  t[Tt] && (t[Oe] = !0, t[Ce] = !0), t[kt] && (t[Oe] = !0, t[St] = !0), t[Oe] && (t[Ce] = !0), t[St] && (t[Ce] = !0), t[Ce] && (t[Et] = !0), t[rs] && (t[Et] = !0);
   for (const i in t) {
-    const n = nn(i, s);
+    const n = rn(i, s);
     n.indexOf(e) < 0 && n.push(e);
   }
 }
-function an(e, t) {
+function cn(e, t) {
   const s = {};
   for (const i in t)
     t[i].indexOf(e) >= 0 && (s[i] = !0);
   return s;
 }
-function j(e) {
+function U(e) {
   e === void 0 && (e = null), this.j = {}, this.jr = [], this.jd = null, this.t = e;
 }
-j.groups = {};
-j.prototype = {
+U.groups = {};
+U.prototype = {
   accepts() {
     return !!this.t;
   },
@@ -774,9 +774,9 @@ j.prototype = {
    * @returns {State<T>} taken after the given input
    */
   tr(e, t, s, i) {
-    i = i || j.groups;
+    i = i || U.groups;
     let n;
-    return t && t.j ? n = t : (n = new j(t), s && i && oe(t, s, i)), this.jr.push([e, n]), n;
+    return t && t.j ? n = t : (n = new U(t), s && i && oe(t, s, i)), this.jr.push([e, n]), n;
   },
   /**
    * Short for "take transitions", will take as many sequential transitions as
@@ -824,16 +824,16 @@ j.prototype = {
    * @returns {State<T>} taken after the given input
    */
   tt(e, t, s, i) {
-    i = i || j.groups;
+    i = i || U.groups;
     const n = this;
     if (t && t.j)
       return n.j[e] = t, t;
     const a = t;
     let o, r = n.go(e);
-    if (r ? (o = new j(), de(o.j, r.j), o.jr.push.apply(o.jr, r.jr), o.jd = r.jd, o.t = r.t) : o = new j(), a) {
+    if (r ? (o = new U(), de(o.j, r.j), o.jr.push.apply(o.jr, r.jr), o.jd = r.jd, o.t = r.t) : o = new U(), a) {
       if (i)
         if (o.t && typeof o.t == "string") {
-          const u = de(an(o.t, i), s);
+          const u = de(cn(o.t, i), s);
           oe(a, u, i);
         } else
           s && oe(a, s, i);
@@ -842,7 +842,7 @@ j.prototype = {
     return n.j[e] = o, o;
   }
 };
-const m = (e, t, s, i, n) => e.ta(t, s, i, n), q = (e, t, s, i, n) => e.tr(t, s, i, n), jt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), Y = "WORD", Ct = "UWORD", ke = "LOCALHOST", At = "TLD", Dt = "UTLD", _e = "SCHEME", ue = "SLASH_SCHEME", _t = "NUM", cs = "WS", Lt = "NL", be = "OPENBRACE", ve = "CLOSEBRACE", we = "OPENBRACKET", Re = "CLOSEBRACKET", xe = "OPENPAREN", Pe = "CLOSEPAREN", He = "OPENANGLEBRACKET", Me = "CLOSEANGLEBRACKET", Be = "FULLWIDTHLEFTPAREN", je = "FULLWIDTHRIGHTPAREN", Ue = "LEFTCORNERBRACKET", ze = "RIGHTCORNERBRACKET", $e = "LEFTWHITECORNERBRACKET", qe = "RIGHTWHITECORNERBRACKET", Ve = "FULLWIDTHLESSTHAN", We = "FULLWIDTHGREATERTHAN", Ke = "AMPERSAND", Fe = "APOSTROPHE", Qe = "ASTERISK", ie = "AT", Ge = "BACKSLASH", Je = "BACKTICK", Ye = "CARET", ae = "COLON", Ot = "COMMA", Xe = "DOLLAR", F = "DOT", Ze = "EQUALS", wt = "EXCLAMATION", Q = "HYPHEN", et = "PERCENT", tt = "PIPE", st = "PLUS", nt = "POUND", it = "QUERY", Rt = "QUOTE", xt = "SEMI", G = "SLASH", Te = "TILDE", at = "UNDERSCORE", ls = "EMOJI", ot = "SYM";
+const m = (e, t, s, i, n) => e.ta(t, s, i, n), q = (e, t, s, i, n) => e.tr(t, s, i, n), Ut = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), Y = "WORD", Ct = "UWORD", ke = "LOCALHOST", At = "TLD", Dt = "UTLD", _e = "SCHEME", ue = "SLASH_SCHEME", Ot = "NUM", cs = "WS", _t = "NL", ye = "OPENBRACE", ve = "CLOSEBRACE", Re = "OPENBRACKET", xe = "CLOSEBRACKET", Pe = "OPENPAREN", He = "CLOSEPAREN", Me = "OPENANGLEBRACKET", Be = "CLOSEANGLEBRACKET", Ue = "FULLWIDTHLEFTPAREN", je = "FULLWIDTHRIGHTPAREN", ze = "LEFTCORNERBRACKET", $e = "RIGHTCORNERBRACKET", qe = "LEFTWHITECORNERBRACKET", Ve = "RIGHTWHITECORNERBRACKET", We = "FULLWIDTHLESSTHAN", Ke = "FULLWIDTHGREATERTHAN", Fe = "AMPERSAND", Qe = "APOSTROPHE", Ge = "ASTERISK", ie = "AT", Je = "BACKSLASH", Ye = "BACKTICK", Xe = "CARET", ae = "COLON", Lt = "COMMA", Ze = "DOLLAR", F = "DOT", et = "EQUALS", wt = "EXCLAMATION", Q = "HYPHEN", tt = "PERCENT", st = "PIPE", nt = "PLUS", it = "POUND", at = "QUERY", Rt = "QUOTE", xt = "SEMI", G = "SLASH", Te = "TILDE", ot = "UNDERSCORE", ls = "EMOJI", rt = "SYM";
 var us = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   WORD: Y,
@@ -852,62 +852,62 @@ var us = /* @__PURE__ */ Object.freeze({
   UTLD: Dt,
   SCHEME: _e,
   SLASH_SCHEME: ue,
-  NUM: _t,
+  NUM: Ot,
   WS: cs,
-  NL: Lt,
-  OPENBRACE: be,
+  NL: _t,
+  OPENBRACE: ye,
   CLOSEBRACE: ve,
-  OPENBRACKET: we,
-  CLOSEBRACKET: Re,
-  OPENPAREN: xe,
-  CLOSEPAREN: Pe,
-  OPENANGLEBRACKET: He,
-  CLOSEANGLEBRACKET: Me,
-  FULLWIDTHLEFTPAREN: Be,
+  OPENBRACKET: Re,
+  CLOSEBRACKET: xe,
+  OPENPAREN: Pe,
+  CLOSEPAREN: He,
+  OPENANGLEBRACKET: Me,
+  CLOSEANGLEBRACKET: Be,
+  FULLWIDTHLEFTPAREN: Ue,
   FULLWIDTHRIGHTPAREN: je,
-  LEFTCORNERBRACKET: Ue,
-  RIGHTCORNERBRACKET: ze,
-  LEFTWHITECORNERBRACKET: $e,
-  RIGHTWHITECORNERBRACKET: qe,
-  FULLWIDTHLESSTHAN: Ve,
-  FULLWIDTHGREATERTHAN: We,
-  AMPERSAND: Ke,
-  APOSTROPHE: Fe,
-  ASTERISK: Qe,
+  LEFTCORNERBRACKET: ze,
+  RIGHTCORNERBRACKET: $e,
+  LEFTWHITECORNERBRACKET: qe,
+  RIGHTWHITECORNERBRACKET: Ve,
+  FULLWIDTHLESSTHAN: We,
+  FULLWIDTHGREATERTHAN: Ke,
+  AMPERSAND: Fe,
+  APOSTROPHE: Qe,
+  ASTERISK: Ge,
   AT: ie,
-  BACKSLASH: Ge,
-  BACKTICK: Je,
-  CARET: Ye,
+  BACKSLASH: Je,
+  BACKTICK: Ye,
+  CARET: Xe,
   COLON: ae,
-  COMMA: Ot,
-  DOLLAR: Xe,
+  COMMA: Lt,
+  DOLLAR: Ze,
   DOT: F,
-  EQUALS: Ze,
+  EQUALS: et,
   EXCLAMATION: wt,
   HYPHEN: Q,
-  PERCENT: et,
-  PIPE: tt,
-  PLUS: st,
-  POUND: nt,
-  QUERY: it,
+  PERCENT: tt,
+  PIPE: st,
+  PLUS: nt,
+  POUND: it,
+  QUERY: at,
   QUOTE: Rt,
   SEMI: xt,
   SLASH: G,
   TILDE: Te,
-  UNDERSCORE: at,
+  UNDERSCORE: ot,
   EMOJI: ls,
-  SYM: ot
+  SYM: rt
 });
-const le = /[a-z]/, dt = new RegExp("\\p{L}", "u"), pt = new RegExp("\\p{Emoji}", "u"), gt = /\d/, Ut = /\s/, zt = `
-`, on = "️", rn = "‍";
+const le = /[a-z]/, dt = new RegExp("\\p{L}", "u"), pt = new RegExp("\\p{Emoji}", "u"), gt = /\d/, jt = /\s/, zt = `
+`, ln = "️", un = "‍";
 let Ae = null, De = null;
-function cn(e) {
+function hn(e) {
   e === void 0 && (e = []);
   const t = {};
-  j.groups = t;
-  const s = new j();
-  Ae == null && (Ae = $t(Zs)), De == null && (De = $t(en)), c(s, "'", Fe), c(s, "{", be), c(s, "}", ve), c(s, "[", we), c(s, "]", Re), c(s, "(", xe), c(s, ")", Pe), c(s, "<", He), c(s, ">", Me), c(s, "（", Be), c(s, "）", je), c(s, "「", Ue), c(s, "」", ze), c(s, "『", $e), c(s, "』", qe), c(s, "＜", Ve), c(s, "＞", We), c(s, "&", Ke), c(s, "*", Qe), c(s, "@", ie), c(s, "`", Je), c(s, "^", Ye), c(s, ":", ae), c(s, ",", Ot), c(s, "$", Xe), c(s, ".", F), c(s, "=", Ze), c(s, "!", wt), c(s, "-", Q), c(s, "%", et), c(s, "|", tt), c(s, "+", st), c(s, "#", nt), c(s, "?", it), c(s, '"', Rt), c(s, "/", G), c(s, ";", xt), c(s, "~", Te), c(s, "_", at), c(s, "\\", Ge);
-  const i = q(s, gt, _t, {
+  U.groups = t;
+  const s = new U();
+  Ae == null && (Ae = $t(sn)), De == null && (De = $t(nn)), c(s, "'", Qe), c(s, "{", ye), c(s, "}", ve), c(s, "[", Re), c(s, "]", xe), c(s, "(", Pe), c(s, ")", He), c(s, "<", Me), c(s, ">", Be), c(s, "（", Ue), c(s, "）", je), c(s, "「", ze), c(s, "」", $e), c(s, "『", qe), c(s, "』", Ve), c(s, "＜", We), c(s, "＞", Ke), c(s, "&", Fe), c(s, "*", Ge), c(s, "@", ie), c(s, "`", Ye), c(s, "^", Xe), c(s, ":", ae), c(s, ",", Lt), c(s, "$", Ze), c(s, ".", F), c(s, "=", et), c(s, "!", wt), c(s, "-", Q), c(s, "%", tt), c(s, "|", st), c(s, "+", nt), c(s, "#", it), c(s, "?", at), c(s, '"', Rt), c(s, "/", G), c(s, ";", xt), c(s, "~", Te), c(s, "_", ot), c(s, "\\", Je);
+  const i = q(s, gt, Ot, {
     [Tt]: !0
   });
   q(i, gt, i);
@@ -919,23 +919,23 @@ function cn(e) {
     [St]: !0
   });
   q(a, le), q(a, dt, a);
-  const o = q(s, Ut, cs, {
+  const o = q(s, jt, cs, {
     [Bt]: !0
   });
-  c(s, zt, Lt, {
+  c(s, zt, _t, {
     [Bt]: !0
-  }), c(o, zt), q(o, Ut, o);
+  }), c(o, zt), q(o, jt, o);
   const r = q(s, pt, ls, {
     [rs]: !0
   });
-  q(r, pt, r), c(r, on, r);
-  const u = c(r, rn);
+  q(r, pt, r), c(r, ln, r);
+  const u = c(r, un);
   q(u, pt, r);
-  const f = [[le, n]], y = [[le, null], [dt, a]];
+  const f = [[le, n]], b = [[le, null], [dt, a]];
   for (let g = 0; g < Ae.length; g++)
     se(s, Ae[g], At, Y, f);
   for (let g = 0; g < De.length; g++)
-    se(s, De[g], Dt, Ct, y);
+    se(s, De[g], Dt, Ct, b);
   oe(At, {
     tld: !0,
     ascii: !0
@@ -951,30 +951,30 @@ function cn(e) {
   }, t), e = e.sort((g, d) => g[0] > d[0] ? 1 : -1);
   for (let g = 0; g < e.length; g++) {
     const d = e[g][0], h = e[g][1] ? {
-      [tn]: !0
+      [an]: !0
     } : {
-      [sn]: !0
+      [on]: !0
     };
-    d.indexOf("-") >= 0 ? h[Et] = !0 : le.test(d) ? gt.test(d) ? h[Ne] = !0 : h[kt] = !0 : h[Tt] = !0, jt(s, d, d, h);
+    d.indexOf("-") >= 0 ? h[Et] = !0 : le.test(d) ? gt.test(d) ? h[Oe] = !0 : h[kt] = !0 : h[Tt] = !0, Ut(s, d, d, h);
   }
-  return jt(s, "localhost", ke, {
+  return Ut(s, "localhost", ke, {
     ascii: !0
-  }), s.jd = new j(ot), {
+  }), s.jd = new U(rt), {
     start: s,
     tokens: de({
       groups: t
     }, us)
   };
 }
-function ln(e, t) {
-  const s = un(t.replace(/[A-Z]/g, (r) => r.toLowerCase())), i = s.length, n = [];
+function fn(e, t) {
+  const s = dn(t.replace(/[A-Z]/g, (r) => r.toLowerCase())), i = s.length, n = [];
   let a = 0, o = 0;
   for (; o < i; ) {
-    let r = e, u = null, f = 0, y = null, g = -1, d = -1;
+    let r = e, u = null, f = 0, b = null, g = -1, d = -1;
     for (; o < i && (u = r.go(s[o])); )
-      r = u, r.accepts() ? (g = 0, d = 0, y = r) : g >= 0 && (g += s[o].length, d++), f += s[o].length, a += s[o].length, o++;
+      r = u, r.accepts() ? (g = 0, d = 0, b = r) : g >= 0 && (g += s[o].length, d++), f += s[o].length, a += s[o].length, o++;
     a -= g, o -= d, f -= g, n.push({
-      t: y.t,
+      t: b.t,
       // token type/name
       v: t.slice(a - f, a),
       // string value
@@ -986,7 +986,7 @@ function ln(e, t) {
   }
   return n;
 }
-function un(e) {
+function dn(e) {
   const t = [], s = e.length;
   let i = 0;
   for (; i < s; ) {
@@ -1000,9 +1000,9 @@ function se(e, t, s, i, n) {
   const o = t.length;
   for (let r = 0; r < o - 1; r++) {
     const u = t[r];
-    e.j[u] ? a = e.j[u] : (a = new j(i), a.jr = n.slice(), e.j[u] = a), e = a;
+    e.j[u] ? a = e.j[u] : (a = new U(i), a.jr = n.slice(), e.j[u] = a), e = a;
   }
-  return a = new j(s), a.jr = n.slice(), e.j[t[o - 1]] = a, a;
+  return a = new U(s), a.jr = n.slice(), e.j[t[o - 1]] = a, a;
 }
 function $t(e) {
   const t = [], s = [];
@@ -1209,8 +1209,8 @@ hs.prototype = {
    * @param {Options} options Formattinng options
    */
   render(e) {
-    const t = this, s = this.toHref(e.get("defaultProtocol")), i = e.get("formatHref", s, this), n = e.get("tagName", s, t), a = this.toFormattedString(e), o = {}, r = e.get("className", s, t), u = e.get("target", s, t), f = e.get("rel", s, t), y = e.getObj("attributes", s, t), g = e.getObj("events", s, t);
-    return o.href = i, r && (o.class = r), u && (o.target = u), f && (o.rel = f), y && de(o, y), {
+    const t = this, s = this.toHref(e.get("defaultProtocol")), i = e.get("formatHref", s, this), n = e.get("tagName", s, t), a = this.toFormattedString(e), o = {}, r = e.get("className", s, t), u = e.get("target", s, t), f = e.get("rel", s, t), b = e.getObj("attributes", s, t), g = e.getObj("events", s, t);
+    return o.href = i, r && (o.class = r), u && (o.target = u), f && (o.rel = f), b && de(o, b), {
       tagName: n,
       attributes: o,
       content: a,
@@ -1218,7 +1218,7 @@ hs.prototype = {
     };
   }
 };
-function ut(e, t) {
+function ht(e, t) {
   class s extends hs {
     constructor(n, a) {
       super(n, a), this.t = e;
@@ -1228,12 +1228,12 @@ function ut(e, t) {
     s.prototype[i] = t[i];
   return s.t = e, s;
 }
-const Vt = ut("email", {
+const Vt = ht("email", {
   isLink: !0,
   toHref() {
     return "mailto:" + this.toString();
   }
-}), Wt = ut("text"), hn = ut("nl"), Ie = ut("url", {
+}), Wt = ht("text"), pn = ht("nl"), Ie = ht("url", {
   isLink: !0,
   /**
   	Lowercases relevant parts of the domain and adds the protocol if
@@ -1253,55 +1253,55 @@ const Vt = ut("email", {
     const e = this.tk;
     return e.length >= 2 && e[0].t !== ke && e[1].t === ae;
   }
-}), V = (e) => new j(e);
-function fn(e) {
+}), V = (e) => new U(e);
+function gn(e) {
   let {
     groups: t
   } = e;
-  const s = t.domain.concat([Ke, Qe, ie, Ge, Je, Ye, Xe, Ze, Q, _t, et, tt, st, nt, G, ot, Te, at]), i = [Fe, ae, Ot, F, wt, it, Rt, xt, He, Me, be, ve, Re, we, xe, Pe, Be, je, Ue, ze, $e, qe, Ve, We], n = [Ke, Fe, Qe, Ge, Je, Ye, Xe, Ze, Q, be, ve, et, tt, st, nt, it, G, ot, Te, at], a = V(), o = c(a, Te);
+  const s = t.domain.concat([Fe, Ge, ie, Je, Ye, Xe, Ze, et, Q, Ot, tt, st, nt, it, G, rt, Te, ot]), i = [Qe, ae, Lt, F, wt, at, Rt, xt, Me, Be, ye, ve, xe, Re, Pe, He, Ue, je, ze, $e, qe, Ve, We, Ke], n = [Fe, Qe, Ge, Je, Ye, Xe, Ze, et, Q, ye, ve, tt, st, nt, it, at, G, rt, Te, ot], a = V(), o = c(a, Te);
   m(o, n, o), m(o, t.domain, o);
   const r = V(), u = V(), f = V();
   m(a, t.domain, r), m(a, t.scheme, u), m(a, t.slashscheme, f), m(r, n, o), m(r, t.domain, r);
-  const y = c(r, ie);
-  c(o, ie, y), c(u, ie, y), c(f, ie, y);
+  const b = c(r, ie);
+  c(o, ie, b), c(u, ie, b), c(f, ie, b);
   const g = c(o, F);
   m(g, n, o), m(g, t.domain, o);
   const d = V();
-  m(y, t.domain, d), m(d, t.domain, d);
+  m(b, t.domain, d), m(d, t.domain, d);
   const C = c(d, F);
   m(C, t.domain, d);
   const h = V(Vt);
-  m(C, t.tld, h), m(C, t.utld, h), c(y, ke, h);
+  m(C, t.tld, h), m(C, t.utld, h), c(b, ke, h);
   const T = c(d, Q);
   m(T, t.domain, d), m(h, t.domain, d), c(h, F, C), c(h, Q, T);
   const v = c(h, ae);
   m(v, t.numeric, Vt);
-  const E = c(r, Q), _ = c(r, F);
-  m(E, t.domain, r), m(_, n, o), m(_, t.domain, r);
-  const L = V(Ie);
-  m(_, t.tld, L), m(_, t.utld, L), m(L, t.domain, r), m(L, n, o), c(L, F, _), c(L, Q, E), c(L, ie, y);
-  const I = c(L, ae), A = V(Ie);
+  const E = c(r, Q), O = c(r, F);
+  m(E, t.domain, r), m(O, n, o), m(O, t.domain, r);
+  const _ = V(Ie);
+  m(O, t.tld, _), m(O, t.utld, _), m(_, t.domain, r), m(_, n, o), c(_, F, O), c(_, Q, E), c(_, ie, b);
+  const I = c(_, ae), A = V(Ie);
   m(I, t.numeric, A);
   const N = V(Ie), z = V();
-  m(N, s, N), m(N, i, z), m(z, s, N), m(z, i, z), c(L, G, N), c(A, G, N);
+  m(N, s, N), m(N, i, z), m(z, s, N), m(z, i, z), c(_, G, N), c(A, G, N);
   const D = c(u, ae), k = c(f, ae), $ = c(k, G), W = c($, G);
-  m(u, t.domain, r), c(u, F, _), c(u, Q, E), m(f, t.domain, r), c(f, F, _), c(f, Q, E), m(D, t.domain, N), c(D, G, N), m(W, t.domain, N), m(W, s, N), c(W, G, N);
+  m(u, t.domain, r), c(u, F, O), c(u, Q, E), m(f, t.domain, r), c(f, F, O), c(f, Q, E), m(D, t.domain, N), c(D, G, N), m(W, t.domain, N), m(W, s, N), c(W, G, N);
   const te = [
-    [be, ve],
+    [ye, ve],
     // {}
-    [we, Re],
+    [Re, xe],
     // []
-    [xe, Pe],
+    [Pe, He],
     // ()
-    [He, Me],
+    [Me, Be],
     // <>
-    [Be, je],
+    [Ue, je],
     // （）
-    [Ue, ze],
+    [ze, $e],
     // 「」
-    [$e, qe],
+    [qe, Ve],
     // 『』
-    [Ve, We]
+    [We, Ke]
     // ＜＞
   ];
   for (let pe = 0; pe < te.length; pe++) {
@@ -1312,24 +1312,24 @@ function fn(e) {
     const ge = V();
     m(w, i), m(re, s, re), m(re, i, ge), m(ge, s, re), m(ge, i, ge), c(re, J, N), c(ge, J, N);
   }
-  return c(a, ke, L), c(a, Lt, hn), {
+  return c(a, ke, _), c(a, _t, pn), {
     start: a,
     tokens: us
   };
 }
-function dn(e, t, s) {
+function mn(e, t, s) {
   let i = s.length, n = 0, a = [], o = [];
   for (; n < i; ) {
-    let r = e, u = null, f = null, y = 0, g = null, d = -1;
+    let r = e, u = null, f = null, b = 0, g = null, d = -1;
     for (; n < i && !(u = r.go(s[n].t)); )
       o.push(s[n++]);
     for (; n < i && (f = u || r.go(s[n].t)); )
-      u = null, r = f, r.accepts() ? (d = 0, g = r) : d >= 0 && d++, n++, y++;
+      u = null, r = f, r.accepts() ? (d = 0, g = r) : d >= 0 && d++, n++, b++;
     if (d < 0)
-      n -= y, n < i && (o.push(s[n]), n++);
+      n -= b, n < i && (o.push(s[n]), n++);
     else {
-      o.length > 0 && (a.push(mt(Wt, t, o)), o = []), n -= d, y -= d;
-      const C = g.t, h = s.slice(n - y, n);
+      o.length > 0 && (a.push(mt(Wt, t, o)), o = []), n -= d, b -= d;
+      const C = g.t, h = s.slice(n - b, n);
       a.push(mt(C, t, h));
     }
   }
@@ -1347,13 +1347,13 @@ const H = {
   customSchemes: [],
   initialized: !1
 };
-function pn() {
-  H.scanner = cn(H.customSchemes);
+function bn() {
+  H.scanner = hn(H.customSchemes);
   for (let e = 0; e < H.tokenQueue.length; e++)
     H.tokenQueue[e][1]({
       scanner: H.scanner
     });
-  H.parser = fn(H.scanner.tokens);
+  H.parser = gn(H.scanner.tokens);
   for (let e = 0; e < H.pluginQueue.length; e++)
     H.pluginQueue[e][1]({
       scanner: H.scanner,
@@ -1361,10 +1361,10 @@ function pn() {
     });
   H.initialized = !0;
 }
-function gn(e) {
-  return H.initialized || pn(), dn(H.parser.start, e, ln(H.scanner.start, e));
+function yn(e) {
+  return H.initialized || bn(), mn(H.parser.start, e, fn(H.scanner.start, e));
 }
-var mn = {
+var vn = {
   // We don't need the complete named character reference because linkifyHtml
   // does not modify the escape sequences. We do need &nbsp; so that
   // whitespace is parsed properly. Other types of whitespace should already
@@ -1374,7 +1374,7 @@ var mn = {
   lt: "<",
   nbsp: " ",
   quot: '"'
-}, yn = /^#[xX]([A-Fa-f0-9]+)$/, bn = /^#([0-9]+)$/, vn = /^([A-Za-z0-9]+)$/, Tn = (
+}, Tn = /^#[xX]([A-Fa-f0-9]+)$/, kn = /^#([0-9]+)$/, Sn = /^([A-Za-z0-9]+)$/, En = (
   /** @class */
   function() {
     function e(t) {
@@ -1382,28 +1382,28 @@ var mn = {
     }
     return e.prototype.parse = function(t) {
       if (t) {
-        var s = t.match(yn);
+        var s = t.match(Tn);
         if (s)
           return String.fromCharCode(parseInt(s[1], 16));
-        if (s = t.match(bn), s)
+        if (s = t.match(kn), s)
           return String.fromCharCode(parseInt(s[1], 10));
-        if (s = t.match(vn), s)
+        if (s = t.match(Sn), s)
           return this.named[s[1]] || "&" + s[1] + ";";
       }
     }, e;
   }()
-), kn = /[\t\n\f ]/, Sn = /[A-Za-z]/, En = /\r\n?/g;
+), Cn = /[\t\n\f ]/, An = /[A-Za-z]/, Dn = /\r\n?/g;
 function x(e) {
-  return kn.test(e);
+  return Cn.test(e);
 }
 function Kt(e) {
-  return Sn.test(e);
+  return An.test(e);
 }
-function Cn(e) {
-  return e.replace(En, `
+function In(e) {
+  return e.replace(Dn, `
 `);
 }
-var An = (
+var Nn = (
   /** @class */
   function() {
     function e(t, s, i) {
@@ -1820,7 +1820,7 @@ var An = (
     }, e.prototype.tokenize = function(t) {
       this.reset(), this.tokenizePart(t), this.tokenizeEOF();
     }, e.prototype.tokenizePart = function(t) {
-      for (this.input += Cn(t); this.index < this.input.length; ) {
+      for (this.input += In(t); this.index < this.input.length; ) {
         var s = this.states[this.state];
         if (s !== void 0)
           s.call(this);
@@ -1859,11 +1859,11 @@ var An = (
       return t === "title" && this.input.substring(this.index, this.index + 8) !== "</title>" || t === "style" && this.input.substring(this.index, this.index + 8) !== "</style>" || t === "script" && this.input.substring(this.index, this.index + 9) !== "<\/script>";
     }, e;
   }()
-), Dn = (
+), On = (
   /** @class */
   function() {
     function e(t, s) {
-      s === void 0 && (s = {}), this.options = s, this.token = null, this.startLine = 1, this.startColumn = 0, this.tokens = [], this.tokenizer = new An(this, t, s.mode), this._currentAttribute = void 0;
+      s === void 0 && (s = {}), this.options = s, this.token = null, this.startLine = 1, this.startColumn = 0, this.tokens = [], this.tokenizer = new Nn(this, t, s.mode), this._currentAttribute = void 0;
     }
     return e.prototype.tokenize = function(t) {
       return this.tokens = [], this.tokenizer.tokenize(t), this.tokens;
@@ -1990,27 +1990,27 @@ var An = (
     }, e;
   }()
 );
-function In(e, t) {
-  var s = new Dn(new Tn(mn), t);
+function _n(e, t) {
+  var s = new On(new En(vn), t);
   return s.tokenize(e);
 }
-const fs = "LinkifyResult", rt = "StartTag", ds = "EndTag", It = "Chars", Nn = "Comment", _n = "Doctype";
+const fs = "LinkifyResult", ct = "StartTag", ds = "EndTag", It = "Chars", Ln = "Comment", wn = "Doctype";
 function ps(e, t) {
   t === void 0 && (t = {});
-  const s = In(e), i = [], n = [], a = new Pt(t, wn);
+  const s = _n(e), i = [], n = [], a = new Pt(t, Pn);
   for (let o = 0; o < s.length; o++) {
     const r = s[o];
-    if (r.type === rt) {
+    if (r.type === ct) {
       i.push(r);
       const u = r.tagName.toUpperCase();
       if (!(u === "A" || a.ignoreTags.indexOf(u) >= 0))
         continue;
-      let y = i.length;
-      On(u, s, ++o, i), o += i.length - y - 1;
+      let b = i.length;
+      xn(u, s, ++o, i), o += i.length - b - 1;
     } else if (r.type !== It)
       i.push(r);
     else {
-      const u = Ln(r.chars, a);
+      const u = Rn(r.chars, a);
       i.push.apply(i, u);
     }
   }
@@ -2020,9 +2020,9 @@ function ps(e, t) {
       case fs:
         n.push(r.rendered);
         break;
-      case rt: {
+      case ct: {
         let u = "<" + r.tagName;
-        r.attributes.length > 0 && (u += " " + xn(r.attributes).join(" ")), r.selfClosing && (u += " /"), u += ">", n.push(u);
+        r.attributes.length > 0 && (u += " " + Mn(r.attributes).join(" ")), r.selfClosing && (u += " /"), u += ">", n.push(u);
         break;
       }
       case ds:
@@ -2031,10 +2031,10 @@ function ps(e, t) {
       case It:
         n.push(Nt(r.chars));
         break;
-      case Nn:
+      case Ln:
         n.push(`<!--${Nt(r.chars)}-->`);
         break;
-      case _n: {
+      case wn: {
         let u = `<!DOCTYPE ${r.name}`;
         r.publicIdentifier && (u += ` PUBLIC "${r.publicIdentifier}"`), r.systemIdentifier && (u += ` "${r.systemIdentifier}"`), u += ">", n.push(u);
         break;
@@ -2043,12 +2043,12 @@ function ps(e, t) {
   }
   return n.join("");
 }
-function Ln(e, t) {
-  const s = gn(e), i = [];
+function Rn(e, t) {
+  const s = yn(e), i = [];
   for (let n = 0; n < s.length; n++) {
     const a = s[n];
     a.t === "nl" && t.get("nl2br") ? i.push({
-      type: rt,
+      type: ct,
       tagName: "br",
       attributes: [],
       selfClosing: !0
@@ -2062,21 +2062,21 @@ function Ln(e, t) {
   }
   return i;
 }
-function On(e, t, s, i) {
+function xn(e, t, s, i) {
   let n = 1;
   for (; s < t.length && n > 0; ) {
     let a = t[s];
-    a.type === rt && a.tagName.toUpperCase() === e ? n++ : a.type === ds && a.tagName.toUpperCase() === e && n--, i.push(a), s++;
+    a.type === ct && a.tagName.toUpperCase() === e ? n++ : a.type === ds && a.tagName.toUpperCase() === e && n--, i.push(a), s++;
   }
   return i;
 }
-function wn(e) {
+function Pn(e) {
   let {
     tagName: t,
     attributes: s,
     content: i
   } = e;
-  return `<${t} ${Rn(s)}>${Nt(i)}</${t}>`;
+  return `<${t} ${Hn(s)}>${Nt(i)}</${t}>`;
 }
 function Nt(e) {
   return e.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -2084,7 +2084,7 @@ function Nt(e) {
 function gs(e) {
   return e.replace(/"/g, "&quot;");
 }
-function Rn(e) {
+function Hn(e) {
   const t = [];
   for (const s in e) {
     const i = e[s] + "";
@@ -2092,7 +2092,7 @@ function Rn(e) {
   }
   return t.join(" ");
 }
-function xn(e) {
+function Mn(e) {
   const t = [];
   for (let s = 0; s < e.length; s++) {
     const i = e[s][0], n = e[s][1] + "";
@@ -2100,7 +2100,7 @@ function xn(e) {
   }
   return t;
 }
-const Pn = /* @__PURE__ */ K({
+const Bn = /* @__PURE__ */ K({
   __name: "button",
   props: {
     button: {
@@ -2112,12 +2112,12 @@ const Pn = /* @__PURE__ */ K({
     function i() {
       t.sendUserMessage(s.button.title);
     }
-    return (n, a) => (p(), b("button", {
+    return (n, a) => (p(), y("button", {
       class: "tvk-btn tvk-btn-action",
       onClick: i
-    }, U(s.button.title), 1));
+    }, j(s.button.title), 1));
   }
-}), Hn = { class: "tvk-message-footnote" }, Mn = ["href"], Bn = ["innerHTML"], jn = /* @__PURE__ */ K({
+}), Un = { class: "tvk-message-footnote" }, jn = ["href"], zn = ["innerHTML"], $n = /* @__PURE__ */ K({
   __name: "footnote",
   props: {
     footnote: {
@@ -2129,18 +2129,18 @@ const Pn = /* @__PURE__ */ K({
     function s() {
       return ps(t.footnote.content, { target: "_blank" });
     }
-    return (i, n) => (p(), b("div", Hn, [
+    return (i, n) => (p(), y("div", Un, [
       R("a", {
         href: t.footnote.url,
         target: "_blank"
-      }, U(t.footnote.title), 9, Mn),
-      t.footnote.content ? (p(), b("div", {
+      }, j(t.footnote.title), 9, jn),
+      t.footnote.content ? (p(), y("div", {
         key: 0,
         innerHTML: s()
-      }, null, 8, Bn)) : S("", !0)
+      }, null, 8, zn)) : S("", !0)
     ]));
   }
-}), Un = { class: "tvk-message-footnotes" }, zn = /* @__PURE__ */ K({
+}), qn = { class: "tvk-message-footnotes" }, Vn = /* @__PURE__ */ K({
   __name: "footnotes",
   props: {
     footnotes: {
@@ -2148,13 +2148,13 @@ const Pn = /* @__PURE__ */ K({
     }
   },
   setup(e) {
-    const t = B.getInstance().options, s = e;
-    return (i, n) => (p(), b("div", Un, [
-      Oe(U(l(t).wording.messages.message.footnotes.sources) + " ", 1),
-      (p(!0), b(fe, null, ct(s.footnotes, (a) => (p(), Z(jn, { footnote: a }, null, 8, ["footnote"]))), 256))
+    const t = B.getOptions(), s = e;
+    return (i, n) => (p(), y("div", qn, [
+      we(j(l(t).wording.messages.message.footnotes.sources) + " ", 1),
+      (p(!0), y(fe, null, lt(s.footnotes, (a) => (p(), Z($n, { footnote: a }, null, 8, ["footnote"]))), 256))
     ]));
   }
-}), $n = ["innerHTML"], qn = /* @__PURE__ */ K({
+}), Wn = ["innerHTML"], Kn = /* @__PURE__ */ K({
   __name: "message-text",
   props: {
     message: {
@@ -2162,32 +2162,32 @@ const Pn = /* @__PURE__ */ K({
     }
   },
   setup(e) {
-    B.getInstance().options;
+    B.getOptions();
     const t = e;
     function s() {
       return ps(t.message.text, { target: "_blank" });
     }
     return (i, n) => {
       var a;
-      return p(), b(fe, null, [
+      return p(), y(fe, null, [
         R("div", {
           innerHTML: s(),
           tabindex: "1"
-        }, null, 8, $n),
-        (a = t.message.footnotes) != null && a.length ? (p(), Z(zn, {
+        }, null, 8, Wn),
+        (a = t.message.footnotes) != null && a.length ? (p(), Z(Vn, {
           key: 0,
           footnotes: t.message.footnotes
         }, null, 8, ["footnotes"])) : S("", !0),
-        (p(!0), b(fe, null, ct(t.message.buttons, (o) => (p(), Z(Pn, { button: o }, {
-          default: Ls(() => [
-            Oe(U(o.title), 1)
+        (p(!0), y(fe, null, lt(t.message.buttons, (o) => (p(), Z(Bn, { button: o }, {
+          default: _s(() => [
+            we(j(o.title), 1)
           ]),
           _: 2
         }, 1032, ["button"]))), 256))
       ], 64);
     };
   }
-}), Vn = { class: "tvk-card" }, Wn = ["src", "alt"], Kn = { key: 1 }, Fn = { key: 2 }, Qn = { key: 3 }, ms = /* @__PURE__ */ K({
+}), Fn = { class: "tvk-card" }, Qn = ["src", "alt"], Gn = { key: 1 }, Jn = { key: 2 }, Yn = { key: 3 }, ms = /* @__PURE__ */ K({
   __name: "message-card",
   props: {
     card: {
@@ -2197,30 +2197,30 @@ const Pn = /* @__PURE__ */ K({
   setup(e) {
     var a, o, r;
     const t = ee();
-    B.getInstance().options;
+    B.getOptions();
     const s = e, i = ((o = (a = s.card) == null ? void 0 : a.file) == null ? void 0 : o.description) ?? ((r = s.card) == null ? void 0 : r.title);
     function n(u) {
       s.card.file._loaded || (s.card.file._loaded = !0, t.scrollMessages());
     }
     return (u, f) => {
-      var y, g, d, C, h, T, v, E, _, L, I, A;
-      return p(), b("div", Vn, [
-        (g = (y = s.card) == null ? void 0 : y.file) != null && g.url ? (p(), b("img", {
+      var b, g, d, C, h, T, v, E, O, _, I, A;
+      return p(), y("div", Fn, [
+        (g = (b = s.card) == null ? void 0 : b.file) != null && g.url ? (p(), y("img", {
           key: 0,
           src: (C = (d = s.card) == null ? void 0 : d.file) == null ? void 0 : C.url,
           alt: l(i),
           onLoad: n,
           class: "tvk-thumbnail"
-        }, null, 40, Wn)) : S("", !0),
-        (h = s.card) != null && h.title ? (p(), b("div", Kn, [
-          R("strong", null, U((T = s.card) == null ? void 0 : T.title), 1)
+        }, null, 40, Qn)) : S("", !0),
+        (h = s.card) != null && h.title ? (p(), y("div", Gn, [
+          R("strong", null, j((T = s.card) == null ? void 0 : T.title), 1)
         ])) : S("", !0),
-        (v = s.card) != null && v.subTitle ? (p(), b("div", Fn, U((E = s.card) == null ? void 0 : E.subTitle), 1)) : S("", !0),
-        (L = (_ = s.card) == null ? void 0 : _.file) != null && L.description ? (p(), b("div", Qn, U((A = (I = s.card) == null ? void 0 : I.file) == null ? void 0 : A.description), 1)) : S("", !0)
+        (v = s.card) != null && v.subTitle ? (p(), y("div", Jn, j((E = s.card) == null ? void 0 : E.subTitle), 1)) : S("", !0),
+        (_ = (O = s.card) == null ? void 0 : O.file) != null && _.description ? (p(), y("div", Yn, j((A = (I = s.card) == null ? void 0 : I.file) == null ? void 0 : A.description), 1)) : S("", !0)
       ]);
     };
   }
-}), Ft = "transform 0.2s", Gn = /* @__PURE__ */ K({
+}), Ft = "transform 0.2s", Xn = /* @__PURE__ */ K({
   __name: "message-carousel",
   props: {
     carousel: {
@@ -2237,14 +2237,14 @@ const Pn = /* @__PURE__ */ K({
         "max-width": `${T}px`
       };
     }
-    function y() {
+    function b() {
       return i.value.reduce((T, v) => T + v.offsetWidth, 0);
     }
     function g() {
       if (u.value)
         return;
       u.value = !0, f();
-      const T = y(), v = s.value[0];
+      const T = b(), v = s.value[0];
       s.value.push(v);
       const E = i.value[0];
       r.value = {
@@ -2259,7 +2259,7 @@ const Pn = /* @__PURE__ */ K({
       if (u.value)
         return;
       u.value = !0, f();
-      const T = y(), v = s.value[s.value.length - 1];
+      const T = b(), v = s.value[s.value.length - 1];
       s.value.unshift(v);
       const E = i.value[i.value.length - 1];
       r.value = {
@@ -2279,8 +2279,8 @@ const Pn = /* @__PURE__ */ K({
     function C(T) {
       var E;
       const v = () => {
-        var _;
-        T(), (_ = a.value) == null || _.removeEventListener("transitionend", v);
+        var O;
+        T(), (O = a.value) == null || O.removeEventListener("transitionend", v);
       };
       (E = a.value) == null || E.addEventListener("transitionend", v);
     }
@@ -2290,7 +2290,7 @@ const Pn = /* @__PURE__ */ K({
         transform: "translateX(0)"
       };
     }
-    return (T, v) => (p(), b(fe, null, [
+    return (T, v) => (p(), y(fe, null, [
       R("div", {
         class: "tvk-carousel",
         ref_key: "carouselRef",
@@ -2303,7 +2303,7 @@ const Pn = /* @__PURE__ */ K({
           ref: a,
           style: he(r.value)
         }, [
-          (p(!0), b(fe, null, ct(s.value, (E) => (p(), b("div", {
+          (p(!0), y(fe, null, lt(s.value, (E) => (p(), y("div", {
             class: "tvk-carousel-card",
             key: JSON.stringify(E),
             ref_for: !0,
@@ -2326,31 +2326,31 @@ const Pn = /* @__PURE__ */ K({
       ])
     ], 64));
   }
-}), Jn = /* @__PURE__ */ K({
+}), Zn = /* @__PURE__ */ K({
   __name: "message-image",
   props: { message: Object },
   setup(e) {
-    return B.getInstance().options, (t, s) => "Image type not yet implemented";
+    return B.getOptions(), (t, s) => "Image type not yet implemented";
   }
-}), Yn = {
+}), ei = {
   key: 0,
   class: "tvk-message-header"
-}, Xn = {
+}, ti = {
   key: 0,
   class: "tvk-message-header-avatar"
-}, Zn = ["src"], ei = ["src"], ti = {
+}, si = ["src"], ni = ["src"], ii = {
   key: 1,
   class: "tvk-message-header-label"
-}, si = { class: "tvk-message-header-label-user" }, ni = { class: "tvk-message-header-label-bot" }, ii = /* @__PURE__ */ R("div", { class: "tvk-message-header-line-break" }, null, -1), ai = {
+}, ai = { class: "tvk-message-header-label-user" }, oi = { class: "tvk-message-header-label-bot" }, ri = /* @__PURE__ */ R("div", { class: "tvk-message-header-line-break" }, null, -1), ci = {
   key: 1,
   class: "tvk-message-body"
-}, oi = {
+}, li = {
   key: 2,
   class: "tvk-message-body-from-app"
-}, ri = {
+}, ui = {
   key: 0,
   class: "tvk-message-loader"
-}, ci = /* @__PURE__ */ K({
+}, hi = /* @__PURE__ */ K({
   __name: "message",
   props: {
     message: {
@@ -2358,24 +2358,24 @@ const Pn = /* @__PURE__ */ K({
     }
   },
   setup(e) {
-    const t = B.getInstance().options, s = e;
-    return (i, n) => s.message.author !== l(O).user || !l(t).preferences.messages.message.hideUserMessages ? (p(), b("div", {
+    const t = B.getOptions(), s = e;
+    return (i, n) => s.message.author !== l(L).user || !l(t).preferences.messages.message.hideUserMessages ? (p(), y("div", {
       key: 0,
       class: me(["tvk-message", {
-        "tvk-message-user": s.message.author === l(O).user,
-        "tvk-message-bot": s.message.author === l(O).bot
+        "tvk-message-user": s.message.author === l(L).user,
+        "tvk-message-bot": s.message.author === l(L).bot
       }])
     }, [
-      l(t).preferences.messages.message.header.display && s.message.author !== l(O).app ? (p(), b("div", Yn, [
-        l(t).preferences.messages.message.header.avatar.display ? (p(), b("div", Xn, [
-          !l(t).preferences.messages.message.header.avatar.userImage && l(t).preferences.messages.message.header.avatar.userIcon && s.message.author === l(O).user ? (p(), b("i", {
+      l(t).preferences.messages.message.header.display && s.message.author !== l(L).app ? (p(), y("div", ei, [
+        l(t).preferences.messages.message.header.avatar.display ? (p(), y("div", ti, [
+          !l(t).preferences.messages.message.header.avatar.userImage && l(t).preferences.messages.message.header.avatar.userIcon && s.message.author === l(L).user ? (p(), y("i", {
             key: 0,
             class: me([
               "tvk-message-header-avatar-user",
               l(t).preferences.messages.message.header.avatar.userIcon
             ])
           }, null, 2)) : S("", !0),
-          l(t).preferences.messages.message.header.avatar.userImage && s.message.author === l(O).user ? (p(), b("img", {
+          l(t).preferences.messages.message.header.avatar.userImage && s.message.author === l(L).user ? (p(), y("img", {
             key: 1,
             src: l(t).preferences.messages.message.header.avatar.userImage.src,
             style: he({
@@ -2383,12 +2383,12 @@ const Pn = /* @__PURE__ */ K({
               height: l(t).preferences.messages.message.header.avatar.userImage.height
             }),
             role: "none"
-          }, null, 12, Zn)) : S("", !0),
-          !l(t).preferences.messages.message.header.avatar.botImage && l(t).preferences.messages.message.header.avatar.botIcon && s.message.author === l(O).bot ? (p(), b("i", {
+          }, null, 12, si)) : S("", !0),
+          !l(t).preferences.messages.message.header.avatar.botImage && l(t).preferences.messages.message.header.avatar.botIcon && s.message.author === l(L).bot ? (p(), y("i", {
             key: 2,
             class: me(["tvk-message-header-avatar-bot", l(t).preferences.messages.message.header.avatar.botIcon])
           }, null, 2)) : S("", !0),
-          l(t).preferences.messages.message.header.avatar.botImage && s.message.author === l(O).bot ? (p(), b("img", {
+          l(t).preferences.messages.message.header.avatar.botImage && s.message.author === l(L).bot ? (p(), y("img", {
             key: 3,
             src: l(t).preferences.messages.message.header.avatar.botImage.src,
             style: he({
@@ -2396,16 +2396,16 @@ const Pn = /* @__PURE__ */ K({
               height: l(t).preferences.messages.message.header.avatar.botImage.height
             }),
             role: "none"
-          }, null, 12, ei)) : S("", !0)
+          }, null, 12, ni)) : S("", !0)
         ])) : S("", !0),
-        l(t).preferences.messages.message.header.label.display ? (p(), b("div", ti, [
-          R("span", si, U(l(t).wording.messages.message.header.labelUser), 1),
-          R("span", ni, U(l(t).wording.messages.message.header.labelBot), 1)
+        l(t).preferences.messages.message.header.label.display ? (p(), y("div", ii, [
+          R("span", ai, j(l(t).wording.messages.message.header.labelUser), 1),
+          R("span", oi, j(l(t).wording.messages.message.header.labelBot), 1)
         ])) : S("", !0)
       ])) : S("", !0),
-      ii,
-      s.message.author !== l(O).app ? (p(), b("div", ai, [
-        s.message.type === l(P).message ? (p(), Z(qn, {
+      ri,
+      s.message.author !== l(L).app ? (p(), y("div", ci, [
+        s.message.type === l(P).message ? (p(), Z(Kn, {
           key: 0,
           message: s.message
         }, null, 8, ["message"])) : S("", !0),
@@ -2413,21 +2413,21 @@ const Pn = /* @__PURE__ */ K({
           key: 1,
           card: s.message
         }, null, 8, ["card"])) : S("", !0),
-        s.message.type === l(P).carousel ? (p(), Z(Gn, {
+        s.message.type === l(P).carousel ? (p(), Z(Xn, {
           key: 2,
           carousel: s.message
         }, null, 8, ["carousel"])) : S("", !0),
-        s.message.type === l(P).image ? (p(), Z(Jn, {
+        s.message.type === l(P).image ? (p(), Z(Zn, {
           key: 3,
           message: s.message
         }, null, 8, ["message"])) : S("", !0)
       ])) : S("", !0),
-      s.message.author === l(O).app ? (p(), b("div", oi, [
-        s.message.type === l(P).loader ? (p(), b("div", ri)) : S("", !0)
+      s.message.author === l(L).app ? (p(), y("div", li, [
+        s.message.type === l(P).loader ? (p(), y("div", ui)) : S("", !0)
       ])) : S("", !0)
     ], 2)) : S("", !0);
   }
-}), li = /* @__PURE__ */ R("div", { class: "tvk-shader tvk-shader-top" }, null, -1), ui = /* @__PURE__ */ R("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1), hi = /* @__PURE__ */ K({
+}), fi = /* @__PURE__ */ R("div", { class: "tvk-shader tvk-shader-top" }, null, -1), di = /* @__PURE__ */ R("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1), pi = /* @__PURE__ */ K({
   __name: "messages",
   setup(e) {
     const t = ee(), s = M();
@@ -2436,7 +2436,7 @@ const Pn = /* @__PURE__ */ K({
         s.value.scrollTop = s.value.scrollHeight;
       }, 100);
     }
-    return Os(() => {
+    return Ls(() => {
       i();
     }), t.$onAction(({ name: n, store: a, args: o, after: r }) => {
       n === "scrollMessages" && r(() => {
@@ -2444,20 +2444,20 @@ const Pn = /* @__PURE__ */ K({
           i();
         });
       });
-    }), (n, a) => (p(), b("div", {
+    }), (n, a) => (p(), y("div", {
       ref_key: "messagesWrapper",
       ref: s,
       class: "tvk-messages"
     }, [
-      li,
-      (p(!0), b(fe, null, ct(l(t).getMessages, (o) => (p(), Z(ci, { message: o }, null, 8, ["message"]))), 256)),
-      ui
+      fi,
+      (p(!0), y(fe, null, lt(l(t).getMessages, (o) => (p(), Z(hi, { message: o }, null, 8, ["message"]))), 256)),
+      di
     ], 512));
   }
-}), fi = /* @__PURE__ */ K({
+}), gi = /* @__PURE__ */ K({
   __name: "App",
   setup(e) {
-    const t = B.getInstance().options, s = ee();
+    const t = B.getOptions(), s = ee();
     let i = M(a()), n = M(!0);
     function a() {
       return (Math.random() + 1).toString(36).substring(7);
@@ -2468,23 +2468,23 @@ const Pn = /* @__PURE__ */ K({
           n.value = !0;
         });
       });
-    }), (o, r) => l(n) ? (p(), b("div", {
+    }), (o, r) => l(n) ? (p(), y("div", {
       class: "tvk-wrapper",
       key: l(i)
     }, [
-      l(s).getMessages.length || !l(t).preferences.messages.hideIfNoMessages ? (p(), Z(hi, { key: 0 })) : S("", !0),
-      Zt(Xs)
+      l(s).getMessages.length || !l(t).preferences.messages.hideIfNoMessages ? (p(), Z(pi, { key: 0 })) : S("", !0),
+      Zt(tn)
     ])) : S("", !0);
   }
 });
-function di() {
+function mi() {
   var t, s;
-  const e = B.getInstance().options;
+  const e = B.getOptions();
   if ((t = e == null ? void 0 : e.initialization) != null && t.welcomeMessage || (s = e == null ? void 0 : e.initialization) != null && s.openingMessage) {
     const i = ee(), n = i.getStoredState();
     (!n || !n.messages.length) && (e.initialization.welcomeMessage && i.addMessage({
       type: P.message,
-      author: O.bot,
+      author: L.bot,
       date: Date.now(),
       text: e.initialization.welcomeMessage
     }), e.initialization.openingMessage && i.sendUserMessage(
@@ -2493,20 +2493,20 @@ function di() {
     ));
   }
 }
-function mi(e, t, s) {
-  const i = ws(fi);
-  i.provide(is, t), B.clearInstance(), B.getInstance(s);
+function vi(e, t, s) {
+  const i = ws(gi);
+  i.provide(is, t), B.clearInstance(), B.setOptions(s);
   const n = xs();
-  return i.use(n), i.mount(e), di(), i;
+  return i.use(n), i.mount(e), mi(), i;
 }
-function yi() {
+function Ti() {
   return JSON.parse(JSON.stringify(as));
 }
-function bi() {
-  return JSON.parse(JSON.stringify(B.getInstance().options));
+function ki() {
+  return JSON.parse(JSON.stringify(B.getOptions()));
 }
-function vi(e, t) {
-  const s = B.getInstance().options, i = e.split(".");
+function Si(e, t) {
+  const s = B.getOptions(), i = e.split(".");
   let n = s;
   for (let a = 0; a < i.length; a++) {
     const o = i[a];
@@ -2522,8 +2522,8 @@ function vi(e, t) {
   }
 }
 export {
-  bi as getTvkCurrentOptions,
-  yi as getTvkDefaultOptions,
-  mi as renderChat,
-  vi as updateTvkOption
+  ki as getTvkCurrentOptions,
+  Ti as getTvkDefaultOptions,
+  vi as renderChat,
+  Si as updateTvkOption
 };

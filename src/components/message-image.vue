@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { MessageAuthor, MessageType } from "../models/messages";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 
-import { appOptionsSingleton } from "../utils/app-options";
-
-const appOptions = appOptionsSingleton.getInstance().options;
+const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps({ message: Object });
 </script>

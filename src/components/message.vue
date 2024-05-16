@@ -5,10 +5,10 @@ import messageCarousel from "./message-carousel.vue";
 import messageImage from "./message-image.vue";
 import { MessageAuthor, MessageType, type Message } from "../models/messages";
 
-import { appOptionsSingleton } from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 import type { PropType } from "vue";
 
-const appOptions = appOptionsSingleton.getInstance().options;
+const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps({
   message: {

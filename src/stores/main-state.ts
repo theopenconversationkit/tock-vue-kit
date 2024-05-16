@@ -4,7 +4,7 @@ import { computed, inject, ref, type Ref } from "vue";
 import { tockEndpointKey } from "../keys/app-keys";
 import type { mainState } from "../models/main-state";
 import { MessageAuthor, MessageType, type Message } from "../models/messages";
-import { appOptionsSingleton } from "../utils/app-options";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 import type { TockQuery } from "../models/query";
 
 const MAIN_STORE_NAME: string = "main";
@@ -19,7 +19,7 @@ const initNewState = (): mainState => ({
 export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   const tockEndPoint = inject<string>(tockEndpointKey);
 
-  const appOptions = appOptionsSingleton.getInstance().options;
+  const appOptions = appOptionsSingleton.getOptions();
 
   const state: Ref<mainState> = ref(getState());
 
