@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { forgeNewUserId } from "../utils/user-id";
-import { computed, inject, ref, type Ref } from "vue";
+import { computed, inject, ref, type ComputedRef, type Ref } from "vue";
 import { tockEndpointKey } from "../keys/app-keys";
 import type { mainState } from "../models/main-state";
 import { MessageAuthor, MessageType, type Message } from "../models/messages";
@@ -51,7 +51,9 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     return storageKey;
   }
 
-  const getMessages = computed(() => state.value.messages);
+  const getMessages: ComputedRef<Message[]> = computed(
+    () => state.value.messages
+  );
 
   function clearLoaderMessages(): void {
     state.value.messages = state.value.messages.filter((mssg) => {
@@ -68,37 +70,37 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     mainStoreInstance.clearLoaderMessages();
     mainStoreInstance.scrollMessages();
 
-    TEMP_ReplaceImageByPlaceholder(message);
+    // TEMP_ReplaceImageByPlaceholder(message);
 
     state.value.messages.push(message);
   }
 
-  function TEMP_ReplaceImageByPlaceholder(message: Message) {
-    function getFileUrl() {
-      const factor = 500;
-      const widthRand = Math.max(Math.random(), 0.3);
-      const heightRand = Math.max(Math.random(), 0.3);
-      const width = Math.ceil(widthRand * factor);
-      const height = Math.ceil(heightRand * factor);
-      const minCeiled = Math.ceil(1);
-      const maxFloored = Math.floor(1084);
-      const imgId = Math.floor(
-        Math.random() * (maxFloored - minCeiled) + minCeiled
-      );
+  // function TEMP_ReplaceImageByPlaceholder(message: Message) {
+  //   function getFileUrl() {
+  //     const factor = 500;
+  //     const widthRand = Math.max(Math.random(), 0.3);
+  //     const heightRand = Math.max(Math.random(), 0.3);
+  //     const width = Math.ceil(widthRand * factor);
+  //     const height = Math.ceil(heightRand * factor);
+  //     const minCeiled = Math.ceil(1);
+  //     const maxFloored = Math.floor(1084);
+  //     const imgId = Math.floor(
+  //       Math.random() * (maxFloored - minCeiled) + minCeiled
+  //     );
 
-      return `https://picsum.photos/id/${imgId}/${width}/${height}`;
-    }
+  //     return `https://picsum.photos/id/${imgId}/${width}/${height}`;
+  //   }
 
-    if (message.type === MessageType.card) {
-      message.file.url = getFileUrl();
-    }
+  //   if (message.type === MessageType.card) {
+  //     message.file.url = getFileUrl();
+  //   }
 
-    if (message.type === MessageType.carousel) {
-      message.cards.forEach((card) => {
-        card.file.url = getFileUrl();
-      });
-    }
-  }
+  //   if (message.type === MessageType.carousel) {
+  //     message.cards.forEach((card) => {
+  //       card.file.url = getFileUrl();
+  //     });
+  //   }
+  // }
 
   async function sendUserMessage(
     message: string,

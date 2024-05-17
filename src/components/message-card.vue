@@ -2,20 +2,17 @@
 import { appOptionsSingleton } from "../utils/app-options-singleton";
 import { useMainStore } from "../stores/main-state";
 import type { CardMessage } from "../models/messages";
-import type { PropType } from "vue";
 
 const mainStore = useMainStore();
 const appOptions = appOptionsSingleton.getOptions();
 
-const props = defineProps({
-  card: {
-    type: Object as PropType<CardMessage>,
-  },
-});
+const props = defineProps<{
+  card: CardMessage;
+}>();
 
 const imageAlternative = props.card?.file?.description ?? props.card?.title;
 
-function onImgLoad(event: Event) {
+function onImgLoad(event: Event): void {
   if (props.card!.file._loaded) return;
   props.card!.file._loaded = true;
   mainStore.scrollMessages();

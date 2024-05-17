@@ -13,19 +13,19 @@ const input = ref<HTMLInputElement | null>(null);
 
 const typedChars = ref<string>("");
 
-function handleClick() {
+function handleClick(): void {
   if (input?.value) input.value.focus();
 }
 
-function nbTypedChars() {
+function nbTypedChars(): number {
   return typedChars.value.trim().length;
 }
 
-function userInputExceedLenth() {
+function userInputExceedLenth(): boolean {
   return nbTypedChars() > maxChars;
 }
 
-function onSubmit() {
+function onSubmit(): void {
   if (nbTypedChars() && !userInputExceedLenth()) {
     mainStore.sendUserMessage(typedChars.value);
     if (appOptions.preferences.questionBar.clearTypedCharsOnSubmit) {
@@ -34,7 +34,7 @@ function onSubmit() {
   }
 }
 
-function onClearHistory() {
+function onClearHistory(): void {
   mainStore.clearHistory();
 }
 </script>
@@ -105,4 +105,3 @@ function onClearHistory() {
     </button>
   </div>
 </template>
-../utils/app-options-singleton

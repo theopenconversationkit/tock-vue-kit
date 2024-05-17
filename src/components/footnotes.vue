@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
+import { appOptionsSingleton } from "../utils/app-options-singleton";
 import Footnote from "./footnote.vue";
 import type { MessageFootnote } from "../models/messages";
-import { appOptionsSingleton } from "../utils/app-options-singleton";
 
 const appOptions = appOptionsSingleton.getOptions();
 
-const props = defineProps({
-  footnotes: {
-    type: Object as PropType<MessageFootnote[]>,
-  },
-});
+const props = defineProps<{
+  footnotes: MessageFootnote[];
+}>();
 </script>
 
 <template>
-  <div class="tvk-message-footnotes">
+  <div class="tvk-footnotes">
     {{ appOptions.wording.messages.message.footnotes.sources }}
     <Footnote
       v-for="footnote in props.footnotes"

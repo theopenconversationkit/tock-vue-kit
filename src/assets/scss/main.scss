@@ -77,8 +77,10 @@
 
     // message
     .tvk-message {
-      flex-grow: 1;
+      // flex-grow: 1;
       display: flex;
+
+      gap: var(--tvk_message_gap);
 
       flex-wrap: var(--tvk_message_flex-wrap);
 
@@ -88,163 +90,188 @@
 
       scroll-behavior: smooth;
 
-      // message header
-      .tvk-message-header {
+      .tvk-message-answer {
         display: flex;
-        gap: var(--tvk_message_header_gap);
-        align-items: var(--tvk_message_header_align-items);
-        margin: var(--tvk_message_header_margin);
-        font-size: var(--tvk_message_header_font-size);
-        font-weight: var(--tvk_message_header_font-weight);
-        color: var(--tvk_message_header_color);
+        flex-wrap: wrap;
+        flex-grow: var(--tvk_message_answer_flex-grow);
+        flex-shrink: var(--tvk_message_answer_flex-shrink);
+        flex-basis: var(--tvk_message_answer_flex-basis);
 
-        .tvk-message-header-avatar {
-          font-size: var(--tvk_message_header_avatar_font-size);
+        // message header
+        .tvk-message-header {
+          display: flex;
+          gap: var(--tvk_message_header_gap);
+          align-items: var(--tvk_message_header_align-items);
+          margin: var(--tvk_message_header_margin);
+          font-size: var(--tvk_message_header_font-size);
+          font-weight: var(--tvk_message_header_font-weight);
+          color: var(--tvk_message_header_color);
+
+          .tvk-message-header-avatar {
+            font-size: var(--tvk_message_header_avatar_font-size);
+          }
         }
-      }
 
-      .tvk-message-header-line-break {
-        width: var(--tvk_message_header_line-break-width);
-      }
+        .tvk-message-header-line-break {
+          width: var(--tvk_message_header_line-break-width);
+        }
 
-      // message body
-      .tvk-message-body {
-        display: inline-block;
-        flex-grow: var(--tvk_message_body_grow);
-        padding: var(--tvk_message_body_padding);
-        border-radius: var(--tvk_message_body_radius);
-        line-height: var(--tvk_message_body_line-height);
-      }
+        // message body
+        .tvk-message-body {
+          flex-grow: 1;
+          display: inline-block;
+          flex-grow: var(--tvk_message_body_grow);
+          padding: var(--tvk_message_body_padding);
+          border-radius: var(--tvk_message_body_radius);
+          line-height: var(--tvk_message_body_line-height);
+        }
 
-      .tvk-message-body-from-app {
-        display: inline-block;
-        flex-grow: var(--tvk_message_body_grow);
-        padding: var(--tvk_message_body_padding);
-        border-radius: var(--tvk_message_body_radius);
-        width: 100%;
+        .tvk-message-body-from-app {
+          display: inline-block;
+          flex-grow: var(--tvk_message_body_grow);
+          padding: var(--tvk_message_body_padding);
+          border-radius: var(--tvk_message_body_radius);
+          width: 100%;
 
-        .tvk-message-loader {
-          position: relative;
+          .tvk-message-loader {
+            position: relative;
 
-          margin: var(--tvk_message_loader_margin);
+            margin: var(--tvk_message_loader_margin);
 
-          width: var(--tvk_message_loader_size);
-          height: var(--tvk_message_loader_size);
+            width: var(--tvk_message_loader_size);
+            height: var(--tvk_message_loader_size);
 
-          border-radius: 50%;
+            border-radius: 50%;
 
-          background-color: var(--tvk_message_loader_color-a);
+            background-color: var(--tvk_message_loader_color-a);
 
-          box-shadow: calc(var(--tvk_message_loader_size) * 2) 0
-              var(--tvk_message_loader_color-a),
-            calc(var(--tvk_message_loader_size) * 2 * -1) 0
-              var(--tvk_message_loader_color-a);
+            box-shadow: calc(var(--tvk_message_loader_size) * 2) 0
+                var(--tvk_message_loader_color-a),
+              calc(var(--tvk_message_loader_size) * 2 * -1) 0
+                var(--tvk_message_loader_color-a);
 
-          animation: tvk-loader-animation 0.5s ease-out infinite alternate;
+            animation: tvk-loader-animation 0.5s ease-out infinite alternate;
+          }
         }
       }
 
       // USER
       &.tvk-message-user {
-        justify-content: var(--tvk_message_user_justify-content);
-
         margin: var(--tvk_message_user_margin);
 
-        .tvk-message-header {
-          flex-direction: var(--tvk_message_header_user_flex-direction);
+        .tvk-message-answer {
+          justify-content: var(--tvk_message_user_justify-content);
+          .tvk-message-header {
+            flex-direction: var(--tvk_message_header_user_flex-direction);
 
-          .tvk-message-header-avatar {
-            padding: var(--tvk_message_header_avatar_user_padding);
-            border-radius: var(--tvk_message_header_avatar_user_radius);
-            color: var(--tvk_message_header_avatar_user_color);
-            background-color: var(
-              --tvk_message_header_avatar_user_background-color
+            .tvk-message-header-avatar {
+              padding: var(--tvk_message_header_avatar_user_padding);
+              border-radius: var(--tvk_message_header_avatar_user_radius);
+              color: var(--tvk_message_header_avatar_user_color);
+              background-color: var(
+                --tvk_message_header_avatar_user_background-color
+              );
+            }
+
+            .tvk-message-header-label-bot {
+              display: none;
+            }
+          }
+
+          .tvk-message-body {
+            color: var(--tvk_message_body_user_color);
+            background-color: var(--tvk_message_body_user_background-color);
+            border-top-left-radius: var(
+              --tvk_message_body_user_radius-top-left
             );
+            border-top-right-radius: var(
+              --tvk_message_body_user_radius-top-right
+            );
+            border-bottom-left-radius: var(
+              --tvk_message_body_user_radius-bottom-left
+            );
+            border-bottom-right-radius: var(
+              --tvk_message_body_user_radius-bottom-right
+            );
+
+            border: var(--tvk_message_body_user_border);
+
+            box-shadow: var(--tvk_message_body_user_box-shadow);
           }
-
-          .tvk-message-header-label-bot {
-            display: none;
-          }
-        }
-
-        .tvk-message-body {
-          color: var(--tvk_message_body_user_color);
-          background-color: var(--tvk_message_body_user_background-color);
-          border-top-left-radius: var(--tvk_message_body_user_radius-top-left);
-          border-top-right-radius: var(
-            --tvk_message_body_user_radius-top-right
-          );
-          border-bottom-left-radius: var(
-            --tvk_message_body_user_radius-bottom-left
-          );
-          border-bottom-right-radius: var(
-            --tvk_message_body_user_radius-bottom-right
-          );
-
-          border: var(--tvk_message_body_user_border);
-
-          box-shadow: var(--tvk_message_body_user_box-shadow);
         }
       }
 
       // BOT
       &.tvk-message-bot {
-        justify-content: var(--tvk_message_bot_justify-content);
         margin: var(--tvk_message_bot_margin);
-        .tvk-message-header {
-          flex-direction: var(--tvk_message_header_bot_flex-direction);
 
-          .tvk-message-header-avatar {
-            padding: var(--tvk_message_header_avatar_bot_padding);
-            border-radius: var(--tvk_message_header_avatar_bot_radius);
-            color: var(--tvk_message_header_avatar_bot_color);
-            background-color: var(
-              --tvk_message_header_avatar_bot_background-color
-            );
-          }
+        .tvk-message-answer {
+          justify-content: var(--tvk_message_bot_justify-content);
+          .tvk-message-header {
+            flex-direction: var(--tvk_message_header_bot_flex-direction);
 
-          .tvk-message-header-label-user {
-            display: none;
-          }
-        }
-
-        .tvk-message-body {
-          max-width: 100%;
-          white-space: pre-line;
-          color: var(--tvk_message_body_bot_color);
-          background-color: var(--tvk_message_body_bot_background-color);
-
-          border-top-left-radius: var(--tvk_message_body_bot_radius-top-left);
-          border-top-right-radius: var(--tvk_message_body_bot_radius-top-right);
-          border-bottom-left-radius: var(
-            --tvk_message_body_bot_radius-bottom-left
-          );
-          border-bottom-right-radius: var(
-            --tvk_message_body_bot_radius-bottom-right
-          );
-
-          border: var(--tvk_message_body_bot_border);
-
-          box-shadow: var(--tvk_message_body_bot_box-shadow);
-
-          .tvk-message-footnotes {
-            display: var(--tvk_message_footnotes_display);
-            flex-direction: var(--tvk_message_footnotes_flex-direction);
-            flex-wrap: var(--tvk_message_footnotes_flex-wrap);
-            gap: var(--tvk_message_footnotes_gap);
-            align-items: var(--tvk_message_footnotes_align-items);
-            margin: var(--tvk_message_footnotes_margin);
-            font-size: var(--tvk_message_footnotes_font-size);
-
-            .tvk-message-footnote {
-              padding: var(--tvk_message_footnote_padding);
-              background-color: var(--tvk_message_footnote_background-color);
-              color: var(--tvk_message_footnote_color);
-              line-height: var(--tvk_message_footnote_line-height);
+            .tvk-message-header-avatar {
+              padding: var(--tvk_message_header_avatar_bot_padding);
+              border-radius: var(--tvk_message_header_avatar_bot_radius);
+              color: var(--tvk_message_header_avatar_bot_color);
+              background-color: var(
+                --tvk_message_header_avatar_bot_background-color
+              );
             }
+
+            .tvk-message-header-label-user {
+              display: none;
+            }
+          }
+
+          .tvk-message-body {
+            max-width: 100%;
+            white-space: pre-line;
+            color: var(--tvk_message_body_bot_color);
+            background-color: var(--tvk_message_body_bot_background-color);
+
+            border-top-left-radius: var(--tvk_message_body_bot_radius-top-left);
+            border-top-right-radius: var(
+              --tvk_message_body_bot_radius-top-right
+            );
+            border-bottom-left-radius: var(
+              --tvk_message_body_bot_radius-bottom-left
+            );
+            border-bottom-right-radius: var(
+              --tvk_message_body_bot_radius-bottom-right
+            );
+
+            border: var(--tvk_message_body_bot_border);
+
+            box-shadow: var(--tvk_message_body_bot_box-shadow);
           }
         }
       }
+    }
+  }
+
+  .tvk-side-footnotes {
+    flex-grow: var(--tvk_side-footnotes_flex-grow);
+    flex-shrink: var(--tvk_side-footnotes_flex-shrink);
+    flex-basis: var(--tvk_side-footnotes_flex-basis);
+  }
+
+  .tvk-footnotes {
+    display: var(--tvk_message_footnotes_display);
+    flex-direction: var(--tvk_message_footnotes_flex-direction);
+    flex-wrap: var(--tvk_message_footnotes_flex-wrap);
+    gap: var(--tvk_message_footnotes_gap);
+    align-items: var(--tvk_message_footnotes_align-items);
+    margin: var(--tvk_message_footnotes_margin);
+    font-size: var(--tvk_message_footnotes_font-size);
+
+    .tvk-footnote {
+      display: flex;
+      flex-direction: var(--tvk_message_footnote_flex-direction);
+      padding: var(--tvk_message_footnote_padding);
+      background-color: var(--tvk_message_footnote_background-color);
+      color: var(--tvk_message_footnote_color);
+      line-height: var(--tvk_message_footnote_line-height);
     }
   }
 

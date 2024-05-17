@@ -82,7 +82,9 @@ interface Preferences {
       };
     };
     footNotes: {
+      display: OptionDefinition<boolean>;
       requireSourcesContent: OptionDefinition<boolean>;
+      displayOnMessageSide: OptionDefinition<boolean>;
     };
   };
   questionBar: {
@@ -176,12 +178,26 @@ const preferences: Preferences = {
       },
     },
     footNotes: {
+      display: {
+        type: "boolean",
+        default: true,
+        title: "Display sources if any",
+        description:
+          "For RAG answers, display the sources used to generate the answer.",
+      },
       requireSourcesContent: {
         type: "boolean",
         default: false,
         title: "Request textual content of sources",
         description:
           "For RAG answers, request the textual content of the source in addition to the source title and link.",
+      },
+      displayOnMessageSide: {
+        type: "boolean",
+        default: false,
+        title: "Display sources on the side of the answer",
+        description:
+          "For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.",
       },
     },
   },

@@ -4,17 +4,14 @@ import Button from "./button.vue";
 import Footnotes from "./footnotes.vue";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
 import type { TextMessage } from "../models/messages";
-import type { PropType } from "vue";
 
 const appOptions = appOptionsSingleton.getOptions();
 
-const props = defineProps({
-  message: {
-    type: Object as PropType<TextMessage>,
-  },
-});
+const props = defineProps<{
+  message: TextMessage;
+}>();
 
-function getLinkyfiedText() {
+function getLinkyfiedText(): string {
   return linkifyHtml(props.message!.text, { target: "_blank" });
 }
 </script>
@@ -23,7 +20,7 @@ function getLinkyfiedText() {
   <div v-html="getLinkyfiedText()" tabindex="1"></div>
 
   <Footnotes
-    v-if="props.message!.footnotes?.length"
+    v-if="props.message!.footnotes?.length && appOptions.preferences.messages.footNotes.display && !appOptions.preferences.messages.footNotes.displayOnMessageSide"
     :footnotes="props.message!.footnotes"
   ></Footnotes>
 

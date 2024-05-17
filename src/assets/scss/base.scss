@@ -46,7 +46,16 @@
   // Message
   --tvk_message_margin: 0em 0em 0.5rem 0em;
   --tvk_message_flex-wrap: wrap;
-  --tvk_message_align-items: center;
+  --tvk_message_align-items: start;
+  --tvk_message_gap: var(--tvk_base_spacing);
+
+  // Message answer
+  --tvk_message_answer_flex-grow: 1;
+  --tvk_message_answer_flex-shrink: 0;
+  --tvk_message_answer_flex-basis-base: 100%;
+  --tvk_message_answer_flex-basis: calc(
+    var(--tvk_message_answer_flex-basis-base) - calc(var(--tvk_message_gap) / 2)
+  );
 
   // Message for user
   --tvk_message_user_justify-content: end;
@@ -131,6 +140,14 @@
 
   --tvk_message_body_bot_box-shadow: var(--tvk_message_body_box-shadow);
 
+  // Side footnotes
+  --tvk_side-footnotes_flex-grow: 1;
+  --tvk_side-footnotes_flex-shrink: 0;
+  --tvk_side-footnotes_flex-basis-base: 100%;
+  --tvk_side-footnotes_flex-basis: calc(
+    var(--tvk_side-footnotes_flex-basis-base) - calc(var(--tvk_message_gap) / 2)
+  );
+
   // Message footnotes
   --tvk_message_footnotes_display: flex;
   --tvk_message_footnotes_flex-direction: row;
@@ -141,6 +158,7 @@
   --tvk_message_footnotes_font-size: 0.7rem;
 
   // Message footnote
+  --tvk_message_footnote_flex-direction: column;
   --tvk_message_footnote_padding: 0.2em 0.5em;
   --tvk_message_footnote_background-color: var(--tvk_colors_neutral);
   --tvk_message_footnote_color: var(--tvk_colors_text2);
