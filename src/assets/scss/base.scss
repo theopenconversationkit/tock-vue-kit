@@ -121,6 +121,7 @@
   );
 
   // Message body
+  --tvk_message_body_width: auto;
   --tvk_message_body_grow: inherit;
   --tvk_message_body_padding: var(--tvk_base_spacing);
   --tvk_message_body_radius: var(--tvk_base_radius);
@@ -175,6 +176,7 @@
 
   // Footnote
   --tvk_footnotes_footnote_flex-direction: column;
+  --tvk_footnotes_footnote_justify-content: normal;
   --tvk_footnotes_footnote_gap: initial;
   --tvk_footnotes_footnote_padding: 0.2em 0.5em;
   --tvk_footnotes_footnote_width: auto;

@@ -119,6 +119,8 @@
 
         // message body
         .tvk-message-body {
+          max-width: 100%;
+          width: var(--tvk_message_body_width);
           display: inline-block;
           flex-grow: var(--tvk_message_body_grow);
           padding: var(--tvk_message_body_padding);
@@ -225,7 +227,6 @@
           }
 
           .tvk-message-body {
-            max-width: 100%;
             white-space: pre-line;
             color: var(--tvk_message_body_bot_color);
             background: var(--tvk_message_body_bot_background);
@@ -272,6 +273,7 @@
     .tvk-footnote {
       display: flex;
       flex-direction: var(--tvk_footnotes_footnote_flex-direction);
+      justify-content: var(--tvk_footnotes_footnote_justify-content);
       gap: var(--tvk_footnotes_footnote_gap);
 
       width: var(--tvk_footnotes_footnote_width);
