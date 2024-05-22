@@ -12,7 +12,9 @@ const props = defineProps<{
 
 <template>
   <div class="tvk-footnotes">
-    {{ appOptions.wording.messages.message.footnotes.sources }}
+    <span class="tvk-footnotes-sources-label">{{
+      appOptions.wording.messages.message.footnotes.sources
+    }}</span>
     <Footnote
       v-for="footnote in props.footnotes"
       :footnote="footnote"

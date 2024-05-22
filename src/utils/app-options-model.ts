@@ -84,6 +84,8 @@ interface Preferences {
     footNotes: {
       display: OptionDefinition<boolean>;
       requireSourcesContent: OptionDefinition<boolean>;
+      clampSourceContent: OptionDefinition<boolean>;
+      clampSourceContentNbLines: OptionDefinition<number>;
       displayOnMessageSide: OptionDefinition<boolean>;
     };
   };
@@ -192,6 +194,20 @@ const preferences: Preferences = {
         description:
           "For RAG answers, request the textual content of the source in addition to the source title and link.",
       },
+      clampSourceContent: {
+        type: "boolean",
+        default: true,
+        title: "Clamp content of sources",
+        description:
+          "For RAG answers with sources content, truncate the textual source content.",
+      },
+      clampSourceContentNbLines: {
+        type: "number",
+        default: 2,
+        title: "Number of lines to clamp",
+        description:
+          "For RAG answers with sources content, number of lines after which to truncate text.",
+      },
       displayOnMessageSide: {
         type: "boolean",
         default: false,
@@ -264,6 +280,7 @@ interface Wording {
       };
       footnotes: {
         sources: OptionDefinition<string>;
+        showMoreLink: OptionDefinition<string>;
       };
     };
   };
@@ -299,6 +316,12 @@ const wording: Wording = {
         sources: {
           type: "string",
           default: "Sources :",
+          title: "Footnotes label",
+          description: undefined,
+        },
+        showMoreLink: {
+          type: "string",
+          default: "> Show more",
           title: "Footnotes label",
           description: undefined,
         },

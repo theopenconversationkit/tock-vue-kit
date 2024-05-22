@@ -32,7 +32,7 @@
   font-size: var(--tvk_base_font-size);
   line-height: var(--tvk_wrapper_line-height);
 
-  background-color: var(--tvk_colors_app-background-color);
+  background: var(--tvk_wrapper_background);
 
   border: var(--tvk_wrapper_border);
   border-radius: var(--tvk_wrapper_border-radius);
@@ -80,11 +80,11 @@
       // flex-grow: 1;
       display: flex;
 
+      flex-direction: var(--tvk_message_flex-direction);
+
       gap: var(--tvk_message_gap);
 
       flex-wrap: var(--tvk_message_flex-wrap);
-
-      align-items: var(--tvk_message_align-items);
 
       margin: var(--tvk_message_margin);
 
@@ -92,7 +92,11 @@
 
       .tvk-message-answer {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: var(--tvk_message_answer_flex-wrap);
+        width: 100%;
+        gap: var(--tvk_message_answer_gap);
+        align-items: var(--tvk_message_answer_align-items);
+        flex-direction: var(--tvk_message_answer_flex-direction);
         flex-grow: var(--tvk_message_answer_flex-grow);
         flex-shrink: var(--tvk_message_answer_flex-shrink);
         flex-basis: var(--tvk_message_answer_flex-basis);
@@ -109,16 +113,12 @@
 
           .tvk-message-header-avatar {
             font-size: var(--tvk_message_header_avatar_font-size);
+            box-shadow: var(--tvk_message_header_avatar_box-shadow);
           }
-        }
-
-        .tvk-message-header-line-break {
-          width: var(--tvk_message_header_line-break-width);
         }
 
         // message body
         .tvk-message-body {
-          flex-grow: 1;
           display: inline-block;
           flex-grow: var(--tvk_message_body_grow);
           padding: var(--tvk_message_body_padding);
@@ -143,7 +143,7 @@
 
             border-radius: 50%;
 
-            background-color: var(--tvk_message_loader_color-a);
+            background: var(--tvk_message_loader_color-a);
 
             box-shadow: calc(var(--tvk_message_loader_size) * 2) 0
                 var(--tvk_message_loader_color-a),
@@ -160,7 +160,9 @@
         margin: var(--tvk_message_user_margin);
 
         .tvk-message-answer {
-          justify-content: var(--tvk_message_user_justify-content);
+          justify-content: var(--tvk_message_answer_user_justify-content);
+          align-items: var(--tvk_message_answer_user_align-items);
+
           .tvk-message-header {
             flex-direction: var(--tvk_message_header_user_flex-direction);
 
@@ -168,9 +170,7 @@
               padding: var(--tvk_message_header_avatar_user_padding);
               border-radius: var(--tvk_message_header_avatar_user_radius);
               color: var(--tvk_message_header_avatar_user_color);
-              background-color: var(
-                --tvk_message_header_avatar_user_background-color
-              );
+              background: var(--tvk_message_header_avatar_user_background);
             }
 
             .tvk-message-header-label-bot {
@@ -180,7 +180,7 @@
 
           .tvk-message-body {
             color: var(--tvk_message_body_user_color);
-            background-color: var(--tvk_message_body_user_background-color);
+            background: var(--tvk_message_body_user_background);
             border-top-left-radius: var(
               --tvk_message_body_user_radius-top-left
             );
@@ -206,7 +206,9 @@
         margin: var(--tvk_message_bot_margin);
 
         .tvk-message-answer {
-          justify-content: var(--tvk_message_bot_justify-content);
+          justify-content: var(--tvk_message_answer_bot_justify-content);
+          align-items: var(--tvk_message_answer_bot_align-items);
+
           .tvk-message-header {
             flex-direction: var(--tvk_message_header_bot_flex-direction);
 
@@ -214,9 +216,7 @@
               padding: var(--tvk_message_header_avatar_bot_padding);
               border-radius: var(--tvk_message_header_avatar_bot_radius);
               color: var(--tvk_message_header_avatar_bot_color);
-              background-color: var(
-                --tvk_message_header_avatar_bot_background-color
-              );
+              background: var(--tvk_message_header_avatar_bot_background);
             }
 
             .tvk-message-header-label-user {
@@ -228,7 +228,7 @@
             max-width: 100%;
             white-space: pre-line;
             color: var(--tvk_message_body_bot_color);
-            background-color: var(--tvk_message_body_bot_background-color);
+            background: var(--tvk_message_body_bot_background);
 
             border-top-left-radius: var(--tvk_message_body_bot_radius-top-left);
             border-top-right-radius: var(
@@ -257,21 +257,50 @@
   }
 
   .tvk-footnotes {
-    display: var(--tvk_message_footnotes_display);
-    flex-direction: var(--tvk_message_footnotes_flex-direction);
-    flex-wrap: var(--tvk_message_footnotes_flex-wrap);
-    gap: var(--tvk_message_footnotes_gap);
-    align-items: var(--tvk_message_footnotes_align-items);
-    margin: var(--tvk_message_footnotes_margin);
-    font-size: var(--tvk_message_footnotes_font-size);
+    display: var(--tvk_footnotes_display);
+    flex-direction: var(--tvk_footnotes_flex-direction);
+    flex-wrap: var(--tvk_footnotes_flex-wrap);
+    gap: var(--tvk_footnotes_gap);
+    align-items: var(--tvk_footnotes_align-items);
+    margin: var(--tvk_footnotes_margin);
+    font-size: var(--tvk_footnotes_font-size);
+
+    .tvk-footnotes-sources-label {
+      display: var(--tvk_footnotes_sources-title_display);
+    }
 
     .tvk-footnote {
       display: flex;
-      flex-direction: var(--tvk_message_footnote_flex-direction);
-      padding: var(--tvk_message_footnote_padding);
-      background-color: var(--tvk_message_footnote_background-color);
-      color: var(--tvk_message_footnote_color);
-      line-height: var(--tvk_message_footnote_line-height);
+      flex-direction: var(--tvk_footnotes_footnote_flex-direction);
+      gap: var(--tvk_footnotes_footnote_gap);
+
+      width: var(--tvk_footnotes_footnote_width);
+      padding: var(--tvk_footnotes_footnote_padding);
+
+      background: var(--tvk_footnotes_footnote_background);
+      color: var(--tvk_footnotes_footnote_color);
+      line-height: var(--tvk_footnotes_footnote_line-height);
+
+      border: var(--tvk_footnotes_footnote_border);
+      border-radius: var(--tvk_footnotes_footnote_border-radius);
+      box-shadow: var(--tvk_footnotes_footnote_box-shadow);
+
+      .tvk-footnote-title {
+        font-size: var(--tvk_footnotes_footnote_title_font-size);
+        font-weight: var(--tvk_footnotes_footnote_title_font-weight);
+        font-style: var(--tvk_footnotes_footnote_title_font-style);
+      }
+
+      .tvk-footnote-content {
+        margin: var(--tvk_footnotes_footnote_content_margin);
+        padding: var(--tvk_footnotes_footnote_content_padding);
+        font-size: var(--tvk_footnotes_footnote_content_font-size);
+        font-weight: var(--tvk_footnotes_footnote_content_font-weight);
+        font-style: var(--tvk_footnotes_footnote_content_font-style);
+        .tvk-footnote-content-show-more-link {
+          float: var(--tvk_footnotes_footnote_content_show-more-link_float);
+        }
+      }
     }
   }
 
@@ -289,7 +318,7 @@
 
     border-radius: var(--tvk_question_radius);
 
-    background-color: var(--tvk_question_background-color);
+    background: var(--tvk_question_background);
 
     color: var(--tvk_question_color);
 
@@ -314,7 +343,7 @@
         border: none;
         resize: none;
         cursor: text;
-        background-color: transparent;
+        background: transparent;
         color: inherit;
 
         &:focus-visible {
@@ -334,14 +363,14 @@
       gap: var(--tvk_question_btn-submit_gap);
       flex-direction: var(--tvk_question_btn-submit_flex-direction);
 
-      background-color: var(--tvk_question_btn-submit_background-color);
+      background: var(--tvk_question_btn-submit_background);
       color: var(--tvk_question_btn-submit_color);
       border: var(--tvk_question_btn-submit_border);
       border-radius: var(--tvk_question_btn-submit_border-radius);
       padding: var(--tvk_question_btn-submit_padding);
 
       &[disabled] {
-        background-color: var(--tvk_colors_neutral);
+        background: var(--tvk_colors_neutral);
       }
     }
   }
@@ -349,21 +378,21 @@
 
 @keyframes tvk-loader-animation {
   0% {
-    background-color: var(--tvk_message_loader_color-b);
+    background: var(--tvk_message_loader_color-b);
     box-shadow: calc(var(--tvk_message_loader_size) * 2) 0
         var(--tvk_message_loader_color-b),
       calc(var(--tvk_message_loader_size) * 2 * -1) 0
         var(--tvk_message_loader_color-a);
   }
   50% {
-    background-color: var(--tvk_message_loader_color-a);
+    background: var(--tvk_message_loader_color-a);
     box-shadow: calc(var(--tvk_message_loader_size) * 2) 0
         var(--tvk_message_loader_color-b),
       calc(var(--tvk_message_loader_size) * 2 * -1) 0
         var(--tvk_message_loader_color-b);
   }
   100% {
-    background-color: var(--tvk_message_loader_color-b);
+    background: var(--tvk_message_loader_color-b);
     box-shadow: calc(var(--tvk_message_loader_size) * 2) 0
         var(--tvk_message_loader_color-a),
       calc(var(--tvk_message_loader_size) * 2 * -1) 0
@@ -378,7 +407,7 @@
 .tvk-thumbnail {
   padding: var(--tvk_thumbnail_padding);
   border-radius: var(--tvk_base_radius);
-  background-color: var(--tvk_thumbnail_background-color);
+  background: var(--tvk_thumbnail_background);
   border: var(--tvk_thumbnail_border);
   max-width: var(--tvk_thumbnail_max-width);
   height: var(--tvk_thumbnail_height);
@@ -407,4 +436,13 @@
   gap: 0.5em;
   align-items: center;
   justify-content: space-between;
+}
+
+.tvk-clamp {
+  --tvk-clamp-nb-line: 3;
+  -webkit-line-clamp: var(--tvk-clamp-nb-line);
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

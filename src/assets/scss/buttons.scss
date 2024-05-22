@@ -12,7 +12,7 @@
   padding: var(--tvk_button_padding);
 
   font-size: var(--tvk_button_base-font-size);
-  background-color: transparent;
+  background: transparent;
   color: var(--tvk_colors_text2);
 
   border: none;
@@ -30,7 +30,7 @@
   -webkit-touch-callout: none;
 
   &:hover:not([disabled]) {
-    background-color: var(--tvk_colors_neutral);
+    background: var(--tvk_colors_neutral);
     box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
   }
 
@@ -41,7 +41,7 @@
 }
 
 :root {
-  --tvk_button_action-background-color: var(--tvk_colors_surface1);
+  --tvk_button_action-background: var(--tvk_colors_surface1);
   --tvk_button_action-color: var(--tvk_colors_text1);
   --tvk_button_action-padding: var(--tvk_base_spacing)
     calc(var(--tvk_base_spacing) * 2);
@@ -50,13 +50,13 @@
 }
 
 .tvk-btn-action {
-  background-color: var(--tvk_button_action-background-color);
+  background: var(--tvk_button_action-background);
   color: var(--tvk_button_action-color);
   padding: var(--tvk_button_action-padding);
   margin: var(--tvk_button_action-margin);
 
   &:hover:not([disabled]) {
-    background-color: hsl(
+    background: hsl(
       var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
         var(--tvk_colors_brand-lightness) / 0.7
     );

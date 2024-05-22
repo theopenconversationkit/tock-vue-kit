@@ -94,8 +94,6 @@ const props = defineProps<{
         </div>
       </div>
 
-      <div class="tvk-message-header-line-break"></div>
-
       <div
         class="tvk-message-body"
         v-if="props.message!.author !== MessageAuthor.app"
