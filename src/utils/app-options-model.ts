@@ -293,6 +293,7 @@ interface Wording {
     submit: OptionDefinition<string>;
     submitAriaLabel: OptionDefinition<string>;
   };
+  connectionErrorMessage: OptionDefinition<string>;
 }
 
 const wording: Wording = {
@@ -361,6 +362,12 @@ const wording: Wording = {
       title: "Submit button Aria label",
       description: undefined,
     },
+  },
+  connectionErrorMessage: {
+    type: "string",
+    default: "An unexpected error occured. Please try again later.",
+    title: "Connection error message",
+    description: undefined,
   },
 };
 

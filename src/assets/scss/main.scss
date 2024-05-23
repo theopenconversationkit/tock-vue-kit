@@ -448,3 +448,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.tvk-error-connection {
+  color: white;
+  background: orangered;
+  padding: 0.5em;
+  text-align: center;
+
+  .tvk-error-icon {
+    font-size: 150%;
+    vertical-align: middle;
+    margin-right: 0.3em;
+  }
+}

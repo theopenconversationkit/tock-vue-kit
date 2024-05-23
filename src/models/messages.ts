@@ -1,5 +1,6 @@
 export type Message =
   | LoaderMessage
+  | ErrorMessage
   | TextMessage
   | CardMessage
   | CarouselMessage
@@ -18,6 +19,7 @@ export enum MessageType {
   image = "image",
 
   loader = "loader",
+  error = "error",
 }
 
 interface MessageBase {
@@ -58,6 +60,12 @@ export interface ImageMessage extends MessageBase {
 export interface LoaderMessage extends MessageBase {
   type: MessageType.loader;
   message?: string;
+}
+
+export interface ErrorMessage extends MessageBase {
+  type: MessageType.error;
+  message?: string;
+  text: string;
 }
 
 export interface MessageFootnote {

@@ -102,6 +102,16 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   //   }
   // }
 
+  function notifyError() {
+    const mainStoreInstance = useMainStore();
+    mainStoreInstance.addMessage({
+      type: MessageType.error,
+      author: MessageAuthor.app,
+      date: Date.now(),
+      text: appOptions.wording.connectionErrorMessage,
+    });
+  }
+
   async function sendUserMessage(
     message: string,
     addToHistory = true
@@ -136,12 +146,32 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         appOptions.preferences.messages.footNotes.requireSourcesContent,
     };
 
-    const res = await (
-      await fetch(tockEndPoint!, {
+    let query;
+    try {
+      query = await fetch(tockEndPoint!, {
         method: "post",
         body: JSON.stringify(payload),
-      })
-    ).json();
+      });
+    } catch (error) {
+      console.log(error);
+      notifyError();
+      return;
+    }
+
+    if (!query.ok) {
+      console.log(query);
+      notifyError();
+      return;
+    }
+
+    let res;
+    try {
+      res = await query.json();
+    } catch (error) {
+      console.log(error);
+      notifyError();
+      return;
+    }
 
     mainStoreInstance.clearLoaderMessages();
 
