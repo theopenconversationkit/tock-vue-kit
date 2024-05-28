@@ -294,6 +294,7 @@
       }
 
       .tvk-footnote-content {
+        white-space: pre-line;
         margin: var(--tvk_footnotes_footnote_content_margin);
         padding: var(--tvk_footnotes_footnote_content_padding);
         font-size: var(--tvk_footnotes_footnote_content_font-size);

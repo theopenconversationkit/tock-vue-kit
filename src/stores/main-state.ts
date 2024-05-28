@@ -102,6 +102,20 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   //   }
   // }
 
+  function getHeaders(): Headers {
+    const headers = new Headers({ "Content-Type": "application/json" });
+
+    if (appOptions.initialization.extraHeaders) {
+      Object.entries(appOptions.initialization.extraHeaders).forEach(
+        (entry) => {
+          headers.append(entry[0], entry[1]);
+        }
+      );
+    }
+
+    return headers;
+  }
+
   function notifyError() {
     const mainStoreInstance = useMainStore();
     mainStoreInstance.addMessage({
@@ -151,6 +165,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       query = await fetch(tockEndPoint!, {
         method: "post",
         body: JSON.stringify(payload),
+        headers: getHeaders(),
       });
     } catch (error) {
       console.log(error);

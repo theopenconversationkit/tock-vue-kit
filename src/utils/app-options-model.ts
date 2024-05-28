@@ -4,8 +4,12 @@ export interface ImageDef {
   height: string;
 }
 
+export interface KeyValues {
+  [key: string]: string;
+}
+
 export interface OptionDefinition<T> {
-  type: "boolean" | "string" | "number" | "ImageDef";
+  type: "boolean" | "string" | "number" | "ImageDef" | "KeyValues";
   default: T | undefined;
   title: string;
   description: string | undefined;
@@ -42,6 +46,7 @@ const localStorage: LocalStorage = {
 interface Initialization {
   welcomeMessage: OptionDefinition<string>;
   openingMessage: OptionDefinition<string>;
+  extraHeaders: OptionDefinition<KeyValues>;
 }
 
 const initialization: Initialization = {
@@ -58,6 +63,13 @@ const initialization: Initialization = {
     title: "Opening message",
     description:
       "Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any.",
+  },
+  extraHeaders: {
+    type: "KeyValues",
+    default: undefined,
+    title: "Extra headers",
+    description:
+      "Additional HTTP header key/value pairs to be supplied in requests.",
   },
 };
 

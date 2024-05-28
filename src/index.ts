@@ -7,7 +7,11 @@ import { tockEndpointKey } from "@/keys/app-keys";
 import { appOptionsSingleton } from "@/utils/app-options-singleton";
 import { appInitialization } from "@/utils/initialization";
 import { useMainStore } from "@/stores/main-state";
-import { appOptionsModel, type AppOptions } from "@/utils/app-options-model";
+import {
+  appOptionsModel,
+  type AppOptions,
+  type AppOptionsModel,
+} from "@/utils/app-options-model";
 
 function renderChat(
   target: HTMLElement,
@@ -30,7 +34,7 @@ function renderChat(
   return app;
 }
 
-function getTvkDefaultOptions(): AppOptions {
+function getTvkDefaultOptions(): AppOptionsModel {
   return JSON.parse(JSON.stringify(appOptionsModel));
 }
 
@@ -47,17 +51,17 @@ function updateTvkOption(
 
   let pointer = options;
   for (let i = 0; i < path.length; i++) {
-    const space = path[i];
+    const space = path[i] as keyof AppOptions;
+
     if (i < path.length - 1) {
-      if ((pointer as any)[space]) {
-        pointer = (pointer as any)[space];
+      if (pointer[space]) {
+        pointer = pointer[space] as unknown as AppOptions;
       } else {
-        console.warn("Non existing Tock Vue Kit option passed", space, path);
-        break;
+        (pointer as any)[space] = {};
+        pointer = pointer[space] as unknown as AppOptions;
       }
     } else {
       (pointer as any)[space] = value;
-
       const mainStore = useMainStore();
       mainStore.updateApplication();
     }
@@ -72,7 +76,7 @@ declare global {
         tockEndPoint: string,
         options: AppOptions
       ) => App<Element>;
-      getTvkDefaultOptions: () => AppOptions;
+      getTvkDefaultOptions: () => AppOptionsModel;
       getTvkCurrentOptions: () => AppOptions;
       updateTvkOption: (path: string, value: string | number | boolean) => void;
     };
