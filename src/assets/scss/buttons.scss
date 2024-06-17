@@ -1,4 +1,6 @@
 :root {
+  --tvk--default-sheet: true;
+
   --tvk_button_radius: var(--tvk_base_radius);
   --tvk_button_rounded-radius: 50%;
   --tvk_button_base-font-size: var(--tvk_base_font-size);
@@ -41,6 +43,8 @@
 }
 
 :root {
+  --tvk--default-sheet: true;
+
   --tvk_button_action-background: var(--tvk_colors_surface1);
   --tvk_button_action-color: var(--tvk_colors_text1);
   --tvk_button_action-padding: var(--tvk_base_spacing)

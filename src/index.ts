@@ -7,31 +7,48 @@ import { tockEndpointKey } from "@/keys/app-keys";
 import { appOptionsSingleton } from "@/utils/app-options-singleton";
 import { appInitialization } from "@/utils/initialization";
 import { useMainStore } from "@/stores/main-state";
-import {
-  appOptionsModel,
-  type AppOptions,
-  type AppOptionsModel,
-} from "@/utils/app-options-model";
+import { appOptionsModel } from "@/utils/app-options-model";
+import type {
+  AppOptions,
+  AppOptionsModel,
+  DeepPartial,
+} from "@/models/app-options-model";
+
+let appMemo: App<Element>;
+let targetMemo: HTMLElement;
 
 function renderChat(
   target: HTMLElement,
   tockEndPoint: string,
-  options: AppOptions
+  options?: DeepPartial<AppOptions>
 ): App<Element> {
-  const app = createApp(TvkApp);
+  targetMemo = target;
+  mountApp(tockEndPoint, options);
+  return appMemo;
+}
 
-  app.provide(tockEndpointKey, tockEndPoint);
+function reload(tockEndPoint: string, options?: DeepPartial<AppOptions>): void {
+  mountApp(tockEndPoint, options);
+}
+
+function mountApp(
+  tockEndPoint: string,
+  options?: DeepPartial<AppOptions>
+): void {
+  if (appMemo?.unmount) appMemo.unmount();
+
+  appMemo = createApp(TvkApp);
+
+  appMemo.provide(tockEndpointKey, tockEndPoint);
 
   appOptionsSingleton.clearInstance();
   appOptionsSingleton.setOptions(options);
 
   const pinia = createPinia();
-  app.use(pinia);
+  appMemo.use(pinia);
 
-  app.mount(target);
+  appMemo.mount(targetMemo);
   appInitialization();
-
-  return app;
 }
 
 function getTvkDefaultOptions(): AppOptionsModel {
@@ -44,7 +61,7 @@ function getTvkCurrentOptions(): AppOptions {
 
 function updateTvkOption(
   pathString: string,
-  value: string | number | boolean
+  value: string | number | boolean | undefined
 ): void {
   const options = appOptionsSingleton.getOptions();
   const path = pathString.split(".");
@@ -78,7 +95,11 @@ declare global {
       ) => App<Element>;
       getTvkDefaultOptions: () => AppOptionsModel;
       getTvkCurrentOptions: () => AppOptions;
-      updateTvkOption: (path: string, value: string | number | boolean) => void;
+      updateTvkOption: (
+        path: string,
+        value: string | number | boolean | undefined
+      ) => void;
+      reload: () => void;
     };
   }
 }
@@ -88,4 +109,5 @@ export {
   getTvkDefaultOptions,
   getTvkCurrentOptions,
   updateTvkOption,
+  reload,
 };

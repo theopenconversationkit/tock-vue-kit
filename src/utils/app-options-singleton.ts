@@ -1,6 +1,7 @@
 import { mergeDeep } from "@/utils/deep-merge";
 import { isObject } from "./misc";
-import { appOptionsModel, type AppOptions } from "./app-options-model";
+import { appOptionsModel } from "./app-options-model";
+import type { AppOptions, DeepPartial } from "../models/app-options-model";
 
 function isOptionDefinition(object: object): boolean {
   return (
@@ -35,7 +36,7 @@ export class appOptionsSingleton {
 
   options: AppOptions;
 
-  constructor(options: Partial<AppOptions>) {
+  constructor(options: DeepPartial<AppOptions>) {
     const defaultOptions = extractDefaultAppOptions(appOptionsModel);
 
     this.options = mergeDeep(defaultOptions, options);
@@ -47,7 +48,7 @@ export class appOptionsSingleton {
     }
   }
 
-  public static setOptions(options?: AppOptions): void {
+  public static setOptions(options?: DeepPartial<AppOptions>): void {
     appOptionsSingleton.instance = new appOptionsSingleton(options!);
   }
 

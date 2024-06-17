@@ -1,341 +1,301 @@
-export interface ImageDef {
-  src: string;
-  width: string;
-  height: string;
-}
-
-export interface KeyValues {
-  [key: string]: string;
-}
-
-export interface OptionDefinition<T> {
-  type: "boolean" | "string" | "number" | "ImageDef" | "KeyValues";
-  default: T | undefined;
-  title: string;
-  description: string | undefined;
-}
-
-interface LocalStorage {
-  enabled: OptionDefinition<boolean>;
-  maxNumberMessages: OptionDefinition<number>;
-  prefix: OptionDefinition<string>;
-}
+import type {
+  AppOptionsModel,
+  Initialization,
+  LocalStorage,
+  Preferences,
+  Wording,
+} from "../models/app-options-model";
 
 const localStorage: LocalStorage = {
   enabled: {
+    title: "Local storage",
     type: "boolean",
     default: false,
-    title: "Local storage",
     description: "Retain conversation history in local storage",
-  },
-  maxNumberMessages: {
-    type: "number",
-    default: 20,
-    title: "Maximum messages",
-    description: "Maximum number of messages to store in local storage",
+    index: 1,
   },
   prefix: {
+    title: "Local storage prefix",
     type: "string",
     default: undefined,
-    title: "Local storage prefix",
     description:
       "Prefix for local storage keys allowing communication with different bots from the same domain",
+    index: 1.1,
+    conditions: ["localStorage.enabled"],
+  },
+  maxNumberMessages: {
+    title: "Maximum messages",
+    type: "number",
+    default: 20,
+    description: "Maximum number of messages to store in local storage",
+    index: 2,
+    conditions: ["localStorage.enabled"],
   },
 };
-
-interface Initialization {
-  welcomeMessage: OptionDefinition<string>;
-  openingMessage: OptionDefinition<string>;
-  extraHeaders: OptionDefinition<KeyValues>;
-}
 
 const initialization: Initialization = {
-  welcomeMessage: {
-    type: "string",
-    default: undefined,
-    title: "Welcome message",
-    description:
-      "Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.",
-  },
-  openingMessage: {
-    type: "string",
-    default: undefined,
-    title: "Opening message",
-    description:
-      "Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any.",
-  },
   extraHeaders: {
+    title: "Extra headers",
     type: "KeyValues",
     default: undefined,
-    title: "Extra headers",
     description:
-      "Additional HTTP header key/value pairs to be supplied in requests.",
+      "Additional HTTP header key/value pairs to be supplied in requests. Warning : Tock server configuration required.",
+    index: 1,
+  },
+  welcomeMessage: {
+    title: "Welcome message",
+    type: "string",
+    default: undefined,
+    description:
+      "Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.",
+    index: 2,
+  },
+  openingMessage: {
+    title: "Opening message",
+    type: "string",
+    default: undefined,
+    description:
+      "Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any.",
+    index: 3,
   },
 };
-
-interface Preferences {
-  messages: {
-    clearOnNewRequest: OptionDefinition<boolean>;
-    hideIfNoMessages: OptionDefinition<boolean>;
-    message: {
-      hideUserMessages: OptionDefinition<boolean>;
-      header: {
-        display: OptionDefinition<boolean>;
-        avatar: {
-          display: OptionDefinition<boolean>;
-          userIcon: OptionDefinition<string>;
-          userImage: OptionDefinition<ImageDef>;
-          botIcon: OptionDefinition<string>;
-          botImage: OptionDefinition<ImageDef>;
-        };
-        label: {
-          display: OptionDefinition<boolean>;
-        };
-      };
-    };
-    footNotes: {
-      display: OptionDefinition<boolean>;
-      requireSourcesContent: OptionDefinition<boolean>;
-      clampSourceContent: OptionDefinition<boolean>;
-      clampSourceContentNbLines: OptionDefinition<number>;
-      displayOnMessageSide: OptionDefinition<boolean>;
-    };
-  };
-  questionBar: {
-    clearTypedCharsOnSubmit: OptionDefinition<boolean>;
-    maxUserInputLength: OptionDefinition<number>;
-    clearHistory: {
-      display: OptionDefinition<boolean>;
-      icon: OptionDefinition<string>;
-      image: OptionDefinition<ImageDef>;
-    };
-    submit: {
-      icon: OptionDefinition<string>;
-      image: OptionDefinition<ImageDef>;
-    };
-  };
-}
 
 const preferences: Preferences = {
   messages: {
-    clearOnNewRequest: {
-      type: "boolean",
-      default: false,
-      title: "Clear on new message",
-      description:
-        "If true, deletes previous messages when a new user request is sent",
-    },
     hideIfNoMessages: {
+      title: "Hide messages if no messages",
       type: "boolean",
       default: true,
-      title: "Hide messages if no messages",
       description:
         "Hide messages container if there is no messages to display.",
+      index: 20,
+    },
+    clearOnNewRequest: {
+      title: "Clear on new request",
+      type: "boolean",
+      default: false,
+      description:
+        "If true, deletes previous messages when a new user request is sent",
+      index: 21,
     },
     message: {
       hideUserMessages: {
+        title: "Hide user messages",
         type: "boolean",
         default: false,
-        title: "Hide user messages",
         description: "If true, user messages are not displayed.",
+        index: 22,
       },
       header: {
         display: {
+          title: "Display header",
           type: "boolean",
           default: true,
-          title: "Display header",
           description: "Display a header above message.",
+          index: 1,
         },
         avatar: {
           display: {
+            title: "Display header avatar",
             type: "boolean",
             default: true,
-            title: "Display header avatar",
             description: "Display an avatar in message header.",
+            index: 3,
+            conditions: ["preferences.messages.message.header.display"],
           },
           userIcon: {
+            title: "Avatar User icon",
             type: "string",
             default: "bi bi-person-fill",
-            title: "User icon",
             description:
               "Class name of the user avatar icon (displayed only if User image is not defined).",
+            index: 3.1,
+            conditions: ["preferences.messages.message.header.display"],
           },
           userImage: {
+            title: "Avatar User image",
             type: "ImageDef",
             default: undefined,
-            title: "User image",
             description: "Image of the user avatar",
+            index: 3.2,
+            conditions: ["preferences.messages.message.header.display"],
           },
           botIcon: {
+            title: "Avatar Bot icon",
             type: "string",
             default: "bi bi-robot",
-            title: "Bot icon",
             description:
               "Class name of the bot avatar icon (displayed only if Bot image is not defined).",
+            index: 3.3,
+            conditions: ["preferences.messages.message.header.display"],
           },
           botImage: {
+            title: "Avatar Bot image",
             type: "ImageDef",
             default: undefined,
-            title: "Bot image",
             description: "Image of the bot avatar",
+            index: 3.4,
+            conditions: ["preferences.messages.message.header.display"],
           },
         },
         label: {
           display: {
+            title: "Display header label",
             type: "boolean",
             default: true,
-            title: "Display header label",
             description:
               "Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content).",
+            index: 2,
+            conditions: ["preferences.messages.message.header.display"],
           },
         },
       },
     },
     footNotes: {
       display: {
+        title: "Display sources",
         type: "boolean",
         default: true,
-        title: "Display sources if any",
         description:
-          "For RAG answers, display the sources used to generate the answer.",
+          "For RAG answers, display the sources used to generate the answer if any.",
+        index: 50,
       },
       requireSourcesContent: {
+        title: "Request textual content of sources",
         type: "boolean",
         default: false,
-        title: "Request textual content of sources",
         description:
           "For RAG answers, request the textual content of the source in addition to the source title and link.",
+        index: 51,
+        conditions: ["preferences.messages.footNotes.display"],
       },
       clampSourceContent: {
+        title: "Clamp content of sources",
         type: "boolean",
         default: true,
-        title: "Clamp content of sources",
         description:
           "For RAG answers with sources content, truncate the textual source content.",
+        index: 52,
+        conditions: [
+          "preferences.messages.footNotes.display",
+          "preferences.messages.footNotes.requireSourcesContent",
+        ],
       },
       clampSourceContentNbLines: {
+        title: "Number of lines to clamp",
         type: "number",
         default: 2,
-        title: "Number of lines to clamp",
         description:
           "For RAG answers with sources content, number of lines after which to truncate text.",
+        index: 53,
+        conditions: [
+          "preferences.messages.footNotes.display",
+          "preferences.messages.footNotes.requireSourcesContent",
+          "preferences.messages.footNotes.clampSourceContent",
+        ],
       },
       displayOnMessageSide: {
+        title: "Display sources on the side of the answer",
         type: "boolean",
         default: false,
-        title: "Display sources on the side of the answer",
         description:
           "For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.",
+        index: 54,
+        conditions: ["preferences.messages.footNotes.display"],
       },
     },
   },
   questionBar: {
     clearTypedCharsOnSubmit: {
+      title: "Clear input on submit",
       type: "boolean",
       default: true,
-      title: "Clear input on submit",
       description:
         "Whether or not the question input should be cleared on submit.",
+      index: 60,
     },
     maxUserInputLength: {
+      title: "Max user message length",
       type: "number",
       default: 500,
-      title: "Max user message length",
       description: "Max length of the user input message string",
+      index: 61,
     },
     clearHistory: {
       display: {
+        title: "Show clear history button",
         type: "boolean",
         default: true,
-        title: "Show clear history button",
         description:
           "Display the control allowing user to clear discussion history and local storage history, if any",
+        index: 70,
       },
       icon: {
+        title: "Clear history button icon",
         type: "string",
         default: "bi bi-trash-fill",
-        title: "Clear history button icon",
         description:
           "Class name of the clear history control icon (displayed only if no image is defined)",
+        index: 71,
+        conditions: ["preferences.questionBar.clearHistory.display"],
       },
       image: {
+        title: "Clear history button image",
         type: "ImageDef",
         default: undefined,
-        title: "Clear history button image",
         description: "Image of the clearHistory control",
+        index: 72,
+        conditions: ["preferences.questionBar.clearHistory.display"],
       },
     },
     submit: {
       icon: {
+        title: "Submit button icon",
         type: "string",
         default: "bi bi-send-fill",
-        title: "Submit button icon",
         description:
           "Class name of the submit control icon (displayed only if no image is defined)",
+        index: 80,
       },
       image: {
+        title: "Submit button image",
         type: "ImageDef",
         default: undefined,
-        title: "Submit button image",
         description: "Image of the submit control",
+        index: 81,
       },
     },
   },
 };
-
-interface Wording {
-  messages: {
-    message: {
-      header: {
-        labelUser: OptionDefinition<string>;
-        labelBot: OptionDefinition<string>;
-      };
-      footnotes: {
-        sources: OptionDefinition<string>;
-        showMoreLink: OptionDefinition<string>;
-      };
-    };
-  };
-  questionBar: {
-    clearHistory: OptionDefinition<string>;
-    clearHistoryAriaLabel: OptionDefinition<string>;
-    input: {
-      placeholder: OptionDefinition<string>;
-    };
-    submit: OptionDefinition<string>;
-    submitAriaLabel: OptionDefinition<string>;
-  };
-  connectionErrorMessage: OptionDefinition<string>;
-}
 
 const wording: Wording = {
   messages: {
     message: {
       header: {
         labelUser: {
+          title: "Message header user label",
           type: "string",
           default: "You",
-          title: "Message header user label",
           description: undefined,
         },
         labelBot: {
+          title: "Message header bot label",
           type: "string",
           default: "Bot",
-          title: "Message header bot label",
           description: undefined,
         },
       },
       footnotes: {
         sources: {
-          type: "string",
-          default: "Sources :",
           title: "Footnotes label",
+          type: "string",
+          default: "Sources:",
           description: undefined,
         },
         showMoreLink: {
+          title: "Footnotes label",
           type: "string",
           default: "> Show more",
-          title: "Footnotes label",
           description: undefined,
         },
       },
@@ -343,52 +303,45 @@ const wording: Wording = {
   },
   questionBar: {
     clearHistory: {
+      title: "Clear history button label",
       type: "string",
       default: "",
-      title: "Clear history button label",
       description: undefined,
     },
     clearHistoryAriaLabel: {
+      title: "Clear history button Aria label",
       type: "string",
       default: "Clear discussion and history button",
-      title: "Clear history button Aria label",
       description: undefined,
     },
     input: {
       placeholder: {
+        title: "User input placeholder",
         type: "string",
         default: "Ask me a question...",
-        title: "User input placeholder",
         description: undefined,
       },
     },
     submit: {
+      title: "Submit button label",
       type: "string",
       default: "",
-      title: "Submit button label",
       description: undefined,
     },
     submitAriaLabel: {
+      title: "Submit button Aria label",
       type: "string",
       default: "Submit button",
-      title: "Submit button Aria label",
       description: undefined,
     },
   },
   connectionErrorMessage: {
+    title: "Connection error message",
     type: "string",
     default: "An unexpected error occured. Please try again later.",
-    title: "Connection error message",
     description: undefined,
   },
 };
-
-export interface AppOptionsModel {
-  localStorage: LocalStorage;
-  initialization: Initialization;
-  preferences: Preferences;
-  wording: Wording;
-}
 
 export const appOptionsModel: AppOptionsModel = {
   localStorage: localStorage,
@@ -396,11 +349,3 @@ export const appOptionsModel: AppOptionsModel = {
   preferences: preferences,
   wording: wording,
 };
-
-type FlattenAppOptionsModel<T> = {
-  [K in keyof T]: T[K] extends OptionDefinition<infer G>
-    ? G
-    : FlattenAppOptionsModel<T[K]>;
-};
-
-export interface AppOptions extends FlattenAppOptionsModel<AppOptionsModel> {}

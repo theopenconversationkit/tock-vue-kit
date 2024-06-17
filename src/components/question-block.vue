@@ -69,7 +69,9 @@ function onClearHistory(): void {
     <form @submit.prevent="onSubmit" class="tvk-question-bar-form">
       <input
         ref="input"
+        type="text"
         class="tvk-question-bar-input"
+        rows="1"
         :maxlength="appOptions.preferences.questionBar.maxUserInputLength"
         :placeholder="appOptions.wording.questionBar.input.placeholder"
         v-model="typedChars"

@@ -60,7 +60,7 @@
       top: calc(var(--tvk_messages_padding) * -1.1);
       background: linear-gradient(
         180deg,
-        var(--tvk_colors_app-background-color) 0%,
+        var(--tvk_wrapper_background) 0%,
         transparent 100%
       );
     }
@@ -70,7 +70,7 @@
       bottom: calc(var(--tvk_messages_padding) * -1.1);
       background: linear-gradient(
         0deg,
-        var(--tvk_colors_app-background-color) 0%,
+        var(--tvk_wrapper_background) 0%,
         transparent 100%
       );
     }
@@ -114,6 +114,9 @@
           .tvk-message-header-avatar {
             font-size: var(--tvk_message_header_avatar_font-size);
             box-shadow: var(--tvk_message_header_avatar_box-shadow);
+            img {
+              border-radius: var(--tvk_message_header_avatar_img-border-radius);
+            }
           }
         }
 
@@ -121,6 +124,7 @@
         .tvk-message-body {
           max-width: 100%;
           width: var(--tvk_message_body_width);
+          max-width: var(--tvk_message_body_max-width);
           display: inline-block;
           flex-grow: var(--tvk_message_body_grow);
           padding: var(--tvk_message_body_padding);
@@ -162,8 +166,20 @@
         margin: var(--tvk_message_user_margin);
 
         .tvk-message-answer {
+          flex-direction: var(--tvk_message_answer_user_flex-direction);
           justify-content: var(--tvk_message_answer_user_justify-content);
           align-items: var(--tvk_message_answer_user_align-items);
+
+          margin: var(--tvk_message_answer_user_margin);
+          padding: var(--tvk_message_answer_user_padding);
+          color: var(--tvk_message_answer_user_color);
+          background: var(--tvk_message_answer_user_background);
+
+          border: var(--tvk_message_answer_user_border);
+          border-top: var(--tvk_message_answer_user_border-top);
+          border-right: var(--tvk_message_answer_user_border-right);
+          border-bottom: var(--tvk_message_answer_user_border-bottom);
+          border-left: var(--tvk_message_answer_user_border-left);
 
           .tvk-message-header {
             flex-direction: var(--tvk_message_header_user_flex-direction);
@@ -183,6 +199,9 @@
           .tvk-message-body {
             color: var(--tvk_message_body_user_color);
             background: var(--tvk_message_body_user_background);
+
+            border: var(--tvk_message_body_user_border);
+
             border-top-left-radius: var(
               --tvk_message_body_user_radius-top-left
             );
@@ -196,8 +215,6 @@
               --tvk_message_body_user_radius-bottom-right
             );
 
-            border: var(--tvk_message_body_user_border);
-
             box-shadow: var(--tvk_message_body_user_box-shadow);
           }
         }
@@ -208,8 +225,20 @@
         margin: var(--tvk_message_bot_margin);
 
         .tvk-message-answer {
+          flex-direction: var(--tvk_message_answer_bot_flex-direction);
           justify-content: var(--tvk_message_answer_bot_justify-content);
           align-items: var(--tvk_message_answer_bot_align-items);
+
+          margin: var(--tvk_message_answer_bot_margin);
+          padding: var(--tvk_message_answer_bot_padding);
+          color: var(--tvk_message_answer_bot_color);
+          background: var(--tvk_message_answer_bot_background);
+
+          border: var(--tvk_message_answer_bot_border);
+          border-top: var(--tvk_message_answer_bot_border-top);
+          border-right: var(--tvk_message_answer_bot_border-right);
+          border-bottom: var(--tvk_message_answer_bot_border-bottom);
+          border-left: var(--tvk_message_answer_bot_border-left);
 
           .tvk-message-header {
             flex-direction: var(--tvk_message_header_bot_flex-direction);
@@ -310,10 +339,11 @@
   // question-bar
   .tvk-question-bar {
     display: flex;
-
+    flex-direction: var(--tvk_question_flex-direction);
     gap: 0.5em;
     align-items: center;
 
+    width: var(--tvk_question_width);
     margin: var(--tvk_question_margin);
     padding: var(--tvk_question_padding);
 
@@ -348,6 +378,9 @@
         cursor: text;
         background: transparent;
         color: inherit;
+        margin: 0;
+        height: 100%;
+        text-align: var(--tvk_question_input_text-align);
 
         &:focus-visible {
           outline: none;
