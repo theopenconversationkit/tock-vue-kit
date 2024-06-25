@@ -59,7 +59,6 @@
   // Message answer
   --tvk_message_answer_flex-wrap: wrap;
   --tvk_message_answer_gap: initial;
-  --tvk_message_answer_align-items: start;
   --tvk_message_answer_flex-direction: column;
   --tvk_message_answer_flex-grow: 1;
   --tvk_message_answer_flex-shrink: 0;
@@ -121,6 +120,7 @@
   --tvk_message_header_avatar_padding: 0.3em;
   --tvk_message_header_avatar_font-size: inherit;
   --tvk_message_header_avatar_radius: 50%;
+  --tvk_message_header_avatar_line-height: 0;
 
   // Message header avatar img
   --tvk_message_header_avatar_img-border-radius: unset;
@@ -168,6 +168,8 @@
 
   --tvk_message_body_user_box-shadow: var(--tvk_message_body_box-shadow);
 
+  --tvk_message_body_user_font-weight: normal;
+
   // Message body for bot
   --tvk_message_body_bot_color: var(--tvk_colors_text2);
   --tvk_message_body_bot_background: var(--tvk_colors_surface2);
@@ -179,6 +181,8 @@
   --tvk_message_body_bot_border: var(--tvk_message_body_border);
 
   --tvk_message_body_bot_box-shadow: var(--tvk_message_body_box-shadow);
+
+  --tvk_message_body_bot_font-weight: normal;
 
   // Side footnotes
   --tvk_side-footnotes_flex-grow: 1;

@@ -95,7 +95,6 @@
         flex-wrap: var(--tvk_message_answer_flex-wrap);
         width: 100%;
         gap: var(--tvk_message_answer_gap);
-        align-items: var(--tvk_message_answer_align-items);
         flex-direction: var(--tvk_message_answer_flex-direction);
         flex-grow: var(--tvk_message_answer_flex-grow);
         flex-shrink: var(--tvk_message_answer_flex-shrink);
@@ -114,6 +113,7 @@
           .tvk-message-header-avatar {
             font-size: var(--tvk_message_header_avatar_font-size);
             box-shadow: var(--tvk_message_header_avatar_box-shadow);
+            line-height: var(--tvk_message_header_avatar_line-height);
             img {
               border-radius: var(--tvk_message_header_avatar_img-border-radius);
             }
@@ -216,6 +216,8 @@
             );
 
             box-shadow: var(--tvk_message_body_user_box-shadow);
+
+            font-weight: var(--tvk_message_body_user_font-weight);
           }
         }
       }
@@ -274,6 +276,8 @@
             border: var(--tvk_message_body_bot_border);
 
             box-shadow: var(--tvk_message_body_bot_box-shadow);
+
+            font-weight: var(--tvk_message_body_bot_font-weight);
           }
         }
       }
