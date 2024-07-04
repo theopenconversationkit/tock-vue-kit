@@ -2,6 +2,10 @@
 
 A Vue 3 toolkit to easily embed [Tock](https://doc.tock.ai) into web pages.
 
+# Demo
+
+Try the Tock Vue Kit on the [demo page](https://doc.tock.ai/tock-vue-kit/)
+
 ## Prerequisites
 
 - Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/) ([NodeJS alternative](https://github.com/theopenconversationkit/tock-node))
