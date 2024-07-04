@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import url("https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css");
+
+:root {
+  --pico-font-size: 100%;
+  --pico-nav-element-spacing-vertical: 0.5rem;
+  --pico-line-height: 1;
+  --pico-form-element-spacing-vertical: 0.5rem;
+}
+
+$editor-width: 24em;
+
+html,
+body {
+  height: 100%;
+  #app {
+    height: 100%;
+  }
+}
+
+.h-100 {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 6em 1em 1em 1em;
+
+  width: auto;
+
+  background-color: var(--pico-background-color);
+  color: var(--pico-color);
+
+  &.with-editor {
+    margin-left: $editor-width;
+  }
+}
+
+.app-brand {
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  .alt {
+    color: var(--pico-primary);
+  }
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  padding: 0 1.5em;
+
+  background-color: var(--pico-background-color);
+  color: var(--pico-color);
+
+  box-shadow: 0 2px 5px #00000030;
+
+  .app-brand {
+    font-size: 1.5rem;
+  }
+}
+
+[data-theme="dark"] {
+  .header {
+    box-shadow: 0 2px 5px #000000;
+  }
+}
+
+MAIN {
+  .home {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1em;
+    align-items: center;
+    height: 100%;
+  }
+
+  .floating {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 30em;
+  }
+}
+
+.editor {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: $editor-width;
+
+  box-shadow: 3px 0 5px #00000030;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+}
