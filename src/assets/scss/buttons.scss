@@ -1,0 +1,69 @@
+:root {
+  --tvk--default-sheet: true;
+
+  --tvk_button_radius: var(--tvk_base_radius);
+  --tvk_button_rounded-radius: 50%;
+  --tvk_button_base-font-size: var(--tvk_base_font-size);
+  --tvk_button_padding: 0.1rem;
+}
+
+.tvk-btn {
+  cursor: pointer;
+  touch-action: manipulation;
+
+  padding: var(--tvk_button_padding);
+
+  font-size: var(--tvk_button_base-font-size);
+  background: transparent;
+  color: var(--tvk_colors_text2);
+
+  border: none;
+  border-radius: var(--tvk_button_radius);
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  font-weight: 700;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+
+  &:hover:not([disabled]) {
+    background: var(--tvk_colors_neutral);
+    box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+:root {
+  --tvk--default-sheet: true;
+
+  --tvk_button_action-background: var(--tvk_colors_surface1);
+  --tvk_button_action-color: var(--tvk_colors_text1);
+  --tvk_button_action-padding: var(--tvk_base_spacing)
+    calc(var(--tvk_base_spacing) * 2);
+  --tvk_button_action-margin: var(--tvk_base_spacing) var(--tvk_base_spacing) 0
+    0;
+}
+
+.tvk-btn-action {
+  background: var(--tvk_button_action-background);
+  color: var(--tvk_button_action-color);
+  padding: var(--tvk_button_action-padding);
+  margin: var(--tvk_button_action-margin);
+
+  &:hover:not([disabled]) {
+    background: hsl(
+      var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
+        var(--tvk_colors_brand-lightness) / 0.7
+    );
+    box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
+  }
+}
