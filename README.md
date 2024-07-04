@@ -2,7 +2,7 @@
 
 A Vue 3 toolkit to easily embed [Tock](https://doc.tock.ai) into web pages.
 
-# Demo
+## Demo
 
 Try the Tock Vue Kit on the [demo page](https://doc.tock.ai/tock-vue-kit/)
 
