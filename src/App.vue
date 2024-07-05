@@ -39,9 +39,9 @@ watch(theme, async (newState) => {
 onMounted(() => {
   renderChat(chatTarget.value!, "https://demo-bot.tock.ai/io/tock/tockbot/web");
 
-  setTimeout(() => {
-    displayEditor.value = true;
-  }, 100);
+  // setTimeout(() => {
+  //   displayEditor.value = true;
+  // }, 100);
 });
 </script>
 
