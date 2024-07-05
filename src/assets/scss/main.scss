@@ -130,6 +130,9 @@
           padding: var(--tvk_message_body_padding);
           border-radius: var(--tvk_message_body_radius);
           line-height: var(--tvk_message_body_line-height);
+          p {
+            margin: 0;
+          }
         }
 
         .tvk-message-body-from-app {
