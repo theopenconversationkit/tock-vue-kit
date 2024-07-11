@@ -1,5 +1,8 @@
 GitHub Page publication (on "demo" branch) :
 
-1 - npm run build
-2 - push changes
-3 - git subtree push --prefix dist origin gh-pages
+increase tvk and/or tvke version in package
+npm i
+
+npm run build
+push changes
+git subtree push --prefix dist origin gh-pages
