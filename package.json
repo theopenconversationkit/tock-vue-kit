@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "tock-vue-kit": "^0.3.2",
-    "tock-vue-kit-editor": "^0.0.4",
+    "tock-vue-kit-editor": "^0.0.6",
     "vue": "^3.4.29"
   },
   "devDependencies": {
