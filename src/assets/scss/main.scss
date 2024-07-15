@@ -122,7 +122,6 @@
 
         // message body
         .tvk-message-body {
-          max-width: 100%;
           width: var(--tvk_message_body_width);
           max-width: var(--tvk_message_body_max-width);
           display: inline-block;
@@ -459,7 +458,7 @@
 
 .tvk-carousel {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   overflow: hidden;
 
   .tvk-carousel-inner {

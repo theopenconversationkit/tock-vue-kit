@@ -41,4 +41,3 @@ mainStore.$onAction(({ name, store, args, after }) => {
 </template>
 
 <style lang="scss"></style>
-./utils/app-options-singleton

@@ -1,7 +1,7 @@
 var ks = Object.defineProperty;
 var Ss = (e, t, s) => t in e ? ks(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
 var ht = (e, t, s) => (Ss(e, typeof t != "symbol" ? t + "" : t, s), s);
-import { effectScope as Jt, ref as R, markRaw as Yt, hasInjectionContext as Es, inject as Xt, watch as Cs, reactive as As, isRef as Oe, isReactive as Zt, toRaw as Ds, getCurrentScope as Ns, onScopeDispose as Is, nextTick as xs, toRefs as _s, computed as es, defineComponent as F, openBlock as d, createElementBlock as y, unref as l, normalizeClass as he, createCommentVNode as T, normalizeStyle as ce, createTextVNode as Le, toDisplayString as M, createElementVNode as N, withModifiers as ws, withDirectives as Os, vModelText as Ls, Fragment as pe, renderList as ut, createBlock as te, withCtx as Rs, createVNode as _t, onMounted as Hs, createApp as Ps } from "vue";
+import { effectScope as Jt, ref as R, markRaw as Yt, hasInjectionContext as Es, inject as Xt, watch as Cs, reactive as As, isRef as Oe, isReactive as Zt, toRaw as Ds, getCurrentScope as Ns, onScopeDispose as Is, nextTick as xs, toRefs as _s, computed as es, defineComponent as K, openBlock as d, createElementBlock as y, unref as l, normalizeClass as he, createCommentVNode as T, normalizeStyle as ce, createTextVNode as Le, toDisplayString as M, createElementVNode as N, withModifiers as ws, withDirectives as Os, vModelText as Ls, Fragment as pe, renderList as ut, createBlock as te, withCtx as Rs, createVNode as _t, onMounted as Hs, createApp as Ps } from "vue";
 var Ms = !1;
 /*!
  * pinia v2.1.7
@@ -589,7 +589,7 @@ let B = ee;
 const Ys = "main", Ut = "main_storage", Xs = () => ({
   userId: Ws(),
   messages: []
-}), J = Vs(Ys, () => {
+}), F = Vs(Ys, () => {
   const e = Xt(os), t = B.getOptions(), s = R(n());
   function i() {
   }
@@ -620,7 +620,7 @@ const Ys = "main", Ut = "main_storage", Xs = () => ({
   function f() {
   }
   function b(g) {
-    const E = J();
+    const E = F();
     E.clearLoaderMessages(), E.scrollMessages(), s.value.messages.push(g);
   }
   function p() {
@@ -632,7 +632,7 @@ const Ys = "main", Ut = "main_storage", Xs = () => ({
     ), g;
   }
   function h() {
-    J().addMessage({
+    F().addMessage({
       type: P.error,
       author: x.app,
       date: Date.now(),
@@ -640,7 +640,7 @@ const Ys = "main", Ut = "main_storage", Xs = () => ({
     });
   }
   async function D(g, E = !0) {
-    const S = J();
+    const S = F();
     t.preferences.messages.clearOnNewRequest && (s.value.messages = []), E && S.addMessage({
       type: P.message,
       author: x.user,
@@ -729,10 +729,10 @@ const Ys = "main", Ut = "main_storage", Xs = () => ({
     clearLoaderMessages: u,
     scrollMessages: f
   };
-}), Zs = ["aria-label"], en = ["src"], tn = ["maxlength", "placeholder"], sn = { class: "tvk-question-bar-chars-count" }, nn = ["disabled", "aria-label"], on = ["src"], an = /* @__PURE__ */ F({
+}), Zs = ["aria-label"], en = ["src"], tn = ["maxlength", "placeholder"], sn = { class: "tvk-question-bar-chars-count" }, nn = ["disabled", "aria-label"], on = ["src"], an = /* @__PURE__ */ K({
   __name: "question-block",
   setup(e) {
-    const t = B.getOptions(), s = J(), i = t.preferences.questionBar.maxUserInputLength, n = R(null), o = R("");
+    const t = B.getOptions(), s = F(), i = t.preferences.questionBar.maxUserInputLength, n = R(null), o = R("");
     function a() {
       n != null && n.value && n.value.focus();
     }
@@ -961,7 +961,7 @@ j.prototype = {
     return n.j[e] = a, a;
   }
 };
-const m = (e, t, s, i, n) => e.ta(t, s, i, n), $ = (e, t, s, i, n) => e.tr(t, s, i, n), zt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), X = "WORD", At = "UWORD", Se = "LOCALHOST", Dt = "TLD", Nt = "UTLD", we = "SCHEME", fe = "SLASH_SCHEME", wt = "NUM", ls = "WS", Ot = "NL", ve = "OPENBRACE", Te = "CLOSEBRACE", Re = "OPENBRACKET", He = "CLOSEBRACKET", Pe = "OPENPAREN", Me = "CLOSEPAREN", Be = "OPENANGLEBRACKET", Ue = "CLOSEANGLEBRACKET", je = "FULLWIDTHLEFTPAREN", ze = "FULLWIDTHRIGHTPAREN", $e = "LEFTCORNERBRACKET", qe = "RIGHTCORNERBRACKET", Ve = "LEFTWHITECORNERBRACKET", We = "RIGHTWHITECORNERBRACKET", Fe = "FULLWIDTHLESSTHAN", Ke = "FULLWIDTHGREATERTHAN", Qe = "AMPERSAND", Ge = "APOSTROPHE", Je = "ASTERISK", oe = "AT", Ye = "BACKSLASH", Xe = "BACKTICK", Ze = "CARET", ae = "COLON", Lt = "COMMA", et = "DOLLAR", K = "DOT", tt = "EQUALS", Rt = "EXCLAMATION", Q = "HYPHEN", st = "PERCENT", nt = "PIPE", it = "PLUS", ot = "POUND", at = "QUERY", Ht = "QUOTE", Pt = "SEMI", G = "SLASH", ke = "TILDE", rt = "UNDERSCORE", us = "EMOJI", ct = "SYM";
+const m = (e, t, s, i, n) => e.ta(t, s, i, n), $ = (e, t, s, i, n) => e.tr(t, s, i, n), zt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), X = "WORD", At = "UWORD", Se = "LOCALHOST", Dt = "TLD", Nt = "UTLD", we = "SCHEME", fe = "SLASH_SCHEME", wt = "NUM", ls = "WS", Ot = "NL", ve = "OPENBRACE", Te = "CLOSEBRACE", Re = "OPENBRACKET", He = "CLOSEBRACKET", Pe = "OPENPAREN", Me = "CLOSEPAREN", Be = "OPENANGLEBRACKET", Ue = "CLOSEANGLEBRACKET", je = "FULLWIDTHLEFTPAREN", ze = "FULLWIDTHRIGHTPAREN", $e = "LEFTCORNERBRACKET", qe = "RIGHTCORNERBRACKET", Ve = "LEFTWHITECORNERBRACKET", We = "RIGHTWHITECORNERBRACKET", Fe = "FULLWIDTHLESSTHAN", Ke = "FULLWIDTHGREATERTHAN", Qe = "AMPERSAND", Ge = "APOSTROPHE", Je = "ASTERISK", oe = "AT", Ye = "BACKSLASH", Xe = "BACKTICK", Ze = "CARET", ae = "COLON", Lt = "COMMA", et = "DOLLAR", Q = "DOT", tt = "EQUALS", Rt = "EXCLAMATION", G = "HYPHEN", st = "PERCENT", nt = "PIPE", it = "PLUS", ot = "POUND", at = "QUERY", Ht = "QUOTE", Pt = "SEMI", J = "SLASH", ke = "TILDE", rt = "UNDERSCORE", us = "EMOJI", ct = "SYM";
 var ds = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   WORD: X,
@@ -1000,10 +1000,10 @@ var ds = /* @__PURE__ */ Object.freeze({
   COLON: ae,
   COMMA: Lt,
   DOLLAR: et,
-  DOT: K,
+  DOT: Q,
   EQUALS: tt,
   EXCLAMATION: Rt,
-  HYPHEN: Q,
+  HYPHEN: G,
   PERCENT: st,
   PIPE: nt,
   PLUS: it,
@@ -1011,7 +1011,7 @@ var ds = /* @__PURE__ */ Object.freeze({
   QUERY: at,
   QUOTE: Ht,
   SEMI: Pt,
-  SLASH: G,
+  SLASH: J,
   TILDE: ke,
   UNDERSCORE: rt,
   EMOJI: us,
@@ -1025,7 +1025,7 @@ function gn(e) {
   const t = {};
   j.groups = t;
   const s = new j();
-  De == null && (De = Vt(rn)), Ne == null && (Ne = Vt(cn)), c(s, "'", Ge), c(s, "{", ve), c(s, "}", Te), c(s, "[", Re), c(s, "]", He), c(s, "(", Pe), c(s, ")", Me), c(s, "<", Be), c(s, ">", Ue), c(s, "（", je), c(s, "）", ze), c(s, "「", $e), c(s, "」", qe), c(s, "『", Ve), c(s, "』", We), c(s, "＜", Fe), c(s, "＞", Ke), c(s, "&", Qe), c(s, "*", Je), c(s, "@", oe), c(s, "`", Xe), c(s, "^", Ze), c(s, ":", ae), c(s, ",", Lt), c(s, "$", et), c(s, ".", K), c(s, "=", tt), c(s, "!", Rt), c(s, "-", Q), c(s, "%", st), c(s, "|", nt), c(s, "+", it), c(s, "#", ot), c(s, "?", at), c(s, '"', Ht), c(s, "/", G), c(s, ";", Pt), c(s, "~", ke), c(s, "_", rt), c(s, "\\", Ye);
+  De == null && (De = Vt(rn)), Ne == null && (Ne = Vt(cn)), c(s, "'", Ge), c(s, "{", ve), c(s, "}", Te), c(s, "[", Re), c(s, "]", He), c(s, "(", Pe), c(s, ")", Me), c(s, "<", Be), c(s, ">", Ue), c(s, "（", je), c(s, "）", ze), c(s, "「", $e), c(s, "」", qe), c(s, "『", Ve), c(s, "』", We), c(s, "＜", Fe), c(s, "＞", Ke), c(s, "&", Qe), c(s, "*", Je), c(s, "@", oe), c(s, "`", Xe), c(s, "^", Ze), c(s, ":", ae), c(s, ",", Lt), c(s, "$", et), c(s, ".", Q), c(s, "=", tt), c(s, "!", Rt), c(s, "-", G), c(s, "%", st), c(s, "|", nt), c(s, "+", it), c(s, "#", ot), c(s, "?", at), c(s, '"', Ht), c(s, "/", J), c(s, ";", Pt), c(s, "~", ke), c(s, "_", rt), c(s, "\\", Ye);
   const i = $(s, mt, wt, {
     [kt]: !0
   });
@@ -1377,34 +1377,34 @@ function vn(e) {
   let {
     groups: t
   } = e;
-  const s = t.domain.concat([Qe, Je, oe, Ye, Xe, Ze, et, tt, Q, wt, st, nt, it, ot, G, ct, ke, rt]), i = [Ge, ae, Lt, K, Rt, at, Ht, Pt, Be, Ue, ve, Te, He, Re, Pe, Me, je, ze, $e, qe, Ve, We, Fe, Ke], n = [Qe, Ge, Je, Ye, Xe, Ze, et, tt, Q, ve, Te, st, nt, it, ot, at, G, ct, ke, rt], o = q(), a = c(o, ke);
+  const s = t.domain.concat([Qe, Je, oe, Ye, Xe, Ze, et, tt, G, wt, st, nt, it, ot, J, ct, ke, rt]), i = [Ge, ae, Lt, Q, Rt, at, Ht, Pt, Be, Ue, ve, Te, He, Re, Pe, Me, je, ze, $e, qe, Ve, We, Fe, Ke], n = [Qe, Ge, Je, Ye, Xe, Ze, et, tt, G, ve, Te, st, nt, it, ot, at, J, ct, ke, rt], o = q(), a = c(o, ke);
   m(a, n, a), m(a, t.domain, a);
   const r = q(), u = q(), f = q();
   m(o, t.domain, r), m(o, t.scheme, u), m(o, t.slashscheme, f), m(r, n, a), m(r, t.domain, r);
   const b = c(r, oe);
   c(a, oe, b), c(u, oe, b), c(f, oe, b);
-  const p = c(a, K);
+  const p = c(a, Q);
   m(p, n, a), m(p, t.domain, a);
   const h = q();
   m(b, t.domain, h), m(h, t.domain, h);
-  const D = c(h, K);
+  const D = c(h, Q);
   m(D, t.domain, h);
   const k = q(Ft);
   m(D, t.tld, k), m(D, t.utld, k), c(b, Se, k);
-  const g = c(h, Q);
-  m(g, t.domain, h), m(k, t.domain, h), c(k, K, D), c(k, Q, g);
+  const g = c(h, G);
+  m(g, t.domain, h), m(k, t.domain, h), c(k, Q, D), c(k, G, g);
   const E = c(k, ae);
   m(E, t.numeric, Ft);
-  const S = c(r, Q), _ = c(r, K);
+  const S = c(r, G), _ = c(r, Q);
   m(S, t.domain, r), m(_, n, a), m(_, t.domain, r);
   const w = q(Ie);
-  m(_, t.tld, w), m(_, t.utld, w), m(w, t.domain, r), m(w, n, a), c(w, K, _), c(w, Q, S), c(w, oe, b);
+  m(_, t.tld, w), m(_, t.utld, w), m(w, t.domain, r), m(w, n, a), c(w, Q, _), c(w, G, S), c(w, oe, b);
   const V = c(w, ae), I = q(Ie);
   m(V, t.numeric, I);
   const v = q(Ie), O = q();
-  m(v, s, v), m(v, i, O), m(O, s, v), m(O, i, O), c(w, G, v), c(I, G, v);
-  const C = c(u, ae), A = c(f, ae), z = c(A, G), W = c(z, G);
-  m(u, t.domain, r), c(u, K, _), c(u, Q, S), m(f, t.domain, r), c(f, K, _), c(f, Q, S), m(C, t.domain, v), c(C, G, v), m(W, t.domain, v), m(W, s, v), c(W, G, v);
+  m(v, s, v), m(v, i, O), m(O, s, v), m(O, i, O), c(w, J, v), c(I, J, v);
+  const C = c(u, ae), A = c(f, ae), z = c(A, J), W = c(z, J);
+  m(u, t.domain, r), c(u, Q, _), c(u, G, S), m(f, t.domain, r), c(f, Q, _), c(f, G, S), m(C, t.domain, v), c(C, J, v), m(W, t.domain, v), m(W, s, v), c(W, J, v);
   const se = [
     [ve, Te],
     // {}
@@ -2219,13 +2219,13 @@ function zn(e) {
   }
   return t;
 }
-const $n = /* @__PURE__ */ F({
+const $n = /* @__PURE__ */ K({
   __name: "button",
   props: {
     button: {}
   },
   setup(e) {
-    const t = J(), s = e;
+    const t = F(), s = e;
     function i() {
       t.sendUserMessage(s.button.title);
     }
@@ -2240,7 +2240,7 @@ const $n = /* @__PURE__ */ F({
 }, Fn = {
   key: 2,
   class: "tvk-footnote-content"
-}, Kn = ["innerHTML"], Qn = /* @__PURE__ */ F({
+}, Kn = ["innerHTML"], Qn = /* @__PURE__ */ K({
   __name: "footnote",
   props: {
     footnote: {}
@@ -2286,7 +2286,7 @@ const $n = /* @__PURE__ */ F({
       ])) : T("", !0)
     ]));
   }
-}), Gn = { class: "tvk-footnotes" }, Jn = { class: "tvk-footnotes-sources-label" }, ys = /* @__PURE__ */ F({
+}), Gn = { class: "tvk-footnotes" }, Jn = { class: "tvk-footnotes-sources-label" }, ys = /* @__PURE__ */ K({
   __name: "footnotes",
   props: {
     footnotes: {}
@@ -2298,7 +2298,7 @@ const $n = /* @__PURE__ */ F({
       (d(!0), y(pe, null, ut(s.footnotes, (o) => (d(), te(Qn, { footnote: o }, null, 8, ["footnote"]))), 256))
     ]));
   }
-}), Yn = ["innerHTML"], Xn = /* @__PURE__ */ F({
+}), Yn = ["innerHTML"], Xn = /* @__PURE__ */ K({
   __name: "message-text",
   props: {
     message: {}
@@ -2328,14 +2328,14 @@ const $n = /* @__PURE__ */ F({
       ], 64);
     };
   }
-}), Zn = { class: "tvk-card" }, ei = ["src", "alt"], ti = { key: 1 }, si = { key: 2 }, ni = { key: 3 }, bs = /* @__PURE__ */ F({
+}), Zn = { class: "tvk-card" }, ei = ["src", "alt"], ti = { key: 1 }, si = { key: 2 }, ni = { key: 3 }, bs = /* @__PURE__ */ K({
   __name: "message-card",
   props: {
     card: {}
   },
   setup(e) {
     var o, a, r;
-    const t = J();
+    const t = F();
     B.getOptions();
     const s = e, i = ((a = (o = s.card) == null ? void 0 : o.file) == null ? void 0 : a.description) ?? ((r = s.card) == null ? void 0 : r.title);
     function n(u) {
@@ -2359,7 +2359,7 @@ const $n = /* @__PURE__ */ F({
       ]);
     };
   }
-}), Gt = "transform 0.2s", ii = /* @__PURE__ */ F({
+}), Gt = "transform 0.2s", ii = /* @__PURE__ */ K({
   __name: "message-carousel",
   props: {
     carousel: {}
@@ -2463,7 +2463,7 @@ const $n = /* @__PURE__ */ F({
       ])
     ], 64));
   }
-}), oi = /* @__PURE__ */ F({
+}), oi = /* @__PURE__ */ K({
   __name: "message-image",
   props: { message: Object },
   setup(e) {
@@ -2493,7 +2493,7 @@ const $n = /* @__PURE__ */ F({
 }, bi = /* @__PURE__ */ N("i", { class: "tvk-error-icon bi bi-exclamation-triangle" }, null, -1), vi = {
   key: 0,
   class: "tvk-side-footnotes"
-}, Ti = /* @__PURE__ */ F({
+}, Ti = /* @__PURE__ */ K({
   __name: "message",
   props: {
     message: {}
@@ -2584,10 +2584,10 @@ const $n = /* @__PURE__ */ F({
       ], 2)) : T("", !0);
     };
   }
-}), ki = /* @__PURE__ */ N("div", { class: "tvk-shader tvk-shader-top" }, null, -1), Si = /* @__PURE__ */ N("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1), Ei = /* @__PURE__ */ F({
+}), ki = /* @__PURE__ */ N("div", { class: "tvk-shader tvk-shader-top" }, null, -1), Si = /* @__PURE__ */ N("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1), Ei = /* @__PURE__ */ K({
   __name: "messages",
   setup(e) {
-    const t = J(), s = R();
+    const t = F(), s = R();
     function i() {
       setTimeout(() => {
         s.value.scrollTop = s.value.scrollHeight;
@@ -2611,10 +2611,10 @@ const $n = /* @__PURE__ */ F({
       Si
     ], 512));
   }
-}), Ci = /* @__PURE__ */ F({
+}), Ci = /* @__PURE__ */ K({
   __name: "App",
   setup(e) {
-    const t = B.getOptions(), s = J();
+    const t = B.getOptions(), s = F();
     let i = R(o()), n = R(!0);
     function o() {
       return (Math.random() + 1).toString(36).substring(7);
@@ -2638,7 +2638,7 @@ function Ai() {
   var t, s;
   const e = B.getOptions();
   if ((t = e == null ? void 0 : e.initialization) != null && t.welcomeMessage || (s = e == null ? void 0 : e.initialization) != null && s.openingMessage) {
-    const i = J(), n = i.getStoredState();
+    const i = F(), n = i.getStoredState();
     (!n || !n.messages.length) && (e.initialization.welcomeMessage && i.addMessage({
       type: P.message,
       author: x.bot,
@@ -2673,10 +2673,14 @@ function Oi(e, t) {
   let n = s;
   for (let o = 0; o < i.length; o++) {
     const a = i[o];
-    o < i.length - 1 ? (n[a] || (n[a] = {}), n = n[a]) : (n[a] = t, J().updateApplication());
+    o < i.length - 1 ? (n[a] || (n[a] = {}), n = n[a]) : (n[a] = t, F().updateApplication());
   }
 }
+function Li(e) {
+  F().addMessage(e);
+}
 export {
+  Li as addTvkMessage,
   wi as getTvkCurrentOptions,
   _i as getTvkDefaultOptions,
   xi as reload,

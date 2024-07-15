@@ -13,6 +13,7 @@ import type {
   AppOptionsModel,
   DeepPartial,
 } from "@/models/app-options-model";
+import type { Message } from "./models/messages";
 
 let appMemo: App<Element>;
 let targetMemo: HTMLElement;
@@ -85,6 +86,11 @@ function updateTvkOption(
   }
 }
 
+function addTvkMessage(message: Message): void {
+  const mainStore = useMainStore();
+  mainStore.addMessage(message);
+}
+
 declare global {
   interface Window {
     TockVueKit: {
@@ -93,21 +99,23 @@ declare global {
         tockEndPoint: string,
         options: AppOptions
       ) => App<Element>;
+      reload: () => void;
       getTvkDefaultOptions: () => AppOptionsModel;
       getTvkCurrentOptions: () => AppOptions;
       updateTvkOption: (
         path: string,
         value: string | number | boolean | undefined
       ) => void;
-      reload: () => void;
+      addTvkMessage: (message: Message) => void;
     };
   }
 }
 
 export {
   renderChat,
+  reload,
   getTvkDefaultOptions,
   getTvkCurrentOptions,
   updateTvkOption,
-  reload,
+  addTvkMessage,
 };

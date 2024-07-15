@@ -147,7 +147,7 @@
 
   // Message body
   --tvk_message_body_width: auto;
-  --tvk_message_body_max-width: unset;
+  --tvk_message_body_max-width: 100%;
   --tvk_message_body_grow: inherit;
   --tvk_message_body_padding: var(--tvk_base_spacing);
   --tvk_message_body_radius: var(--tvk_base_radius);

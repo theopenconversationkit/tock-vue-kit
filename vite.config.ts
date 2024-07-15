@@ -6,7 +6,6 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import dts from "vite-plugin-dts";
-import path from "path";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig(({ command, mode }) => {
@@ -17,6 +16,10 @@ export default defineConfig(({ command, mode }) => {
         targets: [
           {
             src: "./src/models/app-options-model.ts",
+            dest: "models",
+          },
+          {
+            src: "./src/models/messages.ts",
             dest: "models",
           },
         ],
