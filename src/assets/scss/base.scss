@@ -2,7 +2,7 @@
   --tvk--default-sheet: true;
 
   // Global variables
-  --tvk_base_font-size: 0.9rem;
+  --tvk_base_font-size: 1rem;
 
   --tvk_base_font-family: system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif,
@@ -199,7 +199,7 @@
   --tvk_footnotes_gap: var(--tvk_base_spacing);
   --tvk_footnotes_align-items: center;
   --tvk_footnotes_margin: var(--tvk_base_spacing) 0em 0em 0em;
-  --tvk_footnotes_font-size: 0.7rem;
+  --tvk_footnotes_font-size: 85%;
 
   // Footnotes label
   --tvk_footnotes_sources-title_display: inline;

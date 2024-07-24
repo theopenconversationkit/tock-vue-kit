@@ -2279,7 +2279,7 @@ const $n = /* @__PURE__ */ K({
         ], 6),
         s.footnote.content && l(t).preferences.messages.footNotes.clampSourceContent && !i.value && a() ? (d(), y("a", {
           key: 0,
-          href: "#!",
+          href: "javascript:void(0)",
           class: "tvk-footnote-content-show-more-link",
           onClick: u[0] || (u[0] = (f) => i.value = !i.value)
         }, M(l(t).wording.messages.message.footnotes.showMoreLink), 1)) : T("", !0)

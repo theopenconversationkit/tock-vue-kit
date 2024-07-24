@@ -55,7 +55,7 @@ function isClamped(): boolean {
       </div>
 
       <a
-        href="#!"
+        href="javascript:void(0)"
         class="tvk-footnote-content-show-more-link"
         v-if="
           props.footnote!.content &&
