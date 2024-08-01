@@ -12,6 +12,11 @@ Try the Tock Vue Kit (and the Tock Vue Kit Editor) on the [demo page](https://do
 
 ## Quick Start
 
+Instal the dependency :
+```
+npm i tock-vue-kit
+```
+
 Include js and css files :
 
 ```html
