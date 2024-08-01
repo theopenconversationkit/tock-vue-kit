@@ -21,8 +21,8 @@ Include js and css files :
 
 ```html
 <script src="https://unpkg.com/vue@3.4"></script>
-<link href="dist/style.css" rel="stylesheet" />
-<script src="dist/tock-vue-kit.umd.cjs"></script>
+<link href="node_modules/tock-vue-kit/dist/style.css" rel="stylesheet" />
+<script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
 ```
 
 Display chat app in desired target :
