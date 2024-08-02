@@ -5,6 +5,7 @@
 @import "./colors.scss";
 @import "./base.scss";
 @import "./buttons.scss";
+@import "./upload.scss";
 
 .tvk-wrapper {
   box-sizing: border-box;
@@ -140,6 +141,13 @@
           padding: var(--tvk_message_body_padding);
           border-radius: var(--tvk_message_body_radius);
           width: 100%;
+
+          .tvk-message-info {
+            font-size: 80%;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.3;
+          }
 
           .tvk-message-loader {
             position: relative;
@@ -362,6 +370,12 @@
     color: var(--tvk_question_color);
 
     box-shadow: var(--tvk_question_box-shadow);
+
+    &[data-active="true"] {
+      border-style: dashed;
+      border-width: 2px;
+      border-color: var(--tvk_colors_surface1);
+    }
 
     .tvk-question-bar-btn-clear-history {
       display: flex;

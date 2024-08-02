@@ -6,6 +6,7 @@ import type { mainState } from "../models/main-state";
 import { MessageAuthor, MessageType, type Message } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
 import type { TockQuery } from "../models/query";
+import { FileUploadStatus, type UploadableFile } from "../utils/upload-files";
 
 const MAIN_STORE_NAME: string = "main";
 
@@ -122,7 +123,8 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       type: MessageType.error,
       author: MessageAuthor.app,
       date: Date.now(),
-      text: appOptions.wording.connectionErrorMessage,
+      text: appOptions.wording.questionBar.uploadFilesList
+        .fileUploadConfirmationMessage,
     });
   }
 
@@ -254,6 +256,44 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     }
   }
 
+  async function postFile(file: UploadableFile): Promise<Response> {
+    // const endpointUrl = tockEndPoint;
+    let endpointUrl = "https://httpbin.org/post";
+
+    const locale = navigator.language;
+
+    let formData = new FormData();
+
+    formData.append("locale", locale);
+    formData.append("userId", state.value.userId);
+    formData.append("file", file.file);
+
+    file.status = FileUploadStatus.loading;
+
+    let response;
+    try {
+      response = await fetch(endpointUrl, {
+        method: "POST",
+        body: formData,
+        headers: getHeaders(),
+      });
+    } catch (error) {
+      console.log(response);
+      file.status = FileUploadStatus.error;
+      return Promise.reject(file.name);
+    }
+
+    if (!response.ok) {
+      console.log(response);
+      file.status = FileUploadStatus.error;
+      return Promise.reject(file.name);
+    }
+
+    file.status = FileUploadStatus.completed;
+
+    return response;
+  }
+
   function clearHistory(): void {
     state.value.messages = [];
     if (appOptions.localStorage.enabled) {
@@ -267,6 +307,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     getStoredState,
     getMessages,
     sendUserMessage,
+    postFile,
     addMessage,
     clearHistory,
     clearLoaderMessages,

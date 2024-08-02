@@ -248,6 +248,64 @@ const preferences: Preferences = {
         conditions: ["preferences.questionBar.clearHistory.display"],
       },
     },
+
+    uploadFiles: {
+      allow: {
+        title: "Allow files upload",
+        type: "boolean",
+        default: true,
+        description: "Allow user to upload files",
+        index: 73,
+      },
+      maxFiles: {
+        title: "Max upload files",
+        type: "number",
+        default: 15,
+        description: "Maximum number of files a user can upload",
+        index: 74,
+        conditions: ["preferences.questionBar.uploadFiles.allow"],
+      },
+      maxFileSize: {
+        title: "Max upload file size",
+        type: "number",
+        default: 50000000,
+        description: "Maximum file size a user can upload (in bytes)",
+        index: 74,
+        conditions: ["preferences.questionBar.uploadFiles.allow"],
+      },
+      displayButton: {
+        title: "Show files upload button",
+        type: "boolean",
+        default: true,
+        description:
+          "Displays the control allowing the user to browse the files to be uploaded. If the control is not displayed, but uploading is allowed, drag-and-drop functionality remains available.",
+        index: 75,
+        conditions: ["preferences.questionBar.uploadFiles.allow"],
+      },
+      icon: {
+        title: "Upload files button icon",
+        type: "string",
+        default: "bi bi-paperclip",
+        description:
+          "Class name of the files upload control icon (displayed only if no image is defined)",
+        index: 76,
+        conditions: [
+          "preferences.questionBar.uploadFiles.allow",
+          "preferences.questionBar.uploadFiles.displayButton",
+        ],
+      },
+      image: {
+        title: "Upload files button image",
+        type: "ImageDef",
+        default: undefined,
+        description: "Image of the files upload control",
+        index: 77,
+        conditions: [
+          "preferences.questionBar.uploadFiles.allow",
+          "preferences.questionBar.uploadFiles.displayButton",
+        ],
+      },
+    },
     submit: {
       icon: {
         title: "Submit button icon",
@@ -322,6 +380,87 @@ const wording: Wording = {
         description: undefined,
       },
     },
+    uploadBrowseButtonLabel: {
+      title: "Files browse button label",
+      type: "string",
+      default: "",
+      description: undefined,
+    },
+    uploadBrowseButtonAriaLabel: {
+      title: "Files browse button Aria label",
+      type: "string",
+      default: "Upload files",
+      description: undefined,
+    },
+
+    uploadFilesList: {
+      uploadSubmit: {
+        title: "Files upload submit button label",
+        type: "string",
+        default: "Upload files",
+        description: undefined,
+      },
+      uploadCancel: {
+        title: "Files upload cancel button label",
+        type: "string",
+        default: "Cancel",
+        description: undefined,
+      },
+      filesNumberLimitWarning: {
+        title: "Number of files exceeded warning",
+        type: "string",
+        default: "The number of uploadable files is limited to ",
+        description: undefined,
+      },
+      filesFormatWarning: {
+        title: "Unsupported file format warning",
+        type: "string",
+        default: "This file format is not supported",
+        description: undefined,
+      },
+      filesSizeWarning: {
+        title: "File size warning",
+        type: "string",
+        default: "This file is too big",
+        description: undefined,
+      },
+
+      fileUploadLoading: {
+        title: "File upload progress info",
+        type: "string",
+        default: "In progress",
+        description: undefined,
+      },
+      fileUploadError: {
+        title: "File upload error info",
+        type: "string",
+        default: "Upload error",
+        description: undefined,
+      },
+      fileUploadCompleted: {
+        title: "File upload completed info",
+        type: "string",
+        default: "Complete",
+        description: undefined,
+      },
+      fileUploadConfirmationMessage: {
+        title: "Upload confirmation message",
+        type: "string",
+        description:
+          "Confirmation message displayed after an upload of file(s). Html allowed.",
+        default:
+          "The file transfer is complete.<br>You can now query the corpus of documents provided.",
+      },
+      fileUploadConfirmationMessageWithErrors: {
+        title: "Upload confirmation message with errors",
+        type: "string",
+        description:
+          "Confirmation message displayed after an upload of file(s) with some transfer errors. Html allowed.",
+        default:
+          "The file transfer is complete, but errors have occurred.<br>You can now query the correctly transferred documents.<br>Files whose transfer failed :<br>",
+      },
+    },
+
     submit: {
       title: "Submit button label",
       type: "string",

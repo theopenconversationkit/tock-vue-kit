@@ -1,6 +1,7 @@
 export type Message =
   | LoaderMessage
   | ErrorMessage
+  | InfoMessage
   | TextMessage
   | CardMessage
   | CarouselMessage
@@ -20,6 +21,7 @@ export enum MessageType {
 
   loader = "loader",
   error = "error",
+  info = "info",
 }
 
 interface MessageBase {
@@ -65,6 +67,11 @@ export interface LoaderMessage extends Partial<MessageBase> {
 export interface ErrorMessage extends Partial<MessageBase> {
   type: MessageType.error;
   message?: string;
+  text: string;
+}
+
+export interface InfoMessage extends Partial<MessageBase> {
+  type: MessageType.info;
   text: string;
 }
 

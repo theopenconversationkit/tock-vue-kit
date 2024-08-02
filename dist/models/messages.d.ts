@@ -1,4 +1,4 @@
-export type Message = LoaderMessage | ErrorMessage | TextMessage | CardMessage | CarouselMessage | ImageMessage;
+export type Message = LoaderMessage | ErrorMessage | InfoMessage | TextMessage | CardMessage | CarouselMessage | ImageMessage;
 export declare enum MessageAuthor {
     bot = "bot",
     user = "user",
@@ -10,7 +10,8 @@ export declare enum MessageType {
     carousel = "carousel",
     image = "image",
     loader = "loader",
-    error = "error"
+    error = "error",
+    info = "info"
 }
 interface MessageBase {
     type: MessageType;
@@ -49,6 +50,10 @@ export interface LoaderMessage extends Partial<MessageBase> {
 export interface ErrorMessage extends Partial<MessageBase> {
     type: MessageType.error;
     message?: string;
+    text: string;
+}
+export interface InfoMessage extends Partial<MessageBase> {
+    type: MessageType.info;
     text: string;
 }
 export interface MessageFootnote {

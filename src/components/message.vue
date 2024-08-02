@@ -131,6 +131,11 @@ const props = defineProps<{
           <i class="tvk-error-icon bi bi-exclamation-triangle"></i>
           {{ props.message.text }}
         </div>
+        <div
+          v-if="props.message!.type === MessageType.info"
+          class="tvk-message-info"
+          v-html="props.message.text"
+        ></div>
       </div>
     </div>
 

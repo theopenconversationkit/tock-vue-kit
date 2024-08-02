@@ -1,0 +1,107 @@
+.tvk-upload-files-preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .tvk-upload-files-preview-body {
+    flex-grow: 1;
+
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    max-height: 20em;
+    overflow: auto;
+
+    .tvk-upload-file-preview {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+      list-style-type: none;
+      padding: 0.5rem 0.5rem 0.5rem 0rem;
+      margin: 0;
+      position: relative;
+      border-bottom: 1px solid var(--tvk_colors_neutral-dim);
+
+      &.not-allowed {
+        .tvk-upload-file-preview-infos {
+          .tvk-upload-file-preview-infos-fileName {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .tvk-upload-file-preview-infos {
+        flex-grow: 1;
+        line-height: 1;
+
+        .tvk-upload-file-preview-infos-fileIcon {
+          margin-right: 0.5em;
+        }
+
+        .tvk-upload-file-preview-infos-fileSize {
+          margin-left: 0.5em;
+          margin-right: 0.5em;
+        }
+      }
+
+      .tvk-upload-files-preview-remove {
+        --size: 20px;
+        line-height: var(--size);
+        padding: 0;
+        width: var(--size);
+        min-width: var(--size);
+        background: orangered;
+        color: #fff;
+      }
+
+      .status-indicator {
+        padding: 0.3em 0.5em;
+        font-style: italic;
+        text-wrap: nowrap;
+        border-radius: var(--tvk_base_radius);
+      }
+
+      .loading {
+        animation: pulse 1.5s linear 0s infinite;
+      }
+
+      .success {
+        color: #040;
+      }
+
+      .warning {
+        color: orangered;
+      }
+    }
+  }
+
+  .tvk-upload-files-preview-footer {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    box-shadow: 0px -5px 5px -5px #00000050;
+
+    .tvk-upload-files-preview-footer-actions {
+      display: flex;
+      gap: 1em;
+      align-items: baseline;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background: var(--tvk_colors_surface1);
+    color: var(--tvk_colors_text1);
+  }
+
+  50% {
+    background: var(--tvk_colors_surface2);
+    color: var(--tvk_colors_text2);
+  }
+
+  100% {
+    background: var(--tvk_colors_surface1);
+    color: var(--tvk_colors_text1);
+  }
+}

@@ -65,6 +65,14 @@ export interface Preferences {
       icon: OptionDefinition<string>;
       image: OptionDefinition<ImageDef>;
     };
+    uploadFiles: {
+      allow: OptionDefinition<boolean>;
+      maxFiles: OptionDefinition<number>;
+      maxFileSize: OptionDefinition<number>;
+      displayButton: OptionDefinition<boolean>;
+      icon: OptionDefinition<string>;
+      image: OptionDefinition<ImageDef>;
+    };
     submit: {
       icon: OptionDefinition<string>;
       image: OptionDefinition<ImageDef>;
@@ -90,6 +98,20 @@ export interface Wording {
     clearHistoryAriaLabel: OptionDefinition<string>;
     input: {
       placeholder: OptionDefinition<string>;
+    };
+    uploadBrowseButtonLabel: OptionDefinition<string>;
+    uploadBrowseButtonAriaLabel: OptionDefinition<string>;
+    uploadFilesList: {
+      uploadSubmit: OptionDefinition<string>;
+      uploadCancel: OptionDefinition<string>;
+      filesNumberLimitWarning: OptionDefinition<string>;
+      filesFormatWarning: OptionDefinition<string>;
+      filesSizeWarning: OptionDefinition<string>;
+      fileUploadLoading: OptionDefinition<string>;
+      fileUploadError: OptionDefinition<string>;
+      fileUploadCompleted: OptionDefinition<string>;
+      fileUploadConfirmationMessage: OptionDefinition<string>;
+      fileUploadConfirmationMessageWithErrors: OptionDefinition<string>;
     };
     submit: OptionDefinition<string>;
     submitAriaLabel: OptionDefinition<string>;
