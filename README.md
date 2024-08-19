@@ -119,12 +119,54 @@ TockVueKit.renderChat(
 
 ### Preferences
 
-| Property name | Description                 | Default   |
-| ------------- | --------------------------- | --------- |
-| messages      | [Messages](#Messages)       | undefined |
-| questionBar   | [QuestionBar](#QuestionBar) | undefined |
+| Property name | Description                 | Default |
+| ------------- | --------------------------- | ------- |
+| messages      | [Messages](#Messages)       |         |
+| questionBar   | [QuestionBar](#QuestionBar) |         |
 
 #### Messages
+
+| Property name     | Description                                                        | Default |
+| ----------------- | ------------------------------------------------------------------ | ------- |
+| hideIfNoMessages  | Hide messages container if there is no messages to display.        | true    |
+| clearOnNewRequest | If true, deletes previous messages when a new user request is sent | false   |
+| message           | [Message](#Message)                                                |         |
+| footNotes         | [FootNotes](#FootNotes)                                            |         |
+
+##### Message
+
+| Property name    | Description                               | Default |
+| ---------------- | ----------------------------------------- | ------- |
+| hideUserMessages | If true, user messages are not displayed. | false   |
+| header           | [Header](#Header)                         |         |
+
+###### Header
+
+| Property name | Description                     | Default |
+| ------------- | ------------------------------- | ------- |
+| display       | Display a header above message. | true    |
+| avatar        | [Avatar](#Avatar)               |         |
+
+###### Avatar
+
+| Property name | Description                                                                       | Default           |
+| ------------- | --------------------------------------------------------------------------------- | ----------------- |
+| display       | Display an avatar in message header.                                              | true              |
+| userIcon      | Class name of the user avatar icon (displayed only if User image is not defined). | bi bi-person-fill |
+| userImage     | Image of the user avatar. Type : [ImageDef](#ImageDef)                            | undefined         |
+| botIcon       | Class name of the bot avatar icon (displayed only if Bot image is not defined).   | bi bi-robot       |
+| botImage      | Image of the bot avatar.Type : [ImageDef](#ImageDef)                              | undefined         |
+| label         | [Label](#Label)                                                                   |                   |
+
+####### Label
+
+| Property name | Description                                                                                                                                        | Default |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| display       | Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content). | true    |
+
+##### ImageDef
+
+##### FootNotes
 
 Wip
 
