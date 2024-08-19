@@ -79,9 +79,15 @@ Options relating to the persistence in _localStorage_ of messages exchanged by t
 
 ### Initialization
 
+Wip
+
 ### Preferences
 
+Wip
+
 ### Wording
+
+Wip
 
 ## Visual customization
 
