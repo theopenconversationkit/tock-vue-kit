@@ -158,13 +158,11 @@ TockVueKit.renderChat(
 | botImage      | Image of the bot avatar.Type : [ImageDef](#ImageDef)                              | undefined         |
 | label         | [Label](#Label)                                                                   |                   |
 
-####### Label
+###### Label
 
 | Property name | Description                                                                                                                                        | Default |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | display       | Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content). | true    |
-
-##### ImageDef
 
 ##### FootNotes
 
@@ -177,6 +175,16 @@ Wip
 ### Wording
 
 Wip
+
+### ImageDef
+
+Option object for providing images references.
+
+| Property name | Description                              | Default |
+| ------------- | ---------------------------------------- | ------- |
+| width         | Width in which to display the image.     |         |
+| height        | Height in which to display the image.    |         |
+| src           | Src of the image (url or svg data image) |         |
 
 ## Visual customization
 
