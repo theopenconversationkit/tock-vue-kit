@@ -55,15 +55,15 @@ The third argument hosts the widget's customization options. See below.
 
 ## Customization options
 
-Customization options are functional options of the application. For visual widget customization, see _Visual customization_ below.
+Customization options are functional options of the application. For visual widget customization, see _[Visual customization](#Visual customization)_ below.
 Customization options are provided in the form of an object that can contain the following attributes:
 
 ```
 {
-  localStorage: LocalStorage;
-  initialization: Initialization;
-  preferences: Preferences;
-  wording: Wording;
+  localStorage: [LocalStorage](#LocalStorage);
+  initialization: [Initialization](#Initialization);
+  preferences: [Preferences](#Preferences);
+  wording: [Wording](#Wording);
 }
 ```
 
@@ -76,6 +76,12 @@ Options relating to the persistence in _localStorage_ of messages exchanged by t
 | enabled           | Retain conversation history in local storage                                                  | False     |
 | prefix            | Prefix for local storage keys allowing communication with different bots from the same domain | undefined |
 | maxNumberMessages | Maximum number of messages to store in local storage                                          | 20        |
+
+### Initialization
+
+### Preferences
+
+### Wording
 
 ## Visual customization
 
