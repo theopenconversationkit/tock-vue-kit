@@ -8,7 +8,7 @@ Try the Tock Vue Kit (and the Tock Vue Kit Editor) on the [demo page](https://do
 
 ## Prerequisites
 
-- Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/)
+Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/)
 
 ## Quick Start
 
@@ -58,12 +58,10 @@ The third argument hosts the widget's customization options. See below.
 Customization options are functional options of the widget. For visual widget customization, see [Visual customization](#Visual-customization) below.
 Customization options are provided in the form of an object that can contain the following optional attributes:
 
-{
-localStorage: [LocalStorage](#LocalStorage);
-initialization: [Initialization](#Initialization);
-preferences: [Preferences](#Preferences);
-wording: [Wording](#Wording);
-}
+- [LocalStorage](#LocalStorage);
+- [Initialization](#Initialization);
+- [Preferences](#Preferences);
+- [Wording](#Wording);
 
 [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/) to get an idea)
 
@@ -71,26 +69,26 @@ wording: [Wording](#Wording);
 
 Optional options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance :
 
-| Property name     | Description                                                                                   | Default   |
-| ----------------- | --------------------------------------------------------------------------------------------- | --------- |
-| enabled           | Retain conversation history in local storage                                                  | False     |
-| prefix            | Prefix for local storage keys allowing communication with different bots from the same domain | undefined |
-| maxNumberMessages | Maximum number of messages to store in local storage                                          | 20        |
+| Property name     | Description                                                                                                      | Default   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- | --------- |
+| enabled           | Retain conversation history in local storage                                                                     | False     |
+| prefix            | Prefix for local storage keys allowing communication with different bots from the same domain                    | undefined |
+| maxNumberMessages | Maximum number of messages to store in local storage. Passing this limit, older messages are removed of history. | 20        |
 
 Exemple :
 
 ```Javascript
-  TockVueKit.renderChat(
-    document.getElementById("<ELEMENT_ID>"),
-    "<TOCK_BOT_API_URL>",
-    {
-      localStorage : {
-        enabled : true,
-        prefix : 'myprefix',
-        maxNumberMessages : 15
-      }
+TockVueKit.renderChat(
+  document.getElementById("<TARGET_ELEMENT_ID>"),
+  "<TOCK_BOT_API_URL>",
+  {
+    localStorage : {
+      enabled : true,
+      prefix : 'myprefix',
+      maxNumberMessages : 15
     }
-  );
+  }
+);
 ```
 
 ### Initialization
@@ -101,7 +99,36 @@ Exemple :
 | welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.                                    | undefined |
 | openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | undefined |
 
+Exemple :
+
+```Javascript
+TockVueKit.renderChat(
+  document.getElementById("<TARGET_ELEMENT_ID>"),
+  "<TOCK_BOT_API_URL>",
+  {
+    "initialization": {
+      "extraHeaders": {
+        "my-header-name": "My header value",
+        "other-header-name": "other header value"
+      },
+      "welcomeMessage": "Hi, how can i help you today ?"
+    }
+  }
+)
+```
+
 ### Preferences
+
+| Property name | Description                 | Default   |
+| ------------- | --------------------------- | --------- |
+| messages      | [Messages](#Messages)       | undefined |
+| questionBar   | [QuestionBar](#QuestionBar) | undefined |
+
+#### Messages
+
+Wip
+
+#### QuestionBar
 
 Wip
 
