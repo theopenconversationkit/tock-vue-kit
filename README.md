@@ -39,9 +39,7 @@ Display chat app in desired target :
 
 ## Render method options
 
-```Javascript
 TockVueKit.renderChat([element](#element),[tockBotApiUrl](#tockBotApiUrl),[customizationOptions](#customizationOptions))
-```
 
 #### element
 
@@ -60,7 +58,7 @@ The third argument hosts the widget's customization options. See below.
 Customization options are functional options of the application. For visual widget customization, see _Visual customization_ below.
 Customization options are provided in the form of an object that can contain the following attributes:
 
-```JSON
+```
 {
   localStorage: LocalStorage;
   initialization: Initialization;
