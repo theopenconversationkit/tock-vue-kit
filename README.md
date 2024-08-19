@@ -1,6 +1,6 @@
 # Tock Vue Kit
 
-A Vue 3 toolkit to easily embed [Tock](https://doc.tock.ai) into web pages.
+A Vue 3 toolkit to easily embed [Tock](https://doc.tock.ai) into web pages or web apps.
 
 ## Demo
 
@@ -56,20 +56,18 @@ The third argument hosts the widget's customization options. See below.
 ## Customization options
 
 Customization options are functional options of the application. For visual widget customization, see [Visual customization](#Visual-customization) below.
-Customization options are provided in the form of an object that can contain the following attributes:
+Customization options are provided in the form of an object that can contain the following optional attributes:
 
-```
 {
-  localStorage: LocalStorage;
-  initialization: Initialization;
-  preferences: Preferences;
-  wording: Wording;
+localStorage: [LocalStorage](#LocalStorage);
+initialization: [Initialization](#Initialization);
+preferences: [Preferences](#Preferences);
+wording: [Wording](#Wording);
 }
-```
 
 ### LocalStorage
 
-Options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance :
+Optional options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance :
 
 | Property name     | Description                                                                                   | Default   |
 | ----------------- | --------------------------------------------------------------------------------------------- | --------- |
