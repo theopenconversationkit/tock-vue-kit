@@ -55,7 +55,7 @@ The third argument hosts the widget's customization options. See below.
 
 ## Customization options
 
-Customization options are functional options of the application. For visual widget customization, see _[Visual customization](#Visual customization)_ below.
+Customization options are functional options of the application. For visual widget customization, see [Visual customization](#Visual customization) below.
 Customization options are provided in the form of an object that can contain the following attributes:
 
 ```
