@@ -60,10 +60,10 @@ Customization options are provided in the form of an object that can contain the
 
 ```
 {
-  localStorage: [LocalStorage](#LocalStorage);
-  initialization: [Initialization](#Initialization);
-  preferences: [Preferences](#Preferences);
-  wording: [Wording](#Wording);
+  localStorage: LocalStorage;
+  initialization: Initialization;
+  preferences: Preferences;
+  wording: Wording;
 }
 ```
 
