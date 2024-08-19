@@ -55,7 +55,7 @@ The third argument hosts the widget's customization options. See below.
 
 ## Customization options
 
-Customization options are functional options of the application. For visual widget customization, see [Visual customization](#Visual-customization) below.
+Customization options are functional options of the widget. For visual widget customization, see [Visual customization](#Visual-customization) below.
 Customization options are provided in the form of an object that can contain the following optional attributes:
 
 {
@@ -64,6 +64,8 @@ initialization: [Initialization](#Initialization);
 preferences: [Preferences](#Preferences);
 wording: [Wording](#Wording);
 }
+
+[Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/) to get an idea)
 
 ### LocalStorage
 
@@ -75,9 +77,29 @@ Optional options relating to the persistence in _localStorage_ of messages excha
 | prefix            | Prefix for local storage keys allowing communication with different bots from the same domain | undefined |
 | maxNumberMessages | Maximum number of messages to store in local storage                                          | 20        |
 
+Exemple :
+
+```Javascript
+  TockVueKit.renderChat(
+    document.getElementById("<ELEMENT_ID>"),
+    "<TOCK_BOT_API_URL>",
+    {
+      localStorage : {
+        enabled : true,
+        prefix : 'myprefix',
+        maxNumberMessages : 15
+      }
+    }
+  );
+```
+
 ### Initialization
 
-Wip
+| Property name  | Description                                                                                                                                                                | Default   |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| extraHeaders   | Additional HTTP header key/value pairs to be supplied in requests. Warning : Tock server configuration required.                                                           | undefined |
+| welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.                                    | undefined |
+| openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | undefined |
 
 ### Preferences
 
