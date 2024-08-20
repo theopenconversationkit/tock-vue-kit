@@ -39,7 +39,7 @@ Display the chat widget in desired target :
 
 ## Render method options
 
-`TockVueKit.renderChat([element](#element),[tockBotApiUrl](#tockBotApiUrl),[customizationOptions](#customizationOptions))`
+> TockVueKit.renderChat([element](#element),[tockBotApiUrl](#tockBotApiUrl),[customizationOptions](#customizationOptions))
 
 #### element
 
@@ -232,6 +232,6 @@ Wip
 
 Wip
 
-## `Visual customization`
+## Visual customization
 
 Wip
