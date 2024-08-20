@@ -63,7 +63,7 @@ Customization options are provided in the form of an object that can contain the
 - [Preferences](#Preferences);
 - [Wording](#Wording);
 
-[Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Preferences_ tab)
+> [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Preferences_ and _Wording_ tabs)
 
 ### LocalStorage
 
@@ -304,12 +304,16 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 
 ## Visual customization
 
-Most of the css rules that shape the widget are defined by css variables. The css variables are prefixed with the string “--tvk” so as not to unintentionally impact the page hosting the widget.
+Most of the css rules that shape the widget are defined by css variables.
+Each of these variables has a default value, which you are free to redefine according to your needs. Use your DevTools to identify the variables to override or take a look at the [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) via its [demo page](https://doc.tock.ai/tock-vue-kit/).
+The css variables are prefixed with the string “--tvk” so as not to unintentionally impact the page hosting the widget.
 You can redefine the desired css variables in a number of ways:
 
-- In the source of the page hosting the widget, anywhere after inclusion of the css file.
+### Visual customization in source
 
-  Example :
+Redefine desired css variables in the source of the page hosting the widget, anywhere after inclusion of the css file.
+
+Example :
 
 ```Html
 <!DOCTYPE html>
@@ -359,7 +363,9 @@ You can redefine the desired css variables in a number of ways:
 
 ```
 
-- In a separate css file, included after the main css file.
+### Visual customization in a separate css file
+
+Create a separate css file where you redefine css variables and include this file in source, after inclusion of main css file.
 
 Example :
 
@@ -420,3 +426,5 @@ Separate customization file (my-visual-customization.css) :
 
 - Via javascript
 - By duplicating the widget's css file (dist/style.css) and customizing it as you wish.
+
+> [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define css variables customization (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Styling_ tab)
