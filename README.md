@@ -19,12 +19,12 @@ npm install tock-vue-kit
 Include js and css files :
 
 ```html
-<script src="https://unpkg.com/vue@3.4"></script>
 <link href="dist/style.css" rel="stylesheet" />
+<script src="https://unpkg.com/vue@3.4"></script>
 <script src="dist/tock-vue-kit.umd.cjs"></script>
 ```
 
-Display chat app in desired target :
+Display the chat widget in desired target :
 
 ```html
 <div id="chat-wrapper"></div>
@@ -63,17 +63,17 @@ Customization options are provided in the form of an object that can contain the
 - [Preferences](#Preferences);
 - [Wording](#Wording);
 
-[Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/) to get an idea)
+[Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/))
 
 ### LocalStorage
 
 Optional options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance :
 
-| Property name     | Description                                                                                                      | Default   |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------- | --------- |
-| enabled           | Retain conversation history in local storage                                                                     | False     |
-| prefix            | Prefix for local storage keys allowing communication with different bots from the same domain                    | undefined |
-| maxNumberMessages | Maximum number of messages to store in local storage. Passing this limit, older messages are removed of history. | 20        |
+| Property name     | Description                                                                                                      | Type    | Default   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- | ------- | --------- |
+| enabled           | Retain conversation history in local storage                                                                     | Boolean | False     |
+| prefix            | Prefix for local storage keys allowing communication with different bots from the same domain                    | String  | undefined |
+| maxNumberMessages | Maximum number of messages to store in local storage. Passing this limit, older messages are removed of history. | Integer | 20        |
 
 Exemple :
 
@@ -93,11 +93,11 @@ TockVueKit.renderChat(
 
 ### Initialization
 
-| Property name  | Description                                                                                                                                                                | Default   |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| extraHeaders   | Additional HTTP header key/value pairs to be supplied in requests. Warning : Tock server configuration required.                                                           | undefined |
-| welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.                                    | undefined |
-| openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | undefined |
+| Property name  | Description                                                                                                                                                                | Type            | Default   |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | --------- |
+| extraHeaders   | Additional HTTP header key/value pairs to be supplied in requests. Warning : Tock server configuration required.                                                           | Key/Value pairs | undefined |
+| welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.                                    | String          | undefined |
+| openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | String          | undefined |
 
 Exemple :
 
@@ -119,58 +119,78 @@ TockVueKit.renderChat(
 
 ### Preferences
 
-| Property name | Description                 | Default |
-| ------------- | --------------------------- | ------- |
-| messages      | [Messages](#Messages)       |         |
-| questionBar   | [QuestionBar](#QuestionBar) |         |
+| Property name | Description             | Type                        | Default |
+| ------------- | ----------------------- | --------------------------- | ------- |
+| messages      | Messages options        | [Messages](#Messages)       |         |
+| questionBar   | User input area options | [QuestionBar](#QuestionBar) |         |
 
 #### Messages
 
-| Property name     | Description                                                        | Default |
-| ----------------- | ------------------------------------------------------------------ | ------- |
-| hideIfNoMessages  | Hide messages container if there is no messages to display.        | true    |
-| clearOnNewRequest | If true, deletes previous messages when a new user request is sent | false   |
-| message           | [Message](#Message)                                                |         |
-| footNotes         | [FootNotes](#FootNotes)                                            |         |
+| Property name     | Description                                                        | Type                    | Default |
+| ----------------- | ------------------------------------------------------------------ | ----------------------- | ------- |
+| hideIfNoMessages  | Hide messages container if there is no messages to display.        | Boolean                 | true    |
+| clearOnNewRequest | If true, deletes previous messages when a new user request is sent | Boolean                 | false   |
+| message           | Message options                                                    | [Message](#Message)     |         |
+| footNotes         | Footnotes options                                                  | [FootNotes](#FootNotes) |         |
 
 ##### Message
 
-| Property name    | Description                               | Default |
-| ---------------- | ----------------------------------------- | ------- |
-| hideUserMessages | If true, user messages are not displayed. | false   |
-| header           | [Header](#Header)                         |         |
+| Property name    | Description                               | Type              | Default |
+| ---------------- | ----------------------------------------- | ----------------- | ------- |
+| hideUserMessages | If true, user messages are not displayed. | Boolean           | false   |
+| header           | Message header options                    | [Header](#Header) |         |
 
 ###### Header
 
-| Property name | Description                     | Default |
-| ------------- | ------------------------------- | ------- |
-| display       | Display a header above message. | true    |
-| avatar        | [Avatar](#Avatar)               |         |
+| Property name | Description                     | Type              | Default |
+| ------------- | ------------------------------- | ----------------- | ------- |
+| display       | Display a header above message. | Boolean           | true    |
+| avatar        | Message header avatar options   | [Avatar](#Avatar) |         |
+| label         | Message header label options    | [Label](#Label)   |         |
 
 ###### Avatar
 
-| Property name | Description                                                                       | Default           |
-| ------------- | --------------------------------------------------------------------------------- | ----------------- |
-| display       | Display an avatar in message header.                                              | true              |
-| userIcon      | Class name of the user avatar icon (displayed only if User image is not defined). | bi bi-person-fill |
-| userImage     | Image of the user avatar. Type : [ImageDef](#ImageDef)                            | undefined         |
-| botIcon       | Class name of the bot avatar icon (displayed only if Bot image is not defined).   | bi bi-robot       |
-| botImage      | Image of the bot avatar.Type : [ImageDef](#ImageDef)                              | undefined         |
-| label         | [Label](#Label)                                                                   |                   |
+| Property name | Description                                                                       | Type                  | Default           |
+| ------------- | --------------------------------------------------------------------------------- | --------------------- | ----------------- |
+| display       | Display an avatar in message header.                                              | Boolean               | true              |
+| userIcon      | Class name of the user avatar icon (displayed only if User image is not defined). | String                | bi bi-person-fill |
+| userImage     | Image of the user avatar.                                                         | [ImageDef](#ImageDef) | undefined         |
+| botIcon       | Class name of the bot avatar icon (displayed only if Bot image is not defined).   | String                | bi bi-robot       |
+| botImage      | Image of the bot avatar.                                                          | [ImageDef](#ImageDef) | undefined         |
 
 ###### Label
 
-| Property name | Description                                                                                                                                        | Default |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| display       | Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content). | true    |
+| Property name | Description                                                                                                                                        | Type    | Default |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
+| display       | Display a label in message header (cf wording.messages.message.header.labelUser and wording.messages.message.header.labelBot for textual content). | Boolean | true    |
 
 ##### FootNotes
 
-Wip
+Footnotes can optionally be added to Rag messages.
+
+| Property name             | Description                                                                                                                   | Type    | Default |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
+| display                   | For RAG responses, display the sources used to generate the answer if any.                                                    | Boolean | true    |
+| requireSourcesContent     | For RAG responses, request the textual content of the source in addition to the source title and link.                        | Boolean | false   |
+| clampSourceContent        | For RAG responses with sources content, truncate the textual source content.                                                  | Boolean | true    |
+| clampSourceContentNbLines | For RAG responses with sources content, number of lines after which to truncate text.                                         | Integer | 2       |
+| displayOnMessageSide      | For RAG responses, any sources are displayed on one side of the message response rather than directly following the response. | Boolean | false   |
 
 #### QuestionBar
 
-Wip
+| Property name           | Description                                                          | Type                          | Default |
+| ----------------------- | -------------------------------------------------------------------- | ----------------------------- | ------- |
+| clearTypedCharsOnSubmit | Whether or not the question input field should be cleared on submit. | Boolean                       | true    |
+| maxUserInputLength      | Max length of the user input message string                          | Integer                       | 500     |
+| clearHistory            | Options of clear hitsory button                                      | [clearHistory](#clearHistory) |         |
+
+##### clearHistory
+
+| Property name | Description                                                                          | Type                  | Default          |
+| ------------- | ------------------------------------------------------------------------------------ | --------------------- | ---------------- |
+| display       | Show clear history button                                                            | Boolean               | true             |
+| icon          | Class name of the clear history control icon (displayed only if no image is defined) | String                | bi bi-trash-fill |
+| image         | Image of the clearHistory control                                                    | [ImageDef](#ImageDef) | undefined        |
 
 ### Wording
 
