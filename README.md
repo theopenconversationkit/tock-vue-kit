@@ -363,7 +363,7 @@ You can redefine the desired css variables in a number of ways:
 
 Example :
 
-```Html file="index.html"
+```Html {}[index.html]
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -393,7 +393,7 @@ Example :
 
 ```
 
-```Css file="my-visual-customization.css"
+```Css{}[my-visual-customization.css]
 :root {
   --tvk-brand-hue: 214;
   --tvk-brand-saturation: 42%;
