@@ -309,6 +309,8 @@ Most of the css rules that shape the widget are defined by css variables.
 Each of these variables has a default value, which you are free to redefine according to your needs. Use your DevTools to identify the variables to overload or take a look at the [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) via its [demo page](https://doc.tock.ai/tock-vue-kit/).
 The css variables are prefixed with the string “--tvk” so as not to unintentionally impact the page hosting the widget.
 
+> [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define and export css variables customization (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Styling_ and _Output_ tabs)
+
 You can redefine the desired css variables in a number of ways:
 
 ### Visual customization in source
@@ -467,8 +469,6 @@ Example :
 ### More advanced visual customization
 
 If you need to modify the widget's appearance in greater depth, use your own version of the "dist/style.css" file, which you can then customize as you see fit.
-
-> [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define and export css variables customization (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Styling_ and _Output_ tabs)
 
 ### About colors
 
