@@ -305,8 +305,10 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 ## Visual customization
 
 Most of the css rules that shape the widget are defined by css variables.
+
 Each of these variables has a default value, which you are free to redefine according to your needs. Use your DevTools to identify the variables to override or take a look at the [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) via its [demo page](https://doc.tock.ai/tock-vue-kit/).
 The css variables are prefixed with the string “--tvk” so as not to unintentionally impact the page hosting the widget.
+
 You can redefine the desired css variables in a number of ways:
 
 ### Visual customization in source
@@ -328,21 +330,13 @@ Example :
     <link href="dist/style.css" rel="stylesheet" />
     <style>
       :root {
-        --tvk-brand-hue: 214;
-        --tvk-brand-saturation: 42%;
-        --tvk-brand-lightness: 13%;
-        --tvk-neutral-light: white;
-        --tvk-neutral-dark: var(--tvk-brand);
-        --tvk-base-font-size: 11px;
-        --tvk-main-wrapper-height: calc(98vh - 6em);
-        --tvk-message-margin: 0;
-        --tvk-message-body-padding: 1.5em 2.5em;
-        --tvk-message-body-user-radius-top-right: var(--tvk-message-body-radius);
-        --tvk-message-body-user-radius-bottom-right: 0;
-        --tvk-message-body-radius: 20em;
-        --tvk-question-bar-background-color: var(--tvk-brand);
-        --tvk-question-bar-border: 1px solid var(--tvk-brand);
-        --tvk-question-bar-color: var(--tvk-text1);
+        --tvk_colors_brand-hue: 214;
+        --tvk_colors_brand-lightness: 42%;
+        --tvk_colors_brand-saturation: 40%;
+        --tvk_colors_dark_neutral: white;
+        --tvk_colors_dark_text1: white;
+        --tvk_colors_dark_text2: white;
+        --tvk_wrapper_height: calc(98vh - 6em);
       }
     </style>
   </head>
@@ -369,7 +363,7 @@ Create a separate css file where you redefine css variables and include this fil
 
 Example :
 
-Main html page :
+Main html page
 
 ```Html
 <!DOCTYPE html>
@@ -401,30 +395,77 @@ Main html page :
 
 ```
 
-Separate customization file (my-visual-customization.css) :
+Separate customization file (my-visual-customization.css in this example)
 
 ```Css
 :root {
-  --tvk-brand-hue: 214;
-  --tvk-brand-saturation: 42%;
-  --tvk-brand-lightness: 13%;
-  --tvk-neutral-light: white;
-  --tvk-neutral-dark: var(--tvk-brand);
-  --tvk-base-font-size: 11px;
-  --tvk-main-wrapper-height: calc(98vh - 6em);
-  --tvk-message-margin: 0;
-  --tvk-message-body-padding: 1.5em 2.5em;
-  --tvk-message-body-user-radius-top-right: var(--tvk-message-body-radius);
-  --tvk-message-body-user-radius-bottom-right: 0;
-  --tvk-message-body-radius: 20em;
-  --tvk-question-bar-background-color: var(--tvk-brand);
-  --tvk-question-bar-border: 1px solid var(--tvk-brand);
-  --tvk-question-bar-color: var(--tvk-text1);
+  --tvk_colors_brand-hue: 214;
+  --tvk_colors_brand-lightness: 42%;
+  --tvk_colors_brand-saturation: 40%;
+  --tvk_colors_dark_neutral: white;
+  --tvk_colors_dark_text1: white;
+  --tvk_colors_dark_text2: white;
+  --tvk_wrapper_height: calc(98vh - 6em);
 }
 
 ```
 
-- Via javascript
-- By duplicating the widget's css file (dist/style.css) and customizing it as you wish.
+### Visual customization with javascript
+
+If necessary, you can inject css variable overloads with javascript at runtime.
+
+Example :
+
+```Html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Website</title>
+    <script src="https://unpkg.com/vue@3.4"></script>
+    <link href="dist/style.css" rel="stylesheet" />
+    <script src="dist/tock-vue-kit.umd.cjs"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Welcome to My Website</h1>
+      <div id="chat-wrapper"></div>
+    </main>
+
+    <script>
+      TockVueKit.renderChat(
+        document.getElementById("chat-wrapper"),
+        "<TOCK_BOT_API_URL>"
+      );
+
+      const styling = {
+        "--tvk_colors_brand-hue": "214",
+        "--tvk_colors_brand-lightness": "42%",
+        "--tvk_colors_brand-saturation": "40%",
+        "--tvk_colors_dark_background":
+          "hsl(var(--tvk_colors_brand-hue) 50% 20%)",
+        "--tvk_colors_dark_neutral": "white",
+        "--tvk_colors_dark_text1": "white",
+        "--tvk_colors_dark_text2": "white",
+        "--tvk_colors_light_background":
+          "hsl(var(--tvk_colors_brand-hue) 50% 90%)",
+        "--tvk_wrapper_height": "calc(98vh - 6em)",
+      };
+
+      let root = document.documentElement;
+      Object.entries(styling).forEach((style) => {
+        root.style.setProperty(style[0], style[1]);
+      });
+    </script>
+  </body>
+</html>
+
+```
+
+### More advanced visual customization
+
+If you need to modify the widget's appearance in greater depth, use your own version of the "dist/style.css" file, which you can then customize as you see fit.
 
 > [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define css variables customization (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Styling_ tab)
