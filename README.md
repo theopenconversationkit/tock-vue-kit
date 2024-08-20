@@ -183,6 +183,7 @@ Footnotes can optionally be added to Rag messages.
 | clearTypedCharsOnSubmit | Whether or not the question input field should be cleared on submit. | Boolean                       | true    |
 | maxUserInputLength      | Max length of the user input message string                          | Integer                       | 500     |
 | clearHistory            | Options of clear hitsory button                                      | [clearHistory](#clearHistory) |         |
+| submit                  | Options of submit button                                             | [submit](#submit)             |         |
 
 ##### clearHistory
 
@@ -192,9 +193,12 @@ Footnotes can optionally be added to Rag messages.
 | icon          | Class name of the clear history control icon (displayed only if no image is defined) | String                | bi bi-trash-fill |
 | image         | Image of the clearHistory control                                                    | [ImageDef](#ImageDef) | undefined        |
 
-### Wording
+##### submit
 
-Wip
+| Property name | Description                                                                   | Type                  | Default         |
+| ------------- | ----------------------------------------------------------------------------- | --------------------- | --------------- |
+| icon          | Class name of the submit control icon (displayed only if no image is defined) | String                | bi bi-send-fill |
+| image         | Image of the submit control                                                   | [ImageDef](#ImageDef) | undefined       |
 
 ### ImageDef
 
@@ -205,6 +209,28 @@ Option object for providing images references.
 | width         | Width in which to display the image.     |         |
 | height        | Height in which to display the image.    |         |
 | src           | Src of the image (url or svg data image) |         |
+
+### Wording
+
+The _Wording_ customization option lets you redefine all or part of the text displayed by the widget.
+
+| Property name          | Description                       | Type                                              | Default |
+| ---------------------- | --------------------------------- | ------------------------------------------------- | ------- |
+| messages               | Messages wording                  | [Messages](#Messages)                             |         |
+| questionBar            | User input area wording           | [QuestionBar](#QuestionBar)                       |         |
+| connectionErrorMessage | Connection error messages wording | [ConnectionErrorMessage](#ConnectionErrorMessage) |         |
+
+#### Messages
+
+Wip
+
+#### QuestionBar
+
+Wip
+
+#### ConnectionErrorMessage
+
+Wip
 
 ## Visual customization
 
