@@ -293,7 +293,7 @@ const wording: Wording = {
           description: undefined,
         },
         showMoreLink: {
-          title: "Footnotes label",
+          title: "Show more link label",
           type: "string",
           default: "> Show more",
           description: undefined,
