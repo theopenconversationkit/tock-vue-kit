@@ -69,7 +69,7 @@ Customization options are provided in the form of an object that can contain the
 
 ### LocalStorage
 
-Optional options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance :
+Options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance :
 
 | Property name     | Description                                                                                                      | Type    | Default   |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------- | ------- | --------- |
