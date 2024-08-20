@@ -216,8 +216,8 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 
 | Property name          | Description                       | Type                                              | Default |
 | ---------------------- | --------------------------------- | ------------------------------------------------- | ------- |
-| messages               | Messages wording                  | [Messages](#Messages)                             |         |
-| questionBar            | User input area wording           | [QuestionBar](#QuestionBar)                       |         |
+| messages               | Messages wording                  | [Messages](#Messages-1)                           |         |
+| questionBar            | User input area wording           | [QuestionBar](#QuestionBar-1)                     |         |
 | connectionErrorMessage | Connection error messages wording | [ConnectionErrorMessage](#ConnectionErrorMessage) |         |
 
 #### Messages
