@@ -12,6 +12,8 @@ Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/)
 
 ## Quick Start
 
+Install the dependency :
+
 ```bash
 npm install tock-vue-kit
 ```
@@ -19,9 +21,9 @@ npm install tock-vue-kit
 Include js and css files :
 
 ```html
-<link href="dist/style.css" rel="stylesheet" />
 <script src="https://unpkg.com/vue@3.4"></script>
-<script src="dist/tock-vue-kit.umd.cjs"></script>
+<link href="node_modules/tock-vue-kit/dist/style.css" rel="stylesheet" />
+<script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
 ```
 
 Display the chat widget in desired target :
