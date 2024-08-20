@@ -261,16 +261,16 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 
 #### Messages
 
-| Property name | Description     | Type                |
-| ------------- | --------------- | ------------------- |
-| message       | Message wording | [Message](#Message) |
+| Property name | Description     | Type                  |
+| ------------- | --------------- | --------------------- |
+| message       | Message wording | [Message](#Message-1) |
 
 ##### Message
 
-| Property name | Description               | Type                    |
-| ------------- | ------------------------- | ----------------------- |
-| header        | Message header wording    | [Header](#Header)       |
-| footnotes     | Message footnotes wording | [Footnotes](#Footnotes) |
+| Property name | Description               | Type                      |
+| ------------- | ------------------------- | ------------------------- |
+| header        | Message header wording    | [Header](#Header-1)       |
+| footnotes     | Message footnotes wording | [Footnotes](#Footnotes-1) |
 
 ###### Header
 
