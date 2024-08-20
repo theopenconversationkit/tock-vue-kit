@@ -189,7 +189,7 @@ Footnotes can optionally be added to Rag messages.
 
 | Property name | Description                                                                          | Type                  | Default          |
 | ------------- | ------------------------------------------------------------------------------------ | --------------------- | ---------------- |
-| display       | Show clear history button                                                            | Boolean               | true             |
+| display       | Show the clear discussion and history button                                         | Boolean               | true             |
 | icon          | Class name of the clear history control icon (displayed only if no image is defined) | String                | bi bi-trash-fill |
 | image         | Image of the clearHistory control                                                    | [ImageDef](#ImageDef) | undefined        |
 
@@ -304,4 +304,62 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 
 ## Visual customization
 
-Wip
+Most of the css rules that shape the widget are defined by css variables. The css variables are prefixed with the string “--tvk” so as not to unintentionally impact the page hosting the widget.
+You can redefine the desired css variables in a number of ways:
+
+- In the source of the page hosting the widget, anywhere after inclusion of the css file.
+  Example :
+
+```Html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Website</title>
+    <link href="dist/style.css" rel="stylesheet" />
+    <script src="https://unpkg.com/vue@3.4"></script>
+    <script src="dist/tock-vue-kit.umd.cjs"></script>
+    <style>
+      :root {
+        --tvk-brand-hue: 214;
+        --tvk-brand-saturation: 42%;
+        --tvk-brand-lightness: 13%;
+        --tvk-neutral-light: white;
+        --tvk-neutral-dark: var(--tvk-brand);
+        --tvk-base-font-size: 11px;
+        --tvk-main-wrapper-height: calc(98vh - 6em);
+        --tvk-message-margin: 0;
+        --tvk-message-body-padding: 1.5em 2.5em;
+        --tvk-message-body-user-radius-top-right: var(
+          --tvk-message-body-radius
+        );
+        --tvk-message-body-user-radius-bottom-right: 0;
+        --tvk-message-body-radius: 20em;
+        --tvk-question-bar-background-color: var(--tvk-brand);
+        --tvk-question-bar-border: 1px solid var(--tvk-brand);
+        --tvk-question-bar-color: var(--tvk-text1);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Welcome to My Website</h1>
+      <div id="chat-wrapper"></div>
+    </main>
+
+    <script>
+      TockVueKit.renderChat(
+        document.getElementById("chat-wrapper"),
+        "<TOCK_BOT_API_URL>"
+      );
+    </script>
+  </body>
+</html>
+
+```
+
+- In a separate css file, included after the main css file.
+- Via javascript
+- By duplicating the widget's css file and customizing it as you wish.
