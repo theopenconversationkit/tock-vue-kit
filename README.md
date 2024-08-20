@@ -63,7 +63,7 @@ Customization options are provided in the form of an object that can contain the
 - [Preferences](#Preferences);
 - [Wording](#Wording);
 
-[Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/))
+[Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Preferences_ tab)
 
 ### LocalStorage
 
@@ -209,6 +209,40 @@ Option object for providing images references.
 | width         | Width in which to display the image.     |         |
 | height        | Height in which to display the image.    |         |
 | src           | Src of the image (url or svg data image) |         |
+
+```Javascript
+TockVueKit.renderChat(
+  document.getElementById("<TARGET_ELEMENT_ID>"),
+  "<TOCK_BOT_API_URL>",
+  {
+    "preferences": {
+      "messages": {
+        "hideIfNoMessages": false,
+        "message": {
+          "header": {
+            "avatar": {
+              "userImage": {
+                "src": "https://my-url.com/my-file.png",
+                "width": "1em",
+                "height": "1em"
+              }
+            }
+          }
+        },
+        "footNotes": {
+          "requireSourcesContent": true,
+          "clampSourceContentNbLines": "4"
+        }
+      },
+      "questionBar": {
+        "submit": {
+          "icon": "bi bi-arrow-right-circle-fill"
+        }
+      }
+    }
+  }
+)
+```
 
 ### Wording
 
