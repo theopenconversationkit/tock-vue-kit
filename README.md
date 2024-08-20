@@ -363,7 +363,7 @@ You can redefine the desired css variables in a number of ways:
 
 Example :
 
-```Html title="index.html"
+```Html file=index.html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -393,24 +393,24 @@ Example :
 
 ```
 
-```Css title="my-visual-customization.css"
-      :root {
-        --tvk-brand-hue: 214;
-        --tvk-brand-saturation: 42%;
-        --tvk-brand-lightness: 13%;
-        --tvk-neutral-light: white;
-        --tvk-neutral-dark: var(--tvk-brand);
-        --tvk-base-font-size: 11px;
-        --tvk-main-wrapper-height: calc(98vh - 6em);
-        --tvk-message-margin: 0;
-        --tvk-message-body-padding: 1.5em 2.5em;
-        --tvk-message-body-user-radius-top-right: var(--tvk-message-body-radius);
-        --tvk-message-body-user-radius-bottom-right: 0;
-        --tvk-message-body-radius: 20em;
-        --tvk-question-bar-background-color: var(--tvk-brand);
-        --tvk-question-bar-border: 1px solid var(--tvk-brand);
-        --tvk-question-bar-color: var(--tvk-text1);
-      }
+```Css file=my-visual-customization.css
+:root {
+  --tvk-brand-hue: 214;
+  --tvk-brand-saturation: 42%;
+  --tvk-brand-lightness: 13%;
+  --tvk-neutral-light: white;
+  --tvk-neutral-dark: var(--tvk-brand);
+  --tvk-base-font-size: 11px;
+  --tvk-main-wrapper-height: calc(98vh - 6em);
+  --tvk-message-margin: 0;
+  --tvk-message-body-padding: 1.5em 2.5em;
+  --tvk-message-body-user-radius-top-right: var(--tvk-message-body-radius);
+  --tvk-message-body-user-radius-bottom-right: 0;
+  --tvk-message-body-radius: 20em;
+  --tvk-question-bar-background-color: var(--tvk-brand);
+  --tvk-question-bar-border: 1px solid var(--tvk-brand);
+  --tvk-question-bar-color: var(--tvk-text1);
+}
 
 ```
 
