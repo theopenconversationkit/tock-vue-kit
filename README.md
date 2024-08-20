@@ -204,11 +204,11 @@ Footnotes can optionally be added to Rag messages.
 
 Option object for providing images references.
 
-| Property name | Description                              | Default |
-| ------------- | ---------------------------------------- | ------- |
-| width         | Width in which to display the image.     |         |
-| height        | Height in which to display the image.    |         |
-| src           | Src of the image (url or svg data image) |         |
+| Property name | Description                              | Type   |
+| ------------- | ---------------------------------------- | ------ |
+| width         | Width in which to display the image.     | String |
+| height        | Height in which to display the image.    | String |
+| src           | Src of the image (url or svg data image) | String |
 
 Example :
 
@@ -228,6 +228,9 @@ TockVueKit.renderChat(
                 "width": "1em",
                 "height": "1em"
               }
+            },
+            "label": {
+              "display": false
             }
           }
         },
@@ -258,11 +261,46 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 
 #### Messages
 
-Wip
+| Property name | Description     | Type                |
+| ------------- | --------------- | ------------------- |
+| message       | Message wording | [Message](#Message) |
+
+##### Message
+
+| Property name | Description               | Type                    |
+| ------------- | ------------------------- | ----------------------- |
+| header        | Message header wording    | [Header](#Header)       |
+| footnotes     | Message footnotes wording | [Footnotes](#Footnotes) |
+
+###### Header
+
+| Property name | Description               | Type   | Default |
+| ------------- | ------------------------- | ------ | ------- |
+| labelUser     | Message header user label | String | You     |
+| labelBot      | Message header bot label  | String | Bot     |
+
+###### Footnotes
+
+| Property name | Description          | Type   | Default     |
+| ------------- | -------------------- | ------ | ----------- |
+| sources       | Footnotes label      | String | Sources:    |
+| showMoreLink  | Show more link label | String | > Show more |
 
 #### QuestionBar
 
-Wip
+| Property name         | Description                     | Type            | Default                             |
+| --------------------- | ------------------------------- | --------------- | ----------------------------------- |
+| clearHistory          | Clear history button label      | String          |                                     |
+| clearHistoryAriaLabel | Clear history button Aria label | String          | Clear discussion and history button |
+| submit                | Submit button label             | String          |                                     |
+| submitAriaLabel       | Submit button Aria label        | String          | Submit button                       |
+| input                 | Input field wording             | [Input](#Input) |                                     |
+
+##### Input
+
+| Property name | Description            | Type   | Default              |
+| ------------- | ---------------------- | ------ | -------------------- |
+| placeholder   | User input placeholder | String | Ask me a question... |
 
 #### ConnectionErrorMessage
 
