@@ -75,7 +75,7 @@ Optional options relating to the persistence in _localStorage_ of messages excha
 | prefix            | Prefix for local storage keys allowing communication with different bots from the same domain                    | String  | undefined |
 | maxNumberMessages | Maximum number of messages to store in local storage. Passing this limit, older messages are removed of history. | Integer | 20        |
 
-Exemple :
+Example :
 
 ```Javascript
 TockVueKit.renderChat(
@@ -99,7 +99,7 @@ TockVueKit.renderChat(
 | welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.                                    | String          | undefined |
 | openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | String          | undefined |
 
-Exemple :
+Example :
 
 ```Javascript
 TockVueKit.renderChat(
@@ -209,6 +209,8 @@ Option object for providing images references.
 | width         | Width in which to display the image.     |         |
 | height        | Height in which to display the image.    |         |
 | src           | Src of the image (url or svg data image) |         |
+
+Example :
 
 ```Javascript
 TockVueKit.renderChat(
