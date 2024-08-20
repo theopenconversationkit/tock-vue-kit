@@ -304,6 +304,38 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 | ------------- | ---------------------- | ------ | -------------------- |
 | placeholder   | User input placeholder | String | Ask me a question... |
 
+Example :
+
+```Javascript
+TockVueKit.renderChat(
+  document.getElementById("<TARGET_ELEMENT_ID>"),
+  "<TOCK_BOT_API_URL>",
+  {
+    "wording": {
+      "messages": {
+        "message": {
+          "header": {
+            "labelUser": "Vous"
+          },
+          "footnotes": {
+            "sources": "Sources :",
+            "showMoreLink": "> Voir plus"
+          }
+        }
+      },
+      "questionBar": {
+        "clearHistoryAriaLabel": "Effacer la discussion et l'historique",
+        "input": {
+          "placeholder": "Posez moi une question..."
+        },
+        "submitAriaLabel": "Bouton d'envoi"
+      },
+      "connectionErrorMessage": "Une erreur est survenue. Merci de réessayer dans quelques instants."
+    }
+  }
+)
+```
+
 ## Visual customization
 
 Most of the css rules that shape the widget are defined by css variables.
