@@ -308,6 +308,7 @@ Most of the css rules that shape the widget are defined by css variables. The cs
 You can redefine the desired css variables in a number of ways:
 
 - In the source of the page hosting the widget, anywhere after inclusion of the css file.
+
   Example :
 
 ```Html
@@ -318,9 +319,9 @@ You can redefine the desired css variables in a number of ways:
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
-    <link href="dist/style.css" rel="stylesheet" />
     <script src="https://unpkg.com/vue@3.4"></script>
     <script src="dist/tock-vue-kit.umd.cjs"></script>
+    <link href="dist/style.css" rel="stylesheet" />
     <style>
       :root {
         --tvk-brand-hue: 214;
@@ -332,9 +333,7 @@ You can redefine the desired css variables in a number of ways:
         --tvk-main-wrapper-height: calc(98vh - 6em);
         --tvk-message-margin: 0;
         --tvk-message-body-padding: 1.5em 2.5em;
-        --tvk-message-body-user-radius-top-right: var(
-          --tvk-message-body-radius
-        );
+        --tvk-message-body-user-radius-top-right: var(--tvk-message-body-radius);
         --tvk-message-body-user-radius-bottom-right: 0;
         --tvk-message-body-radius: 20em;
         --tvk-question-bar-background-color: var(--tvk-brand);
@@ -361,5 +360,59 @@ You can redefine the desired css variables in a number of ways:
 ```
 
 - In a separate css file, included after the main css file.
+
+Example :
+
+```Html title="index.html"
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Website</title>
+    <script src="https://unpkg.com/vue@3.4"></script>
+    <script src="dist/tock-vue-kit.umd.cjs"></script>
+    <link href="dist/style.css" rel="stylesheet" />
+    <link href="my-visual-customization.css" rel="stylesheet" />
+  </head>
+  <body>
+    <main>
+      <h1>Welcome to My Website</h1>
+      <div id="chat-wrapper"></div>
+    </main>
+
+    <script>
+      TockVueKit.renderChat(
+        document.getElementById("chat-wrapper"),
+        "<TOCK_BOT_API_URL>"
+      );
+    </script>
+  </body>
+</html>
+
+```
+
+```Css title="my-visual-customization.css"
+      :root {
+        --tvk-brand-hue: 214;
+        --tvk-brand-saturation: 42%;
+        --tvk-brand-lightness: 13%;
+        --tvk-neutral-light: white;
+        --tvk-neutral-dark: var(--tvk-brand);
+        --tvk-base-font-size: 11px;
+        --tvk-main-wrapper-height: calc(98vh - 6em);
+        --tvk-message-margin: 0;
+        --tvk-message-body-padding: 1.5em 2.5em;
+        --tvk-message-body-user-radius-top-right: var(--tvk-message-body-radius);
+        --tvk-message-body-user-radius-bottom-right: 0;
+        --tvk-message-body-radius: 20em;
+        --tvk-question-bar-background-color: var(--tvk-brand);
+        --tvk-question-bar-border: 1px solid var(--tvk-brand);
+        --tvk-question-bar-color: var(--tvk-text1);
+      }
+
+```
+
 - Via javascript
-- By duplicating the widget's css file and customizing it as you wish.
+- By duplicating the widget's css file (dist/style.css) and customizing it as you wish.
