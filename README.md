@@ -330,8 +330,8 @@ Example :
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
     <script src="https://unpkg.com/vue@3.4"></script>
-    <script src="dist/tock-vue-kit.umd.cjs"></script>
-    <link href="dist/style.css" rel="stylesheet" />
+    <link href="node_modules/tock-vue-kit/dist/style.css" rel="stylesheet" />
+    <script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
     <style>
       :root {
         --tvk_colors_brand-hue: 214;
@@ -378,8 +378,8 @@ Main html page
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
     <script src="https://unpkg.com/vue@3.4"></script>
-    <script src="dist/tock-vue-kit.umd.cjs"></script>
-    <link href="dist/style.css" rel="stylesheet" />
+    <link href="node_modules/tock-vue-kit/dist/style.css" rel="stylesheet" />
+    <script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
     <link href="my-visual-customization.css" rel="stylesheet" />
   </head>
   <body>
@@ -429,8 +429,8 @@ Example :
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
     <script src="https://unpkg.com/vue@3.4"></script>
-    <link href="dist/style.css" rel="stylesheet" />
-    <script src="dist/tock-vue-kit.umd.cjs"></script>
+    <link href="node_modules/tock-vue-kit/dist/style.css" rel="stylesheet" />
+    <script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
   </head>
   <body>
     <main>
