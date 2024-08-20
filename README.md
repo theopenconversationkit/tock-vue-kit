@@ -468,4 +468,9 @@ Example :
 
 If you need to modify the widget's appearance in greater depth, use your own version of the "dist/style.css" file, which you can then customize as you see fit.
 
-> [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define css variables customization (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Styling_ tab)
+> [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define and export css variables customization (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Styling_ and _Output_ tabs)
+
+### About colors
+
+The Tock Vue Kit supports light and dark modes out of the box.
+Based on the three HSL variables (--tvk_colors_brand-hue, --tvk_colors_brand-lightness and --tvk_colors_brand-saturation), two sets of color variables (light and dark) are defined. The variables in each of these two sets contain the discriminants light or dark in their names, enabling the colors for each mode to be defined easily and independently (--tvk_colors_light_text1 | --tvk_colors_dark_text1, --tvk_colors_light_surface1 | --tvk_colors_dark_surface1, etc.). These are automatically mapped to their non-discriminating equivalent (--tvk_colors_text1, --tvk_colors_surface1, etc.) according to the state of the “data-theme” (or “data-bs-theme”) body attribute. Wherever color variables are referenced, the non-discriminant versions are used. This makes it possible to switch seamlessly between light and dark modes.
