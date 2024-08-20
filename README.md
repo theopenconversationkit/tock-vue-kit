@@ -253,11 +253,11 @@ TockVueKit.renderChat(
 
 The _Wording_ customization option lets you redefine all or part of the text displayed by the widget.
 
-| Property name          | Description                       | Type                                              | Default |
-| ---------------------- | --------------------------------- | ------------------------------------------------- | ------- |
-| messages               | Messages wording                  | [Messages](#Messages-1)                           |         |
-| questionBar            | User input area wording           | [QuestionBar](#QuestionBar-1)                     |         |
-| connectionErrorMessage | Connection error messages wording | [ConnectionErrorMessage](#ConnectionErrorMessage) |         |
+| Property name          | Description              | Type                          | Default                                              |
+| ---------------------- | ------------------------ | ----------------------------- | ---------------------------------------------------- |
+| messages               | Messages wording         | [Messages](#Messages-1)       |                                                      |
+| questionBar            | User input area wording  | [QuestionBar](#QuestionBar-1) |                                                      |
+| connectionErrorMessage | Connection error message | String                        | An unexpected error occured. Please try again later. |
 
 #### Messages
 
@@ -301,10 +301,6 @@ The _Wording_ customization option lets you redefine all or part of the text dis
 | Property name | Description            | Type   | Default              |
 | ------------- | ---------------------- | ------ | -------------------- |
 | placeholder   | User input placeholder | String | Ask me a question... |
-
-#### ConnectionErrorMessage
-
-Wip
 
 ## Visual customization
 
