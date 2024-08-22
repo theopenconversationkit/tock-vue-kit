@@ -18,6 +18,8 @@ Install the dependency :
 npm install tock-vue-kit
 ```
 
+### Static html page
+
 Include js and css files :
 
 ```html
@@ -37,6 +39,122 @@ Display the chat widget in desired target :
     "<TOCK_BOT_API_URL>"
   );
 </script>
+```
+
+### Vue3 integration example
+
+```html
+<script setup lang="ts">
+  import { onMounted, ref } from "vue";
+  import "tock-vue-kit/dist/style.css";
+  import { renderChat } from "tock-vue-kit";
+
+  const chatTarget = ref<HTMLElement>();
+
+  onMounted(() => {
+    renderChat(chatTarget.value!, "<TOCK_BOT_API_URL>");
+  });
+</script>
+
+<template>
+  <div ref="chatTarget"></div>
+</template>
+
+<style scoped>
+  /* Any scoped styling... */
+</style>
+
+<!-- Use unscoped styling to visualy customize the Tvk widget -->
+<style>
+  :root {
+    --tvk_colors_brand-hue: 214;
+    --tvk_colors_brand-lightness: 42%;
+    --tvk_colors_brand-saturation: 40%;
+    --tvk_colors_dark_neutral: white;
+    --tvk_colors_dark_text1: white;
+    --tvk_colors_dark_text2: white;
+    --tvk_wrapper_height: calc(98vh - 6em);
+  }
+</style>
+```
+
+### Angular integration example
+
+In your _angular.json_, add Tock Vue Kit _style.css_ BEFORE your global styling file:
+
+```json
+{
+  // ...
+  "projects": {
+    "my-app": {
+      // ...
+      "architect": {
+        "build": {
+          // ...
+          "options": {
+            // ...
+            "styles": [
+              "node_modules/tock-vue-kit/dist/style.css",
+              "src/styles.scss"
+            ]
+            // ...
+          }
+          // ...
+        }
+        // ...
+      }
+      // ...
+    }
+    // ...
+  }
+  // ...
+}
+```
+
+In your global styling file (or any other global styling file referenced AFTER Tock Vue Kit _style.css_), define your visual customizations:
+
+```css
+:root {
+  --tvk_colors_brand-hue: 214;
+  --tvk_colors_brand-lightness: 42%;
+  --tvk_colors_brand-saturation: 40%;
+  --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
+  --tvk_colors_dark_neutral: white;
+  --tvk_colors_dark_text1: white;
+  --tvk_colors_dark_text2: white;
+  --tvk_wrapper_height: calc(100vh - 5em);
+  --tvk_wrapper_max-height: calc(100vh - 5em);
+}
+```
+
+Finally in the desired component :
+
+```javascript
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { renderChat } from 'tock-vue-kit';
+
+@Component({
+  selector: 'app-my-component',
+  standalone: true,
+  imports: [],
+  template: `<div #chatTarget></div>`,
+})
+export class MyComponentComponent {
+  @ViewChild('chatTarget') chatTarget!: ElementRef<HTMLDivElement>;
+
+  ngAfterViewInit() {
+    renderChat(
+      this.chatTarget.nativeElement,
+      'http://localhost:8080/io/01/cmb/web'
+    );
+  }
+}
+```
+
+### React integration example
+
+```html
+
 ```
 
 ## Render method options
