@@ -12,15 +12,15 @@ Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/)
 
 ## Quick Start
 
-Install the dependency :
+### Basic html page
+
+Install the dependency:
 
 ```bash
 npm install tock-vue-kit
 ```
 
-### Static html page
-
-Include js and css files :
+Include js and css files:
 
 ```html
 <script src="https://unpkg.com/vue@3.4"></script>
@@ -28,7 +28,7 @@ Include js and css files :
 <script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
 ```
 
-Display the chat widget in desired target :
+Display the chat widget in desired target:
 
 ```html
 <div id="chat-wrapper"></div>
@@ -42,6 +42,14 @@ Display the chat widget in desired target :
 ```
 
 ### Vue3 integration example
+
+Install the dependency:
+
+```bash
+npm install tock-vue-kit
+```
+
+In the desired component:
 
 ```html
 <script setup lang="ts">
@@ -79,6 +87,12 @@ Display the chat widget in desired target :
 ```
 
 ### Angular integration example
+
+Install the dependency:
+
+```bash
+npm install tock-vue-kit
+```
 
 In your _angular.json_, add Tock Vue Kit _style.css_ BEFORE your global styling file:
 
@@ -135,7 +149,7 @@ export class MyComponentComponent {
 
 ```
 
-## Render method options
+## Render method arguments
 
 > TockVueKit.renderChat([element](#element),[tockBotApiUrl](#tockBotApiUrl),[customizationOptions](#customizationOptions))
 
