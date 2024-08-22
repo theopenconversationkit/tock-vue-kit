@@ -121,23 +121,20 @@ In your global styling file (or any other global styling file referenced AFTER T
 
 Finally in the desired component:
 
-```javascript
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { renderChat } from 'tock-vue-kit';
+```typescript
+import { Component, ElementRef, ViewChild } from "@angular/core";
+import { renderChat } from "tock-vue-kit";
 
 @Component({
-  selector: 'app-my-component',
+  selector: "app-my-component",
   standalone: true,
   template: `<div #chatTarget></div>`,
 })
 export class MyComponentComponent {
-  @ViewChild('chatTarget') chatTarget!: ElementRef<HTMLDivElement>;
+  @ViewChild("chatTarget") chatTarget!: ElementRef<HTMLDivElement>;
 
   ngAfterViewInit() {
-    renderChat(
-      this.chatTarget.nativeElement,
-      '<TOCK_BOT_API_URL>'
-    );
+    renderChat(this.chatTarget.nativeElement, "<TOCK_BOT_API_URL>");
   }
 }
 ```
