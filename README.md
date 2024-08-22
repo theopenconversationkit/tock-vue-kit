@@ -175,7 +175,7 @@ function App() {
   const chatTarget = useRef(null);
 
   useEffect(() => {
-    renderChat(chatTarget.current, "http://localhost:8080/io/01/cmb/web");
+    renderChat(chatTarget.current, "<TOCK_BOT_API_URL>");
   });
 
   return <div ref={chatTarget}></div>;
