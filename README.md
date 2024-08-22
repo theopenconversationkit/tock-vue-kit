@@ -12,7 +12,7 @@ Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/)
 
 ## Quick Start
 
-### Basic html page
+### Basic html page integration example
 
 Install the dependency:
 
