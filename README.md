@@ -83,32 +83,10 @@ Display the chat widget in desired target :
 In your _angular.json_, add Tock Vue Kit _style.css_ BEFORE your global styling file:
 
 ```json
-{
-  // ...
-  "projects": {
-    "my-app": {
-      // ...
-      "architect": {
-        "build": {
-          // ...
-          "options": {
-            // ...
-            "styles": [
-              "node_modules/tock-vue-kit/dist/style.css",
-              "src/styles.scss"
-            ]
-            // ...
-          }
-          // ...
-        }
-        // ...
-      }
-      // ...
-    }
-    // ...
-  }
-  // ...
-}
+  "styles": [
+    "node_modules/tock-vue-kit/dist/style.css",
+    "src/styles.scss"
+  ]
 ```
 
 In your global styling file (or any other global styling file referenced AFTER Tock Vue Kit _style.css_), define your visual customizations:
