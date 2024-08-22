@@ -179,6 +179,46 @@ function App() {
 export default App;
 ```
 
+### Svelte integration example
+
+Install the dependency:
+
+```bash
+npm install tock-vue-kit
+```
+
+In the desired component:
+
+```html
+<style>
+  :root {
+    --tvk_colors_brand-hue: 214;
+    --tvk_colors_brand-lightness: 42%;
+    --tvk_colors_brand-saturation: 40%;
+    --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
+    --tvk_colors_dark_neutral: white;
+    --tvk_colors_dark_text1: white;
+    --tvk_colors_dark_text2: white;
+    --tvk_wrapper_height: calc(98vh - 6em);
+  }
+</style>
+
+<script>
+  import { onMount } from "svelte";
+  import { renderChat } from "tock-vue-kit";
+  import "tock-vue-kit/dist/style.css";
+
+  /** @type {HTMLDivElement} */
+  let chatTarget;
+
+  onMount(() => {
+    renderChat(chatTarget, "<TOCK_BOT_API_URL>");
+  });
+</script>
+
+<div bind:this="{chatTarget}"></div>
+```
+
 ## Render method arguments
 
 > TockVueKit.renderChat([element](#element),[tockBotApiUrl](#tockBotApiUrl),[customizationOptions](#customizationOptions))

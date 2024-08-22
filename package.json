@@ -1,12 +1,11 @@
 {
   "name": "tock-vue-kit",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Vue 3 client application for dialog with a Tock Bot REST API",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/tock-vue-kit.umd.cjs",
   "module": "./dist/tock-vue-kit.js",
   "types": "./dist/index.d.ts",
   "author": "Rodolphe Küffer <https://github.com/rkuffer>",
