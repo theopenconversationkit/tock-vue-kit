@@ -119,7 +119,7 @@ In your global styling file (or any other global styling file referenced AFTER T
 }
 ```
 
-Finally in the desired component :
+Finally in the desired component:
 
 ```javascript
 import { Component, ElementRef, ViewChild } from '@angular/core';
@@ -144,8 +144,47 @@ export class MyComponentComponent {
 
 ### React integration example
 
-```html
+Install the dependency:
 
+```bash
+npm install tock-vue-kit
+```
+
+In a css file, define your visual customizations of the widget (styles.css by example):
+
+```css
+:root {
+  --tvk_colors_brand-hue: 214;
+  --tvk_colors_brand-lightness: 42%;
+  --tvk_colors_brand-saturation: 40%;
+  --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
+  --tvk_colors_dark_neutral: white;
+  --tvk_colors_dark_text1: white;
+  --tvk_colors_dark_text2: white;
+  --tvk_wrapper_height: calc(100vh - 5em);
+  --tvk_wrapper_max-height: calc(100vh - 5em);
+}
+```
+
+Finally in the desired component:
+
+```javascript
+import { useRef, useEffect } from "react";
+import { renderChat } from "tock-vue-kit";
+import "tock-vue-kit/dist/style.css";
+import "./styles.css";
+
+function App() {
+  const chatTarget = useRef(null);
+
+  useEffect(() => {
+    renderChat(chatTarget.current, "http://localhost:8080/io/01/cmb/web");
+  });
+
+  return <div ref={chatTarget}></div>;
+}
+
+export default App;
 ```
 
 ## Render method arguments
