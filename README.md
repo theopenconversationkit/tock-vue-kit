@@ -94,41 +94,36 @@ Install the dependency:
 npm install tock-vue-kit
 ```
 
-In your _angular.json_, add Tock Vue Kit _style.css_ BEFORE your global styling file:
-
-```json
-  "styles": [
-    "node_modules/tock-vue-kit/dist/style.css",
-    "src/styles.scss"
-  ]
-```
-
-In your global styling file (or any other global styling file referenced AFTER Tock Vue Kit _style.css_), define your visual customizations:
-
-```css
-:root {
-  --tvk_colors_brand-hue: 214;
-  --tvk_colors_brand-lightness: 42%;
-  --tvk_colors_brand-saturation: 40%;
-  --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
-  --tvk_colors_dark_neutral: white;
-  --tvk_colors_dark_text1: white;
-  --tvk_colors_dark_text2: white;
-  --tvk_wrapper_height: calc(100vh - 5em);
-  --tvk_wrapper_max-height: calc(100vh - 5em);
-}
-```
-
-Finally in the desired component:
+In the desired component:
 
 ```typescript
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation,
+} from "@angular/core";
 import { renderChat } from "tock-vue-kit";
+import "tock-vue-kit/dist/style.css";
 
 @Component({
   selector: "app-my-component",
   standalone: true,
   template: `<div #chatTarget></div>`,
+  styles: `
+  :root {
+    --tvk_colors_brand-hue: 214;
+    --tvk_colors_brand-lightness: 42%;
+    --tvk_colors_brand-saturation: 40%;
+    --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
+    --tvk_colors_dark_neutral: white;
+    --tvk_colors_dark_text1: white;
+    --tvk_colors_dark_text2: white;
+    --tvk_wrapper_height: calc(100vh - 5em);
+    --tvk_wrapper_max-height: calc(100vh - 5em);
+  }
+  `,
+  encapsulation: ViewEncapsulation.None,
 })
 export class MyComponentComponent {
   @ViewChild("chatTarget") chatTarget!: ElementRef<HTMLDivElement>;
