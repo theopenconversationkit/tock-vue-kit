@@ -128,7 +128,6 @@ import { renderChat } from 'tock-vue-kit';
 @Component({
   selector: 'app-my-component',
   standalone: true,
-  imports: [],
   template: `<div #chatTarget></div>`,
 })
 export class MyComponentComponent {
@@ -137,7 +136,7 @@ export class MyComponentComponent {
   ngAfterViewInit() {
     renderChat(
       this.chatTarget.nativeElement,
-      'http://localhost:8080/io/01/cmb/web'
+      '<TOCK_BOT_API_URL>'
     );
   }
 }
