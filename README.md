@@ -1,6 +1,6 @@
 # Tock Vue Kit
 
-A Vue 3 toolkit to easily embed [Tock](https://doc.tock.ai) into web pages or web apps.
+A Vue 3 chat widget to easily embed [Tock](https://doc.tock.ai) into web pages or web apps.
 
 ## Demo
 
