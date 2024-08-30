@@ -39,7 +39,31 @@ export default defineConfig(({ command, mode }) => {
         // Could also be a dictionary or array of multiple entry points
         entry: resolve(__dirname, "src/index.ts"),
         name: "TockVueKit",
-        fileName: "tock-vue-kit",
+        formats: ["es", "umd", "cjs", "iife"],
+        fileName: (format, entryName: string) => {
+          const name = "tock-vue-kit";
+          switch (format) {
+            case "es":
+              return name + ".js";
+              break;
+
+            case "umd":
+              return name + ".umd.js";
+              break;
+
+            case "cjs":
+              return name + ".cjs";
+              break;
+
+            case "iife":
+              return name + ".iife.js";
+              break;
+
+            default:
+              return name + ".js";
+              break;
+          }
+        },
       },
       rollupOptions: {
         external: ["vue"],
