@@ -14,18 +14,18 @@ Run a [Tock Bot in API mode](https://doc.tock.ai/tock/en/dev/bot-api/)
 
 ### Basic html page integration example
 
-Install the dependency:
-
-```bash
-npm install tock-vue-kit
-```
-
 Include js and css files:
 
 ```html
-<script src="https://unpkg.com/vue@3.4"></script>
-<link href="node_modules/tock-vue-kit/dist/style.css" rel="stylesheet" />
-<script src="node_modules/tock-vue-kit/dist/tock-vue-kit.umd.cjs"></script>
+<script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/tock-vue-kit@0.3.6/dist/style.css"
+/>
+<script
+  crossorigin
+  src="https://unpkg.com/tock-vue-kit@0.3.6/dist/tock-vue-kit.iife.js"
+></script>
 ```
 
 Display the chat widget in desired target:
