@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Button } from "../models/messages";
+import { ButtonType, type Button } from "../models/messages";
 import { useMainStore } from "../stores/main-state";
 
 const mainStore = useMainStore();
@@ -9,7 +9,11 @@ const props = defineProps<{
 }>();
 
 function sendButtonMessage() {
-  mainStore.sendUserMessage(props.button!.title);
+  if (props.button.type === ButtonType.web_url) {
+    window.open(props.button.url);
+  } else {
+    mainStore.sendUserMessage(props.button!.title);
+  }
 }
 </script>
 
