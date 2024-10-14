@@ -41,7 +41,7 @@ Display the chat widget in desired target:
 </script>
 ```
 
-### Vue3 integration example
+### Vue3 3.4.29 integration example
 
 Install the dependency:
 
@@ -86,7 +86,7 @@ In the desired component:
 </style>
 ```
 
-### Angular integration example
+### Angular 18.1.0 integration example
 
 Install the dependency:
 
@@ -134,7 +134,7 @@ export class MyComponentComponent {
 }
 ```
 
-### React integration example
+### React 18.3.1 integration example
 
 Install the dependency:
 
@@ -179,7 +179,7 @@ function App() {
 export default App;
 ```
 
-### Svelte integration example
+### Svelte 4.2.7 integration example
 
 Install the dependency:
 
