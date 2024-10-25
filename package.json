@@ -11,8 +11,8 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "tock-vue-kit": "^0.3.7",
-    "tock-vue-kit-editor": "^0.0.12",
+    "tock-vue-kit": "^0.3.8",
+    "tock-vue-kit-editor": "^0.0.13",
     "vue": "^3.4.29"
   },
   "devDependencies": {
