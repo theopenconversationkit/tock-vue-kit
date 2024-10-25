@@ -29,6 +29,16 @@
 
   --tvk_colors_light_links: var(--tvk_colors_light_brand);
 
+  --tvk_colors_light_message-content-elements-surface1: hsl(
+    var(--tvk_colors_brand-hue) 5% 90%
+  );
+  --tvk_colors_light_message-content-elements-surface2: hsl(
+    var(--tvk_colors_brand-hue) 5% 80%
+  );
+  --tvk_colors_light_message-content-elements-text: hsl(
+    var(--tvk_colors_brand-hue) 30% 30%
+  );
+
   /* dark mode vars */
   --tvk_colors_dark_brand: hsl(
     var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
@@ -49,6 +59,16 @@
   --tvk_colors_dark_text-muted: hsl(var(--tvk_colors_brand-hue) 0% 50%);
 
   --tvk_colors_dark_links: var(--tvk_colors_dark_brand);
+
+  --tvk_colors_dark_message-content-elements-surface1: hsl(
+    var(--tvk_colors_brand-hue) 5% 20%
+  );
+  --tvk_colors_dark_message-content-elements-surface2: hsl(
+    var(--tvk_colors_brand-hue) 5% 30%
+  );
+  --tvk_colors_dark_message-content-elements-text: hsl(
+    var(--tvk_colors_brand-hue) 15% 85%
+  );
 }
 
 [data-theme="light"],
@@ -68,6 +88,15 @@
   --tvk_colors_text2: var(--tvk_colors_light_text2);
   --tvk_colors_text-muted: var(--tvk_colors_light_text-muted);
   --tvk_colors_links: var(--tvk_colors_light_links);
+  --tvk_colors_message-content-elements-surface1: var(
+    --tvk_colors_light_message-content-elements-surface1
+  );
+  --tvk_colors_message-content-elements-surface2: var(
+    --tvk_colors_light_message-content-elements-surface2
+  );
+  --tvk_colors_message-content-elements-text: var(
+    --tvk_colors_light_message-content-elements-text
+  );
 }
 
 @mixin dark-mode {
@@ -83,6 +112,15 @@
   --tvk_colors_text2: var(--tvk_colors_dark_text2);
   --tvk_colors_text-muted: var(--tvk_colors_dark_text-muted);
   --tvk_colors_links: var(--tvk_colors_dark_links);
+  --tvk_colors_message-content-elements-surface1: var(
+    --tvk_colors_dark_message-content-elements-surface1
+  );
+  --tvk_colors_message-content-elements-surface2: var(
+    --tvk_colors_dark_message-content-elements-surface2
+  );
+  --tvk_colors_message-content-elements-text: var(
+    --tvk_colors_dark_message-content-elements-text
+  );
 }
 
 @media only screen and (prefers-color-scheme: dark) {
