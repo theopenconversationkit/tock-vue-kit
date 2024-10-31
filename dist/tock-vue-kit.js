@@ -1,7 +1,7 @@
 var Cs = Object.defineProperty;
 var As = (e, t, s) => t in e ? Cs(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
 var ht = (e, t, s) => (As(e, typeof t != "symbol" ? t + "" : t, s), s);
-import { effectScope as Jt, ref as H, markRaw as Yt, hasInjectionContext as Ds, inject as Xt, watch as Ns, reactive as _s, isRef as Re, isReactive as Zt, toRaw as Is, getCurrentScope as xs, onScopeDispose as ws, nextTick as Os, toRefs as Ls, computed as es, defineComponent as Q, openBlock as d, createElementBlock as g, unref as l, normalizeClass as me, createCommentVNode as T, normalizeStyle as ue, createTextVNode as Ee, toDisplayString as w, createElementVNode as N, withModifiers as Rs, withDirectives as Hs, vModelText as Ps, Fragment as de, renderList as De, createBlock as X, withCtx as ts, createVNode as xt, onMounted as Ms, createApp as Bs } from "vue";
+import { effectScope as Jt, ref as H, markRaw as Yt, hasInjectionContext as Ds, inject as Xt, watch as Ns, reactive as _s, isRef as Re, isReactive as Zt, toRaw as Is, getCurrentScope as ws, onScopeDispose as xs, nextTick as Os, toRefs as Ls, computed as es, defineComponent as Q, openBlock as d, createElementBlock as g, unref as l, normalizeClass as me, createCommentVNode as T, normalizeStyle as ue, createTextVNode as Ee, toDisplayString as x, createElementVNode as N, withModifiers as Rs, withDirectives as Hs, vModelText as Ps, Fragment as de, renderList as De, createBlock as X, withCtx as ts, createVNode as wt, onMounted as Ms, createApp as Bs } from "vue";
 var Us = !1;
 /*!
  * pinia v2.1.7
@@ -48,7 +48,7 @@ function Bt(e, t, s, i = is) {
     const o = e.indexOf(t);
     o > -1 && (e.splice(o, 1), i());
   };
-  return !s && xs() && ws(n), n;
+  return !s && ws() && xs(n), n;
 }
 function he(e, ...t) {
   e.slice().forEach((s) => {
@@ -219,17 +219,17 @@ function Ks() {
   return (e + t).toUpperCase();
 }
 const as = Symbol("tockEndpointKey");
-var x = /* @__PURE__ */ ((e) => (e.bot = "bot", e.user = "user", e.app = "app", e))(x || {}), M = /* @__PURE__ */ ((e) => (e.message = "message", e.card = "card", e.carousel = "carousel", e.image = "image", e.loader = "loader", e.error = "error", e))(M || {}), rs = /* @__PURE__ */ ((e) => (e.web_url = "web_url", e.postback = "postback", e.quick_reply = "quick_reply", e))(rs || {});
-function we(e) {
+var w = /* @__PURE__ */ ((e) => (e.bot = "bot", e.user = "user", e.app = "app", e))(w || {}), M = /* @__PURE__ */ ((e) => (e.message = "message", e.card = "card", e.carousel = "carousel", e.image = "image", e.loader = "loader", e.error = "error", e))(M || {}), rs = /* @__PURE__ */ ((e) => (e.web_url = "web_url", e.postback = "postback", e.quick_reply = "quick_reply", e))(rs || {});
+function xe(e) {
   return !!(e && typeof e == "object" && !Array.isArray(e));
 }
 function Tt(e, ...t) {
   if (!t.length)
     return e;
   const s = t.shift();
-  if (we(e) && we(s))
+  if (xe(e) && xe(s))
     for (const i in s)
-      we(s[i]) ? (e[i] || Object.assign(e, { [i]: {} }), Tt(e[i], s[i])) : Object.assign(e, { [i]: s[i] });
+      xe(s[i]) ? (e[i] || Object.assign(e, { [i]: {} }), Tt(e[i], s[i])) : Object.assign(e, { [i]: s[i] });
   return Tt(e, ...t);
 }
 const Qs = {
@@ -553,7 +553,7 @@ function Xs(e) {
   return "type" in e && "default" in e && "title" in e && "description" in e;
 }
 function ls(e, t = {}) {
-  if (we(e)) {
+  if (xe(e)) {
     if (Xs(e))
       return e.default;
     {
@@ -634,7 +634,7 @@ const Zs = "main", Ut = "main_storage", en = () => ({
   function h() {
     K().addMessage({
       type: M.error,
-      author: x.app,
+      author: w.app,
       date: Date.now(),
       text: t.wording.connectionErrorMessage
     });
@@ -643,12 +643,12 @@ const Zs = "main", Ut = "main_storage", en = () => ({
     const C = K();
     t.preferences.messages.clearOnNewRequest && (s.value.messages = []), A && C.addMessage({
       type: M.message,
-      author: x.user,
+      author: w.user,
       text: m,
       date: Date.now()
     }), C.addMessage({
       type: M.loader,
-      author: x.app,
+      author: w.app,
       date: Date.now()
     });
     const O = navigator.language, L = {
@@ -682,22 +682,22 @@ const Zs = "main", Ut = "main_storage", en = () => ({
     if (C.clearLoaderMessages(), I.responses.forEach((v) => {
       delete v.type, delete v.version, "text" in v ? C.addMessage({
         type: M.message,
-        author: x.bot,
+        author: w.bot,
         date: Date.now(),
         ...v
       }) : "card" in v ? C.addMessage({
         type: M.card,
-        author: x.bot,
+        author: w.bot,
         date: Date.now(),
         ...v.card
       }) : "image" in v ? C.addMessage({
         type: M.image,
-        author: x.bot,
+        author: w.bot,
         date: Date.now(),
         ...v.image
       }) : "carousel" in v && C.addMessage({
         type: M.carousel,
-        author: x.bot,
+        author: w.bot,
         date: Date.now(),
         ...v.carousel
       });
@@ -772,7 +772,7 @@ const Zs = "main", Ut = "main_storage", en = () => ({
               height: l(t).preferences.questionBar.clearHistory.image.height
             })
           }, null, 12, sn)) : T("", !0),
-          Ee(" " + w(l(t).wording.questionBar.clearHistory), 1)
+          Ee(" " + x(l(t).wording.questionBar.clearHistory), 1)
         ], 8, tn)) : T("", !0),
         N("form", {
           onSubmit: Rs(f, ["prevent"]),
@@ -790,7 +790,7 @@ const Zs = "main", Ut = "main_storage", en = () => ({
           }, null, 8, nn), [
             [Ps, o.value]
           ]),
-          N("div", on, w(r()) + "/" + w(l(i)), 1)
+          N("div", on, x(r()) + "/" + x(l(i)), 1)
         ], 32),
         N("button", {
           disabled: !o.value.trim().length || u(),
@@ -810,7 +810,7 @@ const Zs = "main", Ut = "main_storage", en = () => ({
               height: l(t).preferences.questionBar.submit.image.height
             })
           }, null, 12, rn)) : T("", !0),
-          Ee(" " + w(l(t).wording.questionBar.submit), 1)
+          Ee(" " + x(l(t).wording.questionBar.submit), 1)
         ], 8, an)
       ]);
     };
@@ -961,7 +961,7 @@ $.prototype = {
     return n.j[e] = a, a;
   }
 };
-const y = (e, t, s, i, n) => e.ta(t, s, i, n), q = (e, t, s, i, n) => e.tr(t, s, i, n), zt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), ee = "WORD", At = "UWORD", Ce = "LOCALHOST", Dt = "TLD", Nt = "UTLD", Le = "SCHEME", ge = "SLASH_SCHEME", wt = "NUM", ds = "WS", Ot = "NL", Te = "OPENBRACE", ke = "CLOSEBRACE", He = "OPENBRACKET", Pe = "CLOSEBRACKET", Me = "OPENPAREN", Be = "CLOSEPAREN", Ue = "OPENANGLEBRACKET", je = "CLOSEANGLEBRACKET", ze = "FULLWIDTHLEFTPAREN", $e = "FULLWIDTHRIGHTPAREN", qe = "LEFTCORNERBRACKET", Ve = "RIGHTCORNERBRACKET", We = "LEFTWHITECORNERBRACKET", Fe = "RIGHTWHITECORNERBRACKET", Ke = "FULLWIDTHLESSTHAN", Qe = "FULLWIDTHGREATERTHAN", Ge = "AMPERSAND", Je = "APOSTROPHE", Ye = "ASTERISK", ae = "AT", Xe = "BACKSLASH", Ze = "BACKTICK", et = "CARET", re = "COLON", Lt = "COMMA", tt = "DOLLAR", G = "DOT", st = "EQUALS", Rt = "EXCLAMATION", J = "HYPHEN", nt = "PERCENT", it = "PIPE", ot = "PLUS", at = "POUND", rt = "QUERY", Ht = "QUOTE", Pt = "SEMI", Y = "SLASH", Se = "TILDE", ct = "UNDERSCORE", fs = "EMOJI", lt = "SYM";
+const y = (e, t, s, i, n) => e.ta(t, s, i, n), q = (e, t, s, i, n) => e.tr(t, s, i, n), zt = (e, t, s, i, n) => e.ts(t, s, i, n), c = (e, t, s, i, n) => e.tt(t, s, i, n), ee = "WORD", At = "UWORD", Ce = "LOCALHOST", Dt = "TLD", Nt = "UTLD", Le = "SCHEME", ge = "SLASH_SCHEME", xt = "NUM", ds = "WS", Ot = "NL", Te = "OPENBRACE", ke = "CLOSEBRACE", He = "OPENBRACKET", Pe = "CLOSEBRACKET", Me = "OPENPAREN", Be = "CLOSEPAREN", Ue = "OPENANGLEBRACKET", je = "CLOSEANGLEBRACKET", ze = "FULLWIDTHLEFTPAREN", $e = "FULLWIDTHRIGHTPAREN", qe = "LEFTCORNERBRACKET", Ve = "RIGHTCORNERBRACKET", We = "LEFTWHITECORNERBRACKET", Fe = "RIGHTWHITECORNERBRACKET", Ke = "FULLWIDTHLESSTHAN", Qe = "FULLWIDTHGREATERTHAN", Ge = "AMPERSAND", Je = "APOSTROPHE", Ye = "ASTERISK", ae = "AT", Xe = "BACKSLASH", Ze = "BACKTICK", et = "CARET", re = "COLON", Lt = "COMMA", tt = "DOLLAR", G = "DOT", st = "EQUALS", Rt = "EXCLAMATION", J = "HYPHEN", nt = "PERCENT", it = "PIPE", ot = "PLUS", at = "POUND", rt = "QUERY", Ht = "QUOTE", Pt = "SEMI", Y = "SLASH", Se = "TILDE", ct = "UNDERSCORE", fs = "EMOJI", lt = "SYM";
 var hs = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   WORD: ee,
@@ -971,7 +971,7 @@ var hs = /* @__PURE__ */ Object.freeze({
   UTLD: Nt,
   SCHEME: Le,
   SLASH_SCHEME: ge,
-  NUM: wt,
+  NUM: xt,
   WS: ds,
   NL: Ot,
   OPENBRACE: Te,
@@ -1026,7 +1026,7 @@ function yn(e) {
   $.groups = t;
   const s = new $();
   _e == null && (_e = Vt(ln)), Ie == null && (Ie = Vt(un)), c(s, "'", Je), c(s, "{", Te), c(s, "}", ke), c(s, "[", He), c(s, "]", Pe), c(s, "(", Me), c(s, ")", Be), c(s, "<", Ue), c(s, ">", je), c(s, "（", ze), c(s, "）", $e), c(s, "「", qe), c(s, "」", Ve), c(s, "『", We), c(s, "』", Fe), c(s, "＜", Ke), c(s, "＞", Qe), c(s, "&", Ge), c(s, "*", Ye), c(s, "@", ae), c(s, "`", Ze), c(s, "^", et), c(s, ":", re), c(s, ",", Lt), c(s, "$", tt), c(s, ".", G), c(s, "=", st), c(s, "!", Rt), c(s, "-", J), c(s, "%", nt), c(s, "|", it), c(s, "+", ot), c(s, "#", at), c(s, "?", rt), c(s, '"', Ht), c(s, "/", Y), c(s, ";", Pt), c(s, "~", Se), c(s, "_", ct), c(s, "\\", Xe);
-  const i = q(s, mt, wt, {
+  const i = q(s, mt, xt, {
     [kt]: !0
   });
   q(i, mt, i);
@@ -1352,7 +1352,7 @@ const Ft = ft("email", {
   toHref() {
     return "mailto:" + this.toString();
   }
-}), Kt = ft("text"), Tn = ft("nl"), xe = ft("url", {
+}), Kt = ft("text"), Tn = ft("nl"), we = ft("url", {
   isLink: !0,
   /**
   	Lowercases relevant parts of the domain and adds the protocol if
@@ -1377,7 +1377,7 @@ function kn(e) {
   let {
     groups: t
   } = e;
-  const s = t.domain.concat([Ge, Ye, ae, Xe, Ze, et, tt, st, J, wt, nt, it, ot, at, Y, lt, Se, ct]), i = [Je, re, Lt, G, Rt, rt, Ht, Pt, Ue, je, Te, ke, Pe, He, Me, Be, ze, $e, qe, Ve, We, Fe, Ke, Qe], n = [Ge, Je, Ye, Xe, Ze, et, tt, st, J, Te, ke, nt, it, ot, at, rt, Y, lt, Se, ct], o = V(), a = c(o, Se);
+  const s = t.domain.concat([Ge, Ye, ae, Xe, Ze, et, tt, st, J, xt, nt, it, ot, at, Y, lt, Se, ct]), i = [Je, re, Lt, G, Rt, rt, Ht, Pt, Ue, je, Te, ke, Pe, He, Me, Be, ze, $e, qe, Ve, We, Fe, Ke, Qe], n = [Ge, Je, Ye, Xe, Ze, et, tt, st, J, Te, ke, nt, it, ot, at, rt, Y, lt, Se, ct], o = V(), a = c(o, Se);
   y(a, n, a), y(a, t.domain, a);
   const r = V(), u = V(), f = V();
   y(o, t.domain, r), y(o, t.scheme, u), y(o, t.slashscheme, f), y(r, n, a), y(r, t.domain, r);
@@ -1397,11 +1397,11 @@ function kn(e) {
   y(A, t.numeric, Ft);
   const C = c(r, J), O = c(r, G);
   y(C, t.domain, r), y(O, n, a), y(O, t.domain, r);
-  const L = V(xe);
+  const L = V(we);
   y(O, t.tld, L), y(O, t.utld, L), y(L, t.domain, r), y(L, n, a), c(L, G, O), c(L, J, C), c(L, ae, b);
-  const W = c(L, re), I = V(xe);
+  const W = c(L, re), I = V(we);
   y(W, t.numeric, I);
-  const v = V(xe), _ = V();
+  const v = V(we), _ = V();
   y(v, s, v), y(v, i, _), y(_, s, v), y(_, i, _), c(L, Y, v), c(I, Y, v);
   const S = c(u, re), E = c(f, re), B = c(E, Y), z = c(B, Y);
   y(u, t.domain, r), c(u, G, O), c(u, J, C), y(f, t.domain, r), c(f, G, O), c(f, J, C), y(S, t.domain, v), c(S, Y, v), y(z, t.domain, v), y(z, s, v), c(z, Y, v);
@@ -1426,7 +1426,7 @@ function kn(e) {
   for (let ne = 0; ne < F.length; ne++) {
     const [ce, Z] = F[ne], R = c(v, ce);
     c(_, ce, R), c(R, Z, v);
-    const fe = V(xe);
+    const fe = V(we);
     y(R, s, fe);
     const be = V();
     y(R, i), y(fe, s, fe), y(fe, i, be), y(be, s, fe), y(be, i, be), c(fe, Z, v), c(be, Z, v);
@@ -1511,12 +1511,12 @@ var An = {
       }
     }, e;
   }()
-), xn = /[\t\n\f ]/, wn = /[A-Za-z]/, On = /\r\n?/g;
+), wn = /[\t\n\f ]/, xn = /[A-Za-z]/, On = /\r\n?/g;
 function P(e) {
-  return xn.test(e);
+  return wn.test(e);
 }
 function Qt(e) {
-  return wn.test(e);
+  return xn.test(e);
 }
 function Ln(e) {
   return e.replace(On, `
@@ -2227,12 +2227,16 @@ const vs = /* @__PURE__ */ Q({
   setup(e) {
     const t = K(), s = e;
     function i() {
-      s.button.type === rs.web_url ? window.open(s.button.url) : t.sendUserMessage(s.button.title);
+      s.button.type === rs.web_url ? window.open(
+        s.button.url,
+        s.button.target,
+        s.button.windowFeatures
+      ) : t.sendUserMessage(s.button.title);
     }
     return (n, o) => (d(), g("button", {
       class: "tvk-btn tvk-btn-action",
       onClick: i
-    }, w(s.button.title), 1));
+    }, x(s.button.title), 1));
   }
 }), Vn = { class: "tvk-footnote" }, Wn = ["href"], Fn = {
   key: 1,
@@ -2260,8 +2264,8 @@ const vs = /* @__PURE__ */ Q({
         href: s.footnote.url,
         target: "_blank",
         class: "tvk-footnote-title"
-      }, w(s.footnote.title), 9, Wn)) : T("", !0),
-      s.footnote.url ? T("", !0) : (d(), g("span", Fn, w(s.footnote.title), 1)),
+      }, x(s.footnote.title), 9, Wn)) : T("", !0),
+      s.footnote.url ? T("", !0) : (d(), g("span", Fn, x(s.footnote.title), 1)),
       s.footnote.content ? (d(), g("div", Kn, [
         N("div", {
           ref_key: "contentTxt",
@@ -2282,7 +2286,7 @@ const vs = /* @__PURE__ */ Q({
           href: "javascript:void(0)",
           class: "tvk-footnote-content-show-more-link",
           onClick: u[0] || (u[0] = (f) => i.value = !i.value)
-        }, w(l(t).wording.messages.message.footnotes.showMoreLink), 1)) : T("", !0)
+        }, x(l(t).wording.messages.message.footnotes.showMoreLink), 1)) : T("", !0)
       ])) : T("", !0)
     ]));
   }
@@ -2294,7 +2298,7 @@ const vs = /* @__PURE__ */ Q({
   setup(e) {
     const t = j.getOptions(), s = e;
     return (i, n) => (d(), g("div", Jn, [
-      N("span", Yn, w(l(t).wording.messages.message.footnotes.sources), 1),
+      N("span", Yn, x(l(t).wording.messages.message.footnotes.sources), 1),
       (d(!0), g(de, null, De(s.footnotes, (o) => (d(), X(Gn, { footnote: o }, null, 8, ["footnote"]))), 256))
     ]));
   }
@@ -2321,7 +2325,7 @@ const vs = /* @__PURE__ */ Q({
         }, null, 8, ["footnotes"])) : T("", !0),
         (d(!0), g(de, null, De(s.message.buttons, (r) => (d(), X(vs, { button: r }, {
           default: ts(() => [
-            Ee(w(r.title), 1)
+            Ee(x(r.title), 1)
           ]),
           _: 2
         }, 1032, ["button"]))), 256))
@@ -2358,15 +2362,15 @@ const vs = /* @__PURE__ */ Q({
           key: 1,
           href: (L = (O = s.card) == null ? void 0 : O.file) == null ? void 0 : L.url,
           target: "_blank"
-        }, w((I = (W = s.card) == null ? void 0 : W.file) == null ? void 0 : I.name), 9, ni)) : T("", !0),
+        }, x((I = (W = s.card) == null ? void 0 : W.file) == null ? void 0 : I.name), 9, ni)) : T("", !0),
         (v = s.card) != null && v.title ? (d(), g("div", ii, [
-          N("strong", null, w((_ = s.card) == null ? void 0 : _.title), 1)
+          N("strong", null, x((_ = s.card) == null ? void 0 : _.title), 1)
         ])) : T("", !0),
-        (S = s.card) != null && S.subTitle ? (d(), g("div", oi, w((E = s.card) == null ? void 0 : E.subTitle), 1)) : T("", !0),
-        (z = (B = s.card) == null ? void 0 : B.file) != null && z.description ? (d(), g("div", ai, w((ne = (F = s.card) == null ? void 0 : F.file) == null ? void 0 : ne.description), 1)) : T("", !0),
+        (S = s.card) != null && S.subTitle ? (d(), g("div", oi, x((E = s.card) == null ? void 0 : E.subTitle), 1)) : T("", !0),
+        (z = (B = s.card) == null ? void 0 : B.file) != null && z.description ? (d(), g("div", ai, x((ne = (F = s.card) == null ? void 0 : F.file) == null ? void 0 : ne.description), 1)) : T("", !0),
         (d(!0), g(de, null, De(s.card.buttons, (ce) => (d(), X(vs, { button: ce }, {
           default: ts(() => [
-            Ee(w(ce.title), 1)
+            Ee(x(ce.title), 1)
           ]),
           _: 2
         }, 1032, ["button"]))), 256))
@@ -2461,7 +2465,7 @@ const vs = /* @__PURE__ */ Q({
             ref_key: "cardsRefs",
             ref: i
           }, [
-            xt(ks, { card: C }, null, 8, ["card"])
+            wt(ks, { card: C }, null, 8, ["card"])
           ]))), 128))
         ], 4)
       ], 4),
@@ -2516,24 +2520,24 @@ const vs = /* @__PURE__ */ Q({
     const t = j.getOptions(), s = e;
     return (i, n) => {
       var o;
-      return s.message.author !== l(x).user || !l(t).preferences.messages.message.hideUserMessages ? (d(), g("div", {
+      return s.message.author !== l(w).user || !l(t).preferences.messages.message.hideUserMessages ? (d(), g("div", {
         key: 0,
         class: me(["tvk-message", {
-          "tvk-message-user": s.message.author === l(x).user,
-          "tvk-message-bot": s.message.author === l(x).bot
+          "tvk-message-user": s.message.author === l(w).user,
+          "tvk-message-bot": s.message.author === l(w).bot
         }])
       }, [
         N("div", li, [
-          l(t).preferences.messages.message.header.display && s.message.author !== l(x).app ? (d(), g("div", ui, [
+          l(t).preferences.messages.message.header.display && s.message.author !== l(w).app ? (d(), g("div", ui, [
             l(t).preferences.messages.message.header.avatar.display ? (d(), g("div", di, [
-              !l(t).preferences.messages.message.header.avatar.userImage && l(t).preferences.messages.message.header.avatar.userIcon && s.message.author === l(x).user ? (d(), g("i", {
+              !l(t).preferences.messages.message.header.avatar.userImage && l(t).preferences.messages.message.header.avatar.userIcon && s.message.author === l(w).user ? (d(), g("i", {
                 key: 0,
                 class: me([
                   "tvk-message-header-avatar-user",
                   l(t).preferences.messages.message.header.avatar.userIcon
                 ])
               }, null, 2)) : T("", !0),
-              l(t).preferences.messages.message.header.avatar.userImage && s.message.author === l(x).user ? (d(), g("img", {
+              l(t).preferences.messages.message.header.avatar.userImage && s.message.author === l(w).user ? (d(), g("img", {
                 key: 1,
                 src: l(t).preferences.messages.message.header.avatar.userImage.src,
                 style: ue({
@@ -2542,14 +2546,14 @@ const vs = /* @__PURE__ */ Q({
                 }),
                 role: "none"
               }, null, 12, fi)) : T("", !0),
-              !l(t).preferences.messages.message.header.avatar.botImage && l(t).preferences.messages.message.header.avatar.botIcon && s.message.author === l(x).bot ? (d(), g("i", {
+              !l(t).preferences.messages.message.header.avatar.botImage && l(t).preferences.messages.message.header.avatar.botIcon && s.message.author === l(w).bot ? (d(), g("i", {
                 key: 2,
                 class: me([
                   "tvk-message-header-avatar-bot",
                   l(t).preferences.messages.message.header.avatar.botIcon
                 ])
               }, null, 2)) : T("", !0),
-              l(t).preferences.messages.message.header.avatar.botImage && s.message.author === l(x).bot ? (d(), g("img", {
+              l(t).preferences.messages.message.header.avatar.botImage && s.message.author === l(w).bot ? (d(), g("img", {
                 key: 3,
                 src: l(t).preferences.messages.message.header.avatar.botImage.src,
                 style: ue({
@@ -2560,11 +2564,11 @@ const vs = /* @__PURE__ */ Q({
               }, null, 12, hi)) : T("", !0)
             ])) : T("", !0),
             l(t).preferences.messages.message.header.label.display ? (d(), g("div", pi, [
-              N("span", gi, w(l(t).wording.messages.message.header.labelUser), 1),
-              N("span", mi, w(l(t).wording.messages.message.header.labelBot), 1)
+              N("span", gi, x(l(t).wording.messages.message.header.labelUser), 1),
+              N("span", mi, x(l(t).wording.messages.message.header.labelBot), 1)
             ])) : T("", !0)
           ])) : T("", !0),
-          s.message.author !== l(x).app ? (d(), g("div", yi, [
+          s.message.author !== l(w).app ? (d(), g("div", yi, [
             s.message.type === l(M).message ? (d(), X(Zn, {
               key: 0,
               message: s.message
@@ -2582,16 +2586,16 @@ const vs = /* @__PURE__ */ Q({
               message: s.message
             }, null, 8, ["message"])) : T("", !0)
           ])) : T("", !0),
-          s.message.author === l(x).app ? (d(), g("div", bi, [
+          s.message.author === l(w).app ? (d(), g("div", bi, [
             s.message.type === l(M).loader ? (d(), g("div", vi)) : T("", !0),
             s.message.type === l(M).error ? (d(), g("div", Ti, [
               ki,
-              Ee(" " + w(s.message.text), 1)
+              Ee(" " + x(s.message.text), 1)
             ])) : T("", !0)
           ])) : T("", !0)
         ]),
         (o = s.message.footnotes) != null && o.length && l(t).preferences.messages.footNotes.display && l(t).preferences.messages.footNotes.displayOnMessageSide ? (d(), g("div", Si, [
-          xt(Ts, {
+          wt(Ts, {
             footnotes: s.message.footnotes
           }, null, 8, ["footnotes"])
         ])) : T("", !0)
@@ -2644,7 +2648,7 @@ const vs = /* @__PURE__ */ Q({
       key: l(i)
     }, [
       l(s).getMessages.length || !l(t).preferences.messages.hideIfNoMessages ? (d(), X(Di, { key: 0 })) : T("", !0),
-      xt(cn)
+      wt(cn)
     ])) : T("", !0);
   }
 });
@@ -2655,7 +2659,7 @@ function _i() {
     const i = K(), n = i.getStoredState();
     (!n || !n.messages.length) && (e.initialization.welcomeMessage && i.addMessage({
       type: M.message,
-      author: x.bot,
+      author: w.bot,
       date: Date.now(),
       text: e.initialization.welcomeMessage
     }), e.initialization.openingMessage && i.sendUserMessage(
@@ -2665,7 +2669,7 @@ function _i() {
   }
 }
 let te, Ss;
-function wi(e, t, s) {
+function xi(e, t, s) {
   return Ss = e, Es(t, s), te;
 }
 function Oi(e, t) {
@@ -2698,6 +2702,6 @@ export {
   Ri as getTvkCurrentOptions,
   Li as getTvkDefaultOptions,
   Oi as reload,
-  wi as renderChat,
+  xi as renderChat,
   Hi as updateTvkOption
 };

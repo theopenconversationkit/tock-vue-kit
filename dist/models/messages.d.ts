@@ -74,5 +74,6 @@ export interface Button {
     title: string;
     url?: string;
     target?: string;
+    windowFeatures?: string;
 }
 export {};

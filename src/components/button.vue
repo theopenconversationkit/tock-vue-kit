@@ -10,7 +10,11 @@ const props = defineProps<{
 
 function sendButtonMessage() {
   if (props.button.type === ButtonType.web_url) {
-    window.open(props.button.url);
+    window.open(
+      props.button.url,
+      props.button.target,
+      props.button.windowFeatures
+    );
   } else {
     mainStore.sendUserMessage(props.button!.title);
   }
