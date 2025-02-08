@@ -784,13 +784,13 @@
   border-radius: var(--tvk_base_radius);
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper pre:has(> code) {
-  transform: translateX(0);
+  position: relative;
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper pre:has(> code) .tvk-message-content-copy-button {
-  position: fixed;
+  position: absolute;
   margin: 0;
-  top: calc(var(--tvk_base_spacing) / 3);
-  right: calc(var(--tvk_base_spacing) / 2);
+  top: 0.2em;
+  right: 0.3em;
   z-index: 10;
   display: none;
   background: var(--tvk_colors_message-content-elements-surface2);

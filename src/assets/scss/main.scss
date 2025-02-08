@@ -170,14 +170,13 @@
             }
 
             pre:has(> code) {
-              // required to allow copy button position (fixed) to be relative to the PRE
-              transform: translateX(0);
+              position: relative;
 
               .tvk-message-content-copy-button {
-                position: fixed;
+                position: absolute;
                 margin: 0;
-                top: calc(var(--tvk_base_spacing) / 3);
-                right: calc(var(--tvk_base_spacing) / 2);
+                top: 0.2em;
+                right: 0.3em;
                 z-index: 10;
                 display: none;
 
