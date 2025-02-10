@@ -1,28 +1,117 @@
-export function containsHTML(str: string): boolean {
-  const a = document.createElement("div");
-  a.innerHTML = str;
+import type { Tokens, TokenizerExtension, RendererExtension } from "marked";
+import katex from "katex";
 
-  for (var c = a.childNodes, i = c.length; i--; ) {
-    if (c[i].nodeType == 1) return true;
-  }
-
-  return false;
+interface katexBlockToken extends Tokens.Generic {
+  type: "katexBlock";
+  raw: string;
+  text: string;
+  displayMode: true;
 }
 
-export function containsMarkdownFormatting(input: string): boolean {
-  const markdownPatterns = [
-    /(\*\*.*?\*\*)|(\_\_.*?\_\_)/, // Bold
-    /(\*.*?\*)|(\_.*?\_)/, // Italics
-    /(`.*?`)/, // Inline code
-    /(\!\[.*?\]\(.*?\))|(\[.*?\]\(.*?\))/, // Images and links
-    /(\>\s.*?)/, // Blockquote
-    /(\s*[-*+] .*)/, // Unordered list
-    /(\s*\d+\.\s.*?)/, // Ordered list
-    /(\[\^.*?\]:\s.*?)/, // Footnotes
-    /(\s*`{3}.*?`{3})/s, // Fenced code blocks
-    /(\s*~~~.*?~~~)/s, // Fenced code blocks (tilde)
-    /(\|.*?\|(\|[-:]+[-|:]*)?(\|.*?\|)+)/, // Tables
-  ];
-
-  return markdownPatterns.some((pattern) => pattern.test(input));
+interface katexInlineToken extends Tokens.Generic {
+  type: "katexInline";
+  raw: string;
+  text: string;
+  displayMode: false;
 }
+
+export const katexBlockExtension: TokenizerExtension & RendererExtension = {
+  name: "katexBlock",
+  level: "block",
+
+  start(src: string): number | undefined {
+    const match = src.match(/(\${2}|\\\[)/);
+    return match ? match.index : -1;
+  },
+
+  tokenizer(src: string): katexBlockToken | undefined {
+    // 1) $$ ... $$
+    const rule1 = /^\${2}([\s\S]+?)\${2}/;
+    const match1 = rule1.exec(src);
+    if (match1) {
+      const token: katexBlockToken = {
+        type: "katexBlock",
+        raw: match1[0],
+        text: match1[1].trim(),
+        displayMode: true,
+      };
+      return token;
+    }
+
+    // 2) \[ ... \]
+    const rule2 = /^\\\[([\s\S]+?)\\\]/;
+    const match2 = rule2.exec(src);
+    if (match2) {
+      const token: katexBlockToken = {
+        type: "katexBlock",
+        raw: match2[0],
+        text: match2[1].trim(),
+        displayMode: true,
+      };
+      return token;
+    }
+
+    return undefined;
+  },
+
+  renderer(token) {
+    if (token.type === "katexBlock") {
+      return katex.renderToString(token.text, {
+        throwOnError: false,
+        displayMode: token.displayMode,
+      });
+    }
+
+    return undefined;
+  },
+};
+
+export const katexInlineExtension: TokenizerExtension & RendererExtension = {
+  name: "katexInline",
+  level: "inline",
+
+  start(src: string): number | undefined {
+    const match = src.match(/(\$|\\\()/);
+    return match ? match.index : -1;
+  },
+
+  tokenizer(src: string): katexInlineToken | undefined {
+    // 1) $...$
+    const rule1 = /^\$([^$]+?)\$/;
+    const match1 = rule1.exec(src);
+    if (match1) {
+      const token: katexInlineToken = {
+        type: "katexInline",
+        raw: match1[0],
+        text: match1[1].trim(),
+        displayMode: false,
+      };
+      return token;
+    }
+
+    // 2) \(...\)
+    const rule2 = /^\\\(([\s\S]+?)\\\)/;
+    const match2 = rule2.exec(src);
+    if (match2) {
+      const token: katexInlineToken = {
+        type: "katexInline",
+        raw: match2[0],
+        text: match2[1].trim(),
+        displayMode: false,
+      };
+      return token;
+    }
+
+    return undefined;
+  },
+
+  renderer(token) {
+    if (token.type === "katexInline") {
+      return katex.renderToString(token.text, {
+        throwOnError: false,
+        displayMode: token.displayMode,
+      });
+    }
+    return undefined;
+  },
+};

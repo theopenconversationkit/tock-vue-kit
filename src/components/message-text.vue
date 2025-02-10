@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import linkifyHtml from "linkify-html";
-import { micromark } from "micromark";
-import { gfm, gfmHtml } from "micromark-extension-gfm";
-import hljs from "highlight.js";
-import "highlight.js/styles/default.min.css";
+import { Marked } from "marked";
+import DOMPurify from "dompurify";
 
 import "katex/dist/katex.min.css";
-// @ts-ignore
-import renderMathInElement from "katex/contrib/auto-render";
 
-import { MessageAuthor, type TextMessage } from "../models/messages";
+import hljs from "highlight.js";
+import "highlight.js/styles/default.min.css";
+import { markedHighlight } from "marked-highlight";
+
+import { katexBlockExtension, katexInlineExtension } from "../utils/markup";
+
+import { type TextMessage } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
-import { containsMarkdownFormatting, containsHTML } from "../utils/markup";
+
 import Button from "./button.vue";
 import Footnotes from "./footnotes.vue";
 import { copyToClipboard } from "../utils/misc";
@@ -24,65 +25,40 @@ const props = defineProps<{
   message: TextMessage;
 }>();
 
-const whiteSpaceStyle = ref("pre-line");
 const messageContentWrapper = ref();
 
-function getMarkUp(): string {
-  let output = props.message!.text;
-  // Return user message untouched
-  if (props.message!.author !== MessageAuthor.bot) return output;
-
-  // Latex syntax conversions
-  output = output
-    // Deletes file references between 【】(Japanese characters)
-    .replace(/【[^】]*】/g, "")
-    // Convert LaTeX inline syntax \( ... \) to $ ... $
-    .replace(/\\\(((?:[^\\]|\\[^)])*?)\\\)/g, (_, math) => `$${math.trim()}$`)
-    // Converting LaTeX block \[ ... \] syntax to $$ ... $$
-    .replace(
-      /\\\[((?:[^\\]|\\[^\]])*?)\\]/g,
-      (_, math) => `$$${math.trim().replace(/\n/g, " ")}$$`
-    );
-
-  if (containsMarkdownFormatting(output)) {
-    whiteSpaceStyle.value = "normal";
-    output = micromark(output, {
-      allowDangerousHtml: true, // Html markup can easily be detected as MD. We need this to allow it and render html properly or to render properly html fragments in MD source
-      extensions: [gfm()],
-      htmlExtensions: [gfmHtml()],
-    });
-  } else if (containsHTML(output)) {
-    whiteSpaceStyle.value = "normal";
-  } else {
-    whiteSpaceStyle.value = "pre-line";
-    output = linkifyHtml(output, { target: "_blank" });
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName === "A") {
+    node.setAttribute("rel", "noreferrer");
+    node.setAttribute("target", "_blank");
   }
+});
+
+const marked = new Marked({
+  ...markedHighlight({
+    emptyLangClass: "hljs",
+    langPrefix: "hljs language-",
+    highlight(code, lang, info) {
+      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      return hljs.highlight(code, { language }).value;
+      // return hljs.highlightAuto(code).value;
+    },
+  }),
+  hooks: {
+    postprocess: (html) => DOMPurify.sanitize(html),
+  },
+  extensions: [katexBlockExtension, katexInlineExtension],
+  gfm: true,
+});
+
+function getMarkUp(): string | Promise<string> {
+  let output = marked.parse(props.message!.text);
 
   setTimeout(() => {
-    highlightAll();
     copyButtonsInit();
-  });
+  }, 100);
 
   return output;
-}
-
-function highlightAll() {
-  messageContentWrapper.value
-    .querySelectorAll("code")
-    .forEach((e: HTMLElement) => {
-      if (!e.dataset.highlighted) {
-        hljs.highlightElement(e);
-      }
-    });
-
-  renderMathInElement(messageContentWrapper.value, {
-    delimiters: [
-      { left: "$$", right: "$$", display: true },
-      { left: "$", right: "$", display: false },
-      { left: "\\(", right: "\\)", display: false },
-      { left: "\\[", right: "\\]", display: true },
-    ],
-  });
 }
 
 function copyButtonsInit() {
@@ -128,7 +104,6 @@ function injectCopyButton(preEl: HTMLElement) {
     ref="messageContentWrapper"
     class="tvk-message-content-wrapper"
     v-html="getMarkUp()"
-    :style="{ 'white-space': whiteSpaceStyle }"
     tabindex="1"
   ></div>
 

@@ -984,9 +984,9 @@ function patchObject(newState, oldState) {
   }
   return newState;
 }
-const noop$1 = () => {
+const noop = () => {
 };
-function addSubscription(subscriptions, callback, detached, onCleanup = noop$1) {
+function addSubscription(subscriptions, callback, detached, onCleanup = noop) {
   subscriptions.push(callback);
   const removeSubscription = () => {
     const idx = subscriptions.indexOf(callback);
@@ -1030,7 +1030,7 @@ const skipHydrateSymbol = Symbol("pinia:skipHydration");
 function shouldHydrate(obj) {
   return !isPlainObject(obj) || !obj.hasOwnProperty(skipHydrateSymbol);
 }
-const { assign: assign$2 } = Object;
+const { assign } = Object;
 function isComputed(o) {
   return !!(isRef(o) && o.effect);
 }
@@ -1048,7 +1048,7 @@ function createOptionsStore(id, options, pinia, hot) {
       // use ref() to unwrap refs inside state TODO: check if this is still necessary
       toRefs(ref(state ? state() : {}).value)
     ) : toRefs(pinia.state.value[id]);
-    return assign$2(localState, actions, Object.keys(getters || {}).reduce((computedGetters, name) => {
+    return assign(localState, actions, Object.keys(getters || {}).reduce((computedGetters, name) => {
       if (name in localState) {
         console.warn(`[🍍]: A getter cannot have the same name as another state property. Rename one of them. Found with "${name}" in store "${id}".`);
       }
@@ -1065,7 +1065,7 @@ function createOptionsStore(id, options, pinia, hot) {
 }
 function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) {
   let scope;
-  const optionsForPlugin = assign$2({ actions: {} }, options);
+  const optionsForPlugin = assign({ actions: {} }, options);
   if (!pinia._e.active) {
     throw new Error("Pinia destroyed");
   }
@@ -1134,7 +1134,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
     const { state } = options;
     const newState = state ? state() : {};
     this.$patch(($state) => {
-      assign$2($state, newState);
+      assign($state, newState);
     });
   } : (
     /* istanbul ignore next */
@@ -1210,12 +1210,12 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
             events: debuggerEvents
           }, state);
         }
-      }, assign$2({}, $subscribeOptions, options2)));
+      }, assign({}, $subscribeOptions, options2)));
       return removeSubscription;
     },
     $dispose
   };
-  const store = reactive(assign$2(
+  const store = reactive(assign(
     {
       _hmrPayload,
       _customProperties: markRaw(/* @__PURE__ */ new Set())
@@ -1272,8 +1272,8 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
     }
   }
   {
-    assign$2(store, setupStore);
-    assign$2(toRaw(store), setupStore);
+    assign(store, setupStore);
+    assign(toRaw(store), setupStore);
   }
   Object.defineProperty(store, "$state", {
     get: () => hot ? hotState.value : pinia.state.value[$id],
@@ -1282,7 +1282,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
         throw new Error("cannot set hotState");
       }
       $patch(($state) => {
-        assign$2($state, state);
+        assign($state, state);
       });
     }
   });
@@ -1351,7 +1351,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
       enumerable: false
     };
     ["_p", "_hmrPayload", "_getters", "_customProperties"].forEach((p) => {
-      Object.defineProperty(store, p, assign$2({ value: store[p] }, nonEnumerable));
+      Object.defineProperty(store, p, assign({ value: store[p] }, nonEnumerable));
     });
   }
   pinia._p.forEach((extender) => {
@@ -1363,9 +1363,9 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
         options: optionsForPlugin
       }));
       Object.keys(extensions || {}).forEach((key) => store._customProperties.add(key));
-      assign$2(store, extensions);
+      assign(store, extensions);
     } else {
-      assign$2(store, scope.run(() => extender({
+      assign(store, scope.run(() => extender({
         store,
         app: pinia._a,
         pinia,
@@ -1419,7 +1419,7 @@ This will fail in production.`);
     const store = pinia._s.get(id);
     if (hot) {
       const hotId = "__hot:" + id;
-      const newStore = isSetupStore ? createSetupStore(hotId, setup, options, pinia, true) : createOptionsStore(hotId, assign$2({}, options), pinia, true);
+      const newStore = isSetupStore ? createSetupStore(hotId, setup, options, pinia, true) : createOptionsStore(hotId, assign({}, options), pinia, true);
       hot._hotUpdate(newStore);
       delete pinia.state.value[hotId];
       pinia._s.delete(hotId);
@@ -1829,9 +1829,9 @@ function extractDefaultAppOptions(object, target = {}) {
     if (isOptionDefinition(object)) {
       return object.default;
     } else {
-      const entries = Object.entries(object);
-      for (let i = 0; i < entries.length; i++) {
-        const [objectKey, objectValue] = entries[i];
+      const entries2 = Object.entries(object);
+      for (let i = 0; i < entries2.length; i++) {
+        const [objectKey, objectValue] = entries2[i];
         target[objectKey] = extractDefaultAppOptions(objectValue);
       }
       return target;
@@ -2151,8463 +2151,3111 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const encodedTlds = "aaa1rp3bb0ott3vie4c1le2ogado5udhabi7c0ademy5centure6ountant0s9o1tor4d0s1ult4e0g1ro2tna4f0l1rica5g0akhan5ency5i0g1rbus3force5tel5kdn3l0ibaba4pay4lfinanz6state5y2sace3tom5m0azon4ericanexpress7family11x2fam3ica3sterdam8nalytics7droid5quan4z2o0l2partments8p0le4q0uarelle8r0ab1mco4chi3my2pa2t0e3s0da2ia2sociates9t0hleta5torney7u0ction5di0ble3o3spost5thor3o0s4vianca6w0s2x0a2z0ure5ba0by2idu3namex3narepublic11d1k2r0celona5laycard4s5efoot5gains6seball5ketball8uhaus5yern5b0c1t1va3cg1n2d1e0ats2uty4er2ntley5rlin4st0buy5t2f1g1h0arti5i0ble3d1ke2ng0o3o1z2j1lack0friday9ockbuster8g1omberg7ue3m0s1w2n0pparibas9o0ats3ehringer8fa2m1nd2o0k0ing5sch2tik2on4t1utique6x2r0adesco6idgestone9oadway5ker3ther5ussels7s1t1uild0ers6siness6y1zz3v1w1y1z0h3ca0b1fe2l0l1vinklein9m0era3p2non3petown5ital0one8r0avan4ds2e0er0s4s2sa1e1h1ino4t0ering5holic7ba1n1re3c1d1enter4o1rn3f0a1d2g1h0anel2nel4rity4se2t2eap3intai5ristmas6ome4urch5i0priani6rcle4sco3tadel4i0c2y3k1l0aims4eaning6ick2nic1que6othing5ud3ub0med6m1n1o0ach3des3ffee4llege4ogne5m0cast4mbank4unity6pany2re3uter5sec4ndos3struction8ulting7tact3ractors9oking4l1p2rsica5untry4pon0s4rses6pa2r0edit0card4union9icket5own3s1uise0s6u0isinella9v1w1x1y0mru3ou3z2dabur3d1nce3ta1e1ing3sun4y2clk3ds2e0al0er2s3gree4livery5l1oitte5ta3mocrat6ntal2ist5si0gn4v2hl2iamonds6et2gital5rect0ory7scount3ver5h2y2j1k1m1np2o0cs1tor4g1mains5t1wnload7rive4tv2ubai3nlop4pont4rban5vag2r2z2earth3t2c0o2deka3u0cation8e1g1mail3erck5nergy4gineer0ing9terprises10pson4quipment8r0icsson6ni3s0q1tate5t1u0rovision8s2vents5xchange6pert3osed4ress5traspace10fage2il1rwinds6th3mily4n0s2rm0ers5shion4t3edex3edback6rrari3ero6i0delity5o2lm2nal1nce1ial7re0stone6mdale6sh0ing5t0ness6j1k1lickr3ghts4r2orist4wers5y2m1o0o0d1tball6rd1ex2sale4um3undation8x2r0ee1senius7l1ogans4ntier7tr2ujitsu5n0d2rniture7tbol5yi3ga0l0lery3o1up4me0s3p1rden4y2b0iz3d0n2e0a1nt0ing5orge5f1g0ee3h1i0ft0s3ves2ing5l0ass3e1obal2o4m0ail3bh2o1x2n1odaddy5ld0point6f2o0dyear5g0le4p1t1v2p1q1r0ainger5phics5tis4een3ipe3ocery4up4s1t1u0ardian6cci3ge2ide2tars5ru3w1y2hair2mburg5ngout5us3bo2dfc0bank7ealth0care8lp1sinki6re1mes5iphop4samitsu7tachi5v2k0t2m1n1ockey4ldings5iday5medepot5goods5s0ense7nda3rse3spital5t0ing5t0els3mail5use3w2r1sbc3t1u0ghes5yatt3undai7ibm2cbc2e1u2d1e0ee3fm2kano4l1m0amat4db2mo0bilien9n0c1dustries8finiti5o2g1k1stitute6urance4e4t0ernational10uit4vestments10o1piranga7q1r0ish4s0maili5t0anbul7t0au2v3jaguar4va3cb2e0ep2tzt3welry6io2ll2m0p2nj2o0bs1urg4t1y2p0morgan6rs3uegos4niper7kaufen5ddi3e0rryhotels6logistics9properties14fh2g1h1i0a1ds2m1ndle4tchen5wi3m1n1oeln3matsu5sher5p0mg2n2r0d1ed3uokgroup8w1y0oto4z2la0caixa5mborghini8er3ncaster6d0rover6xess5salle5t0ino3robe5w0yer5b1c1ds2ease3clerc5frak4gal2o2xus4gbt3i0dl2fe0insurance9style7ghting6ke2lly3mited4o2ncoln4k2psy3ve1ing5k1lc1p2oan0s3cker3us3l1ndon4tte1o3ve3pl0financial11r1s1t0d0a3u0ndbeck6xe1ury5v1y2ma0drid4if1son4keup4n0agement7go3p1rket0ing3s4riott5shalls7ttel5ba2c0kinsey7d1e0d0ia3et2lbourne7me1orial6n0u2rckmsd7g1h1iami3crosoft7l1ni1t2t0subishi9k1l0b1s2m0a2n1o0bi0le4da2e1i1m1nash3ey2ster5rmon3tgage6scow4to0rcycles9v0ie4p1q1r1s0d2t0n1r2u0seum3ic4v1w1x1y1z2na0b1goya4me2tura4vy3ba2c1e0c1t0bank4flix4work5ustar5w0s2xt0direct7us4f0l2g0o2hk2i0co2ke1on3nja3ssan1y5l1o0kia3rton4w0ruz3tv4p1r0a1w2tt2u1yc2z2obi1server7ffice5kinawa6layan0group9dnavy5lo3m0ega4ne1g1l0ine5oo2pen3racle3nge4g0anic5igins6saka4tsuka4t2vh3pa0ge2nasonic7ris2s1tners4s1y3y2ccw3e0t2f0izer5g1h0armacy6d1ilips5one2to0graphy6s4ysio5ics1tet2ures6d1n0g1k2oneer5zza4k1l0ace2y0station9umbing5s3m1n0c2ohl2ker3litie5rn2st3r0america6xi3ess3ime3o0d0uctions8f1gressive8mo2perties3y5tection8u0dential9s1t1ub2w0c2y2qa1pon3uebec3st5racing4dio4e0ad1lestate6tor2y4cipes5d0stone5umbrella9hab3ise0n3t2liance6n0t0als5pair3ort3ublican8st0aurant8view0s5xroth6ich0ardli6oh3l1o1p2o0cks3deo3gers4om3s0vp3u0gby3hr2n2w0e2yukyu6sa0arland6fe0ty4kura4le1on3msclub4ung5ndvik0coromant12ofi4p1rl2s1ve2xo3b0i1s2c0a1b1haeffler7midt4olarships8ol3ule3warz5ience5ot3d1e0arch3t2cure1ity6ek2lect4ner3rvices6ven3w1x0y3fr2g1h0angrila6rp2w2ell3ia1ksha5oes2p0ping5uji3w3i0lk2na1gles5te3j1k0i0n2y0pe4l0ing4m0art3ile4n0cf3o0ccer3ial4ftbank4ware6hu2lar2utions7ng1y2y2pa0ce3ort2t3r0l2s1t0ada2ples4r1tebank4farm7c0group6ockholm6rage3e3ream4udio2y3yle4u0cks3pplies3y2ort5rf1gery5zuki5v1watch4iss4x1y0dney4stems6z2tab1ipei4lk2obao4rget4tamotors6r2too4x0i3c0i2d0k2eam2ch0nology8l1masek5nnis4va3f1g1h0d1eater2re6iaa2ckets5enda4ps2res2ol4j0maxx4x2k0maxx5l1m0all4n1o0day3kyo3ols3p1ray3shiba5tal3urs3wn2yota3s3r0ade1ing4ining5vel0ers0insurance16ust3v2t1ube2i1nes3shu4v0s2w1z2ua1bank3s2g1k1nicom3versity8o2ol2ps2s1y1z2va0cations7na1guard7c1e0gas3ntures6risign5mögensberater2ung14sicherung10t2g1i0ajes4deo3g1king4llas4n1p1rgin4sa1ion4va1o3laanderen9n1odka3lvo3te1ing3o2yage5u2wales2mart4ter4ng0gou5tch0es6eather0channel12bcam3er2site5d0ding5ibo2r3f1hoswho6ien2ki2lliamhill9n0dows4e1ners6me2olterskluwer11odside6rk0s2ld3w2s1tc1f3xbox3erox4finity6ihuan4n2xx2yz3yachts4hoo3maxun5ndex5e1odobashi7ga2kohama6u0tube6t1un3za0ppos4ra3ero3ip2m1one3uerich6w2";
-const encodedUtlds = "ελ1υ2бг1ел3дети4ею2католик6ом3мкд2он1сква6онлайн5рг3рус2ф2сайт3рб3укр3қаз3հայ3ישראל5קום3ابوظبي5رامكو5لاردن4بحرين5جزائر5سعودية6عليان5مغرب5مارات5یران5بارت2زار4يتك3ھارت5تونس4سودان3رية5شبكة4عراق2ب2مان4فلسطين6قطر3كاثوليك6وم3مصر2ليسيا5وريتانيا7قع4همراه5پاکستان7ڀارت4कॉम3नेट3भारत0म्3ोत5संगठन5বাংলা5ভারত2ৰত4ਭਾਰਤ4ભારત4ଭାରତ4இந்தியா6லங்கை6சிங்கப்பூர்11భారత్5ಭಾರತ4ഭാരതം5ලංකා4คอม3ไทย3ລາວ3გე2みんな3アマゾン4クラウド4グーグル4コム2ストア3セール3ファッション6ポイント4世界2中信1国1國1文网3亚马逊3企业2佛山2信息2健康2八卦2公司1益2台湾1灣2商城1店1标2嘉里0大酒店5在线2大拿2天主教3娱乐2家電2广东2微博2慈善2我爱你3手机2招聘2政务1府2新加坡2闻2时尚2書籍2机构2淡马锡3游戏2澳門2点看2移动2组织机构4网址1店1站1络2联通2谷歌2购物2通販2集团2電訊盈科4飞利浦3食品2餐厅2香格里拉3港2닷넷1컴2삼성2한국2";
-const assign = (target, properties) => {
-  for (const key in properties) {
-    target[key] = properties[key];
-  }
-  return target;
-};
-const numeric = "numeric";
-const ascii = "ascii";
-const alpha = "alpha";
-const asciinumeric = "asciinumeric";
-const alphanumeric = "alphanumeric";
-const domain$1 = "domain";
-const emoji = "emoji";
-const scheme = "scheme";
-const slashscheme = "slashscheme";
-const whitespace = "whitespace";
-function registerGroup(name, groups) {
-  if (!(name in groups)) {
-    groups[name] = [];
-  }
-  return groups[name];
-}
-function addToGroups(t, flags, groups) {
-  if (flags[numeric]) {
-    flags[asciinumeric] = true;
-    flags[alphanumeric] = true;
-  }
-  if (flags[ascii]) {
-    flags[asciinumeric] = true;
-    flags[alpha] = true;
-  }
-  if (flags[asciinumeric]) {
-    flags[alphanumeric] = true;
-  }
-  if (flags[alpha]) {
-    flags[alphanumeric] = true;
-  }
-  if (flags[alphanumeric]) {
-    flags[domain$1] = true;
-  }
-  if (flags[emoji]) {
-    flags[domain$1] = true;
-  }
-  for (const k in flags) {
-    const group = registerGroup(k, groups);
-    if (group.indexOf(t) < 0) {
-      group.push(t);
-    }
-  }
-}
-function flagsForToken(t, groups) {
-  const result = {};
-  for (const c in groups) {
-    if (groups[c].indexOf(t) >= 0) {
-      result[c] = true;
-    }
-  }
-  return result;
-}
-function State(token) {
-  if (token === void 0) {
-    token = null;
-  }
-  this.j = {};
-  this.jr = [];
-  this.jd = null;
-  this.t = token;
-}
-State.groups = {};
-State.prototype = {
-  accepts() {
-    return !!this.t;
-  },
-  /**
-   * Follow an existing transition from the given input to the next state.
-   * Does not mutate.
-   * @param {string} input character or token type to transition on
-   * @returns {?State<T>} the next state, if any
-   */
-  go(input) {
-    const state = this;
-    const nextState = state.j[input];
-    if (nextState) {
-      return nextState;
-    }
-    for (let i = 0; i < state.jr.length; i++) {
-      const regex = state.jr[i][0];
-      const nextState2 = state.jr[i][1];
-      if (nextState2 && regex.test(input)) {
-        return nextState2;
-      }
-    }
-    return state.jd;
-  },
-  /**
-   * Whether the state has a transition for the given input. Set the second
-   * argument to true to only look for an exact match (and not a default or
-   * regular-expression-based transition)
-   * @param {string} input
-   * @param {boolean} exactOnly
-   */
-  has(input, exactOnly) {
-    if (exactOnly === void 0) {
-      exactOnly = false;
-    }
-    return exactOnly ? input in this.j : !!this.go(input);
-  },
-  /**
-   * Short for "transition all"; create a transition from the array of items
-   * in the given list to the same final resulting state.
-   * @param {string | string[]} inputs Group of inputs to transition on
-   * @param {Transition<T> | State<T>} [next] Transition options
-   * @param {Flags} [flags] Collections flags to add token to
-   * @param {Collections<T>} [groups] Master list of token groups
-   */
-  ta(inputs, next, flags, groups) {
-    for (let i = 0; i < inputs.length; i++) {
-      this.tt(inputs[i], next, flags, groups);
-    }
-  },
-  /**
-   * Short for "take regexp transition"; defines a transition for this state
-   * when it encounters a token which matches the given regular expression
-   * @param {RegExp} regexp Regular expression transition (populate first)
-   * @param {T | State<T>} [next] Transition options
-   * @param {Flags} [flags] Collections flags to add token to
-   * @param {Collections<T>} [groups] Master list of token groups
-   * @returns {State<T>} taken after the given input
-   */
-  tr(regexp, next, flags, groups) {
-    groups = groups || State.groups;
-    let nextState;
-    if (next && next.j) {
-      nextState = next;
-    } else {
-      nextState = new State(next);
-      if (flags && groups) {
-        addToGroups(next, flags, groups);
-      }
-    }
-    this.jr.push([regexp, nextState]);
-    return nextState;
-  },
-  /**
-   * Short for "take transitions", will take as many sequential transitions as
-   * the length of the given input and returns the
-   * resulting final state.
-   * @param {string | string[]} input
-   * @param {T | State<T>} [next] Transition options
-   * @param {Flags} [flags] Collections flags to add token to
-   * @param {Collections<T>} [groups] Master list of token groups
-   * @returns {State<T>} taken after the given input
-   */
-  ts(input, next, flags, groups) {
-    let state = this;
-    const len = input.length;
-    if (!len) {
-      return state;
-    }
-    for (let i = 0; i < len - 1; i++) {
-      state = state.tt(input[i]);
-    }
-    return state.tt(input[len - 1], next, flags, groups);
-  },
-  /**
-   * Short for "take transition", this is a method for building/working with
-   * state machines.
-   *
-   * If a state already exists for the given input, returns it.
-   *
-   * If a token is specified, that state will emit that token when reached by
-   * the linkify engine.
-   *
-   * If no state exists, it will be initialized with some default transitions
-   * that resemble existing default transitions.
-   *
-   * If a state is given for the second argument, that state will be
-   * transitioned to on the given input regardless of what that input
-   * previously did.
-   *
-   * Specify a token group flags to define groups that this token belongs to.
-   * The token will be added to corresponding entires in the given groups
-   * object.
-   *
-   * @param {string} input character, token type to transition on
-   * @param {T | State<T>} [next] Transition options
-   * @param {Flags} [flags] Collections flags to add token to
-   * @param {Collections<T>} [groups] Master list of groups
-   * @returns {State<T>} taken after the given input
-   */
-  tt(input, next, flags, groups) {
-    groups = groups || State.groups;
-    const state = this;
-    if (next && next.j) {
-      state.j[input] = next;
-      return next;
-    }
-    const t = next;
-    let nextState, templateState = state.go(input);
-    if (templateState) {
-      nextState = new State();
-      assign(nextState.j, templateState.j);
-      nextState.jr.push.apply(nextState.jr, templateState.jr);
-      nextState.jd = templateState.jd;
-      nextState.t = templateState.t;
-    } else {
-      nextState = new State();
-    }
-    if (t) {
-      if (groups) {
-        if (nextState.t && typeof nextState.t === "string") {
-          const allFlags = assign(flagsForToken(nextState.t, groups), flags);
-          addToGroups(t, allFlags, groups);
-        } else if (flags) {
-          addToGroups(t, flags, groups);
-        }
-      }
-      nextState.t = t;
-    }
-    state.j[input] = nextState;
-    return nextState;
-  }
-};
-const ta = (state, input, next, flags, groups) => state.ta(input, next, flags, groups);
-const tr = (state, regexp, next, flags, groups) => state.tr(regexp, next, flags, groups);
-const ts = (state, input, next, flags, groups) => state.ts(input, next, flags, groups);
-const tt = (state, input, next, flags, groups) => state.tt(input, next, flags, groups);
-const WORD = "WORD";
-const UWORD = "UWORD";
-const LOCALHOST = "LOCALHOST";
-const TLD = "TLD";
-const UTLD = "UTLD";
-const SCHEME = "SCHEME";
-const SLASH_SCHEME = "SLASH_SCHEME";
-const NUM = "NUM";
-const WS = "WS";
-const NL$1 = "NL";
-const OPENBRACE = "OPENBRACE";
-const CLOSEBRACE = "CLOSEBRACE";
-const OPENBRACKET = "OPENBRACKET";
-const CLOSEBRACKET = "CLOSEBRACKET";
-const OPENPAREN = "OPENPAREN";
-const CLOSEPAREN = "CLOSEPAREN";
-const OPENANGLEBRACKET = "OPENANGLEBRACKET";
-const CLOSEANGLEBRACKET = "CLOSEANGLEBRACKET";
-const FULLWIDTHLEFTPAREN = "FULLWIDTHLEFTPAREN";
-const FULLWIDTHRIGHTPAREN = "FULLWIDTHRIGHTPAREN";
-const LEFTCORNERBRACKET = "LEFTCORNERBRACKET";
-const RIGHTCORNERBRACKET = "RIGHTCORNERBRACKET";
-const LEFTWHITECORNERBRACKET = "LEFTWHITECORNERBRACKET";
-const RIGHTWHITECORNERBRACKET = "RIGHTWHITECORNERBRACKET";
-const FULLWIDTHLESSTHAN = "FULLWIDTHLESSTHAN";
-const FULLWIDTHGREATERTHAN = "FULLWIDTHGREATERTHAN";
-const AMPERSAND = "AMPERSAND";
-const APOSTROPHE = "APOSTROPHE";
-const ASTERISK = "ASTERISK";
-const AT = "AT";
-const BACKSLASH = "BACKSLASH";
-const BACKTICK = "BACKTICK";
-const CARET = "CARET";
-const COLON = "COLON";
-const COMMA = "COMMA";
-const DOLLAR = "DOLLAR";
-const DOT = "DOT";
-const EQUALS = "EQUALS";
-const EXCLAMATION = "EXCLAMATION";
-const HYPHEN = "HYPHEN";
-const PERCENT = "PERCENT";
-const PIPE = "PIPE";
-const PLUS = "PLUS";
-const POUND = "POUND";
-const QUERY = "QUERY";
-const QUOTE = "QUOTE";
-const SEMI = "SEMI";
-const SLASH = "SLASH";
-const TILDE = "TILDE";
-const UNDERSCORE = "UNDERSCORE";
-const EMOJI$1 = "EMOJI";
-const SYM = "SYM";
-var tk = /* @__PURE__ */ Object.freeze({
-  __proto__: null,
-  WORD,
-  UWORD,
-  LOCALHOST,
-  TLD,
-  UTLD,
-  SCHEME,
-  SLASH_SCHEME,
-  NUM,
-  WS,
-  NL: NL$1,
-  OPENBRACE,
-  CLOSEBRACE,
-  OPENBRACKET,
-  CLOSEBRACKET,
-  OPENPAREN,
-  CLOSEPAREN,
-  OPENANGLEBRACKET,
-  CLOSEANGLEBRACKET,
-  FULLWIDTHLEFTPAREN,
-  FULLWIDTHRIGHTPAREN,
-  LEFTCORNERBRACKET,
-  RIGHTCORNERBRACKET,
-  LEFTWHITECORNERBRACKET,
-  RIGHTWHITECORNERBRACKET,
-  FULLWIDTHLESSTHAN,
-  FULLWIDTHGREATERTHAN,
-  AMPERSAND,
-  APOSTROPHE,
-  ASTERISK,
-  AT,
-  BACKSLASH,
-  BACKTICK,
-  CARET,
-  COLON,
-  COMMA,
-  DOLLAR,
-  DOT,
-  EQUALS,
-  EXCLAMATION,
-  HYPHEN,
-  PERCENT,
-  PIPE,
-  PLUS,
-  POUND,
-  QUERY,
-  QUOTE,
-  SEMI,
-  SLASH,
-  TILDE,
-  UNDERSCORE,
-  EMOJI: EMOJI$1,
-  SYM
-});
-const ASCII_LETTER = /[a-z]/;
-const LETTER = new RegExp("\\p{L}", "u");
-const EMOJI = new RegExp("\\p{Emoji}", "u");
-const DIGIT = /\d/;
-const SPACE = /\s/;
-const NL = "\n";
-const EMOJI_VARIATION = "️";
-const EMOJI_JOINER = "‍";
-let tlds = null, utlds = null;
-function init$2(customSchemes) {
-  if (customSchemes === void 0) {
-    customSchemes = [];
-  }
-  const groups = {};
-  State.groups = groups;
-  const Start = new State();
-  if (tlds == null) {
-    tlds = decodeTlds(encodedTlds);
-  }
-  if (utlds == null) {
-    utlds = decodeTlds(encodedUtlds);
-  }
-  tt(Start, "'", APOSTROPHE);
-  tt(Start, "{", OPENBRACE);
-  tt(Start, "}", CLOSEBRACE);
-  tt(Start, "[", OPENBRACKET);
-  tt(Start, "]", CLOSEBRACKET);
-  tt(Start, "(", OPENPAREN);
-  tt(Start, ")", CLOSEPAREN);
-  tt(Start, "<", OPENANGLEBRACKET);
-  tt(Start, ">", CLOSEANGLEBRACKET);
-  tt(Start, "（", FULLWIDTHLEFTPAREN);
-  tt(Start, "）", FULLWIDTHRIGHTPAREN);
-  tt(Start, "「", LEFTCORNERBRACKET);
-  tt(Start, "」", RIGHTCORNERBRACKET);
-  tt(Start, "『", LEFTWHITECORNERBRACKET);
-  tt(Start, "』", RIGHTWHITECORNERBRACKET);
-  tt(Start, "＜", FULLWIDTHLESSTHAN);
-  tt(Start, "＞", FULLWIDTHGREATERTHAN);
-  tt(Start, "&", AMPERSAND);
-  tt(Start, "*", ASTERISK);
-  tt(Start, "@", AT);
-  tt(Start, "`", BACKTICK);
-  tt(Start, "^", CARET);
-  tt(Start, ":", COLON);
-  tt(Start, ",", COMMA);
-  tt(Start, "$", DOLLAR);
-  tt(Start, ".", DOT);
-  tt(Start, "=", EQUALS);
-  tt(Start, "!", EXCLAMATION);
-  tt(Start, "-", HYPHEN);
-  tt(Start, "%", PERCENT);
-  tt(Start, "|", PIPE);
-  tt(Start, "+", PLUS);
-  tt(Start, "#", POUND);
-  tt(Start, "?", QUERY);
-  tt(Start, '"', QUOTE);
-  tt(Start, "/", SLASH);
-  tt(Start, ";", SEMI);
-  tt(Start, "~", TILDE);
-  tt(Start, "_", UNDERSCORE);
-  tt(Start, "\\", BACKSLASH);
-  const Num = tr(Start, DIGIT, NUM, {
-    [numeric]: true
-  });
-  tr(Num, DIGIT, Num);
-  const Word = tr(Start, ASCII_LETTER, WORD, {
-    [ascii]: true
-  });
-  tr(Word, ASCII_LETTER, Word);
-  const UWord = tr(Start, LETTER, UWORD, {
-    [alpha]: true
-  });
-  tr(UWord, ASCII_LETTER);
-  tr(UWord, LETTER, UWord);
-  const Ws = tr(Start, SPACE, WS, {
-    [whitespace]: true
-  });
-  tt(Start, NL, NL$1, {
-    [whitespace]: true
-  });
-  tt(Ws, NL);
-  tr(Ws, SPACE, Ws);
-  const Emoji = tr(Start, EMOJI, EMOJI$1, {
-    [emoji]: true
-  });
-  tr(Emoji, EMOJI, Emoji);
-  tt(Emoji, EMOJI_VARIATION, Emoji);
-  const EmojiJoiner = tt(Emoji, EMOJI_JOINER);
-  tr(EmojiJoiner, EMOJI, Emoji);
-  const wordjr = [[ASCII_LETTER, Word]];
-  const uwordjr = [[ASCII_LETTER, null], [LETTER, UWord]];
-  for (let i = 0; i < tlds.length; i++) {
-    fastts(Start, tlds[i], TLD, WORD, wordjr);
-  }
-  for (let i = 0; i < utlds.length; i++) {
-    fastts(Start, utlds[i], UTLD, UWORD, uwordjr);
-  }
-  addToGroups(TLD, {
-    tld: true,
-    ascii: true
-  }, groups);
-  addToGroups(UTLD, {
-    utld: true,
-    alpha: true
-  }, groups);
-  fastts(Start, "file", SCHEME, WORD, wordjr);
-  fastts(Start, "mailto", SCHEME, WORD, wordjr);
-  fastts(Start, "http", SLASH_SCHEME, WORD, wordjr);
-  fastts(Start, "https", SLASH_SCHEME, WORD, wordjr);
-  fastts(Start, "ftp", SLASH_SCHEME, WORD, wordjr);
-  fastts(Start, "ftps", SLASH_SCHEME, WORD, wordjr);
-  addToGroups(SCHEME, {
-    scheme: true,
-    ascii: true
-  }, groups);
-  addToGroups(SLASH_SCHEME, {
-    slashscheme: true,
-    ascii: true
-  }, groups);
-  customSchemes = customSchemes.sort((a, b) => a[0] > b[0] ? 1 : -1);
-  for (let i = 0; i < customSchemes.length; i++) {
-    const sch = customSchemes[i][0];
-    const optionalSlashSlash = customSchemes[i][1];
-    const flags = optionalSlashSlash ? {
-      [scheme]: true
-    } : {
-      [slashscheme]: true
-    };
-    if (sch.indexOf("-") >= 0) {
-      flags[domain$1] = true;
-    } else if (!ASCII_LETTER.test(sch)) {
-      flags[numeric] = true;
-    } else if (DIGIT.test(sch)) {
-      flags[asciinumeric] = true;
-    } else {
-      flags[ascii] = true;
-    }
-    ts(Start, sch, sch, flags);
-  }
-  ts(Start, "localhost", LOCALHOST, {
-    ascii: true
-  });
-  Start.jd = new State(SYM);
+function _getDefaults() {
   return {
-    start: Start,
-    tokens: assign({
-      groups
-    }, tk)
+    async: false,
+    breaks: false,
+    extensions: null,
+    gfm: true,
+    hooks: null,
+    pedantic: false,
+    renderer: null,
+    silent: false,
+    tokenizer: null,
+    walkTokens: null
   };
 }
-function run$1(start, str) {
-  const iterable = stringToArray(str.replace(/[A-Z]/g, (c) => c.toLowerCase()));
-  const charCount = iterable.length;
-  const tokens = [];
-  let cursor = 0;
-  let charCursor = 0;
-  while (charCursor < charCount) {
-    let state = start;
-    let nextState = null;
-    let tokenLength = 0;
-    let latestAccepting = null;
-    let sinceAccepts = -1;
-    let charsSinceAccepts = -1;
-    while (charCursor < charCount && (nextState = state.go(iterable[charCursor]))) {
-      state = nextState;
-      if (state.accepts()) {
-        sinceAccepts = 0;
-        charsSinceAccepts = 0;
-        latestAccepting = state;
-      } else if (sinceAccepts >= 0) {
-        sinceAccepts += iterable[charCursor].length;
-        charsSinceAccepts++;
-      }
-      tokenLength += iterable[charCursor].length;
-      cursor += iterable[charCursor].length;
-      charCursor++;
+let _defaults = _getDefaults();
+function changeDefaults(newDefaults) {
+  _defaults = newDefaults;
+}
+const noopTest = { exec: () => null };
+function edit(regex, opt = "") {
+  let source2 = typeof regex === "string" ? regex : regex.source;
+  const obj = {
+    replace: (name, val) => {
+      let valSource = typeof val === "string" ? val : val.source;
+      valSource = valSource.replace(other.caret, "$1");
+      source2 = source2.replace(name, valSource);
+      return obj;
+    },
+    getRegex: () => {
+      return new RegExp(source2, opt);
     }
-    cursor -= sinceAccepts;
-    charCursor -= charsSinceAccepts;
-    tokenLength -= sinceAccepts;
-    tokens.push({
-      t: latestAccepting.t,
-      // token type/name
-      v: str.slice(cursor - tokenLength, cursor),
-      // string value
-      s: cursor - tokenLength,
-      // start index
-      e: cursor
-      // end index (excluding)
-    });
-  }
-  return tokens;
+  };
+  return obj;
 }
-function stringToArray(str) {
-  const result = [];
-  const len = str.length;
-  let index = 0;
-  while (index < len) {
-    let first = str.charCodeAt(index);
-    let second;
-    let char = first < 55296 || first > 56319 || index + 1 === len || (second = str.charCodeAt(index + 1)) < 56320 || second > 57343 ? str[index] : str.slice(index, index + 2);
-    result.push(char);
-    index += char.length;
+const other = {
+  codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm,
+  outputLinkReplace: /\\([\[\]])/g,
+  indentCodeCompensation: /^(\s+)(?:```)/,
+  beginningSpace: /^\s+/,
+  endingHash: /#$/,
+  startingSpaceChar: /^ /,
+  endingSpaceChar: / $/,
+  nonSpaceChar: /[^ ]/,
+  newLineCharGlobal: /\n/g,
+  tabCharGlobal: /\t/g,
+  multipleSpaceGlobal: /\s+/g,
+  blankLine: /^[ \t]*$/,
+  doubleBlankLine: /\n[ \t]*\n[ \t]*$/,
+  blockquoteStart: /^ {0,3}>/,
+  blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g,
+  blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm,
+  listReplaceTabs: /^\t+/,
+  listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g,
+  listIsTask: /^\[[ xX]\] /,
+  listReplaceTask: /^\[[ xX]\] +/,
+  anyLine: /\n.*\n/,
+  hrefBrackets: /^<(.*)>$/,
+  tableDelimiter: /[:|]/,
+  tableAlignChars: /^\||\| *$/g,
+  tableRowBlankLine: /\n[ \t]*$/,
+  tableAlignRight: /^ *-+: *$/,
+  tableAlignCenter: /^ *:-+: *$/,
+  tableAlignLeft: /^ *:-+ *$/,
+  startATag: /^<a /i,
+  endATag: /^<\/a>/i,
+  startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i,
+  endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i,
+  startAngleBracket: /^</,
+  endAngleBracket: />$/,
+  pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/,
+  unicodeAlphaNumeric: /[\p{L}\p{N}]/u,
+  escapeTest: /[&<>"']/,
+  escapeReplace: /[&<>"']/g,
+  escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/,
+  escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g,
+  unescapeTest: /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig,
+  caret: /(^|[^\[])\^/g,
+  percentDecode: /%25/g,
+  findPipe: /\|/g,
+  splitPipe: / \|/,
+  slashPipe: /\\\|/g,
+  carriageReturn: /\r\n|\r/g,
+  spaceLine: /^ +$/gm,
+  notSpaceStart: /^\S*/,
+  endingNewline: /\n$/,
+  listItemRegex: (bull) => new RegExp(`^( {0,3}${bull})((?:[	 ][^\\n]*)?(?:\\n|$))`),
+  nextBulletRegex: (indent) => new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`),
+  hrRegex: (indent) => new RegExp(`^ {0,${Math.min(3, indent - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`),
+  fencesBeginRegex: (indent) => new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:\`\`\`|~~~)`),
+  headingBeginRegex: (indent) => new RegExp(`^ {0,${Math.min(3, indent - 1)}}#`),
+  htmlBeginRegex: (indent) => new RegExp(`^ {0,${Math.min(3, indent - 1)}}<(?:[a-z].*>|!--)`, "i")
+};
+const newline = /^(?:[ \t]*(?:\n|$))+/;
+const blockCode = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/;
+const fences = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/;
+const hr = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/;
+const heading = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/;
+const bullet = /(?:[*+-]|\d{1,9}[.)])/;
+const lheading = edit(/^(?!bull |blockCode|fences|blockquote|heading|html)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).getRegex();
+const _paragraph = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/;
+const blockText = /^[^\n]+/;
+const _blockLabel = /(?!\s*\])(?:\\.|[^\[\]\\])+/;
+const def = edit(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", _blockLabel).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex();
+const list = edit(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, bullet).getRegex();
+const _tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
+const _comment = /<!--(?:-?>|[\s\S]*?(?:-->|$))/;
+const html$2 = edit("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", _comment).replace("tag", _tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
+const paragraph = edit(_paragraph).replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex();
+const blockquote = edit(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", paragraph).getRegex();
+const blockNormal = {
+  blockquote,
+  code: blockCode,
+  def,
+  fences,
+  heading,
+  hr,
+  html: html$2,
+  lheading,
+  list,
+  newline,
+  paragraph,
+  table: noopTest,
+  text: blockText
+};
+const gfmTable = edit("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex();
+const blockGfm = {
+  ...blockNormal,
+  table: gfmTable,
+  paragraph: edit(_paragraph).replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", gfmTable).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex()
+};
+const blockPedantic = {
+  ...blockNormal,
+  html: edit(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", _comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
+  def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
+  heading: /^(#{1,6})(.*)(?:\n+|$)/,
+  fences: noopTest,
+  // fences not supported
+  lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,
+  paragraph: edit(_paragraph).replace("hr", hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", lheading).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex()
+};
+const escape$1$1 = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/;
+const inlineCode = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/;
+const br = /^( {2,}|\\)\n(?!\s*$)/;
+const inlineText = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/;
+const _punctuation = /[\p{P}\p{S}]/u;
+const _punctuationOrSpace = /[\s\p{P}\p{S}]/u;
+const _notPunctuationOrSpace = /[^\s\p{P}\p{S}]/u;
+const punctuation = edit(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, _punctuationOrSpace).getRegex();
+const _punctuationGfmStrongEm = /(?!~)[\p{P}\p{S}]/u;
+const _punctuationOrSpaceGfmStrongEm = /(?!~)[\s\p{P}\p{S}]/u;
+const _notPunctuationOrSpaceGfmStrongEm = /(?:[^\s\p{P}\p{S}]|~)/u;
+const blockSkip = /\[[^[\]]*?\]\((?:\\.|[^\\\(\)]|\((?:\\.|[^\\\(\)])*\))*\)|`[^`]*?`|<[^<>]*?>/g;
+const emStrongLDelimCore = /^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/;
+const emStrongLDelim = edit(emStrongLDelimCore, "u").replace(/punct/g, _punctuation).getRegex();
+const emStrongLDelimGfm = edit(emStrongLDelimCore, "u").replace(/punct/g, _punctuationGfmStrongEm).getRegex();
+const emStrongRDelimAstCore = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)";
+const emStrongRDelimAst = edit(emStrongRDelimAstCore, "gu").replace(/notPunctSpace/g, _notPunctuationOrSpace).replace(/punctSpace/g, _punctuationOrSpace).replace(/punct/g, _punctuation).getRegex();
+const emStrongRDelimAstGfm = edit(emStrongRDelimAstCore, "gu").replace(/notPunctSpace/g, _notPunctuationOrSpaceGfmStrongEm).replace(/punctSpace/g, _punctuationOrSpaceGfmStrongEm).replace(/punct/g, _punctuationGfmStrongEm).getRegex();
+const emStrongRDelimUnd = edit("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, _notPunctuationOrSpace).replace(/punctSpace/g, _punctuationOrSpace).replace(/punct/g, _punctuation).getRegex();
+const anyPunctuation = edit(/\\(punct)/, "gu").replace(/punct/g, _punctuation).getRegex();
+const autolink = edit(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex();
+const _inlineComment = edit(_comment).replace("(?:-->|$)", "-->").getRegex();
+const tag = edit("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", _inlineComment).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex();
+const _inlineLabel = /(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
+const link = edit(/^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/).replace("label", _inlineLabel).replace("href", /<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex();
+const reflink = edit(/^!?\[(label)\]\[(ref)\]/).replace("label", _inlineLabel).replace("ref", _blockLabel).getRegex();
+const nolink = edit(/^!?\[(ref)\](?:\[\])?/).replace("ref", _blockLabel).getRegex();
+const reflinkSearch = edit("reflink|nolink(?!\\()", "g").replace("reflink", reflink).replace("nolink", nolink).getRegex();
+const inlineNormal = {
+  _backpedal: noopTest,
+  // only used for GFM url
+  anyPunctuation,
+  autolink,
+  blockSkip,
+  br,
+  code: inlineCode,
+  del: noopTest,
+  emStrongLDelim,
+  emStrongRDelimAst,
+  emStrongRDelimUnd,
+  escape: escape$1$1,
+  link,
+  nolink,
+  punctuation,
+  reflink,
+  reflinkSearch,
+  tag,
+  text: inlineText,
+  url: noopTest
+};
+const inlinePedantic = {
+  ...inlineNormal,
+  link: edit(/^!?\[(label)\]\((.*?)\)/).replace("label", _inlineLabel).getRegex(),
+  reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", _inlineLabel).getRegex()
+};
+const inlineGfm = {
+  ...inlineNormal,
+  emStrongRDelimAst: emStrongRDelimAstGfm,
+  emStrongLDelim: emStrongLDelimGfm,
+  url: edit(/^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/, "i").replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(),
+  _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,
+  del: /^(~~?)(?=[^\s~])((?:\\.|[^\\])*?(?:\\.|[^\s~\\]))\1(?=[^~]|$)/,
+  text: /^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/
+};
+const inlineBreaks = {
+  ...inlineGfm,
+  br: edit(br).replace("{2,}", "*").getRegex(),
+  text: edit(inlineGfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
+};
+const block = {
+  normal: blockNormal,
+  gfm: blockGfm,
+  pedantic: blockPedantic
+};
+const inline = {
+  normal: inlineNormal,
+  gfm: inlineGfm,
+  breaks: inlineBreaks,
+  pedantic: inlinePedantic
+};
+const escapeReplacements$1 = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;"
+};
+const getEscapeReplacement$1 = (ch) => escapeReplacements$1[ch];
+function escape$3(html2, encode) {
+  if (encode) {
+    if (other.escapeTest.test(html2)) {
+      return html2.replace(other.escapeReplace, getEscapeReplacement$1);
+    }
+  } else {
+    if (other.escapeTestNoEncode.test(html2)) {
+      return html2.replace(other.escapeReplaceNoEncode, getEscapeReplacement$1);
+    }
   }
-  return result;
+  return html2;
 }
-function fastts(state, input, t, defaultt, jr) {
-  let next;
-  const len = input.length;
-  for (let i = 0; i < len - 1; i++) {
-    const char = input[i];
-    if (state.j[char]) {
-      next = state.j[char];
+function cleanUrl(href) {
+  try {
+    href = encodeURI(href).replace(other.percentDecode, "%");
+  } catch {
+    return null;
+  }
+  return href;
+}
+function splitCells(tableRow, count) {
+  var _a;
+  const row = tableRow.replace(other.findPipe, (match, offset, str) => {
+    let escaped = false;
+    let curr = offset;
+    while (--curr >= 0 && str[curr] === "\\")
+      escaped = !escaped;
+    if (escaped) {
+      return "|";
     } else {
-      next = new State(defaultt);
-      next.jr = jr.slice();
-      state.j[char] = next;
+      return " |";
     }
-    state = next;
-  }
-  next = new State(t);
-  next.jr = jr.slice();
-  state.j[input[len - 1]] = next;
-  return next;
-}
-function decodeTlds(encoded) {
-  const words = [];
-  const stack = [];
+  }), cells = row.split(other.splitPipe);
   let i = 0;
-  let digits = "0123456789";
-  while (i < encoded.length) {
-    let popDigitCount = 0;
-    while (digits.indexOf(encoded[i + popDigitCount]) >= 0) {
-      popDigitCount++;
-    }
-    if (popDigitCount > 0) {
-      words.push(stack.join(""));
-      for (let popCount = parseInt(encoded.substring(i, i + popDigitCount), 10); popCount > 0; popCount--) {
-        stack.pop();
-      }
-      i += popDigitCount;
+  if (!cells[0].trim()) {
+    cells.shift();
+  }
+  if (cells.length > 0 && !((_a = cells.at(-1)) == null ? void 0 : _a.trim())) {
+    cells.pop();
+  }
+  if (count) {
+    if (cells.length > count) {
+      cells.splice(count);
     } else {
-      stack.push(encoded[i]);
+      while (cells.length < count)
+        cells.push("");
+    }
+  }
+  for (; i < cells.length; i++) {
+    cells[i] = cells[i].trim().replace(other.slashPipe, "|");
+  }
+  return cells;
+}
+function rtrim(str, c, invert) {
+  const l = str.length;
+  if (l === 0) {
+    return "";
+  }
+  let suffLen = 0;
+  while (suffLen < l) {
+    const currChar = str.charAt(l - suffLen - 1);
+    if (currChar === c && true) {
+      suffLen++;
+    } else {
+      break;
+    }
+  }
+  return str.slice(0, l - suffLen);
+}
+function findClosingBracket(str, b) {
+  if (str.indexOf(b[1]) === -1) {
+    return -1;
+  }
+  let level = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === "\\") {
       i++;
-    }
-  }
-  return words;
-}
-const defaults = {
-  defaultProtocol: "http",
-  events: null,
-  format: noop,
-  formatHref: noop,
-  nl2br: false,
-  tagName: "a",
-  target: null,
-  rel: null,
-  validate: true,
-  truncate: Infinity,
-  className: null,
-  attributes: null,
-  ignoreTags: [],
-  render: null
-};
-function Options$1(opts, defaultRender2) {
-  if (defaultRender2 === void 0) {
-    defaultRender2 = null;
-  }
-  let o = assign({}, defaults);
-  if (opts) {
-    o = assign(o, opts instanceof Options$1 ? opts.o : opts);
-  }
-  const ignoredTags = o.ignoreTags;
-  const uppercaseIgnoredTags = [];
-  for (let i = 0; i < ignoredTags.length; i++) {
-    uppercaseIgnoredTags.push(ignoredTags[i].toUpperCase());
-  }
-  this.o = o;
-  if (defaultRender2) {
-    this.defaultRender = defaultRender2;
-  }
-  this.ignoreTags = uppercaseIgnoredTags;
-}
-Options$1.prototype = {
-  o: defaults,
-  /**
-   * @type string[]
-   */
-  ignoreTags: [],
-  /**
-   * @param {IntermediateRepresentation} ir
-   * @returns {any}
-   */
-  defaultRender(ir) {
-    return ir;
-  },
-  /**
-   * Returns true or false based on whether a token should be displayed as a
-   * link based on the user options.
-   * @param {MultiToken} token
-   * @returns {boolean}
-   */
-  check(token) {
-    return this.get("validate", token.toString(), token);
-  },
-  // Private methods
-  /**
-   * Resolve an option's value based on the value of the option and the given
-   * params. If operator and token are specified and the target option is
-   * callable, automatically calls the function with the given argument.
-   * @template {keyof Opts} K
-   * @param {K} key Name of option to use
-   * @param {string} [operator] will be passed to the target option if it's a
-   * function. If not specified, RAW function value gets returned
-   * @param {MultiToken} [token] The token from linkify.tokenize
-   * @returns {Opts[K] | any}
-   */
-  get(key, operator, token) {
-    const isCallable = operator != null;
-    let option = this.o[key];
-    if (!option) {
-      return option;
-    }
-    if (typeof option === "object") {
-      option = token.t in option ? option[token.t] : defaults[key];
-      if (typeof option === "function" && isCallable) {
-        option = option(operator, token);
+    } else if (str[i] === b[0]) {
+      level++;
+    } else if (str[i] === b[1]) {
+      level--;
+      if (level < 0) {
+        return i;
       }
-    } else if (typeof option === "function" && isCallable) {
-      option = option(operator, token.t, token);
     }
-    return option;
-  },
-  /**
-   * @template {keyof Opts} L
-   * @param {L} key Name of options object to use
-   * @param {string} [operator]
-   * @param {MultiToken} [token]
-   * @returns {Opts[L] | any}
-   */
-  getObj(key, operator, token) {
-    let obj = this.o[key];
-    if (typeof obj === "function" && operator != null) {
-      obj = obj(operator, token.t, token);
-    }
-    return obj;
-  },
-  /**
-   * Convert the given token to a rendered element that may be added to the
-   * calling-interface's DOM
-   * @param {MultiToken} token Token to render to an HTML element
-   * @returns {any} Render result; e.g., HTML string, DOM element, React
-   *   Component, etc.
-   */
-  render(token) {
-    const ir = token.render(this);
-    const renderFn = this.get("render", null, token) || this.defaultRender;
-    return renderFn(ir, token.t, token);
   }
-};
-function noop(val) {
-  return val;
+  return -1;
 }
-function MultiToken(value, tokens) {
-  this.t = "token";
-  this.v = value;
-  this.tk = tokens;
-}
-MultiToken.prototype = {
-  isLink: false,
-  /**
-   * Return the string this token represents.
-   * @return {string}
-   */
-  toString() {
-    return this.v;
-  },
-  /**
-   * What should the value for this token be in the `href` HTML attribute?
-   * Returns the `.toString` value by default.
-   * @param {string} [scheme]
-   * @return {string}
-  */
-  toHref(scheme2) {
-    return this.toString();
-  },
-  /**
-   * @param {Options} options Formatting options
-   * @returns {string}
-   */
-  toFormattedString(options) {
-    const val = this.toString();
-    const truncate = options.get("truncate", val, this);
-    const formatted = options.get("format", val, this);
-    return truncate && formatted.length > truncate ? formatted.substring(0, truncate) + "…" : formatted;
-  },
-  /**
-   *
-   * @param {Options} options
-   * @returns {string}
-   */
-  toFormattedHref(options) {
-    return options.get("formatHref", this.toHref(options.get("defaultProtocol")), this);
-  },
-  /**
-   * The start index of this token in the original input string
-   * @returns {number}
-   */
-  startIndex() {
-    return this.tk[0].s;
-  },
-  /**
-   * The end index of this token in the original input string (up to this
-   * index but not including it)
-   * @returns {number}
-   */
-  endIndex() {
-    return this.tk[this.tk.length - 1].e;
-  },
-  /**
-  	Returns an object  of relevant values for this token, which includes keys
-  	* type - Kind of token ('url', 'email', etc.)
-  	* value - Original text
-  	* href - The value that should be added to the anchor tag's href
-  		attribute
-  		@method toObject
-  	@param {string} [protocol] `'http'` by default
-  */
-  toObject(protocol) {
-    if (protocol === void 0) {
-      protocol = defaults.defaultProtocol;
-    }
-    return {
-      type: this.t,
-      value: this.toString(),
-      isLink: this.isLink,
-      href: this.toHref(protocol),
-      start: this.startIndex(),
-      end: this.endIndex()
+function outputLink(cap, link2, raw, lexer, rules) {
+  const href = link2.href;
+  const title = link2.title || null;
+  const text2 = cap[1].replace(rules.other.outputLinkReplace, "$1");
+  if (cap[0].charAt(0) !== "!") {
+    lexer.state.inLink = true;
+    const token = {
+      type: "link",
+      raw,
+      href,
+      title,
+      text: text2,
+      tokens: lexer.inlineTokens(text2)
     };
-  },
-  /**
-   *
-   * @param {Options} options Formatting option
-   */
-  toFormattedObject(options) {
-    return {
-      type: this.t,
-      value: this.toFormattedString(options),
-      isLink: this.isLink,
-      href: this.toFormattedHref(options),
-      start: this.startIndex(),
-      end: this.endIndex()
-    };
-  },
-  /**
-   * Whether this token should be rendered as a link according to the given options
-   * @param {Options} options
-   * @returns {boolean}
-   */
-  validate(options) {
-    return options.get("validate", this.toString(), this);
-  },
-  /**
-   * Return an object that represents how this link should be rendered.
-   * @param {Options} options Formattinng options
-   */
-  render(options) {
-    const token = this;
-    const href = this.toHref(options.get("defaultProtocol"));
-    const formattedHref = options.get("formatHref", href, this);
-    const tagName = options.get("tagName", href, token);
-    const content2 = this.toFormattedString(options);
-    const attributes = {};
-    const className = options.get("className", href, token);
-    const target = options.get("target", href, token);
-    const rel2 = options.get("rel", href, token);
-    const attrs = options.getObj("attributes", href, token);
-    const eventListeners = options.getObj("events", href, token);
-    attributes.href = formattedHref;
-    if (className) {
-      attributes.class = className;
-    }
-    if (target) {
-      attributes.target = target;
-    }
-    if (rel2) {
-      attributes.rel = rel2;
-    }
-    if (attrs) {
-      assign(attributes, attrs);
-    }
-    return {
-      tagName,
-      attributes,
-      content: content2,
-      eventListeners
-    };
+    lexer.state.inLink = false;
+    return token;
   }
-};
-function createTokenClass(type, props) {
-  class Token2 extends MultiToken {
-    constructor(value, tokens) {
-      super(value, tokens);
-      this.t = type;
-    }
-  }
-  for (const p in props) {
-    Token2.prototype[p] = props[p];
-  }
-  Token2.t = type;
-  return Token2;
-}
-const Email = createTokenClass("email", {
-  isLink: true,
-  toHref() {
-    return "mailto:" + this.toString();
-  }
-});
-const Text = createTokenClass("text");
-const Nl = createTokenClass("nl");
-const Url = createTokenClass("url", {
-  isLink: true,
-  /**
-  	Lowercases relevant parts of the domain and adds the protocol if
-  	required. Note that this will not escape unsafe HTML characters in the
-  	URL.
-  		@param {string} [scheme] default scheme (e.g., 'https')
-  	@return {string} the full href
-  */
-  toHref(scheme2) {
-    if (scheme2 === void 0) {
-      scheme2 = defaults.defaultProtocol;
-    }
-    return this.hasProtocol() ? this.v : `${scheme2}://${this.v}`;
-  },
-  /**
-   * Check whether this URL token has a protocol
-   * @return {boolean}
-   */
-  hasProtocol() {
-    const tokens = this.tk;
-    return tokens.length >= 2 && tokens[0].t !== LOCALHOST && tokens[1].t === COLON;
-  }
-});
-const makeState = (arg) => new State(arg);
-function init$1(_ref) {
-  let {
-    groups
-  } = _ref;
-  const qsAccepting = groups.domain.concat([AMPERSAND, ASTERISK, AT, BACKSLASH, BACKTICK, CARET, DOLLAR, EQUALS, HYPHEN, NUM, PERCENT, PIPE, PLUS, POUND, SLASH, SYM, TILDE, UNDERSCORE]);
-  const qsNonAccepting = [APOSTROPHE, COLON, COMMA, DOT, EXCLAMATION, QUERY, QUOTE, SEMI, OPENANGLEBRACKET, CLOSEANGLEBRACKET, OPENBRACE, CLOSEBRACE, CLOSEBRACKET, OPENBRACKET, OPENPAREN, CLOSEPAREN, FULLWIDTHLEFTPAREN, FULLWIDTHRIGHTPAREN, LEFTCORNERBRACKET, RIGHTCORNERBRACKET, LEFTWHITECORNERBRACKET, RIGHTWHITECORNERBRACKET, FULLWIDTHLESSTHAN, FULLWIDTHGREATERTHAN];
-  const localpartAccepting = [AMPERSAND, APOSTROPHE, ASTERISK, BACKSLASH, BACKTICK, CARET, DOLLAR, EQUALS, HYPHEN, OPENBRACE, CLOSEBRACE, PERCENT, PIPE, PLUS, POUND, QUERY, SLASH, SYM, TILDE, UNDERSCORE];
-  const Start = makeState();
-  const Localpart = tt(Start, TILDE);
-  ta(Localpart, localpartAccepting, Localpart);
-  ta(Localpart, groups.domain, Localpart);
-  const Domain = makeState(), Scheme = makeState(), SlashScheme = makeState();
-  ta(Start, groups.domain, Domain);
-  ta(Start, groups.scheme, Scheme);
-  ta(Start, groups.slashscheme, SlashScheme);
-  ta(Domain, localpartAccepting, Localpart);
-  ta(Domain, groups.domain, Domain);
-  const LocalpartAt = tt(Domain, AT);
-  tt(Localpart, AT, LocalpartAt);
-  tt(Scheme, AT, LocalpartAt);
-  tt(SlashScheme, AT, LocalpartAt);
-  const LocalpartDot = tt(Localpart, DOT);
-  ta(LocalpartDot, localpartAccepting, Localpart);
-  ta(LocalpartDot, groups.domain, Localpart);
-  const EmailDomain = makeState();
-  ta(LocalpartAt, groups.domain, EmailDomain);
-  ta(EmailDomain, groups.domain, EmailDomain);
-  const EmailDomainDot = tt(EmailDomain, DOT);
-  ta(EmailDomainDot, groups.domain, EmailDomain);
-  const Email$1 = makeState(Email);
-  ta(EmailDomainDot, groups.tld, Email$1);
-  ta(EmailDomainDot, groups.utld, Email$1);
-  tt(LocalpartAt, LOCALHOST, Email$1);
-  const EmailDomainHyphen = tt(EmailDomain, HYPHEN);
-  ta(EmailDomainHyphen, groups.domain, EmailDomain);
-  ta(Email$1, groups.domain, EmailDomain);
-  tt(Email$1, DOT, EmailDomainDot);
-  tt(Email$1, HYPHEN, EmailDomainHyphen);
-  const EmailColon = tt(Email$1, COLON);
-  ta(EmailColon, groups.numeric, Email);
-  const DomainHyphen = tt(Domain, HYPHEN);
-  const DomainDot = tt(Domain, DOT);
-  ta(DomainHyphen, groups.domain, Domain);
-  ta(DomainDot, localpartAccepting, Localpart);
-  ta(DomainDot, groups.domain, Domain);
-  const DomainDotTld = makeState(Url);
-  ta(DomainDot, groups.tld, DomainDotTld);
-  ta(DomainDot, groups.utld, DomainDotTld);
-  ta(DomainDotTld, groups.domain, Domain);
-  ta(DomainDotTld, localpartAccepting, Localpart);
-  tt(DomainDotTld, DOT, DomainDot);
-  tt(DomainDotTld, HYPHEN, DomainHyphen);
-  tt(DomainDotTld, AT, LocalpartAt);
-  const DomainDotTldColon = tt(DomainDotTld, COLON);
-  const DomainDotTldColonPort = makeState(Url);
-  ta(DomainDotTldColon, groups.numeric, DomainDotTldColonPort);
-  const Url$1 = makeState(Url);
-  const UrlNonaccept = makeState();
-  ta(Url$1, qsAccepting, Url$1);
-  ta(Url$1, qsNonAccepting, UrlNonaccept);
-  ta(UrlNonaccept, qsAccepting, Url$1);
-  ta(UrlNonaccept, qsNonAccepting, UrlNonaccept);
-  tt(DomainDotTld, SLASH, Url$1);
-  tt(DomainDotTldColonPort, SLASH, Url$1);
-  const SchemeColon = tt(Scheme, COLON);
-  const SlashSchemeColon = tt(SlashScheme, COLON);
-  const SlashSchemeColonSlash = tt(SlashSchemeColon, SLASH);
-  const UriPrefix = tt(SlashSchemeColonSlash, SLASH);
-  ta(Scheme, groups.domain, Domain);
-  tt(Scheme, DOT, DomainDot);
-  tt(Scheme, HYPHEN, DomainHyphen);
-  ta(SlashScheme, groups.domain, Domain);
-  tt(SlashScheme, DOT, DomainDot);
-  tt(SlashScheme, HYPHEN, DomainHyphen);
-  ta(SchemeColon, groups.domain, Url$1);
-  tt(SchemeColon, SLASH, Url$1);
-  ta(UriPrefix, groups.domain, Url$1);
-  ta(UriPrefix, qsAccepting, Url$1);
-  tt(UriPrefix, SLASH, Url$1);
-  const bracketPairs = [
-    [OPENBRACE, CLOSEBRACE],
-    // {}
-    [OPENBRACKET, CLOSEBRACKET],
-    // []
-    [OPENPAREN, CLOSEPAREN],
-    // ()
-    [OPENANGLEBRACKET, CLOSEANGLEBRACKET],
-    // <>
-    [FULLWIDTHLEFTPAREN, FULLWIDTHRIGHTPAREN],
-    // （）
-    [LEFTCORNERBRACKET, RIGHTCORNERBRACKET],
-    // 「」
-    [LEFTWHITECORNERBRACKET, RIGHTWHITECORNERBRACKET],
-    // 『』
-    [FULLWIDTHLESSTHAN, FULLWIDTHGREATERTHAN]
-    // ＜＞
-  ];
-  for (let i = 0; i < bracketPairs.length; i++) {
-    const [OPEN, CLOSE] = bracketPairs[i];
-    const UrlOpen = tt(Url$1, OPEN);
-    tt(UrlNonaccept, OPEN, UrlOpen);
-    tt(UrlOpen, CLOSE, Url$1);
-    const UrlOpenQ = makeState(Url);
-    ta(UrlOpen, qsAccepting, UrlOpenQ);
-    const UrlOpenSyms = makeState();
-    ta(UrlOpen, qsNonAccepting);
-    ta(UrlOpenQ, qsAccepting, UrlOpenQ);
-    ta(UrlOpenQ, qsNonAccepting, UrlOpenSyms);
-    ta(UrlOpenSyms, qsAccepting, UrlOpenQ);
-    ta(UrlOpenSyms, qsNonAccepting, UrlOpenSyms);
-    tt(UrlOpenQ, CLOSE, Url$1);
-    tt(UrlOpenSyms, CLOSE, Url$1);
-  }
-  tt(Start, LOCALHOST, DomainDotTld);
-  tt(Start, NL$1, Nl);
   return {
-    start: Start,
-    tokens: tk
+    type: "image",
+    raw,
+    href,
+    title,
+    text: text2
   };
 }
-function run(start, input, tokens) {
-  let len = tokens.length;
-  let cursor = 0;
-  let multis = [];
-  let textTokens = [];
-  while (cursor < len) {
-    let state = start;
-    let secondState = null;
-    let nextState = null;
-    let multiLength = 0;
-    let latestAccepting = null;
-    let sinceAccepts = -1;
-    while (cursor < len && !(secondState = state.go(tokens[cursor].t))) {
-      textTokens.push(tokens[cursor++]);
+function indentCodeCompensation(raw, text2, rules) {
+  const matchIndentToCode = raw.match(rules.other.indentCodeCompensation);
+  if (matchIndentToCode === null) {
+    return text2;
+  }
+  const indentToCode = matchIndentToCode[1];
+  return text2.split("\n").map((node) => {
+    const matchIndentInNode = node.match(rules.other.beginningSpace);
+    if (matchIndentInNode === null) {
+      return node;
     }
-    while (cursor < len && (nextState = secondState || state.go(tokens[cursor].t))) {
-      secondState = null;
-      state = nextState;
-      if (state.accepts()) {
-        sinceAccepts = 0;
-        latestAccepting = state;
-      } else if (sinceAccepts >= 0) {
-        sinceAccepts++;
-      }
-      cursor++;
-      multiLength++;
+    const [indentInNode] = matchIndentInNode;
+    if (indentInNode.length >= indentToCode.length) {
+      return node.slice(indentToCode.length);
     }
-    if (sinceAccepts < 0) {
-      cursor -= multiLength;
-      if (cursor < len) {
-        textTokens.push(tokens[cursor]);
-        cursor++;
-      }
-    } else {
-      if (textTokens.length > 0) {
-        multis.push(initMultiToken(Text, input, textTokens));
-        textTokens = [];
-      }
-      cursor -= sinceAccepts;
-      multiLength -= sinceAccepts;
-      const Multi = latestAccepting.t;
-      const subtokens = tokens.slice(cursor - multiLength, cursor);
-      multis.push(initMultiToken(Multi, input, subtokens));
-    }
+    return node;
+  }).join("\n");
+}
+class _Tokenizer {
+  // set by the lexer
+  constructor(options) {
+    __publicField(this, "options");
+    __publicField(this, "rules");
+    // set by the lexer
+    __publicField(this, "lexer");
+    this.options = options || _defaults;
   }
-  if (textTokens.length > 0) {
-    multis.push(initMultiToken(Text, input, textTokens));
-  }
-  return multis;
-}
-function initMultiToken(Multi, input, tokens) {
-  const startIdx = tokens[0].s;
-  const endIdx = tokens[tokens.length - 1].e;
-  const value = input.slice(startIdx, endIdx);
-  return new Multi(value, tokens);
-}
-const INIT = {
-  scanner: null,
-  parser: null,
-  tokenQueue: [],
-  pluginQueue: [],
-  customSchemes: [],
-  initialized: false
-};
-function init() {
-  INIT.scanner = init$2(INIT.customSchemes);
-  for (let i = 0; i < INIT.tokenQueue.length; i++) {
-    INIT.tokenQueue[i][1]({
-      scanner: INIT.scanner
-    });
-  }
-  INIT.parser = init$1(INIT.scanner.tokens);
-  for (let i = 0; i < INIT.pluginQueue.length; i++) {
-    INIT.pluginQueue[i][1]({
-      scanner: INIT.scanner,
-      parser: INIT.parser
-    });
-  }
-  INIT.initialized = true;
-}
-function tokenize$1(str) {
-  if (!INIT.initialized) {
-    init();
-  }
-  return run(INIT.parser.start, str, run$1(INIT.scanner.start, str));
-}
-var HTML5NamedCharRefs = {
-  // We don't need the complete named character reference because linkifyHtml
-  // does not modify the escape sequences. We do need &nbsp; so that
-  // whitespace is parsed properly. Other types of whitespace should already
-  // be accounted for. &gt; &lt; and &quot; are also frequently relevant ones
-  amp: "&",
-  gt: ">",
-  lt: "<",
-  nbsp: " ",
-  quot: '"'
-};
-var HEXCHARCODE = /^#[xX]([A-Fa-f0-9]+)$/;
-var CHARCODE = /^#([0-9]+)$/;
-var NAMED = /^([A-Za-z0-9]+)$/;
-var EntityParser = (
-  /** @class */
-  function() {
-    function EntityParser2(named) {
-      this.named = named;
-    }
-    EntityParser2.prototype.parse = function(entity) {
-      if (!entity) {
-        return;
-      }
-      var matches = entity.match(HEXCHARCODE);
-      if (matches) {
-        return String.fromCharCode(parseInt(matches[1], 16));
-      }
-      matches = entity.match(CHARCODE);
-      if (matches) {
-        return String.fromCharCode(parseInt(matches[1], 10));
-      }
-      matches = entity.match(NAMED);
-      if (matches) {
-        return this.named[matches[1]] || "&" + matches[1] + ";";
-      }
-    };
-    return EntityParser2;
-  }()
-);
-var WSP = /[\t\n\f ]/;
-var ALPHA = /[A-Za-z]/;
-var CRLF = /\r\n?/g;
-function isSpace(char) {
-  return WSP.test(char);
-}
-function isAlpha(char) {
-  return ALPHA.test(char);
-}
-function preprocessInput(input) {
-  return input.replace(CRLF, "\n");
-}
-var EventedTokenizer = (
-  /** @class */
-  function() {
-    function EventedTokenizer2(delegate, entityParser, mode) {
-      if (mode === void 0) {
-        mode = "precompile";
-      }
-      this.delegate = delegate;
-      this.entityParser = entityParser;
-      this.mode = mode;
-      this.state = "beforeData";
-      this.line = -1;
-      this.column = -1;
-      this.input = "";
-      this.index = -1;
-      this.tagNameBuffer = "";
-      this.states = {
-        beforeData: function() {
-          var char = this.peek();
-          if (char === "<" && !this.isIgnoredEndTag()) {
-            this.transitionTo(
-              "tagOpen"
-              /* tagOpen */
-            );
-            this.markTagStart();
-            this.consume();
-          } else {
-            if (this.mode === "precompile" && char === "\n") {
-              var tag = this.tagNameBuffer.toLowerCase();
-              if (tag === "pre" || tag === "textarea") {
-                this.consume();
-              }
-            }
-            this.transitionTo(
-              "data"
-              /* data */
-            );
-            this.delegate.beginData();
-          }
-        },
-        data: function() {
-          var char = this.peek();
-          var tag = this.tagNameBuffer;
-          if (char === "<" && !this.isIgnoredEndTag()) {
-            this.delegate.finishData();
-            this.transitionTo(
-              "tagOpen"
-              /* tagOpen */
-            );
-            this.markTagStart();
-            this.consume();
-          } else if (char === "&" && tag !== "script" && tag !== "style") {
-            this.consume();
-            this.delegate.appendToData(this.consumeCharRef() || "&");
-          } else {
-            this.consume();
-            this.delegate.appendToData(char);
-          }
-        },
-        tagOpen: function() {
-          var char = this.consume();
-          if (char === "!") {
-            this.transitionTo(
-              "markupDeclarationOpen"
-              /* markupDeclarationOpen */
-            );
-          } else if (char === "/") {
-            this.transitionTo(
-              "endTagOpen"
-              /* endTagOpen */
-            );
-          } else if (char === "@" || char === ":" || isAlpha(char)) {
-            this.transitionTo(
-              "tagName"
-              /* tagName */
-            );
-            this.tagNameBuffer = "";
-            this.delegate.beginStartTag();
-            this.appendToTagName(char);
-          }
-        },
-        markupDeclarationOpen: function() {
-          var char = this.consume();
-          if (char === "-" && this.peek() === "-") {
-            this.consume();
-            this.transitionTo(
-              "commentStart"
-              /* commentStart */
-            );
-            this.delegate.beginComment();
-          } else {
-            var maybeDoctype = char.toUpperCase() + this.input.substring(this.index, this.index + 6).toUpperCase();
-            if (maybeDoctype === "DOCTYPE") {
-              this.consume();
-              this.consume();
-              this.consume();
-              this.consume();
-              this.consume();
-              this.consume();
-              this.transitionTo(
-                "doctype"
-                /* doctype */
-              );
-              if (this.delegate.beginDoctype) this.delegate.beginDoctype();
-            }
-          }
-        },
-        doctype: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "beforeDoctypeName"
-              /* beforeDoctypeName */
-            );
-          }
-        },
-        beforeDoctypeName: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            return;
-          } else {
-            this.transitionTo(
-              "doctypeName"
-              /* doctypeName */
-            );
-            if (this.delegate.appendToDoctypeName) this.delegate.appendToDoctypeName(char.toLowerCase());
-          }
-        },
-        doctypeName: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "afterDoctypeName"
-              /* afterDoctypeName */
-            );
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            if (this.delegate.appendToDoctypeName) this.delegate.appendToDoctypeName(char.toLowerCase());
-          }
-        },
-        afterDoctypeName: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            return;
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            var nextSixChars = char.toUpperCase() + this.input.substring(this.index, this.index + 5).toUpperCase();
-            var isPublic = nextSixChars.toUpperCase() === "PUBLIC";
-            var isSystem = nextSixChars.toUpperCase() === "SYSTEM";
-            if (isPublic || isSystem) {
-              this.consume();
-              this.consume();
-              this.consume();
-              this.consume();
-              this.consume();
-              this.consume();
-            }
-            if (isPublic) {
-              this.transitionTo(
-                "afterDoctypePublicKeyword"
-                /* afterDoctypePublicKeyword */
-              );
-            } else if (isSystem) {
-              this.transitionTo(
-                "afterDoctypeSystemKeyword"
-                /* afterDoctypeSystemKeyword */
-              );
-            }
-          }
-        },
-        afterDoctypePublicKeyword: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "beforeDoctypePublicIdentifier"
-              /* beforeDoctypePublicIdentifier */
-            );
-            this.consume();
-          } else if (char === '"') {
-            this.transitionTo(
-              "doctypePublicIdentifierDoubleQuoted"
-              /* doctypePublicIdentifierDoubleQuoted */
-            );
-            this.consume();
-          } else if (char === "'") {
-            this.transitionTo(
-              "doctypePublicIdentifierSingleQuoted"
-              /* doctypePublicIdentifierSingleQuoted */
-            );
-            this.consume();
-          } else if (char === ">") {
-            this.consume();
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          }
-        },
-        doctypePublicIdentifierDoubleQuoted: function() {
-          var char = this.consume();
-          if (char === '"') {
-            this.transitionTo(
-              "afterDoctypePublicIdentifier"
-              /* afterDoctypePublicIdentifier */
-            );
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            if (this.delegate.appendToDoctypePublicIdentifier) this.delegate.appendToDoctypePublicIdentifier(char);
-          }
-        },
-        doctypePublicIdentifierSingleQuoted: function() {
-          var char = this.consume();
-          if (char === "'") {
-            this.transitionTo(
-              "afterDoctypePublicIdentifier"
-              /* afterDoctypePublicIdentifier */
-            );
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            if (this.delegate.appendToDoctypePublicIdentifier) this.delegate.appendToDoctypePublicIdentifier(char);
-          }
-        },
-        afterDoctypePublicIdentifier: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "betweenDoctypePublicAndSystemIdentifiers"
-              /* betweenDoctypePublicAndSystemIdentifiers */
-            );
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else if (char === '"') {
-            this.transitionTo(
-              "doctypeSystemIdentifierDoubleQuoted"
-              /* doctypeSystemIdentifierDoubleQuoted */
-            );
-          } else if (char === "'") {
-            this.transitionTo(
-              "doctypeSystemIdentifierSingleQuoted"
-              /* doctypeSystemIdentifierSingleQuoted */
-            );
-          }
-        },
-        betweenDoctypePublicAndSystemIdentifiers: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            return;
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else if (char === '"') {
-            this.transitionTo(
-              "doctypeSystemIdentifierDoubleQuoted"
-              /* doctypeSystemIdentifierDoubleQuoted */
-            );
-          } else if (char === "'") {
-            this.transitionTo(
-              "doctypeSystemIdentifierSingleQuoted"
-              /* doctypeSystemIdentifierSingleQuoted */
-            );
-          }
-        },
-        doctypeSystemIdentifierDoubleQuoted: function() {
-          var char = this.consume();
-          if (char === '"') {
-            this.transitionTo(
-              "afterDoctypeSystemIdentifier"
-              /* afterDoctypeSystemIdentifier */
-            );
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            if (this.delegate.appendToDoctypeSystemIdentifier) this.delegate.appendToDoctypeSystemIdentifier(char);
-          }
-        },
-        doctypeSystemIdentifierSingleQuoted: function() {
-          var char = this.consume();
-          if (char === "'") {
-            this.transitionTo(
-              "afterDoctypeSystemIdentifier"
-              /* afterDoctypeSystemIdentifier */
-            );
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            if (this.delegate.appendToDoctypeSystemIdentifier) this.delegate.appendToDoctypeSystemIdentifier(char);
-          }
-        },
-        afterDoctypeSystemIdentifier: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            return;
-          } else if (char === ">") {
-            if (this.delegate.endDoctype) this.delegate.endDoctype();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          }
-        },
-        commentStart: function() {
-          var char = this.consume();
-          if (char === "-") {
-            this.transitionTo(
-              "commentStartDash"
-              /* commentStartDash */
-            );
-          } else if (char === ">") {
-            this.delegate.finishComment();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.delegate.appendToCommentData(char);
-            this.transitionTo(
-              "comment"
-              /* comment */
-            );
-          }
-        },
-        commentStartDash: function() {
-          var char = this.consume();
-          if (char === "-") {
-            this.transitionTo(
-              "commentEnd"
-              /* commentEnd */
-            );
-          } else if (char === ">") {
-            this.delegate.finishComment();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.delegate.appendToCommentData("-");
-            this.transitionTo(
-              "comment"
-              /* comment */
-            );
-          }
-        },
-        comment: function() {
-          var char = this.consume();
-          if (char === "-") {
-            this.transitionTo(
-              "commentEndDash"
-              /* commentEndDash */
-            );
-          } else {
-            this.delegate.appendToCommentData(char);
-          }
-        },
-        commentEndDash: function() {
-          var char = this.consume();
-          if (char === "-") {
-            this.transitionTo(
-              "commentEnd"
-              /* commentEnd */
-            );
-          } else {
-            this.delegate.appendToCommentData("-" + char);
-            this.transitionTo(
-              "comment"
-              /* comment */
-            );
-          }
-        },
-        commentEnd: function() {
-          var char = this.consume();
-          if (char === ">") {
-            this.delegate.finishComment();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.delegate.appendToCommentData("--" + char);
-            this.transitionTo(
-              "comment"
-              /* comment */
-            );
-          }
-        },
-        tagName: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "beforeAttributeName"
-              /* beforeAttributeName */
-            );
-          } else if (char === "/") {
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-          } else if (char === ">") {
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.appendToTagName(char);
-          }
-        },
-        endTagName: function() {
-          var char = this.consume();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "beforeAttributeName"
-              /* beforeAttributeName */
-            );
-            this.tagNameBuffer = "";
-          } else if (char === "/") {
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-            this.tagNameBuffer = "";
-          } else if (char === ">") {
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-            this.tagNameBuffer = "";
-          } else {
-            this.appendToTagName(char);
-          }
-        },
-        beforeAttributeName: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.consume();
-            return;
-          } else if (char === "/") {
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-            this.consume();
-          } else if (char === ">") {
-            this.consume();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else if (char === "=") {
-            this.delegate.reportSyntaxError("attribute name cannot start with equals sign");
-            this.transitionTo(
-              "attributeName"
-              /* attributeName */
-            );
-            this.delegate.beginAttribute();
-            this.consume();
-            this.delegate.appendToAttributeName(char);
-          } else {
-            this.transitionTo(
-              "attributeName"
-              /* attributeName */
-            );
-            this.delegate.beginAttribute();
-          }
-        },
-        attributeName: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.transitionTo(
-              "afterAttributeName"
-              /* afterAttributeName */
-            );
-            this.consume();
-          } else if (char === "/") {
-            this.delegate.beginAttributeValue(false);
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-          } else if (char === "=") {
-            this.transitionTo(
-              "beforeAttributeValue"
-              /* beforeAttributeValue */
-            );
-            this.consume();
-          } else if (char === ">") {
-            this.delegate.beginAttributeValue(false);
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else if (char === '"' || char === "'" || char === "<") {
-            this.delegate.reportSyntaxError(char + " is not a valid character within attribute names");
-            this.consume();
-            this.delegate.appendToAttributeName(char);
-          } else {
-            this.consume();
-            this.delegate.appendToAttributeName(char);
-          }
-        },
-        afterAttributeName: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.consume();
-            return;
-          } else if (char === "/") {
-            this.delegate.beginAttributeValue(false);
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-          } else if (char === "=") {
-            this.consume();
-            this.transitionTo(
-              "beforeAttributeValue"
-              /* beforeAttributeValue */
-            );
-          } else if (char === ">") {
-            this.delegate.beginAttributeValue(false);
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.delegate.beginAttributeValue(false);
-            this.delegate.finishAttributeValue();
-            this.transitionTo(
-              "attributeName"
-              /* attributeName */
-            );
-            this.delegate.beginAttribute();
-            this.consume();
-            this.delegate.appendToAttributeName(char);
-          }
-        },
-        beforeAttributeValue: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.consume();
-          } else if (char === '"') {
-            this.transitionTo(
-              "attributeValueDoubleQuoted"
-              /* attributeValueDoubleQuoted */
-            );
-            this.delegate.beginAttributeValue(true);
-            this.consume();
-          } else if (char === "'") {
-            this.transitionTo(
-              "attributeValueSingleQuoted"
-              /* attributeValueSingleQuoted */
-            );
-            this.delegate.beginAttributeValue(true);
-            this.consume();
-          } else if (char === ">") {
-            this.delegate.beginAttributeValue(false);
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.transitionTo(
-              "attributeValueUnquoted"
-              /* attributeValueUnquoted */
-            );
-            this.delegate.beginAttributeValue(false);
-            this.consume();
-            this.delegate.appendToAttributeValue(char);
-          }
-        },
-        attributeValueDoubleQuoted: function() {
-          var char = this.consume();
-          if (char === '"') {
-            this.delegate.finishAttributeValue();
-            this.transitionTo(
-              "afterAttributeValueQuoted"
-              /* afterAttributeValueQuoted */
-            );
-          } else if (char === "&") {
-            this.delegate.appendToAttributeValue(this.consumeCharRef() || "&");
-          } else {
-            this.delegate.appendToAttributeValue(char);
-          }
-        },
-        attributeValueSingleQuoted: function() {
-          var char = this.consume();
-          if (char === "'") {
-            this.delegate.finishAttributeValue();
-            this.transitionTo(
-              "afterAttributeValueQuoted"
-              /* afterAttributeValueQuoted */
-            );
-          } else if (char === "&") {
-            this.delegate.appendToAttributeValue(this.consumeCharRef() || "&");
-          } else {
-            this.delegate.appendToAttributeValue(char);
-          }
-        },
-        attributeValueUnquoted: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.transitionTo(
-              "beforeAttributeName"
-              /* beforeAttributeName */
-            );
-          } else if (char === "/") {
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-          } else if (char === "&") {
-            this.consume();
-            this.delegate.appendToAttributeValue(this.consumeCharRef() || "&");
-          } else if (char === ">") {
-            this.delegate.finishAttributeValue();
-            this.consume();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.consume();
-            this.delegate.appendToAttributeValue(char);
-          }
-        },
-        afterAttributeValueQuoted: function() {
-          var char = this.peek();
-          if (isSpace(char)) {
-            this.consume();
-            this.transitionTo(
-              "beforeAttributeName"
-              /* beforeAttributeName */
-            );
-          } else if (char === "/") {
-            this.consume();
-            this.transitionTo(
-              "selfClosingStartTag"
-              /* selfClosingStartTag */
-            );
-          } else if (char === ">") {
-            this.consume();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.transitionTo(
-              "beforeAttributeName"
-              /* beforeAttributeName */
-            );
-          }
-        },
-        selfClosingStartTag: function() {
-          var char = this.peek();
-          if (char === ">") {
-            this.consume();
-            this.delegate.markTagAsSelfClosing();
-            this.delegate.finishTag();
-            this.transitionTo(
-              "beforeData"
-              /* beforeData */
-            );
-          } else {
-            this.transitionTo(
-              "beforeAttributeName"
-              /* beforeAttributeName */
-            );
-          }
-        },
-        endTagOpen: function() {
-          var char = this.consume();
-          if (char === "@" || char === ":" || isAlpha(char)) {
-            this.transitionTo(
-              "endTagName"
-              /* endTagName */
-            );
-            this.tagNameBuffer = "";
-            this.delegate.beginEndTag();
-            this.appendToTagName(char);
-          }
-        }
+  space(src) {
+    const cap = this.rules.block.newline.exec(src);
+    if (cap && cap[0].length > 0) {
+      return {
+        type: "space",
+        raw: cap[0]
       };
-      this.reset();
     }
-    EventedTokenizer2.prototype.reset = function() {
-      this.transitionTo(
-        "beforeData"
-        /* beforeData */
-      );
-      this.input = "";
-      this.tagNameBuffer = "";
-      this.index = 0;
-      this.line = 1;
-      this.column = 0;
-      this.delegate.reset();
-    };
-    EventedTokenizer2.prototype.transitionTo = function(state) {
-      this.state = state;
-    };
-    EventedTokenizer2.prototype.tokenize = function(input) {
-      this.reset();
-      this.tokenizePart(input);
-      this.tokenizeEOF();
-    };
-    EventedTokenizer2.prototype.tokenizePart = function(input) {
-      this.input += preprocessInput(input);
-      while (this.index < this.input.length) {
-        var handler = this.states[this.state];
-        if (handler !== void 0) {
-          handler.call(this);
-        } else {
-          throw new Error("unhandled state " + this.state);
+  }
+  code(src) {
+    const cap = this.rules.block.code.exec(src);
+    if (cap) {
+      const text2 = cap[0].replace(this.rules.other.codeRemoveIndent, "");
+      return {
+        type: "code",
+        raw: cap[0],
+        codeBlockStyle: "indented",
+        text: !this.options.pedantic ? rtrim(text2, "\n") : text2
+      };
+    }
+  }
+  fences(src) {
+    const cap = this.rules.block.fences.exec(src);
+    if (cap) {
+      const raw = cap[0];
+      const text2 = indentCodeCompensation(raw, cap[3] || "", this.rules);
+      return {
+        type: "code",
+        raw,
+        lang: cap[2] ? cap[2].trim().replace(this.rules.inline.anyPunctuation, "$1") : cap[2],
+        text: text2
+      };
+    }
+  }
+  heading(src) {
+    const cap = this.rules.block.heading.exec(src);
+    if (cap) {
+      let text2 = cap[2].trim();
+      if (this.rules.other.endingHash.test(text2)) {
+        const trimmed = rtrim(text2, "#");
+        if (this.options.pedantic) {
+          text2 = trimmed.trim();
+        } else if (!trimmed || this.rules.other.endingSpaceChar.test(trimmed)) {
+          text2 = trimmed.trim();
         }
       }
-    };
-    EventedTokenizer2.prototype.tokenizeEOF = function() {
-      this.flushData();
-    };
-    EventedTokenizer2.prototype.flushData = function() {
-      if (this.state === "data") {
-        this.delegate.finishData();
-        this.transitionTo(
-          "beforeData"
-          /* beforeData */
-        );
+      return {
+        type: "heading",
+        raw: cap[0],
+        depth: cap[1].length,
+        text: text2,
+        tokens: this.lexer.inline(text2)
+      };
+    }
+  }
+  hr(src) {
+    const cap = this.rules.block.hr.exec(src);
+    if (cap) {
+      return {
+        type: "hr",
+        raw: rtrim(cap[0], "\n")
+      };
+    }
+  }
+  blockquote(src) {
+    const cap = this.rules.block.blockquote.exec(src);
+    if (cap) {
+      let lines = rtrim(cap[0], "\n").split("\n");
+      let raw = "";
+      let text2 = "";
+      const tokens = [];
+      while (lines.length > 0) {
+        let inBlockquote = false;
+        const currentLines = [];
+        let i;
+        for (i = 0; i < lines.length; i++) {
+          if (this.rules.other.blockquoteStart.test(lines[i])) {
+            currentLines.push(lines[i]);
+            inBlockquote = true;
+          } else if (!inBlockquote) {
+            currentLines.push(lines[i]);
+          } else {
+            break;
+          }
+        }
+        lines = lines.slice(i);
+        const currentRaw = currentLines.join("\n");
+        const currentText = currentRaw.replace(this.rules.other.blockquoteSetextReplace, "\n    $1").replace(this.rules.other.blockquoteSetextReplace2, "");
+        raw = raw ? `${raw}
+${currentRaw}` : currentRaw;
+        text2 = text2 ? `${text2}
+${currentText}` : currentText;
+        const top = this.lexer.state.top;
+        this.lexer.state.top = true;
+        this.lexer.blockTokens(currentText, tokens, true);
+        this.lexer.state.top = top;
+        if (lines.length === 0) {
+          break;
+        }
+        const lastToken = tokens.at(-1);
+        if ((lastToken == null ? void 0 : lastToken.type) === "code") {
+          break;
+        } else if ((lastToken == null ? void 0 : lastToken.type) === "blockquote") {
+          const oldToken = lastToken;
+          const newText = oldToken.raw + "\n" + lines.join("\n");
+          const newToken = this.blockquote(newText);
+          tokens[tokens.length - 1] = newToken;
+          raw = raw.substring(0, raw.length - oldToken.raw.length) + newToken.raw;
+          text2 = text2.substring(0, text2.length - oldToken.text.length) + newToken.text;
+          break;
+        } else if ((lastToken == null ? void 0 : lastToken.type) === "list") {
+          const oldToken = lastToken;
+          const newText = oldToken.raw + "\n" + lines.join("\n");
+          const newToken = this.list(newText);
+          tokens[tokens.length - 1] = newToken;
+          raw = raw.substring(0, raw.length - lastToken.raw.length) + newToken.raw;
+          text2 = text2.substring(0, text2.length - oldToken.raw.length) + newToken.raw;
+          lines = newText.substring(tokens.at(-1).raw.length).split("\n");
+          continue;
+        }
       }
-    };
-    EventedTokenizer2.prototype.peek = function() {
-      return this.input.charAt(this.index);
-    };
-    EventedTokenizer2.prototype.consume = function() {
-      var char = this.peek();
-      this.index++;
-      if (char === "\n") {
-        this.line++;
-        this.column = 0;
+      return {
+        type: "blockquote",
+        raw,
+        tokens,
+        text: text2
+      };
+    }
+  }
+  list(src) {
+    let cap = this.rules.block.list.exec(src);
+    if (cap) {
+      let bull = cap[1].trim();
+      const isordered = bull.length > 1;
+      const list2 = {
+        type: "list",
+        raw: "",
+        ordered: isordered,
+        start: isordered ? +bull.slice(0, -1) : "",
+        loose: false,
+        items: []
+      };
+      bull = isordered ? `\\d{1,9}\\${bull.slice(-1)}` : `\\${bull}`;
+      if (this.options.pedantic) {
+        bull = isordered ? bull : "[*+-]";
+      }
+      const itemRegex = this.rules.other.listItemRegex(bull);
+      let endsWithBlankLine = false;
+      while (src) {
+        let endEarly = false;
+        let raw = "";
+        let itemContents = "";
+        if (!(cap = itemRegex.exec(src))) {
+          break;
+        }
+        if (this.rules.block.hr.test(src)) {
+          break;
+        }
+        raw = cap[0];
+        src = src.substring(raw.length);
+        let line = cap[2].split("\n", 1)[0].replace(this.rules.other.listReplaceTabs, (t) => " ".repeat(3 * t.length));
+        let nextLine = src.split("\n", 1)[0];
+        let blankLine = !line.trim();
+        let indent = 0;
+        if (this.options.pedantic) {
+          indent = 2;
+          itemContents = line.trimStart();
+        } else if (blankLine) {
+          indent = cap[1].length + 1;
+        } else {
+          indent = cap[2].search(this.rules.other.nonSpaceChar);
+          indent = indent > 4 ? 1 : indent;
+          itemContents = line.slice(indent);
+          indent += cap[1].length;
+        }
+        if (blankLine && this.rules.other.blankLine.test(nextLine)) {
+          raw += nextLine + "\n";
+          src = src.substring(nextLine.length + 1);
+          endEarly = true;
+        }
+        if (!endEarly) {
+          const nextBulletRegex = this.rules.other.nextBulletRegex(indent);
+          const hrRegex = this.rules.other.hrRegex(indent);
+          const fencesBeginRegex = this.rules.other.fencesBeginRegex(indent);
+          const headingBeginRegex = this.rules.other.headingBeginRegex(indent);
+          const htmlBeginRegex = this.rules.other.htmlBeginRegex(indent);
+          while (src) {
+            const rawLine = src.split("\n", 1)[0];
+            let nextLineWithoutTabs;
+            nextLine = rawLine;
+            if (this.options.pedantic) {
+              nextLine = nextLine.replace(this.rules.other.listReplaceNesting, "  ");
+              nextLineWithoutTabs = nextLine;
+            } else {
+              nextLineWithoutTabs = nextLine.replace(this.rules.other.tabCharGlobal, "    ");
+            }
+            if (fencesBeginRegex.test(nextLine)) {
+              break;
+            }
+            if (headingBeginRegex.test(nextLine)) {
+              break;
+            }
+            if (htmlBeginRegex.test(nextLine)) {
+              break;
+            }
+            if (nextBulletRegex.test(nextLine)) {
+              break;
+            }
+            if (hrRegex.test(nextLine)) {
+              break;
+            }
+            if (nextLineWithoutTabs.search(this.rules.other.nonSpaceChar) >= indent || !nextLine.trim()) {
+              itemContents += "\n" + nextLineWithoutTabs.slice(indent);
+            } else {
+              if (blankLine) {
+                break;
+              }
+              if (line.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4) {
+                break;
+              }
+              if (fencesBeginRegex.test(line)) {
+                break;
+              }
+              if (headingBeginRegex.test(line)) {
+                break;
+              }
+              if (hrRegex.test(line)) {
+                break;
+              }
+              itemContents += "\n" + nextLine;
+            }
+            if (!blankLine && !nextLine.trim()) {
+              blankLine = true;
+            }
+            raw += rawLine + "\n";
+            src = src.substring(rawLine.length + 1);
+            line = nextLineWithoutTabs.slice(indent);
+          }
+        }
+        if (!list2.loose) {
+          if (endsWithBlankLine) {
+            list2.loose = true;
+          } else if (this.rules.other.doubleBlankLine.test(raw)) {
+            endsWithBlankLine = true;
+          }
+        }
+        let istask = null;
+        let ischecked;
+        if (this.options.gfm) {
+          istask = this.rules.other.listIsTask.exec(itemContents);
+          if (istask) {
+            ischecked = istask[0] !== "[ ] ";
+            itemContents = itemContents.replace(this.rules.other.listReplaceTask, "");
+          }
+        }
+        list2.items.push({
+          type: "list_item",
+          raw,
+          task: !!istask,
+          checked: ischecked,
+          loose: false,
+          text: itemContents,
+          tokens: []
+        });
+        list2.raw += raw;
+      }
+      const lastItem = list2.items.at(-1);
+      if (lastItem) {
+        lastItem.raw = lastItem.raw.trimEnd();
+        lastItem.text = lastItem.text.trimEnd();
       } else {
-        this.column++;
-      }
-      return char;
-    };
-    EventedTokenizer2.prototype.consumeCharRef = function() {
-      var endIndex = this.input.indexOf(";", this.index);
-      if (endIndex === -1) {
         return;
       }
-      var entity = this.input.slice(this.index, endIndex);
-      var chars = this.entityParser.parse(entity);
-      if (chars) {
-        var count = entity.length;
-        while (count) {
-          this.consume();
-          count--;
+      list2.raw = list2.raw.trimEnd();
+      for (let i = 0; i < list2.items.length; i++) {
+        this.lexer.state.top = false;
+        list2.items[i].tokens = this.lexer.blockTokens(list2.items[i].text, []);
+        if (!list2.loose) {
+          const spacers = list2.items[i].tokens.filter((t) => t.type === "space");
+          const hasMultipleLineBreaks = spacers.length > 0 && spacers.some((t) => this.rules.other.anyLine.test(t.raw));
+          list2.loose = hasMultipleLineBreaks;
         }
-        this.consume();
-        return chars;
       }
-    };
-    EventedTokenizer2.prototype.markTagStart = function() {
-      this.delegate.tagOpen();
-    };
-    EventedTokenizer2.prototype.appendToTagName = function(char) {
-      this.tagNameBuffer += char;
-      this.delegate.appendToTagName(char);
-    };
-    EventedTokenizer2.prototype.isIgnoredEndTag = function() {
-      var tag = this.tagNameBuffer;
-      return tag === "title" && this.input.substring(this.index, this.index + 8) !== "</title>" || tag === "style" && this.input.substring(this.index, this.index + 8) !== "</style>" || tag === "script" && this.input.substring(this.index, this.index + 9) !== "<\/script>";
-    };
-    return EventedTokenizer2;
-  }()
-);
-var Tokenizer = (
-  /** @class */
-  function() {
-    function Tokenizer2(entityParser, options) {
-      if (options === void 0) {
-        options = {};
+      if (list2.loose) {
+        for (let i = 0; i < list2.items.length; i++) {
+          list2.items[i].loose = true;
+        }
       }
-      this.options = options;
-      this.token = null;
-      this.startLine = 1;
-      this.startColumn = 0;
-      this.tokens = [];
-      this.tokenizer = new EventedTokenizer(this, entityParser, options.mode);
-      this._currentAttribute = void 0;
+      return list2;
     }
-    Tokenizer2.prototype.tokenize = function(input) {
-      this.tokens = [];
-      this.tokenizer.tokenize(input);
-      return this.tokens;
+  }
+  html(src) {
+    const cap = this.rules.block.html.exec(src);
+    if (cap) {
+      const token = {
+        type: "html",
+        block: true,
+        raw: cap[0],
+        pre: cap[1] === "pre" || cap[1] === "script" || cap[1] === "style",
+        text: cap[0]
+      };
+      return token;
+    }
+  }
+  def(src) {
+    const cap = this.rules.block.def.exec(src);
+    if (cap) {
+      const tag2 = cap[1].toLowerCase().replace(this.rules.other.multipleSpaceGlobal, " ");
+      const href = cap[2] ? cap[2].replace(this.rules.other.hrefBrackets, "$1").replace(this.rules.inline.anyPunctuation, "$1") : "";
+      const title = cap[3] ? cap[3].substring(1, cap[3].length - 1).replace(this.rules.inline.anyPunctuation, "$1") : cap[3];
+      return {
+        type: "def",
+        tag: tag2,
+        raw: cap[0],
+        href,
+        title
+      };
+    }
+  }
+  table(src) {
+    var _a;
+    const cap = this.rules.block.table.exec(src);
+    if (!cap) {
+      return;
+    }
+    if (!this.rules.other.tableDelimiter.test(cap[2])) {
+      return;
+    }
+    const headers = splitCells(cap[1]);
+    const aligns = cap[2].replace(this.rules.other.tableAlignChars, "").split("|");
+    const rows = ((_a = cap[3]) == null ? void 0 : _a.trim()) ? cap[3].replace(this.rules.other.tableRowBlankLine, "").split("\n") : [];
+    const item = {
+      type: "table",
+      raw: cap[0],
+      header: [],
+      align: [],
+      rows: []
     };
-    Tokenizer2.prototype.tokenizePart = function(input) {
-      this.tokens = [];
-      this.tokenizer.tokenizePart(input);
-      return this.tokens;
-    };
-    Tokenizer2.prototype.tokenizeEOF = function() {
-      this.tokens = [];
-      this.tokenizer.tokenizeEOF();
-      return this.tokens[0];
-    };
-    Tokenizer2.prototype.reset = function() {
-      this.token = null;
-      this.startLine = 1;
-      this.startColumn = 0;
-    };
-    Tokenizer2.prototype.current = function() {
-      var token = this.token;
-      if (token === null) {
-        throw new Error("token was unexpectedly null");
+    if (headers.length !== aligns.length) {
+      return;
+    }
+    for (const align of aligns) {
+      if (this.rules.other.tableAlignRight.test(align)) {
+        item.align.push("right");
+      } else if (this.rules.other.tableAlignCenter.test(align)) {
+        item.align.push("center");
+      } else if (this.rules.other.tableAlignLeft.test(align)) {
+        item.align.push("left");
+      } else {
+        item.align.push(null);
       }
-      if (arguments.length === 0) {
-        return token;
+    }
+    for (let i = 0; i < headers.length; i++) {
+      item.header.push({
+        text: headers[i],
+        tokens: this.lexer.inline(headers[i]),
+        header: true,
+        align: item.align[i]
+      });
+    }
+    for (const row of rows) {
+      item.rows.push(splitCells(row, item.header.length).map((cell, i) => {
+        return {
+          text: cell,
+          tokens: this.lexer.inline(cell),
+          header: false,
+          align: item.align[i]
+        };
+      }));
+    }
+    return item;
+  }
+  lheading(src) {
+    const cap = this.rules.block.lheading.exec(src);
+    if (cap) {
+      return {
+        type: "heading",
+        raw: cap[0],
+        depth: cap[2].charAt(0) === "=" ? 1 : 2,
+        text: cap[1],
+        tokens: this.lexer.inline(cap[1])
+      };
+    }
+  }
+  paragraph(src) {
+    const cap = this.rules.block.paragraph.exec(src);
+    if (cap) {
+      const text2 = cap[1].charAt(cap[1].length - 1) === "\n" ? cap[1].slice(0, -1) : cap[1];
+      return {
+        type: "paragraph",
+        raw: cap[0],
+        text: text2,
+        tokens: this.lexer.inline(text2)
+      };
+    }
+  }
+  text(src) {
+    const cap = this.rules.block.text.exec(src);
+    if (cap) {
+      return {
+        type: "text",
+        raw: cap[0],
+        text: cap[0],
+        tokens: this.lexer.inline(cap[0])
+      };
+    }
+  }
+  escape(src) {
+    const cap = this.rules.inline.escape.exec(src);
+    if (cap) {
+      return {
+        type: "escape",
+        raw: cap[0],
+        text: cap[1]
+      };
+    }
+  }
+  tag(src) {
+    const cap = this.rules.inline.tag.exec(src);
+    if (cap) {
+      if (!this.lexer.state.inLink && this.rules.other.startATag.test(cap[0])) {
+        this.lexer.state.inLink = true;
+      } else if (this.lexer.state.inLink && this.rules.other.endATag.test(cap[0])) {
+        this.lexer.state.inLink = false;
       }
-      for (var i = 0; i < arguments.length; i++) {
-        if (token.type === arguments[i]) {
-          return token;
+      if (!this.lexer.state.inRawBlock && this.rules.other.startPreScriptTag.test(cap[0])) {
+        this.lexer.state.inRawBlock = true;
+      } else if (this.lexer.state.inRawBlock && this.rules.other.endPreScriptTag.test(cap[0])) {
+        this.lexer.state.inRawBlock = false;
+      }
+      return {
+        type: "html",
+        raw: cap[0],
+        inLink: this.lexer.state.inLink,
+        inRawBlock: this.lexer.state.inRawBlock,
+        block: false,
+        text: cap[0]
+      };
+    }
+  }
+  link(src) {
+    const cap = this.rules.inline.link.exec(src);
+    if (cap) {
+      const trimmedUrl = cap[2].trim();
+      if (!this.options.pedantic && this.rules.other.startAngleBracket.test(trimmedUrl)) {
+        if (!this.rules.other.endAngleBracket.test(trimmedUrl)) {
+          return;
+        }
+        const rtrimSlash = rtrim(trimmedUrl.slice(0, -1), "\\");
+        if ((trimmedUrl.length - rtrimSlash.length) % 2 === 0) {
+          return;
+        }
+      } else {
+        const lastParenIndex = findClosingBracket(cap[2], "()");
+        if (lastParenIndex > -1) {
+          const start = cap[0].indexOf("!") === 0 ? 5 : 4;
+          const linkLen = start + cap[1].length + lastParenIndex;
+          cap[2] = cap[2].substring(0, lastParenIndex);
+          cap[0] = cap[0].substring(0, linkLen).trim();
+          cap[3] = "";
         }
       }
-      throw new Error("token type was unexpectedly " + token.type);
-    };
-    Tokenizer2.prototype.push = function(token) {
-      this.token = token;
-      this.tokens.push(token);
-    };
-    Tokenizer2.prototype.currentAttribute = function() {
-      return this._currentAttribute;
-    };
-    Tokenizer2.prototype.addLocInfo = function() {
-      if (this.options.loc) {
-        this.current().loc = {
-          start: {
-            line: this.startLine,
-            column: this.startColumn
-          },
-          end: {
-            line: this.tokenizer.line,
-            column: this.tokenizer.column
-          }
+      let href = cap[2];
+      let title = "";
+      if (this.options.pedantic) {
+        const link2 = this.rules.other.pedanticHrefTitle.exec(href);
+        if (link2) {
+          href = link2[1];
+          title = link2[3];
+        }
+      } else {
+        title = cap[3] ? cap[3].slice(1, -1) : "";
+      }
+      href = href.trim();
+      if (this.rules.other.startAngleBracket.test(href)) {
+        if (this.options.pedantic && !this.rules.other.endAngleBracket.test(trimmedUrl)) {
+          href = href.slice(1);
+        } else {
+          href = href.slice(1, -1);
+        }
+      }
+      return outputLink(cap, {
+        href: href ? href.replace(this.rules.inline.anyPunctuation, "$1") : href,
+        title: title ? title.replace(this.rules.inline.anyPunctuation, "$1") : title
+      }, cap[0], this.lexer, this.rules);
+    }
+  }
+  reflink(src, links) {
+    let cap;
+    if ((cap = this.rules.inline.reflink.exec(src)) || (cap = this.rules.inline.nolink.exec(src))) {
+      const linkString = (cap[2] || cap[1]).replace(this.rules.other.multipleSpaceGlobal, " ");
+      const link2 = links[linkString.toLowerCase()];
+      if (!link2) {
+        const text2 = cap[0].charAt(0);
+        return {
+          type: "text",
+          raw: text2,
+          text: text2
         };
       }
-      this.startLine = this.tokenizer.line;
-      this.startColumn = this.tokenizer.column;
-    };
-    Tokenizer2.prototype.beginDoctype = function() {
-      this.push({
-        type: "Doctype",
-        name: ""
-      });
-    };
-    Tokenizer2.prototype.appendToDoctypeName = function(char) {
-      this.current(
-        "Doctype"
-        /* Doctype */
-      ).name += char;
-    };
-    Tokenizer2.prototype.appendToDoctypePublicIdentifier = function(char) {
-      var doctype = this.current(
-        "Doctype"
-        /* Doctype */
-      );
-      if (doctype.publicIdentifier === void 0) {
-        doctype.publicIdentifier = char;
-      } else {
-        doctype.publicIdentifier += char;
-      }
-    };
-    Tokenizer2.prototype.appendToDoctypeSystemIdentifier = function(char) {
-      var doctype = this.current(
-        "Doctype"
-        /* Doctype */
-      );
-      if (doctype.systemIdentifier === void 0) {
-        doctype.systemIdentifier = char;
-      } else {
-        doctype.systemIdentifier += char;
-      }
-    };
-    Tokenizer2.prototype.endDoctype = function() {
-      this.addLocInfo();
-    };
-    Tokenizer2.prototype.beginData = function() {
-      this.push({
-        type: "Chars",
-        chars: ""
-      });
-    };
-    Tokenizer2.prototype.appendToData = function(char) {
-      this.current(
-        "Chars"
-        /* Chars */
-      ).chars += char;
-    };
-    Tokenizer2.prototype.finishData = function() {
-      this.addLocInfo();
-    };
-    Tokenizer2.prototype.beginComment = function() {
-      this.push({
-        type: "Comment",
-        chars: ""
-      });
-    };
-    Tokenizer2.prototype.appendToCommentData = function(char) {
-      this.current(
-        "Comment"
-        /* Comment */
-      ).chars += char;
-    };
-    Tokenizer2.prototype.finishComment = function() {
-      this.addLocInfo();
-    };
-    Tokenizer2.prototype.tagOpen = function() {
-    };
-    Tokenizer2.prototype.beginStartTag = function() {
-      this.push({
-        type: "StartTag",
-        tagName: "",
-        attributes: [],
-        selfClosing: false
-      });
-    };
-    Tokenizer2.prototype.beginEndTag = function() {
-      this.push({
-        type: "EndTag",
-        tagName: ""
-      });
-    };
-    Tokenizer2.prototype.finishTag = function() {
-      this.addLocInfo();
-    };
-    Tokenizer2.prototype.markTagAsSelfClosing = function() {
-      this.current(
-        "StartTag"
-        /* StartTag */
-      ).selfClosing = true;
-    };
-    Tokenizer2.prototype.appendToTagName = function(char) {
-      this.current(
-        "StartTag",
-        "EndTag"
-        /* EndTag */
-      ).tagName += char;
-    };
-    Tokenizer2.prototype.beginAttribute = function() {
-      this._currentAttribute = ["", "", false];
-    };
-    Tokenizer2.prototype.appendToAttributeName = function(char) {
-      this.currentAttribute()[0] += char;
-    };
-    Tokenizer2.prototype.beginAttributeValue = function(isQuoted) {
-      this.currentAttribute()[2] = isQuoted;
-    };
-    Tokenizer2.prototype.appendToAttributeValue = function(char) {
-      this.currentAttribute()[1] += char;
-    };
-    Tokenizer2.prototype.finishAttributeValue = function() {
-      this.current(
-        "StartTag"
-        /* StartTag */
-      ).attributes.push(this._currentAttribute);
-    };
-    Tokenizer2.prototype.reportSyntaxError = function(message) {
-      this.current().syntaxError = message;
-    };
-    return Tokenizer2;
-  }()
-);
-function tokenize(input, options) {
-  var tokenizer = new Tokenizer(new EntityParser(HTML5NamedCharRefs), options);
-  return tokenizer.tokenize(input);
-}
-const LinkifyResult = "LinkifyResult";
-const StartTag = "StartTag";
-const EndTag = "EndTag";
-const Chars = "Chars";
-const Comment = "Comment";
-const Doctype = "Doctype";
-function linkifyHtml(str, opts) {
-  if (opts === void 0) {
-    opts = {};
+      return outputLink(cap, link2, cap[0], this.lexer, this.rules);
+    }
   }
-  const tokens = tokenize(str);
-  const linkifiedTokens = [];
-  const linkified = [];
-  const options = new Options$1(opts, defaultRender);
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-    if (token.type === StartTag) {
-      linkifiedTokens.push(token);
-      const tagName = token.tagName.toUpperCase();
-      const isIgnored = tagName === "A" || options.ignoreTags.indexOf(tagName) >= 0;
-      if (!isIgnored) {
+  emStrong(src, maskedSrc, prevChar = "") {
+    let match = this.rules.inline.emStrongLDelim.exec(src);
+    if (!match)
+      return;
+    if (match[3] && prevChar.match(this.rules.other.unicodeAlphaNumeric))
+      return;
+    const nextChar = match[1] || match[2] || "";
+    if (!nextChar || !prevChar || this.rules.inline.punctuation.exec(prevChar)) {
+      const lLength = [...match[0]].length - 1;
+      let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;
+      const endReg = match[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
+      endReg.lastIndex = 0;
+      maskedSrc = maskedSrc.slice(-1 * src.length + lLength);
+      while ((match = endReg.exec(maskedSrc)) != null) {
+        rDelim = match[1] || match[2] || match[3] || match[4] || match[5] || match[6];
+        if (!rDelim)
+          continue;
+        rLength = [...rDelim].length;
+        if (match[3] || match[4]) {
+          delimTotal += rLength;
+          continue;
+        } else if (match[5] || match[6]) {
+          if (lLength % 3 && !((lLength + rLength) % 3)) {
+            midDelimTotal += rLength;
+            continue;
+          }
+        }
+        delimTotal -= rLength;
+        if (delimTotal > 0)
+          continue;
+        rLength = Math.min(rLength, rLength + delimTotal + midDelimTotal);
+        const lastCharLength = [...match[0]][0].length;
+        const raw = src.slice(0, lLength + match.index + lastCharLength + rLength);
+        if (Math.min(lLength, rLength) % 2) {
+          const text3 = raw.slice(1, -1);
+          return {
+            type: "em",
+            raw,
+            text: text3,
+            tokens: this.lexer.inlineTokens(text3)
+          };
+        }
+        const text2 = raw.slice(2, -2);
+        return {
+          type: "strong",
+          raw,
+          text: text2,
+          tokens: this.lexer.inlineTokens(text2)
+        };
+      }
+    }
+  }
+  codespan(src) {
+    const cap = this.rules.inline.code.exec(src);
+    if (cap) {
+      let text2 = cap[2].replace(this.rules.other.newLineCharGlobal, " ");
+      const hasNonSpaceChars = this.rules.other.nonSpaceChar.test(text2);
+      const hasSpaceCharsOnBothEnds = this.rules.other.startingSpaceChar.test(text2) && this.rules.other.endingSpaceChar.test(text2);
+      if (hasNonSpaceChars && hasSpaceCharsOnBothEnds) {
+        text2 = text2.substring(1, text2.length - 1);
+      }
+      return {
+        type: "codespan",
+        raw: cap[0],
+        text: text2
+      };
+    }
+  }
+  br(src) {
+    const cap = this.rules.inline.br.exec(src);
+    if (cap) {
+      return {
+        type: "br",
+        raw: cap[0]
+      };
+    }
+  }
+  del(src) {
+    const cap = this.rules.inline.del.exec(src);
+    if (cap) {
+      return {
+        type: "del",
+        raw: cap[0],
+        text: cap[2],
+        tokens: this.lexer.inlineTokens(cap[2])
+      };
+    }
+  }
+  autolink(src) {
+    const cap = this.rules.inline.autolink.exec(src);
+    if (cap) {
+      let text2, href;
+      if (cap[2] === "@") {
+        text2 = cap[1];
+        href = "mailto:" + text2;
+      } else {
+        text2 = cap[1];
+        href = text2;
+      }
+      return {
+        type: "link",
+        raw: cap[0],
+        text: text2,
+        href,
+        tokens: [
+          {
+            type: "text",
+            raw: text2,
+            text: text2
+          }
+        ]
+      };
+    }
+  }
+  url(src) {
+    var _a;
+    let cap;
+    if (cap = this.rules.inline.url.exec(src)) {
+      let text2, href;
+      if (cap[2] === "@") {
+        text2 = cap[0];
+        href = "mailto:" + text2;
+      } else {
+        let prevCapZero;
+        do {
+          prevCapZero = cap[0];
+          cap[0] = ((_a = this.rules.inline._backpedal.exec(cap[0])) == null ? void 0 : _a[0]) ?? "";
+        } while (prevCapZero !== cap[0]);
+        text2 = cap[0];
+        if (cap[1] === "www.") {
+          href = "http://" + cap[0];
+        } else {
+          href = cap[0];
+        }
+      }
+      return {
+        type: "link",
+        raw: cap[0],
+        text: text2,
+        href,
+        tokens: [
+          {
+            type: "text",
+            raw: text2,
+            text: text2
+          }
+        ]
+      };
+    }
+  }
+  inlineText(src) {
+    const cap = this.rules.inline.text.exec(src);
+    if (cap) {
+      const escaped = this.lexer.state.inRawBlock;
+      return {
+        type: "text",
+        raw: cap[0],
+        text: cap[0],
+        escaped
+      };
+    }
+  }
+}
+class _Lexer {
+  constructor(options) {
+    __publicField(this, "tokens");
+    __publicField(this, "options");
+    __publicField(this, "state");
+    __publicField(this, "tokenizer");
+    __publicField(this, "inlineQueue");
+    this.tokens = [];
+    this.tokens.links = /* @__PURE__ */ Object.create(null);
+    this.options = options || _defaults;
+    this.options.tokenizer = this.options.tokenizer || new _Tokenizer();
+    this.tokenizer = this.options.tokenizer;
+    this.tokenizer.options = this.options;
+    this.tokenizer.lexer = this;
+    this.inlineQueue = [];
+    this.state = {
+      inLink: false,
+      inRawBlock: false,
+      top: true
+    };
+    const rules = {
+      other,
+      block: block.normal,
+      inline: inline.normal
+    };
+    if (this.options.pedantic) {
+      rules.block = block.pedantic;
+      rules.inline = inline.pedantic;
+    } else if (this.options.gfm) {
+      rules.block = block.gfm;
+      if (this.options.breaks) {
+        rules.inline = inline.breaks;
+      } else {
+        rules.inline = inline.gfm;
+      }
+    }
+    this.tokenizer.rules = rules;
+  }
+  /**
+   * Expose Rules
+   */
+  static get rules() {
+    return {
+      block,
+      inline
+    };
+  }
+  /**
+   * Static Lex Method
+   */
+  static lex(src, options) {
+    const lexer = new _Lexer(options);
+    return lexer.lex(src);
+  }
+  /**
+   * Static Lex Inline Method
+   */
+  static lexInline(src, options) {
+    const lexer = new _Lexer(options);
+    return lexer.inlineTokens(src);
+  }
+  /**
+   * Preprocessing
+   */
+  lex(src) {
+    src = src.replace(other.carriageReturn, "\n");
+    this.blockTokens(src, this.tokens);
+    for (let i = 0; i < this.inlineQueue.length; i++) {
+      const next = this.inlineQueue[i];
+      this.inlineTokens(next.src, next.tokens);
+    }
+    this.inlineQueue = [];
+    return this.tokens;
+  }
+  blockTokens(src, tokens = [], lastParagraphClipped = false) {
+    var _a, _b, _c;
+    if (this.options.pedantic) {
+      src = src.replace(other.tabCharGlobal, "    ").replace(other.spaceLine, "");
+    }
+    while (src) {
+      let token;
+      if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.block) == null ? void 0 : _b.some((extTokenizer) => {
+        if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
+          src = src.substring(token.raw.length);
+          tokens.push(token);
+          return true;
+        }
+        return false;
+      })) {
         continue;
       }
-      let preskipLen = linkifiedTokens.length;
-      skipTagTokens(tagName, tokens, ++i, linkifiedTokens);
-      i += linkifiedTokens.length - preskipLen - 1;
-    } else if (token.type !== Chars) {
-      linkifiedTokens.push(token);
-    } else {
-      const linkifedChars = linkifyChars(token.chars, options);
-      linkifiedTokens.push.apply(linkifiedTokens, linkifedChars);
-    }
-  }
-  for (let i = 0; i < linkifiedTokens.length; i++) {
-    const token = linkifiedTokens[i];
-    switch (token.type) {
-      case LinkifyResult:
-        linkified.push(token.rendered);
-        break;
-      case StartTag: {
-        let link = "<" + token.tagName;
-        if (token.attributes.length > 0) {
-          link += " " + attributeArrayToStrings(token.attributes).join(" ");
+      if (token = this.tokenizer.space(src)) {
+        src = src.substring(token.raw.length);
+        const lastToken = tokens.at(-1);
+        if (token.raw.length === 1 && lastToken !== void 0) {
+          lastToken.raw += "\n";
+        } else {
+          tokens.push(token);
         }
-        if (token.selfClosing) {
-          link += " /";
+        continue;
+      }
+      if (token = this.tokenizer.code(src)) {
+        src = src.substring(token.raw.length);
+        const lastToken = tokens.at(-1);
+        if ((lastToken == null ? void 0 : lastToken.type) === "paragraph" || (lastToken == null ? void 0 : lastToken.type) === "text") {
+          lastToken.raw += "\n" + token.raw;
+          lastToken.text += "\n" + token.text;
+          this.inlineQueue.at(-1).src = lastToken.text;
+        } else {
+          tokens.push(token);
         }
-        link += ">";
-        linkified.push(link);
-        break;
+        continue;
       }
-      case EndTag:
-        linkified.push(`</${token.tagName}>`);
-        break;
-      case Chars:
-        linkified.push(escapeText(token.chars));
-        break;
-      case Comment:
-        linkified.push(`<!--${escapeText(token.chars)}-->`);
-        break;
-      case Doctype: {
-        let doctype = `<!DOCTYPE ${token.name}`;
-        if (token.publicIdentifier) {
-          doctype += ` PUBLIC "${token.publicIdentifier}"`;
+      if (token = this.tokenizer.fences(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.heading(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.hr(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.blockquote(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.list(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.html(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.def(src)) {
+        src = src.substring(token.raw.length);
+        const lastToken = tokens.at(-1);
+        if ((lastToken == null ? void 0 : lastToken.type) === "paragraph" || (lastToken == null ? void 0 : lastToken.type) === "text") {
+          lastToken.raw += "\n" + token.raw;
+          lastToken.text += "\n" + token.raw;
+          this.inlineQueue.at(-1).src = lastToken.text;
+        } else if (!this.tokens.links[token.tag]) {
+          this.tokens.links[token.tag] = {
+            href: token.href,
+            title: token.title
+          };
         }
-        if (token.systemIdentifier) {
-          doctype += ` "${token.systemIdentifier}"`;
+        continue;
+      }
+      if (token = this.tokenizer.table(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.lheading(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      let cutSrc = src;
+      if ((_c = this.options.extensions) == null ? void 0 : _c.startBlock) {
+        let startIndex = Infinity;
+        const tempSrc = src.slice(1);
+        let tempStart;
+        this.options.extensions.startBlock.forEach((getStartIndex) => {
+          tempStart = getStartIndex.call({ lexer: this }, tempSrc);
+          if (typeof tempStart === "number" && tempStart >= 0) {
+            startIndex = Math.min(startIndex, tempStart);
+          }
+        });
+        if (startIndex < Infinity && startIndex >= 0) {
+          cutSrc = src.substring(0, startIndex + 1);
         }
-        doctype += ">";
-        linkified.push(doctype);
-        break;
+      }
+      if (this.state.top && (token = this.tokenizer.paragraph(cutSrc))) {
+        const lastToken = tokens.at(-1);
+        if (lastParagraphClipped && (lastToken == null ? void 0 : lastToken.type) === "paragraph") {
+          lastToken.raw += "\n" + token.raw;
+          lastToken.text += "\n" + token.text;
+          this.inlineQueue.pop();
+          this.inlineQueue.at(-1).src = lastToken.text;
+        } else {
+          tokens.push(token);
+        }
+        lastParagraphClipped = cutSrc.length !== src.length;
+        src = src.substring(token.raw.length);
+        continue;
+      }
+      if (token = this.tokenizer.text(src)) {
+        src = src.substring(token.raw.length);
+        const lastToken = tokens.at(-1);
+        if ((lastToken == null ? void 0 : lastToken.type) === "text") {
+          lastToken.raw += "\n" + token.raw;
+          lastToken.text += "\n" + token.text;
+          this.inlineQueue.pop();
+          this.inlineQueue.at(-1).src = lastToken.text;
+        } else {
+          tokens.push(token);
+        }
+        continue;
+      }
+      if (src) {
+        const errMsg = "Infinite loop on byte: " + src.charCodeAt(0);
+        if (this.options.silent) {
+          console.error(errMsg);
+          break;
+        } else {
+          throw new Error(errMsg);
+        }
       }
     }
+    this.state.top = true;
+    return tokens;
   }
-  return linkified.join("");
-}
-function linkifyChars(str, options) {
-  const tokens = tokenize$1(str);
-  const result = [];
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-    if (token.t === "nl" && options.get("nl2br")) {
-      result.push({
-        type: StartTag,
-        tagName: "br",
-        attributes: [],
-        selfClosing: true
-      });
-    } else if (!token.isLink || !options.check(token)) {
-      result.push({
-        type: Chars,
-        chars: token.toString()
-      });
-    } else {
-      result.push({
-        type: LinkifyResult,
-        rendered: options.render(token)
-      });
-    }
+  inline(src, tokens = []) {
+    this.inlineQueue.push({ src, tokens });
+    return tokens;
   }
-  return result;
-}
-function skipTagTokens(tagName, tokens, i, skippedTokens) {
-  let stackCount = 1;
-  while (i < tokens.length && stackCount > 0) {
-    let token = tokens[i];
-    if (token.type === StartTag && token.tagName.toUpperCase() === tagName) {
-      stackCount++;
-    } else if (token.type === EndTag && token.tagName.toUpperCase() === tagName) {
-      stackCount--;
-    }
-    skippedTokens.push(token);
-    i++;
-  }
-  return skippedTokens;
-}
-function defaultRender(_ref) {
-  let {
-    tagName,
-    attributes,
-    content: content2
-  } = _ref;
-  return `<${tagName} ${attributesToString(attributes)}>${escapeText(content2)}</${tagName}>`;
-}
-function escapeText(text2) {
-  return text2.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-function escapeAttr(attr) {
-  return attr.replace(/"/g, "&quot;");
-}
-function attributesToString(attributes) {
-  const result = [];
-  for (const attr in attributes) {
-    const val = attributes[attr] + "";
-    result.push(`${attr}="${escapeAttr(val)}"`);
-  }
-  return result.join(" ");
-}
-function attributeArrayToStrings(attrs) {
-  const attrStrs = [];
-  for (let i = 0; i < attrs.length; i++) {
-    const name = attrs[i][0];
-    const value = attrs[i][1] + "";
-    attrStrs.push(`${name}="${escapeAttr(value)}"`);
-  }
-  return attrStrs;
-}
-const element = document.createElement("i");
-function decodeNamedCharacterReference(value) {
-  const characterReference2 = "&" + value + ";";
-  element.innerHTML = characterReference2;
-  const char = element.textContent;
-  if (char.charCodeAt(char.length - 1) === 59 && value !== "semi") {
-    return false;
-  }
-  return char === characterReference2 ? false : char;
-}
-function splice(list2, start, remove, items) {
-  const end = list2.length;
-  let chunkStart = 0;
-  let parameters;
-  if (start < 0) {
-    start = -start > end ? 0 : end + start;
-  } else {
-    start = start > end ? end : start;
-  }
-  remove = remove > 0 ? remove : 0;
-  if (items.length < 1e4) {
-    parameters = Array.from(items);
-    parameters.unshift(start, remove);
-    list2.splice(...parameters);
-  } else {
-    if (remove) list2.splice(start, remove);
-    while (chunkStart < items.length) {
-      parameters = items.slice(chunkStart, chunkStart + 1e4);
-      parameters.unshift(start, 0);
-      list2.splice(...parameters);
-      chunkStart += 1e4;
-      start += 1e4;
-    }
-  }
-}
-function push(list2, items) {
-  if (list2.length > 0) {
-    splice(list2, list2.length, 0, items);
-    return list2;
-  }
-  return items;
-}
-const hasOwnProperty$1 = {}.hasOwnProperty;
-function combineExtensions(extensions) {
-  const all = {};
-  let index = -1;
-  while (++index < extensions.length) {
-    syntaxExtension(all, extensions[index]);
-  }
-  return all;
-}
-function syntaxExtension(all, extension) {
-  let hook;
-  for (hook in extension) {
-    const maybe = hasOwnProperty$1.call(all, hook) ? all[hook] : void 0;
-    const left = maybe || (all[hook] = {});
-    const right = extension[hook];
-    let code2;
-    if (right) {
-      for (code2 in right) {
-        if (!hasOwnProperty$1.call(left, code2)) left[code2] = [];
-        const value = right[code2];
-        constructs(
-          // @ts-expect-error Looks like a list.
-          left[code2],
-          Array.isArray(value) ? value : value ? [value] : []
-        );
+  /**
+   * Lexing/Compiling
+   */
+  inlineTokens(src, tokens = []) {
+    var _a, _b, _c;
+    let maskedSrc = src;
+    let match = null;
+    if (this.tokens.links) {
+      const links = Object.keys(this.tokens.links);
+      if (links.length > 0) {
+        while ((match = this.tokenizer.rules.inline.reflinkSearch.exec(maskedSrc)) != null) {
+          if (links.includes(match[0].slice(match[0].lastIndexOf("[") + 1, -1))) {
+            maskedSrc = maskedSrc.slice(0, match.index) + "[" + "a".repeat(match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex);
+          }
+        }
       }
     }
-  }
-}
-function constructs(existing, list2) {
-  let index = -1;
-  const before = [];
-  while (++index < list2.length) {
-    (list2[index].add === "after" ? existing : before).push(list2[index]);
-  }
-  splice(existing, 0, 0, before);
-}
-function combineHtmlExtensions(htmlExtensions) {
-  const handlers = {};
-  let index = -1;
-  while (++index < htmlExtensions.length) {
-    htmlExtension(handlers, htmlExtensions[index]);
-  }
-  return handlers;
-}
-function htmlExtension(all, extension) {
-  let hook;
-  for (hook in extension) {
-    const maybe = hasOwnProperty$1.call(all, hook) ? all[hook] : void 0;
-    const left = maybe || (all[hook] = {});
-    const right = extension[hook];
-    let type;
-    if (right) {
-      for (type in right) {
-        left[type] = right[type];
+    while ((match = this.tokenizer.rules.inline.blockSkip.exec(maskedSrc)) != null) {
+      maskedSrc = maskedSrc.slice(0, match.index) + "[" + "a".repeat(match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
+    }
+    while ((match = this.tokenizer.rules.inline.anyPunctuation.exec(maskedSrc)) != null) {
+      maskedSrc = maskedSrc.slice(0, match.index) + "++" + maskedSrc.slice(this.tokenizer.rules.inline.anyPunctuation.lastIndex);
+    }
+    let keepPrevChar = false;
+    let prevChar = "";
+    while (src) {
+      if (!keepPrevChar) {
+        prevChar = "";
+      }
+      keepPrevChar = false;
+      let token;
+      if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.inline) == null ? void 0 : _b.some((extTokenizer) => {
+        if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
+          src = src.substring(token.raw.length);
+          tokens.push(token);
+          return true;
+        }
+        return false;
+      })) {
+        continue;
+      }
+      if (token = this.tokenizer.escape(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.tag(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.link(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.reflink(src, this.tokens.links)) {
+        src = src.substring(token.raw.length);
+        const lastToken = tokens.at(-1);
+        if (token.type === "text" && (lastToken == null ? void 0 : lastToken.type) === "text") {
+          lastToken.raw += token.raw;
+          lastToken.text += token.text;
+        } else {
+          tokens.push(token);
+        }
+        continue;
+      }
+      if (token = this.tokenizer.emStrong(src, maskedSrc, prevChar)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.codespan(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.br(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.del(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (token = this.tokenizer.autolink(src)) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      if (!this.state.inLink && (token = this.tokenizer.url(src))) {
+        src = src.substring(token.raw.length);
+        tokens.push(token);
+        continue;
+      }
+      let cutSrc = src;
+      if ((_c = this.options.extensions) == null ? void 0 : _c.startInline) {
+        let startIndex = Infinity;
+        const tempSrc = src.slice(1);
+        let tempStart;
+        this.options.extensions.startInline.forEach((getStartIndex) => {
+          tempStart = getStartIndex.call({ lexer: this }, tempSrc);
+          if (typeof tempStart === "number" && tempStart >= 0) {
+            startIndex = Math.min(startIndex, tempStart);
+          }
+        });
+        if (startIndex < Infinity && startIndex >= 0) {
+          cutSrc = src.substring(0, startIndex + 1);
+        }
+      }
+      if (token = this.tokenizer.inlineText(cutSrc)) {
+        src = src.substring(token.raw.length);
+        if (token.raw.slice(-1) !== "_") {
+          prevChar = token.raw.slice(-1);
+        }
+        keepPrevChar = true;
+        const lastToken = tokens.at(-1);
+        if ((lastToken == null ? void 0 : lastToken.type) === "text") {
+          lastToken.raw += token.raw;
+          lastToken.text += token.text;
+        } else {
+          tokens.push(token);
+        }
+        continue;
+      }
+      if (src) {
+        const errMsg = "Infinite loop on byte: " + src.charCodeAt(0);
+        if (this.options.silent) {
+          console.error(errMsg);
+          break;
+        } else {
+          throw new Error(errMsg);
+        }
       }
     }
+    return tokens;
   }
 }
-function decodeNumericCharacterReference(value, base) {
-  const code2 = Number.parseInt(value, base);
-  if (
-    // C0 except for HT, LF, FF, CR, space.
-    code2 < 9 || code2 === 11 || code2 > 13 && code2 < 32 || // Control character (DEL) of C0, and C1 controls.
-    code2 > 126 && code2 < 160 || // Lone high surrogates and low surrogates.
-    code2 > 55295 && code2 < 57344 || // Noncharacters.
-    code2 > 64975 && code2 < 65008 || /* eslint-disable no-bitwise */
-    (code2 & 65535) === 65535 || (code2 & 65535) === 65534 || /* eslint-enable no-bitwise */
-    // Out of range
-    code2 > 1114111
-  ) {
-    return "�";
+class _Renderer {
+  // set by the parser
+  constructor(options) {
+    __publicField(this, "options");
+    __publicField(this, "parser");
+    this.options = options || _defaults;
   }
-  return String.fromCodePoint(code2);
-}
-const characterReferences = { '"': "quot", "&": "amp", "<": "lt", ">": "gt" };
-function encode(value) {
-  return value.replace(/["&<>]/g, replace2);
-  function replace2(value2) {
-    return "&" + characterReferences[
-      /** @type {keyof typeof characterReferences} */
-      value2
-    ] + ";";
+  space(token) {
+    return "";
   }
-}
-function normalizeIdentifier(value) {
-  return value.replace(/[\t\n\r ]+/g, " ").replace(/^ | $/g, "").toLowerCase().toUpperCase();
-}
-const asciiAlpha = regexCheck(/[A-Za-z]/);
-const asciiAlphanumeric = regexCheck(/[\dA-Za-z]/);
-const asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/);
-function asciiControl(code2) {
-  return (
-    // Special whitespace codes (which have negative values), C0 and Control
-    // character DEL
-    code2 !== null && (code2 < 32 || code2 === 127)
-  );
-}
-const asciiDigit = regexCheck(/\d/);
-const asciiHexDigit = regexCheck(/[\dA-Fa-f]/);
-const asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/);
-function markdownLineEnding(code2) {
-  return code2 !== null && code2 < -2;
-}
-function markdownLineEndingOrSpace(code2) {
-  return code2 !== null && (code2 < 0 || code2 === 32);
-}
-function markdownSpace(code2) {
-  return code2 === -2 || code2 === -1 || code2 === 32;
-}
-const unicodePunctuation = regexCheck(new RegExp("\\p{P}|\\p{S}", "u"));
-const unicodeWhitespace = regexCheck(/\s/);
-function regexCheck(regex) {
-  return check;
-  function check(code2) {
-    return code2 !== null && code2 > -1 && regex.test(String.fromCharCode(code2));
+  code({ text: text2, lang, escaped }) {
+    var _a;
+    const langString = (_a = (lang || "").match(other.notSpaceStart)) == null ? void 0 : _a[0];
+    const code = text2.replace(other.endingNewline, "") + "\n";
+    if (!langString) {
+      return "<pre><code>" + (escaped ? code : escape$3(code, true)) + "</code></pre>\n";
+    }
+    return '<pre><code class="language-' + escape$3(langString) + '">' + (escaped ? code : escape$3(code, true)) + "</code></pre>\n";
   }
-}
-function sanitizeUri(url, protocol) {
-  const value = encode(normalizeUri(url || ""));
-  if (!protocol) {
-    return value;
+  blockquote({ tokens }) {
+    const body = this.parser.parse(tokens);
+    return `<blockquote>
+${body}</blockquote>
+`;
   }
-  const colon = value.indexOf(":");
-  const questionMark = value.indexOf("?");
-  const numberSign = value.indexOf("#");
-  const slash = value.indexOf("/");
-  if (
-    // If there is no protocol, it’s relative.
-    colon < 0 || // If the first colon is after a `?`, `#`, or `/`, it’s not a protocol.
-    slash > -1 && colon > slash || questionMark > -1 && colon > questionMark || numberSign > -1 && colon > numberSign || // It is a protocol, it should be allowed.
-    protocol.test(value.slice(0, colon))
-  ) {
-    return value;
+  html({ text: text2 }) {
+    return text2;
   }
-  return "";
-}
-function normalizeUri(value) {
-  const result = [];
-  let index = -1;
-  let start = 0;
-  let skip = 0;
-  while (++index < value.length) {
-    const code2 = value.charCodeAt(index);
-    let replace2 = "";
-    if (code2 === 37 && asciiAlphanumeric(value.charCodeAt(index + 1)) && asciiAlphanumeric(value.charCodeAt(index + 2))) {
-      skip = 2;
-    } else if (code2 < 128) {
-      if (!/[!#$&-;=?-Z_a-z~]/.test(String.fromCharCode(code2))) {
-        replace2 = String.fromCharCode(code2);
-      }
-    } else if (code2 > 55295 && code2 < 57344) {
-      const next = value.charCodeAt(index + 1);
-      if (code2 < 56320 && next > 56319 && next < 57344) {
-        replace2 = String.fromCharCode(code2, next);
-        skip = 1;
+  heading({ tokens, depth }) {
+    return `<h${depth}>${this.parser.parseInline(tokens)}</h${depth}>
+`;
+  }
+  hr(token) {
+    return "<hr>\n";
+  }
+  list(token) {
+    const ordered = token.ordered;
+    const start = token.start;
+    let body = "";
+    for (let j = 0; j < token.items.length; j++) {
+      const item = token.items[j];
+      body += this.listitem(item);
+    }
+    const type = ordered ? "ol" : "ul";
+    const startAttr = ordered && start !== 1 ? ' start="' + start + '"' : "";
+    return "<" + type + startAttr + ">\n" + body + "</" + type + ">\n";
+  }
+  listitem(item) {
+    var _a;
+    let itemBody = "";
+    if (item.task) {
+      const checkbox = this.checkbox({ checked: !!item.checked });
+      if (item.loose) {
+        if (((_a = item.tokens[0]) == null ? void 0 : _a.type) === "paragraph") {
+          item.tokens[0].text = checkbox + " " + item.tokens[0].text;
+          if (item.tokens[0].tokens && item.tokens[0].tokens.length > 0 && item.tokens[0].tokens[0].type === "text") {
+            item.tokens[0].tokens[0].text = checkbox + " " + escape$3(item.tokens[0].tokens[0].text);
+            item.tokens[0].tokens[0].escaped = true;
+          }
+        } else {
+          item.tokens.unshift({
+            type: "text",
+            raw: checkbox + " ",
+            text: checkbox + " ",
+            escaped: true
+          });
+        }
       } else {
-        replace2 = "�";
+        itemBody += checkbox + " ";
       }
-    } else {
-      replace2 = String.fromCharCode(code2);
     }
-    if (replace2) {
-      result.push(value.slice(start, index), encodeURIComponent(replace2));
-      start = index + skip + 1;
-      replace2 = "";
-    }
-    if (skip) {
-      index += skip;
-      skip = 0;
-    }
+    itemBody += this.parser.parse(item.tokens, !!item.loose);
+    return `<li>${itemBody}</li>
+`;
   }
-  return result.join("") + value.slice(start);
+  checkbox({ checked }) {
+    return "<input " + (checked ? 'checked="" ' : "") + 'disabled="" type="checkbox">';
+  }
+  paragraph({ tokens }) {
+    return `<p>${this.parser.parseInline(tokens)}</p>
+`;
+  }
+  table(token) {
+    let header = "";
+    let cell = "";
+    for (let j = 0; j < token.header.length; j++) {
+      cell += this.tablecell(token.header[j]);
+    }
+    header += this.tablerow({ text: cell });
+    let body = "";
+    for (let j = 0; j < token.rows.length; j++) {
+      const row = token.rows[j];
+      cell = "";
+      for (let k = 0; k < row.length; k++) {
+        cell += this.tablecell(row[k]);
+      }
+      body += this.tablerow({ text: cell });
+    }
+    if (body)
+      body = `<tbody>${body}</tbody>`;
+    return "<table>\n<thead>\n" + header + "</thead>\n" + body + "</table>\n";
+  }
+  tablerow({ text: text2 }) {
+    return `<tr>
+${text2}</tr>
+`;
+  }
+  tablecell(token) {
+    const content = this.parser.parseInline(token.tokens);
+    const type = token.header ? "th" : "td";
+    const tag2 = token.align ? `<${type} align="${token.align}">` : `<${type}>`;
+    return tag2 + content + `</${type}>
+`;
+  }
+  /**
+   * span level renderer
+   */
+  strong({ tokens }) {
+    return `<strong>${this.parser.parseInline(tokens)}</strong>`;
+  }
+  em({ tokens }) {
+    return `<em>${this.parser.parseInline(tokens)}</em>`;
+  }
+  codespan({ text: text2 }) {
+    return `<code>${escape$3(text2, true)}</code>`;
+  }
+  br(token) {
+    return "<br>";
+  }
+  del({ tokens }) {
+    return `<del>${this.parser.parseInline(tokens)}</del>`;
+  }
+  link({ href, title, tokens }) {
+    const text2 = this.parser.parseInline(tokens);
+    const cleanHref = cleanUrl(href);
+    if (cleanHref === null) {
+      return text2;
+    }
+    href = cleanHref;
+    let out = '<a href="' + href + '"';
+    if (title) {
+      out += ' title="' + escape$3(title) + '"';
+    }
+    out += ">" + text2 + "</a>";
+    return out;
+  }
+  image({ href, title, text: text2 }) {
+    const cleanHref = cleanUrl(href);
+    if (cleanHref === null) {
+      return escape$3(text2);
+    }
+    href = cleanHref;
+    let out = `<img src="${href}" alt="${text2}"`;
+    if (title) {
+      out += ` title="${escape$3(title)}"`;
+    }
+    out += ">";
+    return out;
+  }
+  text(token) {
+    return "tokens" in token && token.tokens ? this.parser.parseInline(token.tokens) : "escaped" in token && token.escaped ? token.text : escape$3(token.text);
+  }
 }
-const hasOwnProperty = {}.hasOwnProperty;
-const protocolHref = /^(https?|ircs?|mailto|xmpp)$/i;
-const protocolSource = /^https?$/i;
-function compile(options) {
-  const settings = options || {};
-  let tags = true;
-  const definitions = {};
-  const buffers = [[]];
-  const mediaStack = [];
-  const tightStack = [];
-  const defaultHandlers = {
-    enter: {
-      blockQuote: onenterblockquote,
-      codeFenced: onentercodefenced,
-      codeFencedFenceInfo: buffer,
-      codeFencedFenceMeta: buffer,
-      codeIndented: onentercodeindented,
-      codeText: onentercodetext,
-      content: onentercontent,
-      definition: onenterdefinition,
-      definitionDestinationString: onenterdefinitiondestinationstring,
-      definitionLabelString: buffer,
-      definitionTitleString: buffer,
-      emphasis: onenteremphasis,
-      htmlFlow: onenterhtmlflow,
-      htmlText: onenterhtml,
-      image: onenterimage,
-      label: buffer,
-      link: onenterlink,
-      listItemMarker: onenterlistitemmarker,
-      listItemValue: onenterlistitemvalue,
-      listOrdered: onenterlistordered,
-      listUnordered: onenterlistunordered,
-      paragraph: onenterparagraph,
-      reference: buffer,
-      resource: onenterresource,
-      resourceDestinationString: onenterresourcedestinationstring,
-      resourceTitleString: buffer,
-      setextHeading: onentersetextheading,
-      strong: onenterstrong
-    },
-    exit: {
-      atxHeading: onexitatxheading,
-      atxHeadingSequence: onexitatxheadingsequence,
-      autolinkEmail: onexitautolinkemail,
-      autolinkProtocol: onexitautolinkprotocol,
-      blockQuote: onexitblockquote,
-      characterEscapeValue: onexitdata,
-      characterReferenceMarkerHexadecimal: onexitcharacterreferencemarker,
-      characterReferenceMarkerNumeric: onexitcharacterreferencemarker,
-      characterReferenceValue: onexitcharacterreferencevalue,
-      codeFenced: onexitflowcode,
-      codeFencedFence: onexitcodefencedfence,
-      codeFencedFenceInfo: onexitcodefencedfenceinfo,
-      codeFencedFenceMeta: onresumedrop,
-      codeFlowValue: onexitcodeflowvalue,
-      codeIndented: onexitflowcode,
-      codeText: onexitcodetext,
-      codeTextData: onexitdata,
-      data: onexitdata,
-      definition: onexitdefinition,
-      definitionDestinationString: onexitdefinitiondestinationstring,
-      definitionLabelString: onexitdefinitionlabelstring,
-      definitionTitleString: onexitdefinitiontitlestring,
-      emphasis: onexitemphasis,
-      hardBreakEscape: onexithardbreak,
-      hardBreakTrailing: onexithardbreak,
-      htmlFlow: onexithtml,
-      htmlFlowData: onexitdata,
-      htmlText: onexithtml,
-      htmlTextData: onexitdata,
-      image: onexitmedia,
-      label: onexitlabel,
-      labelText: onexitlabeltext,
-      lineEnding: onexitlineending,
-      link: onexitmedia,
-      listOrdered: onexitlistordered,
-      listUnordered: onexitlistunordered,
-      paragraph: onexitparagraph,
-      reference: onresumedrop,
-      referenceString: onexitreferencestring,
-      resource: onresumedrop,
-      resourceDestinationString: onexitresourcedestinationstring,
-      resourceTitleString: onexitresourcetitlestring,
-      setextHeading: onexitsetextheading,
-      setextHeadingLineSequence: onexitsetextheadinglinesequence,
-      setextHeadingText: onexitsetextheadingtext,
-      strong: onexitstrong,
-      thematicBreak: onexitthematicbreak
-    }
-  };
-  const handlers = (
-    /** @type {NormalizedHtmlExtension} */
-    combineHtmlExtensions([defaultHandlers, ...settings.htmlExtensions || []])
-  );
-  const data = {
-    definitions,
-    tightStack
-  };
-  const context = {
-    buffer,
-    encode: encode$1,
-    getData,
-    lineEndingIfNeeded,
-    options: settings,
-    raw,
-    resume,
-    setData,
-    tag
-  };
-  let lineEndingStyle = settings.defaultLineEnding;
-  return compile2;
-  function compile2(events) {
-    let index = -1;
-    let start = 0;
-    const listStack = [];
-    let head = [];
-    let body = [];
-    while (++index < events.length) {
-      if (!lineEndingStyle && (events[index][1].type === "lineEnding" || events[index][1].type === "lineEndingBlank")) {
-        lineEndingStyle = /** @type {LineEnding} */
-        events[index][2].sliceSerialize(events[index][1]);
-      }
-      if (events[index][1].type === "listOrdered" || events[index][1].type === "listUnordered") {
-        if (events[index][0] === "enter") {
-          listStack.push(index);
-        } else {
-          prepareList(events.slice(listStack.pop(), index));
-        }
-      }
-      if (events[index][1].type === "definition") {
-        if (events[index][0] === "enter") {
-          body = push(body, events.slice(start, index));
-          start = index;
-        } else {
-          head = push(head, events.slice(start, index + 1));
-          start = index + 1;
-        }
-      }
-    }
-    head = push(head, body);
-    head = push(head, events.slice(start));
-    index = -1;
-    const result = head;
-    if (handlers.enter.null) {
-      handlers.enter.null.call(context);
-    }
-    while (++index < events.length) {
-      const handles = handlers[result[index][0]];
-      const kind = result[index][1].type;
-      const handle = handles[kind];
-      if (hasOwnProperty.call(handles, kind) && handle) {
-        handle.call({
-          sliceSerialize: result[index][2].sliceSerialize,
-          ...context
-        }, result[index][1]);
-      }
-    }
-    if (handlers.exit.null) {
-      handlers.exit.null.call(context);
-    }
-    return buffers[0].join("");
+class _TextRenderer {
+  // no need for block level renderers
+  strong({ text: text2 }) {
+    return text2;
   }
-  function prepareList(slice) {
-    const length = slice.length;
-    let index = 0;
-    let containerBalance = 0;
-    let loose = false;
-    let atMarker;
-    while (++index < length) {
-      const event = slice[index];
-      if (event[1]._container) {
-        atMarker = void 0;
-        if (event[0] === "enter") {
-          containerBalance++;
-        } else {
-          containerBalance--;
+  em({ text: text2 }) {
+    return text2;
+  }
+  codespan({ text: text2 }) {
+    return text2;
+  }
+  del({ text: text2 }) {
+    return text2;
+  }
+  html({ text: text2 }) {
+    return text2;
+  }
+  text({ text: text2 }) {
+    return text2;
+  }
+  link({ text: text2 }) {
+    return "" + text2;
+  }
+  image({ text: text2 }) {
+    return "" + text2;
+  }
+  br() {
+    return "";
+  }
+}
+class _Parser {
+  constructor(options) {
+    __publicField(this, "options");
+    __publicField(this, "renderer");
+    __publicField(this, "textRenderer");
+    this.options = options || _defaults;
+    this.options.renderer = this.options.renderer || new _Renderer();
+    this.renderer = this.options.renderer;
+    this.renderer.options = this.options;
+    this.renderer.parser = this;
+    this.textRenderer = new _TextRenderer();
+  }
+  /**
+   * Static Parse Method
+   */
+  static parse(tokens, options) {
+    const parser = new _Parser(options);
+    return parser.parse(tokens);
+  }
+  /**
+   * Static Parse Inline Method
+   */
+  static parseInline(tokens, options) {
+    const parser = new _Parser(options);
+    return parser.parseInline(tokens);
+  }
+  /**
+   * Parse Loop
+   */
+  parse(tokens, top = true) {
+    var _a, _b;
+    let out = "";
+    for (let i = 0; i < tokens.length; i++) {
+      const anyToken = tokens[i];
+      if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.renderers) == null ? void 0 : _b[anyToken.type]) {
+        const genericToken = anyToken;
+        const ret = this.options.extensions.renderers[genericToken.type].call({ parser: this }, genericToken);
+        if (ret !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "paragraph", "text"].includes(genericToken.type)) {
+          out += ret || "";
+          continue;
         }
-      } else switch (event[1].type) {
-        case "listItemPrefix": {
-          if (event[0] === "exit") {
-            atMarker = true;
+      }
+      const token = anyToken;
+      switch (token.type) {
+        case "space": {
+          out += this.renderer.space(token);
+          continue;
+        }
+        case "hr": {
+          out += this.renderer.hr(token);
+          continue;
+        }
+        case "heading": {
+          out += this.renderer.heading(token);
+          continue;
+        }
+        case "code": {
+          out += this.renderer.code(token);
+          continue;
+        }
+        case "table": {
+          out += this.renderer.table(token);
+          continue;
+        }
+        case "blockquote": {
+          out += this.renderer.blockquote(token);
+          continue;
+        }
+        case "list": {
+          out += this.renderer.list(token);
+          continue;
+        }
+        case "html": {
+          out += this.renderer.html(token);
+          continue;
+        }
+        case "paragraph": {
+          out += this.renderer.paragraph(token);
+          continue;
+        }
+        case "text": {
+          let textToken = token;
+          let body = this.renderer.text(textToken);
+          while (i + 1 < tokens.length && tokens[i + 1].type === "text") {
+            textToken = tokens[++i];
+            body += "\n" + this.renderer.text(textToken);
           }
+          if (top) {
+            out += this.renderer.paragraph({
+              type: "paragraph",
+              raw: body,
+              text: body,
+              tokens: [{ type: "text", raw: body, text: body, escaped: true }]
+            });
+          } else {
+            out += body;
+          }
+          continue;
+        }
+        default: {
+          const errMsg = 'Token with "' + token.type + '" type was not found.';
+          if (this.options.silent) {
+            console.error(errMsg);
+            return "";
+          } else {
+            throw new Error(errMsg);
+          }
+        }
+      }
+    }
+    return out;
+  }
+  /**
+   * Parse Inline Tokens
+   */
+  parseInline(tokens, renderer = this.renderer) {
+    var _a, _b;
+    let out = "";
+    for (let i = 0; i < tokens.length; i++) {
+      const anyToken = tokens[i];
+      if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.renderers) == null ? void 0 : _b[anyToken.type]) {
+        const ret = this.options.extensions.renderers[anyToken.type].call({ parser: this }, anyToken);
+        if (ret !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(anyToken.type)) {
+          out += ret || "";
+          continue;
+        }
+      }
+      const token = anyToken;
+      switch (token.type) {
+        case "escape": {
+          out += renderer.text(token);
           break;
         }
-        case "linePrefix": {
+        case "html": {
+          out += renderer.html(token);
           break;
         }
-        case "lineEndingBlank": {
-          if (event[0] === "enter" && !containerBalance) {
-            if (atMarker) {
-              atMarker = void 0;
-            } else {
-              loose = true;
-            }
-          }
+        case "link": {
+          out += renderer.link(token);
+          break;
+        }
+        case "image": {
+          out += renderer.image(token);
+          break;
+        }
+        case "strong": {
+          out += renderer.strong(token);
+          break;
+        }
+        case "em": {
+          out += renderer.em(token);
+          break;
+        }
+        case "codespan": {
+          out += renderer.codespan(token);
+          break;
+        }
+        case "br": {
+          out += renderer.br(token);
+          break;
+        }
+        case "del": {
+          out += renderer.del(token);
+          break;
+        }
+        case "text": {
+          out += renderer.text(token);
           break;
         }
         default: {
-          atMarker = void 0;
+          const errMsg = 'Token with "' + token.type + '" type was not found.';
+          if (this.options.silent) {
+            console.error(errMsg);
+            return "";
+          } else {
+            throw new Error(errMsg);
+          }
         }
       }
     }
-    slice[0][1]._loose = loose;
-  }
-  function setData(key, value) {
-    data[key] = value;
-  }
-  function getData(key) {
-    return data[key];
-  }
-  function buffer() {
-    buffers.push([]);
-  }
-  function resume() {
-    const buf = buffers.pop();
-    return buf.join("");
-  }
-  function tag(value) {
-    if (!tags) return;
-    setData("lastWasTag", true);
-    buffers[buffers.length - 1].push(value);
-  }
-  function raw(value) {
-    setData("lastWasTag");
-    buffers[buffers.length - 1].push(value);
-  }
-  function lineEnding2() {
-    raw(lineEndingStyle || "\n");
-  }
-  function lineEndingIfNeeded() {
-    const buffer2 = buffers[buffers.length - 1];
-    const slice = buffer2[buffer2.length - 1];
-    const previous2 = slice ? slice.charCodeAt(slice.length - 1) : null;
-    if (previous2 === 10 || previous2 === 13 || previous2 === null) {
-      return;
-    }
-    lineEnding2();
-  }
-  function encode$1(value) {
-    return getData("ignoreEncode") ? value : encode(value);
-  }
-  function onresumedrop() {
-    resume();
-  }
-  function onenterlistordered(token) {
-    tightStack.push(!token._loose);
-    lineEndingIfNeeded();
-    tag("<ol");
-    setData("expectFirstItem", true);
-  }
-  function onenterlistunordered(token) {
-    tightStack.push(!token._loose);
-    lineEndingIfNeeded();
-    tag("<ul");
-    setData("expectFirstItem", true);
-  }
-  function onenterlistitemvalue(token) {
-    if (getData("expectFirstItem")) {
-      const value = Number.parseInt(this.sliceSerialize(token), 10);
-      if (value !== 1) {
-        tag(' start="' + encode$1(String(value)) + '"');
-      }
-    }
-  }
-  function onenterlistitemmarker() {
-    if (getData("expectFirstItem")) {
-      tag(">");
-    } else {
-      onexitlistitem();
-    }
-    lineEndingIfNeeded();
-    tag("<li>");
-    setData("expectFirstItem");
-    setData("lastWasTag");
-  }
-  function onexitlistordered() {
-    onexitlistitem();
-    tightStack.pop();
-    lineEnding2();
-    tag("</ol>");
-  }
-  function onexitlistunordered() {
-    onexitlistitem();
-    tightStack.pop();
-    lineEnding2();
-    tag("</ul>");
-  }
-  function onexitlistitem() {
-    if (getData("lastWasTag") && !getData("slurpAllLineEndings")) {
-      lineEndingIfNeeded();
-    }
-    tag("</li>");
-    setData("slurpAllLineEndings");
-  }
-  function onenterblockquote() {
-    tightStack.push(false);
-    lineEndingIfNeeded();
-    tag("<blockquote>");
-  }
-  function onexitblockquote() {
-    tightStack.pop();
-    lineEndingIfNeeded();
-    tag("</blockquote>");
-    setData("slurpAllLineEndings");
-  }
-  function onenterparagraph() {
-    if (!tightStack[tightStack.length - 1]) {
-      lineEndingIfNeeded();
-      tag("<p>");
-    }
-    setData("slurpAllLineEndings");
-  }
-  function onexitparagraph() {
-    if (tightStack[tightStack.length - 1]) {
-      setData("slurpAllLineEndings", true);
-    } else {
-      tag("</p>");
-    }
-  }
-  function onentercodefenced() {
-    lineEndingIfNeeded();
-    tag("<pre><code");
-    setData("fencesCount", 0);
-  }
-  function onexitcodefencedfenceinfo() {
-    const value = resume();
-    tag(' class="language-' + value + '"');
-  }
-  function onexitcodefencedfence() {
-    const count = getData("fencesCount") || 0;
-    if (!count) {
-      tag(">");
-      setData("slurpOneLineEnding", true);
-    }
-    setData("fencesCount", count + 1);
-  }
-  function onentercodeindented() {
-    lineEndingIfNeeded();
-    tag("<pre><code>");
-  }
-  function onexitflowcode() {
-    const count = getData("fencesCount");
-    if (count !== void 0 && count < 2 && data.tightStack.length > 0 && !getData("lastWasTag")) {
-      lineEnding2();
-    }
-    if (getData("flowCodeSeenData")) {
-      lineEndingIfNeeded();
-    }
-    tag("</code></pre>");
-    if (count !== void 0 && count < 2) lineEndingIfNeeded();
-    setData("flowCodeSeenData");
-    setData("fencesCount");
-    setData("slurpOneLineEnding");
-  }
-  function onenterimage() {
-    mediaStack.push({
-      image: true
-    });
-    tags = void 0;
-  }
-  function onenterlink() {
-    mediaStack.push({});
-  }
-  function onexitlabeltext(token) {
-    mediaStack[mediaStack.length - 1].labelId = this.sliceSerialize(token);
-  }
-  function onexitlabel() {
-    mediaStack[mediaStack.length - 1].label = resume();
-  }
-  function onexitreferencestring(token) {
-    mediaStack[mediaStack.length - 1].referenceId = this.sliceSerialize(token);
-  }
-  function onenterresource() {
-    buffer();
-    mediaStack[mediaStack.length - 1].destination = "";
-  }
-  function onenterresourcedestinationstring() {
-    buffer();
-    setData("ignoreEncode", true);
-  }
-  function onexitresourcedestinationstring() {
-    mediaStack[mediaStack.length - 1].destination = resume();
-    setData("ignoreEncode");
-  }
-  function onexitresourcetitlestring() {
-    mediaStack[mediaStack.length - 1].title = resume();
-  }
-  function onexitmedia() {
-    let index = mediaStack.length - 1;
-    const media = mediaStack[index];
-    const id = media.referenceId || media.labelId;
-    const context2 = media.destination === void 0 ? definitions[normalizeIdentifier(id)] : media;
-    tags = true;
-    while (index--) {
-      if (mediaStack[index].image) {
-        tags = void 0;
-        break;
-      }
-    }
-    if (media.image) {
-      tag('<img src="' + sanitizeUri(context2.destination, settings.allowDangerousProtocol ? void 0 : protocolSource) + '" alt="');
-      raw(media.label);
-      tag('"');
-    } else {
-      tag('<a href="' + sanitizeUri(context2.destination, settings.allowDangerousProtocol ? void 0 : protocolHref) + '"');
-    }
-    tag(context2.title ? ' title="' + context2.title + '"' : "");
-    if (media.image) {
-      tag(" />");
-    } else {
-      tag(">");
-      raw(media.label);
-      tag("</a>");
-    }
-    mediaStack.pop();
-  }
-  function onenterdefinition() {
-    buffer();
-    mediaStack.push({});
-  }
-  function onexitdefinitionlabelstring(token) {
-    resume();
-    mediaStack[mediaStack.length - 1].labelId = this.sliceSerialize(token);
-  }
-  function onenterdefinitiondestinationstring() {
-    buffer();
-    setData("ignoreEncode", true);
-  }
-  function onexitdefinitiondestinationstring() {
-    mediaStack[mediaStack.length - 1].destination = resume();
-    setData("ignoreEncode");
-  }
-  function onexitdefinitiontitlestring() {
-    mediaStack[mediaStack.length - 1].title = resume();
-  }
-  function onexitdefinition() {
-    const media = mediaStack[mediaStack.length - 1];
-    const id = normalizeIdentifier(media.labelId);
-    resume();
-    if (!hasOwnProperty.call(definitions, id)) {
-      definitions[id] = mediaStack[mediaStack.length - 1];
-    }
-    mediaStack.pop();
-  }
-  function onentercontent() {
-    setData("slurpAllLineEndings", true);
-  }
-  function onexitatxheadingsequence(token) {
-    if (getData("headingRank")) return;
-    setData("headingRank", this.sliceSerialize(token).length);
-    lineEndingIfNeeded();
-    tag("<h" + getData("headingRank") + ">");
-  }
-  function onentersetextheading() {
-    buffer();
-    setData("slurpAllLineEndings");
-  }
-  function onexitsetextheadingtext() {
-    setData("slurpAllLineEndings", true);
-  }
-  function onexitatxheading() {
-    tag("</h" + getData("headingRank") + ">");
-    setData("headingRank");
-  }
-  function onexitsetextheadinglinesequence(token) {
-    setData("headingRank", this.sliceSerialize(token).charCodeAt(0) === 61 ? 1 : 2);
-  }
-  function onexitsetextheading() {
-    const value = resume();
-    lineEndingIfNeeded();
-    tag("<h" + getData("headingRank") + ">");
-    raw(value);
-    tag("</h" + getData("headingRank") + ">");
-    setData("slurpAllLineEndings");
-    setData("headingRank");
-  }
-  function onexitdata(token) {
-    raw(encode$1(this.sliceSerialize(token)));
-  }
-  function onexitlineending(token) {
-    if (getData("slurpAllLineEndings")) {
-      return;
-    }
-    if (getData("slurpOneLineEnding")) {
-      setData("slurpOneLineEnding");
-      return;
-    }
-    if (getData("inCodeText")) {
-      raw(" ");
-      return;
-    }
-    raw(encode$1(this.sliceSerialize(token)));
-  }
-  function onexitcodeflowvalue(token) {
-    raw(encode$1(this.sliceSerialize(token)));
-    setData("flowCodeSeenData", true);
-  }
-  function onexithardbreak() {
-    tag("<br />");
-  }
-  function onenterhtmlflow() {
-    lineEndingIfNeeded();
-    onenterhtml();
-  }
-  function onexithtml() {
-    setData("ignoreEncode");
-  }
-  function onenterhtml() {
-    if (settings.allowDangerousHtml) {
-      setData("ignoreEncode", true);
-    }
-  }
-  function onenteremphasis() {
-    tag("<em>");
-  }
-  function onenterstrong() {
-    tag("<strong>");
-  }
-  function onentercodetext() {
-    setData("inCodeText", true);
-    tag("<code>");
-  }
-  function onexitcodetext() {
-    setData("inCodeText");
-    tag("</code>");
-  }
-  function onexitemphasis() {
-    tag("</em>");
-  }
-  function onexitstrong() {
-    tag("</strong>");
-  }
-  function onexitthematicbreak() {
-    lineEndingIfNeeded();
-    tag("<hr />");
-  }
-  function onexitcharacterreferencemarker(token) {
-    setData("characterReferenceType", token.type);
-  }
-  function onexitcharacterreferencevalue(token) {
-    const value = this.sliceSerialize(token);
-    const decoded = getData("characterReferenceType") ? decodeNumericCharacterReference(value, getData("characterReferenceType") === "characterReferenceMarkerNumeric" ? 10 : 16) : decodeNamedCharacterReference(value);
-    raw(encode$1(
-      /** @type {string} */
-      decoded
-    ));
-    setData("characterReferenceType");
-  }
-  function onexitautolinkprotocol(token) {
-    const uri = this.sliceSerialize(token);
-    tag('<a href="' + sanitizeUri(uri, settings.allowDangerousProtocol ? void 0 : protocolHref) + '">');
-    raw(encode$1(uri));
-    tag("</a>");
-  }
-  function onexitautolinkemail(token) {
-    const uri = this.sliceSerialize(token);
-    tag('<a href="' + sanitizeUri("mailto:" + uri) + '">');
-    raw(encode$1(uri));
-    tag("</a>");
+    return out;
   }
 }
-function factorySpace(effects, ok, type, max) {
-  const limit = max ? max - 1 : Number.POSITIVE_INFINITY;
-  let size = 0;
-  return start;
-  function start(code2) {
-    if (markdownSpace(code2)) {
-      effects.enter(type);
-      return prefix(code2);
-    }
-    return ok(code2);
+class _Hooks {
+  constructor(options) {
+    __publicField(this, "options");
+    __publicField(this, "block");
+    this.options = options || _defaults;
   }
-  function prefix(code2) {
-    if (markdownSpace(code2) && size++ < limit) {
-      effects.consume(code2);
-      return prefix;
-    }
-    effects.exit(type);
-    return ok(code2);
+  /**
+   * Process markdown before marked
+   */
+  preprocess(markdown) {
+    return markdown;
   }
-}
-const content$1 = {
-  tokenize: initializeContent
-};
-function initializeContent(effects) {
-  const contentStart = effects.attempt(this.parser.constructs.contentInitial, afterContentStartConstruct, paragraphInitial);
-  let previous2;
-  return contentStart;
-  function afterContentStartConstruct(code2) {
-    if (code2 === null) {
-      effects.consume(code2);
-      return;
-    }
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return factorySpace(effects, contentStart, "linePrefix");
+  /**
+   * Process HTML after marked is finished
+   */
+  postprocess(html2) {
+    return html2;
   }
-  function paragraphInitial(code2) {
-    effects.enter("paragraph");
-    return lineStart(code2);
+  /**
+   * Process all tokens before walk tokens
+   */
+  processAllTokens(tokens) {
+    return tokens;
   }
-  function lineStart(code2) {
-    const token = effects.enter("chunkText", {
-      contentType: "text",
-      previous: previous2
-    });
-    if (previous2) {
-      previous2.next = token;
-    }
-    previous2 = token;
-    return data(code2);
+  /**
+   * Provide function to tokenize markdown
+   */
+  provideLexer() {
+    return this.block ? _Lexer.lex : _Lexer.lexInline;
   }
-  function data(code2) {
-    if (code2 === null) {
-      effects.exit("chunkText");
-      effects.exit("paragraph");
-      effects.consume(code2);
-      return;
-    }
-    if (markdownLineEnding(code2)) {
-      effects.consume(code2);
-      effects.exit("chunkText");
-      return lineStart;
-    }
-    effects.consume(code2);
-    return data;
+  /**
+   * Provide function to parse tokens
+   */
+  provideParser() {
+    return this.block ? _Parser.parse : _Parser.parseInline;
   }
 }
-const document$2 = {
-  tokenize: initializeDocument
-};
-const containerConstruct = {
-  tokenize: tokenizeContainer
-};
-function initializeDocument(effects) {
-  const self2 = this;
-  const stack = [];
-  let continued = 0;
-  let childFlow;
-  let childToken;
-  let lineStartOffset;
-  return start;
-  function start(code2) {
-    if (continued < stack.length) {
-      const item = stack[continued];
-      self2.containerState = item[1];
-      return effects.attempt(item[0].continuation, documentContinue, checkNewContainers)(code2);
-    }
-    return checkNewContainers(code2);
+__publicField(_Hooks, "passThroughHooks", /* @__PURE__ */ new Set([
+  "preprocess",
+  "postprocess",
+  "processAllTokens"
+]));
+class Marked {
+  constructor(...args) {
+    __publicField(this, "defaults", _getDefaults());
+    __publicField(this, "options", this.setOptions);
+    __publicField(this, "parse", this.parseMarkdown(true));
+    __publicField(this, "parseInline", this.parseMarkdown(false));
+    __publicField(this, "Parser", _Parser);
+    __publicField(this, "Renderer", _Renderer);
+    __publicField(this, "TextRenderer", _TextRenderer);
+    __publicField(this, "Lexer", _Lexer);
+    __publicField(this, "Tokenizer", _Tokenizer);
+    __publicField(this, "Hooks", _Hooks);
+    this.use(...args);
   }
-  function documentContinue(code2) {
-    continued++;
-    if (self2.containerState._closeFlow) {
-      self2.containerState._closeFlow = void 0;
-      if (childFlow) {
-        closeFlow();
-      }
-      const indexBeforeExits = self2.events.length;
-      let indexBeforeFlow = indexBeforeExits;
-      let point;
-      while (indexBeforeFlow--) {
-        if (self2.events[indexBeforeFlow][0] === "exit" && self2.events[indexBeforeFlow][1].type === "chunkFlow") {
-          point = self2.events[indexBeforeFlow][1].end;
+  /**
+   * Run callback for every token
+   */
+  walkTokens(tokens, callback) {
+    var _a, _b;
+    let values = [];
+    for (const token of tokens) {
+      values = values.concat(callback.call(this, token));
+      switch (token.type) {
+        case "table": {
+          const tableToken = token;
+          for (const cell of tableToken.header) {
+            values = values.concat(this.walkTokens(cell.tokens, callback));
+          }
+          for (const row of tableToken.rows) {
+            for (const cell of row) {
+              values = values.concat(this.walkTokens(cell.tokens, callback));
+            }
+          }
           break;
         }
-      }
-      exitContainers(continued);
-      let index = indexBeforeExits;
-      while (index < self2.events.length) {
-        self2.events[index][1].end = {
-          ...point
-        };
-        index++;
-      }
-      splice(self2.events, indexBeforeFlow + 1, 0, self2.events.slice(indexBeforeExits));
-      self2.events.length = index;
-      return checkNewContainers(code2);
-    }
-    return start(code2);
-  }
-  function checkNewContainers(code2) {
-    if (continued === stack.length) {
-      if (!childFlow) {
-        return documentContinued(code2);
-      }
-      if (childFlow.currentConstruct && childFlow.currentConstruct.concrete) {
-        return flowStart(code2);
-      }
-      self2.interrupt = Boolean(childFlow.currentConstruct && !childFlow._gfmTableDynamicInterruptHack);
-    }
-    self2.containerState = {};
-    return effects.check(containerConstruct, thereIsANewContainer, thereIsNoNewContainer)(code2);
-  }
-  function thereIsANewContainer(code2) {
-    if (childFlow) closeFlow();
-    exitContainers(continued);
-    return documentContinued(code2);
-  }
-  function thereIsNoNewContainer(code2) {
-    self2.parser.lazy[self2.now().line] = continued !== stack.length;
-    lineStartOffset = self2.now().offset;
-    return flowStart(code2);
-  }
-  function documentContinued(code2) {
-    self2.containerState = {};
-    return effects.attempt(containerConstruct, containerContinue, flowStart)(code2);
-  }
-  function containerContinue(code2) {
-    continued++;
-    stack.push([self2.currentConstruct, self2.containerState]);
-    return documentContinued(code2);
-  }
-  function flowStart(code2) {
-    if (code2 === null) {
-      if (childFlow) closeFlow();
-      exitContainers(0);
-      effects.consume(code2);
-      return;
-    }
-    childFlow = childFlow || self2.parser.flow(self2.now());
-    effects.enter("chunkFlow", {
-      _tokenizer: childFlow,
-      contentType: "flow",
-      previous: childToken
-    });
-    return flowContinue(code2);
-  }
-  function flowContinue(code2) {
-    if (code2 === null) {
-      writeToChild(effects.exit("chunkFlow"), true);
-      exitContainers(0);
-      effects.consume(code2);
-      return;
-    }
-    if (markdownLineEnding(code2)) {
-      effects.consume(code2);
-      writeToChild(effects.exit("chunkFlow"));
-      continued = 0;
-      self2.interrupt = void 0;
-      return start;
-    }
-    effects.consume(code2);
-    return flowContinue;
-  }
-  function writeToChild(token, endOfFile) {
-    const stream = self2.sliceStream(token);
-    if (endOfFile) stream.push(null);
-    token.previous = childToken;
-    if (childToken) childToken.next = token;
-    childToken = token;
-    childFlow.defineSkip(token.start);
-    childFlow.write(stream);
-    if (self2.parser.lazy[token.start.line]) {
-      let index = childFlow.events.length;
-      while (index--) {
-        if (
-          // The token starts before the line ending…
-          childFlow.events[index][1].start.offset < lineStartOffset && // …and either is not ended yet…
-          (!childFlow.events[index][1].end || // …or ends after it.
-          childFlow.events[index][1].end.offset > lineStartOffset)
-        ) {
-          return;
+        case "list": {
+          const listToken = token;
+          values = values.concat(this.walkTokens(listToken.items, callback));
+          break;
         }
-      }
-      const indexBeforeExits = self2.events.length;
-      let indexBeforeFlow = indexBeforeExits;
-      let seen;
-      let point;
-      while (indexBeforeFlow--) {
-        if (self2.events[indexBeforeFlow][0] === "exit" && self2.events[indexBeforeFlow][1].type === "chunkFlow") {
-          if (seen) {
-            point = self2.events[indexBeforeFlow][1].end;
-            break;
+        default: {
+          const genericToken = token;
+          if ((_b = (_a = this.defaults.extensions) == null ? void 0 : _a.childTokens) == null ? void 0 : _b[genericToken.type]) {
+            this.defaults.extensions.childTokens[genericToken.type].forEach((childTokens) => {
+              const tokens2 = genericToken[childTokens].flat(Infinity);
+              values = values.concat(this.walkTokens(tokens2, callback));
+            });
+          } else if (genericToken.tokens) {
+            values = values.concat(this.walkTokens(genericToken.tokens, callback));
           }
-          seen = true;
         }
       }
-      exitContainers(continued);
-      index = indexBeforeExits;
-      while (index < self2.events.length) {
-        self2.events[index][1].end = {
-          ...point
-        };
-        index++;
+    }
+    return values;
+  }
+  use(...args) {
+    const extensions = this.defaults.extensions || { renderers: {}, childTokens: {} };
+    args.forEach((pack) => {
+      const opts = { ...pack };
+      opts.async = this.defaults.async || opts.async || false;
+      if (pack.extensions) {
+        pack.extensions.forEach((ext) => {
+          if (!ext.name) {
+            throw new Error("extension name required");
+          }
+          if ("renderer" in ext) {
+            const prevRenderer = extensions.renderers[ext.name];
+            if (prevRenderer) {
+              extensions.renderers[ext.name] = function(...args2) {
+                let ret = ext.renderer.apply(this, args2);
+                if (ret === false) {
+                  ret = prevRenderer.apply(this, args2);
+                }
+                return ret;
+              };
+            } else {
+              extensions.renderers[ext.name] = ext.renderer;
+            }
+          }
+          if ("tokenizer" in ext) {
+            if (!ext.level || ext.level !== "block" && ext.level !== "inline") {
+              throw new Error("extension level must be 'block' or 'inline'");
+            }
+            const extLevel = extensions[ext.level];
+            if (extLevel) {
+              extLevel.unshift(ext.tokenizer);
+            } else {
+              extensions[ext.level] = [ext.tokenizer];
+            }
+            if (ext.start) {
+              if (ext.level === "block") {
+                if (extensions.startBlock) {
+                  extensions.startBlock.push(ext.start);
+                } else {
+                  extensions.startBlock = [ext.start];
+                }
+              } else if (ext.level === "inline") {
+                if (extensions.startInline) {
+                  extensions.startInline.push(ext.start);
+                } else {
+                  extensions.startInline = [ext.start];
+                }
+              }
+            }
+          }
+          if ("childTokens" in ext && ext.childTokens) {
+            extensions.childTokens[ext.name] = ext.childTokens;
+          }
+        });
+        opts.extensions = extensions;
       }
-      splice(self2.events, indexBeforeFlow + 1, 0, self2.events.slice(indexBeforeExits));
-      self2.events.length = index;
-    }
-  }
-  function exitContainers(size) {
-    let index = stack.length;
-    while (index-- > size) {
-      const entry = stack[index];
-      self2.containerState = entry[1];
-      entry[0].exit.call(self2, effects);
-    }
-    stack.length = size;
-  }
-  function closeFlow() {
-    childFlow.write([null]);
-    childToken = void 0;
-    childFlow = void 0;
-    self2.containerState._closeFlow = void 0;
-  }
-}
-function tokenizeContainer(effects, ok, nok) {
-  return factorySpace(effects, effects.attempt(this.parser.constructs.document, ok, nok), "linePrefix", this.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4);
-}
-function classifyCharacter(code2) {
-  if (code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)) {
-    return 1;
-  }
-  if (unicodePunctuation(code2)) {
-    return 2;
-  }
-}
-function resolveAll(constructs2, events, context) {
-  const called = [];
-  let index = -1;
-  while (++index < constructs2.length) {
-    const resolve = constructs2[index].resolveAll;
-    if (resolve && !called.includes(resolve)) {
-      events = resolve(events, context);
-      called.push(resolve);
-    }
-  }
-  return events;
-}
-const attention = {
-  name: "attention",
-  resolveAll: resolveAllAttention,
-  tokenize: tokenizeAttention
-};
-function resolveAllAttention(events, context) {
-  let index = -1;
-  let open2;
-  let group;
-  let text2;
-  let openingSequence;
-  let closingSequence;
-  let use;
-  let nextEvents;
-  let offset;
-  while (++index < events.length) {
-    if (events[index][0] === "enter" && events[index][1].type === "attentionSequence" && events[index][1]._close) {
-      open2 = index;
-      while (open2--) {
-        if (events[open2][0] === "exit" && events[open2][1].type === "attentionSequence" && events[open2][1]._open && // If the markers are the same:
-        context.sliceSerialize(events[open2][1]).charCodeAt(0) === context.sliceSerialize(events[index][1]).charCodeAt(0)) {
-          if ((events[open2][1]._close || events[index][1]._open) && (events[index][1].end.offset - events[index][1].start.offset) % 3 && !((events[open2][1].end.offset - events[open2][1].start.offset + events[index][1].end.offset - events[index][1].start.offset) % 3)) {
+      if (pack.renderer) {
+        const renderer = this.defaults.renderer || new _Renderer(this.defaults);
+        for (const prop in pack.renderer) {
+          if (!(prop in renderer)) {
+            throw new Error(`renderer '${prop}' does not exist`);
+          }
+          if (["options", "parser"].includes(prop)) {
             continue;
           }
-          use = events[open2][1].end.offset - events[open2][1].start.offset > 1 && events[index][1].end.offset - events[index][1].start.offset > 1 ? 2 : 1;
-          const start = {
-            ...events[open2][1].end
-          };
-          const end = {
-            ...events[index][1].start
-          };
-          movePoint(start, -use);
-          movePoint(end, use);
-          openingSequence = {
-            type: use > 1 ? "strongSequence" : "emphasisSequence",
-            start,
-            end: {
-              ...events[open2][1].end
+          const rendererProp = prop;
+          const rendererFunc = pack.renderer[rendererProp];
+          const prevRenderer = renderer[rendererProp];
+          renderer[rendererProp] = (...args2) => {
+            let ret = rendererFunc.apply(renderer, args2);
+            if (ret === false) {
+              ret = prevRenderer.apply(renderer, args2);
             }
+            return ret || "";
           };
-          closingSequence = {
-            type: use > 1 ? "strongSequence" : "emphasisSequence",
-            start: {
-              ...events[index][1].start
-            },
-            end
-          };
-          text2 = {
-            type: use > 1 ? "strongText" : "emphasisText",
-            start: {
-              ...events[open2][1].end
-            },
-            end: {
-              ...events[index][1].start
-            }
-          };
-          group = {
-            type: use > 1 ? "strong" : "emphasis",
-            start: {
-              ...openingSequence.start
-            },
-            end: {
-              ...closingSequence.end
-            }
-          };
-          events[open2][1].end = {
-            ...openingSequence.start
-          };
-          events[index][1].start = {
-            ...closingSequence.end
-          };
-          nextEvents = [];
-          if (events[open2][1].end.offset - events[open2][1].start.offset) {
-            nextEvents = push(nextEvents, [["enter", events[open2][1], context], ["exit", events[open2][1], context]]);
+        }
+        opts.renderer = renderer;
+      }
+      if (pack.tokenizer) {
+        const tokenizer = this.defaults.tokenizer || new _Tokenizer(this.defaults);
+        for (const prop in pack.tokenizer) {
+          if (!(prop in tokenizer)) {
+            throw new Error(`tokenizer '${prop}' does not exist`);
           }
-          nextEvents = push(nextEvents, [["enter", group, context], ["enter", openingSequence, context], ["exit", openingSequence, context], ["enter", text2, context]]);
-          nextEvents = push(nextEvents, resolveAll(context.parser.constructs.insideSpan.null, events.slice(open2 + 1, index), context));
-          nextEvents = push(nextEvents, [["exit", text2, context], ["enter", closingSequence, context], ["exit", closingSequence, context], ["exit", group, context]]);
-          if (events[index][1].end.offset - events[index][1].start.offset) {
-            offset = 2;
-            nextEvents = push(nextEvents, [["enter", events[index][1], context], ["exit", events[index][1], context]]);
+          if (["options", "rules", "lexer"].includes(prop)) {
+            continue;
+          }
+          const tokenizerProp = prop;
+          const tokenizerFunc = pack.tokenizer[tokenizerProp];
+          const prevTokenizer = tokenizer[tokenizerProp];
+          tokenizer[tokenizerProp] = (...args2) => {
+            let ret = tokenizerFunc.apply(tokenizer, args2);
+            if (ret === false) {
+              ret = prevTokenizer.apply(tokenizer, args2);
+            }
+            return ret;
+          };
+        }
+        opts.tokenizer = tokenizer;
+      }
+      if (pack.hooks) {
+        const hooks = this.defaults.hooks || new _Hooks();
+        for (const prop in pack.hooks) {
+          if (!(prop in hooks)) {
+            throw new Error(`hook '${prop}' does not exist`);
+          }
+          if (["options", "block"].includes(prop)) {
+            continue;
+          }
+          const hooksProp = prop;
+          const hooksFunc = pack.hooks[hooksProp];
+          const prevHook = hooks[hooksProp];
+          if (_Hooks.passThroughHooks.has(prop)) {
+            hooks[hooksProp] = (arg) => {
+              if (this.defaults.async) {
+                return Promise.resolve(hooksFunc.call(hooks, arg)).then((ret2) => {
+                  return prevHook.call(hooks, ret2);
+                });
+              }
+              const ret = hooksFunc.call(hooks, arg);
+              return prevHook.call(hooks, ret);
+            };
           } else {
-            offset = 0;
-          }
-          splice(events, open2 - 1, index - open2 + 3, nextEvents);
-          index = open2 + nextEvents.length - offset - 2;
-          break;
-        }
-      }
-    }
-  }
-  index = -1;
-  while (++index < events.length) {
-    if (events[index][1].type === "attentionSequence") {
-      events[index][1].type = "data";
-    }
-  }
-  return events;
-}
-function tokenizeAttention(effects, ok) {
-  const attentionMarkers2 = this.parser.constructs.attentionMarkers.null;
-  const previous2 = this.previous;
-  const before = classifyCharacter(previous2);
-  let marker;
-  return start;
-  function start(code2) {
-    marker = code2;
-    effects.enter("attentionSequence");
-    return inside(code2);
-  }
-  function inside(code2) {
-    if (code2 === marker) {
-      effects.consume(code2);
-      return inside;
-    }
-    const token = effects.exit("attentionSequence");
-    const after = classifyCharacter(code2);
-    const open2 = !after || after === 2 && before || attentionMarkers2.includes(code2);
-    const close2 = !before || before === 2 && after || attentionMarkers2.includes(previous2);
-    token._open = Boolean(marker === 42 ? open2 : open2 && (before || !close2));
-    token._close = Boolean(marker === 42 ? close2 : close2 && (after || !open2));
-    return ok(code2);
-  }
-}
-function movePoint(point, offset) {
-  point.column += offset;
-  point.offset += offset;
-  point._bufferIndex += offset;
-}
-const autolink = {
-  name: "autolink",
-  tokenize: tokenizeAutolink
-};
-function tokenizeAutolink(effects, ok, nok) {
-  let size = 0;
-  return start;
-  function start(code2) {
-    effects.enter("autolink");
-    effects.enter("autolinkMarker");
-    effects.consume(code2);
-    effects.exit("autolinkMarker");
-    effects.enter("autolinkProtocol");
-    return open2;
-  }
-  function open2(code2) {
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      return schemeOrEmailAtext;
-    }
-    if (code2 === 64) {
-      return nok(code2);
-    }
-    return emailAtext(code2);
-  }
-  function schemeOrEmailAtext(code2) {
-    if (code2 === 43 || code2 === 45 || code2 === 46 || asciiAlphanumeric(code2)) {
-      size = 1;
-      return schemeInsideOrEmailAtext(code2);
-    }
-    return emailAtext(code2);
-  }
-  function schemeInsideOrEmailAtext(code2) {
-    if (code2 === 58) {
-      effects.consume(code2);
-      size = 0;
-      return urlInside;
-    }
-    if ((code2 === 43 || code2 === 45 || code2 === 46 || asciiAlphanumeric(code2)) && size++ < 32) {
-      effects.consume(code2);
-      return schemeInsideOrEmailAtext;
-    }
-    size = 0;
-    return emailAtext(code2);
-  }
-  function urlInside(code2) {
-    if (code2 === 62) {
-      effects.exit("autolinkProtocol");
-      effects.enter("autolinkMarker");
-      effects.consume(code2);
-      effects.exit("autolinkMarker");
-      effects.exit("autolink");
-      return ok;
-    }
-    if (code2 === null || code2 === 32 || code2 === 60 || asciiControl(code2)) {
-      return nok(code2);
-    }
-    effects.consume(code2);
-    return urlInside;
-  }
-  function emailAtext(code2) {
-    if (code2 === 64) {
-      effects.consume(code2);
-      return emailAtSignOrDot;
-    }
-    if (asciiAtext(code2)) {
-      effects.consume(code2);
-      return emailAtext;
-    }
-    return nok(code2);
-  }
-  function emailAtSignOrDot(code2) {
-    return asciiAlphanumeric(code2) ? emailLabel(code2) : nok(code2);
-  }
-  function emailLabel(code2) {
-    if (code2 === 46) {
-      effects.consume(code2);
-      size = 0;
-      return emailAtSignOrDot;
-    }
-    if (code2 === 62) {
-      effects.exit("autolinkProtocol").type = "autolinkEmail";
-      effects.enter("autolinkMarker");
-      effects.consume(code2);
-      effects.exit("autolinkMarker");
-      effects.exit("autolink");
-      return ok;
-    }
-    return emailValue(code2);
-  }
-  function emailValue(code2) {
-    if ((code2 === 45 || asciiAlphanumeric(code2)) && size++ < 63) {
-      const next = code2 === 45 ? emailValue : emailLabel;
-      effects.consume(code2);
-      return next;
-    }
-    return nok(code2);
-  }
-}
-const blankLine = {
-  partial: true,
-  tokenize: tokenizeBlankLine
-};
-function tokenizeBlankLine(effects, ok, nok) {
-  return start;
-  function start(code2) {
-    return markdownSpace(code2) ? factorySpace(effects, after, "linePrefix")(code2) : after(code2);
-  }
-  function after(code2) {
-    return code2 === null || markdownLineEnding(code2) ? ok(code2) : nok(code2);
-  }
-}
-const blockQuote = {
-  continuation: {
-    tokenize: tokenizeBlockQuoteContinuation
-  },
-  exit,
-  name: "blockQuote",
-  tokenize: tokenizeBlockQuoteStart
-};
-function tokenizeBlockQuoteStart(effects, ok, nok) {
-  const self2 = this;
-  return start;
-  function start(code2) {
-    if (code2 === 62) {
-      const state = self2.containerState;
-      if (!state.open) {
-        effects.enter("blockQuote", {
-          _container: true
-        });
-        state.open = true;
-      }
-      effects.enter("blockQuotePrefix");
-      effects.enter("blockQuoteMarker");
-      effects.consume(code2);
-      effects.exit("blockQuoteMarker");
-      return after;
-    }
-    return nok(code2);
-  }
-  function after(code2) {
-    if (markdownSpace(code2)) {
-      effects.enter("blockQuotePrefixWhitespace");
-      effects.consume(code2);
-      effects.exit("blockQuotePrefixWhitespace");
-      effects.exit("blockQuotePrefix");
-      return ok;
-    }
-    effects.exit("blockQuotePrefix");
-    return ok(code2);
-  }
-}
-function tokenizeBlockQuoteContinuation(effects, ok, nok) {
-  const self2 = this;
-  return contStart;
-  function contStart(code2) {
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, contBefore, "linePrefix", self2.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code2);
-    }
-    return contBefore(code2);
-  }
-  function contBefore(code2) {
-    return effects.attempt(blockQuote, ok, nok)(code2);
-  }
-}
-function exit(effects) {
-  effects.exit("blockQuote");
-}
-const characterEscape = {
-  name: "characterEscape",
-  tokenize: tokenizeCharacterEscape
-};
-function tokenizeCharacterEscape(effects, ok, nok) {
-  return start;
-  function start(code2) {
-    effects.enter("characterEscape");
-    effects.enter("escapeMarker");
-    effects.consume(code2);
-    effects.exit("escapeMarker");
-    return inside;
-  }
-  function inside(code2) {
-    if (asciiPunctuation(code2)) {
-      effects.enter("characterEscapeValue");
-      effects.consume(code2);
-      effects.exit("characterEscapeValue");
-      effects.exit("characterEscape");
-      return ok;
-    }
-    return nok(code2);
-  }
-}
-const characterReference = {
-  name: "characterReference",
-  tokenize: tokenizeCharacterReference
-};
-function tokenizeCharacterReference(effects, ok, nok) {
-  const self2 = this;
-  let size = 0;
-  let max;
-  let test;
-  return start;
-  function start(code2) {
-    effects.enter("characterReference");
-    effects.enter("characterReferenceMarker");
-    effects.consume(code2);
-    effects.exit("characterReferenceMarker");
-    return open2;
-  }
-  function open2(code2) {
-    if (code2 === 35) {
-      effects.enter("characterReferenceMarkerNumeric");
-      effects.consume(code2);
-      effects.exit("characterReferenceMarkerNumeric");
-      return numeric2;
-    }
-    effects.enter("characterReferenceValue");
-    max = 31;
-    test = asciiAlphanumeric;
-    return value(code2);
-  }
-  function numeric2(code2) {
-    if (code2 === 88 || code2 === 120) {
-      effects.enter("characterReferenceMarkerHexadecimal");
-      effects.consume(code2);
-      effects.exit("characterReferenceMarkerHexadecimal");
-      effects.enter("characterReferenceValue");
-      max = 6;
-      test = asciiHexDigit;
-      return value;
-    }
-    effects.enter("characterReferenceValue");
-    max = 7;
-    test = asciiDigit;
-    return value(code2);
-  }
-  function value(code2) {
-    if (code2 === 59 && size) {
-      const token = effects.exit("characterReferenceValue");
-      if (test === asciiAlphanumeric && !decodeNamedCharacterReference(self2.sliceSerialize(token))) {
-        return nok(code2);
-      }
-      effects.enter("characterReferenceMarker");
-      effects.consume(code2);
-      effects.exit("characterReferenceMarker");
-      effects.exit("characterReference");
-      return ok;
-    }
-    if (test(code2) && size++ < max) {
-      effects.consume(code2);
-      return value;
-    }
-    return nok(code2);
-  }
-}
-const nonLazyContinuation = {
-  partial: true,
-  tokenize: tokenizeNonLazyContinuation
-};
-const codeFenced = {
-  concrete: true,
-  name: "codeFenced",
-  tokenize: tokenizeCodeFenced
-};
-function tokenizeCodeFenced(effects, ok, nok) {
-  const self2 = this;
-  const closeStart = {
-    partial: true,
-    tokenize: tokenizeCloseStart
-  };
-  let initialPrefix = 0;
-  let sizeOpen = 0;
-  let marker;
-  return start;
-  function start(code2) {
-    return beforeSequenceOpen(code2);
-  }
-  function beforeSequenceOpen(code2) {
-    const tail = self2.events[self2.events.length - 1];
-    initialPrefix = tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
-    marker = code2;
-    effects.enter("codeFenced");
-    effects.enter("codeFencedFence");
-    effects.enter("codeFencedFenceSequence");
-    return sequenceOpen(code2);
-  }
-  function sequenceOpen(code2) {
-    if (code2 === marker) {
-      sizeOpen++;
-      effects.consume(code2);
-      return sequenceOpen;
-    }
-    if (sizeOpen < 3) {
-      return nok(code2);
-    }
-    effects.exit("codeFencedFenceSequence");
-    return markdownSpace(code2) ? factorySpace(effects, infoBefore, "whitespace")(code2) : infoBefore(code2);
-  }
-  function infoBefore(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("codeFencedFence");
-      return self2.interrupt ? ok(code2) : effects.check(nonLazyContinuation, atNonLazyBreak, after)(code2);
-    }
-    effects.enter("codeFencedFenceInfo");
-    effects.enter("chunkString", {
-      contentType: "string"
-    });
-    return info(code2);
-  }
-  function info(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("chunkString");
-      effects.exit("codeFencedFenceInfo");
-      return infoBefore(code2);
-    }
-    if (markdownSpace(code2)) {
-      effects.exit("chunkString");
-      effects.exit("codeFencedFenceInfo");
-      return factorySpace(effects, metaBefore, "whitespace")(code2);
-    }
-    if (code2 === 96 && code2 === marker) {
-      return nok(code2);
-    }
-    effects.consume(code2);
-    return info;
-  }
-  function metaBefore(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      return infoBefore(code2);
-    }
-    effects.enter("codeFencedFenceMeta");
-    effects.enter("chunkString", {
-      contentType: "string"
-    });
-    return meta(code2);
-  }
-  function meta(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("chunkString");
-      effects.exit("codeFencedFenceMeta");
-      return infoBefore(code2);
-    }
-    if (code2 === 96 && code2 === marker) {
-      return nok(code2);
-    }
-    effects.consume(code2);
-    return meta;
-  }
-  function atNonLazyBreak(code2) {
-    return effects.attempt(closeStart, after, contentBefore)(code2);
-  }
-  function contentBefore(code2) {
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return contentStart;
-  }
-  function contentStart(code2) {
-    return initialPrefix > 0 && markdownSpace(code2) ? factorySpace(effects, beforeContentChunk, "linePrefix", initialPrefix + 1)(code2) : beforeContentChunk(code2);
-  }
-  function beforeContentChunk(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      return effects.check(nonLazyContinuation, atNonLazyBreak, after)(code2);
-    }
-    effects.enter("codeFlowValue");
-    return contentChunk(code2);
-  }
-  function contentChunk(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("codeFlowValue");
-      return beforeContentChunk(code2);
-    }
-    effects.consume(code2);
-    return contentChunk;
-  }
-  function after(code2) {
-    effects.exit("codeFenced");
-    return ok(code2);
-  }
-  function tokenizeCloseStart(effects2, ok2, nok2) {
-    let size = 0;
-    return startBefore;
-    function startBefore(code2) {
-      effects2.enter("lineEnding");
-      effects2.consume(code2);
-      effects2.exit("lineEnding");
-      return start2;
-    }
-    function start2(code2) {
-      effects2.enter("codeFencedFence");
-      return markdownSpace(code2) ? factorySpace(effects2, beforeSequenceClose, "linePrefix", self2.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code2) : beforeSequenceClose(code2);
-    }
-    function beforeSequenceClose(code2) {
-      if (code2 === marker) {
-        effects2.enter("codeFencedFenceSequence");
-        return sequenceClose(code2);
-      }
-      return nok2(code2);
-    }
-    function sequenceClose(code2) {
-      if (code2 === marker) {
-        size++;
-        effects2.consume(code2);
-        return sequenceClose;
-      }
-      if (size >= sizeOpen) {
-        effects2.exit("codeFencedFenceSequence");
-        return markdownSpace(code2) ? factorySpace(effects2, sequenceCloseAfter, "whitespace")(code2) : sequenceCloseAfter(code2);
-      }
-      return nok2(code2);
-    }
-    function sequenceCloseAfter(code2) {
-      if (code2 === null || markdownLineEnding(code2)) {
-        effects2.exit("codeFencedFence");
-        return ok2(code2);
-      }
-      return nok2(code2);
-    }
-  }
-}
-function tokenizeNonLazyContinuation(effects, ok, nok) {
-  const self2 = this;
-  return start;
-  function start(code2) {
-    if (code2 === null) {
-      return nok(code2);
-    }
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return lineStart;
-  }
-  function lineStart(code2) {
-    return self2.parser.lazy[self2.now().line] ? nok(code2) : ok(code2);
-  }
-}
-const codeIndented = {
-  name: "codeIndented",
-  tokenize: tokenizeCodeIndented
-};
-const furtherStart = {
-  partial: true,
-  tokenize: tokenizeFurtherStart
-};
-function tokenizeCodeIndented(effects, ok, nok) {
-  const self2 = this;
-  return start;
-  function start(code2) {
-    effects.enter("codeIndented");
-    return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code2);
-  }
-  function afterPrefix(code2) {
-    const tail = self2.events[self2.events.length - 1];
-    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? atBreak(code2) : nok(code2);
-  }
-  function atBreak(code2) {
-    if (code2 === null) {
-      return after(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      return effects.attempt(furtherStart, atBreak, after)(code2);
-    }
-    effects.enter("codeFlowValue");
-    return inside(code2);
-  }
-  function inside(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("codeFlowValue");
-      return atBreak(code2);
-    }
-    effects.consume(code2);
-    return inside;
-  }
-  function after(code2) {
-    effects.exit("codeIndented");
-    return ok(code2);
-  }
-}
-function tokenizeFurtherStart(effects, ok, nok) {
-  const self2 = this;
-  return furtherStart2;
-  function furtherStart2(code2) {
-    if (self2.parser.lazy[self2.now().line]) {
-      return nok(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      effects.enter("lineEnding");
-      effects.consume(code2);
-      effects.exit("lineEnding");
-      return furtherStart2;
-    }
-    return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code2);
-  }
-  function afterPrefix(code2) {
-    const tail = self2.events[self2.events.length - 1];
-    return tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4 ? ok(code2) : markdownLineEnding(code2) ? furtherStart2(code2) : nok(code2);
-  }
-}
-const codeText = {
-  name: "codeText",
-  previous,
-  resolve: resolveCodeText,
-  tokenize: tokenizeCodeText
-};
-function resolveCodeText(events) {
-  let tailExitIndex = events.length - 4;
-  let headEnterIndex = 3;
-  let index;
-  let enter;
-  if ((events[headEnterIndex][1].type === "lineEnding" || events[headEnterIndex][1].type === "space") && (events[tailExitIndex][1].type === "lineEnding" || events[tailExitIndex][1].type === "space")) {
-    index = headEnterIndex;
-    while (++index < tailExitIndex) {
-      if (events[index][1].type === "codeTextData") {
-        events[headEnterIndex][1].type = "codeTextPadding";
-        events[tailExitIndex][1].type = "codeTextPadding";
-        headEnterIndex += 2;
-        tailExitIndex -= 2;
-        break;
-      }
-    }
-  }
-  index = headEnterIndex - 1;
-  tailExitIndex++;
-  while (++index <= tailExitIndex) {
-    if (enter === void 0) {
-      if (index !== tailExitIndex && events[index][1].type !== "lineEnding") {
-        enter = index;
-      }
-    } else if (index === tailExitIndex || events[index][1].type === "lineEnding") {
-      events[enter][1].type = "codeTextData";
-      if (index !== enter + 2) {
-        events[enter][1].end = events[index - 1][1].end;
-        events.splice(enter + 2, index - enter - 2);
-        tailExitIndex -= index - enter - 2;
-        index = enter + 2;
-      }
-      enter = void 0;
-    }
-  }
-  return events;
-}
-function previous(code2) {
-  return code2 !== 96 || this.events[this.events.length - 1][1].type === "characterEscape";
-}
-function tokenizeCodeText(effects, ok, nok) {
-  let sizeOpen = 0;
-  let size;
-  let token;
-  return start;
-  function start(code2) {
-    effects.enter("codeText");
-    effects.enter("codeTextSequence");
-    return sequenceOpen(code2);
-  }
-  function sequenceOpen(code2) {
-    if (code2 === 96) {
-      effects.consume(code2);
-      sizeOpen++;
-      return sequenceOpen;
-    }
-    effects.exit("codeTextSequence");
-    return between(code2);
-  }
-  function between(code2) {
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (code2 === 32) {
-      effects.enter("space");
-      effects.consume(code2);
-      effects.exit("space");
-      return between;
-    }
-    if (code2 === 96) {
-      token = effects.enter("codeTextSequence");
-      size = 0;
-      return sequenceClose(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      effects.enter("lineEnding");
-      effects.consume(code2);
-      effects.exit("lineEnding");
-      return between;
-    }
-    effects.enter("codeTextData");
-    return data(code2);
-  }
-  function data(code2) {
-    if (code2 === null || code2 === 32 || code2 === 96 || markdownLineEnding(code2)) {
-      effects.exit("codeTextData");
-      return between(code2);
-    }
-    effects.consume(code2);
-    return data;
-  }
-  function sequenceClose(code2) {
-    if (code2 === 96) {
-      effects.consume(code2);
-      size++;
-      return sequenceClose;
-    }
-    if (size === sizeOpen) {
-      effects.exit("codeTextSequence");
-      effects.exit("codeText");
-      return ok(code2);
-    }
-    token.type = "codeTextData";
-    return data(code2);
-  }
-}
-class SpliceBuffer {
-  /**
-   * @param {ReadonlyArray<T> | null | undefined} [initial]
-   *   Initial items (optional).
-   * @returns
-   *   Splice buffer.
-   */
-  constructor(initial) {
-    this.left = initial ? [...initial] : [];
-    this.right = [];
-  }
-  /**
-   * Array access;
-   * does not move the cursor.
-   *
-   * @param {number} index
-   *   Index.
-   * @return {T}
-   *   Item.
-   */
-  get(index) {
-    if (index < 0 || index >= this.left.length + this.right.length) {
-      throw new RangeError("Cannot access index `" + index + "` in a splice buffer of size `" + (this.left.length + this.right.length) + "`");
-    }
-    if (index < this.left.length) return this.left[index];
-    return this.right[this.right.length - index + this.left.length - 1];
-  }
-  /**
-   * The length of the splice buffer, one greater than the largest index in the
-   * array.
-   */
-  get length() {
-    return this.left.length + this.right.length;
-  }
-  /**
-   * Remove and return `list[0]`;
-   * moves the cursor to `0`.
-   *
-   * @returns {T | undefined}
-   *   Item, optional.
-   */
-  shift() {
-    this.setCursor(0);
-    return this.right.pop();
-  }
-  /**
-   * Slice the buffer to get an array;
-   * does not move the cursor.
-   *
-   * @param {number} start
-   *   Start.
-   * @param {number | null | undefined} [end]
-   *   End (optional).
-   * @returns {Array<T>}
-   *   Array of items.
-   */
-  slice(start, end) {
-    const stop = end === null || end === void 0 ? Number.POSITIVE_INFINITY : end;
-    if (stop < this.left.length) {
-      return this.left.slice(start, stop);
-    }
-    if (start > this.left.length) {
-      return this.right.slice(this.right.length - stop + this.left.length, this.right.length - start + this.left.length).reverse();
-    }
-    return this.left.slice(start).concat(this.right.slice(this.right.length - stop + this.left.length).reverse());
-  }
-  /**
-   * Mimics the behavior of Array.prototype.splice() except for the change of
-   * interface necessary to avoid segfaults when patching in very large arrays.
-   *
-   * This operation moves cursor is moved to `start` and results in the cursor
-   * placed after any inserted items.
-   *
-   * @param {number} start
-   *   Start;
-   *   zero-based index at which to start changing the array;
-   *   negative numbers count backwards from the end of the array and values
-   *   that are out-of bounds are clamped to the appropriate end of the array.
-   * @param {number | null | undefined} [deleteCount=0]
-   *   Delete count (default: `0`);
-   *   maximum number of elements to delete, starting from start.
-   * @param {Array<T> | null | undefined} [items=[]]
-   *   Items to include in place of the deleted items (default: `[]`).
-   * @return {Array<T>}
-   *   Any removed items.
-   */
-  splice(start, deleteCount, items) {
-    const count = deleteCount || 0;
-    this.setCursor(Math.trunc(start));
-    const removed = this.right.splice(this.right.length - count, Number.POSITIVE_INFINITY);
-    if (items) chunkedPush(this.left, items);
-    return removed.reverse();
-  }
-  /**
-   * Remove and return the highest-numbered item in the array, so
-   * `list[list.length - 1]`;
-   * Moves the cursor to `length`.
-   *
-   * @returns {T | undefined}
-   *   Item, optional.
-   */
-  pop() {
-    this.setCursor(Number.POSITIVE_INFINITY);
-    return this.left.pop();
-  }
-  /**
-   * Inserts a single item to the high-numbered side of the array;
-   * moves the cursor to `length`.
-   *
-   * @param {T} item
-   *   Item.
-   * @returns {undefined}
-   *   Nothing.
-   */
-  push(item) {
-    this.setCursor(Number.POSITIVE_INFINITY);
-    this.left.push(item);
-  }
-  /**
-   * Inserts many items to the high-numbered side of the array.
-   * Moves the cursor to `length`.
-   *
-   * @param {Array<T>} items
-   *   Items.
-   * @returns {undefined}
-   *   Nothing.
-   */
-  pushMany(items) {
-    this.setCursor(Number.POSITIVE_INFINITY);
-    chunkedPush(this.left, items);
-  }
-  /**
-   * Inserts a single item to the low-numbered side of the array;
-   * Moves the cursor to `0`.
-   *
-   * @param {T} item
-   *   Item.
-   * @returns {undefined}
-   *   Nothing.
-   */
-  unshift(item) {
-    this.setCursor(0);
-    this.right.push(item);
-  }
-  /**
-   * Inserts many items to the low-numbered side of the array;
-   * moves the cursor to `0`.
-   *
-   * @param {Array<T>} items
-   *   Items.
-   * @returns {undefined}
-   *   Nothing.
-   */
-  unshiftMany(items) {
-    this.setCursor(0);
-    chunkedPush(this.right, items.reverse());
-  }
-  /**
-   * Move the cursor to a specific position in the array. Requires
-   * time proportional to the distance moved.
-   *
-   * If `n < 0`, the cursor will end up at the beginning.
-   * If `n > length`, the cursor will end up at the end.
-   *
-   * @param {number} n
-   *   Position.
-   * @return {undefined}
-   *   Nothing.
-   */
-  setCursor(n) {
-    if (n === this.left.length || n > this.left.length && this.right.length === 0 || n < 0 && this.left.length === 0) return;
-    if (n < this.left.length) {
-      const removed = this.left.splice(n, Number.POSITIVE_INFINITY);
-      chunkedPush(this.right, removed.reverse());
-    } else {
-      const removed = this.right.splice(this.left.length + this.right.length - n, Number.POSITIVE_INFINITY);
-      chunkedPush(this.left, removed.reverse());
-    }
-  }
-}
-function chunkedPush(list2, right) {
-  let chunkStart = 0;
-  if (right.length < 1e4) {
-    list2.push(...right);
-  } else {
-    while (chunkStart < right.length) {
-      list2.push(...right.slice(chunkStart, chunkStart + 1e4));
-      chunkStart += 1e4;
-    }
-  }
-}
-function subtokenize(eventsArray) {
-  const jumps = {};
-  let index = -1;
-  let event;
-  let lineIndex;
-  let otherIndex;
-  let otherEvent;
-  let parameters;
-  let subevents;
-  let more;
-  const events = new SpliceBuffer(eventsArray);
-  while (++index < events.length) {
-    while (index in jumps) {
-      index = jumps[index];
-    }
-    event = events.get(index);
-    if (index && event[1].type === "chunkFlow" && events.get(index - 1)[1].type === "listItemPrefix") {
-      subevents = event[1]._tokenizer.events;
-      otherIndex = 0;
-      if (otherIndex < subevents.length && subevents[otherIndex][1].type === "lineEndingBlank") {
-        otherIndex += 2;
-      }
-      if (otherIndex < subevents.length && subevents[otherIndex][1].type === "content") {
-        while (++otherIndex < subevents.length) {
-          if (subevents[otherIndex][1].type === "content") {
-            break;
-          }
-          if (subevents[otherIndex][1].type === "chunkText") {
-            subevents[otherIndex][1]._isInFirstContentOfListItem = true;
-            otherIndex++;
+            hooks[hooksProp] = (...args2) => {
+              let ret = hooksFunc.apply(hooks, args2);
+              if (ret === false) {
+                ret = prevHook.apply(hooks, args2);
+              }
+              return ret;
+            };
           }
         }
+        opts.hooks = hooks;
       }
-    }
-    if (event[0] === "enter") {
-      if (event[1].contentType) {
-        Object.assign(jumps, subcontent(events, index));
-        index = jumps[index];
-        more = true;
-      }
-    } else if (event[1]._container) {
-      otherIndex = index;
-      lineIndex = void 0;
-      while (otherIndex--) {
-        otherEvent = events.get(otherIndex);
-        if (otherEvent[1].type === "lineEnding" || otherEvent[1].type === "lineEndingBlank") {
-          if (otherEvent[0] === "enter") {
-            if (lineIndex) {
-              events.get(lineIndex)[1].type = "lineEndingBlank";
-            }
-            otherEvent[1].type = "lineEnding";
-            lineIndex = otherIndex;
+      if (pack.walkTokens) {
+        const walkTokens = this.defaults.walkTokens;
+        const packWalktokens = pack.walkTokens;
+        opts.walkTokens = function(token) {
+          let values = [];
+          values.push(packWalktokens.call(this, token));
+          if (walkTokens) {
+            values = values.concat(walkTokens.call(this, token));
           }
-        } else if (otherEvent[1].type === "linePrefix") ;
-        else {
-          break;
-        }
-      }
-      if (lineIndex) {
-        event[1].end = {
-          ...events.get(lineIndex)[1].start
+          return values;
         };
-        parameters = events.slice(lineIndex, index);
-        parameters.unshift(event);
-        events.splice(lineIndex, index - lineIndex + 1, parameters);
       }
-    }
-  }
-  splice(eventsArray, 0, Number.POSITIVE_INFINITY, events.slice(0));
-  return !more;
-}
-function subcontent(events, eventIndex) {
-  const token = events.get(eventIndex)[1];
-  const context = events.get(eventIndex)[2];
-  let startPosition = eventIndex - 1;
-  const startPositions = [];
-  const tokenizer = token._tokenizer || context.parser[token.contentType](token.start);
-  const childEvents = tokenizer.events;
-  const jumps = [];
-  const gaps = {};
-  let stream;
-  let previous2;
-  let index = -1;
-  let current = token;
-  let adjust = 0;
-  let start = 0;
-  const breaks = [start];
-  while (current) {
-    while (events.get(++startPosition)[1] !== current) {
-    }
-    startPositions.push(startPosition);
-    if (!current._tokenizer) {
-      stream = context.sliceStream(current);
-      if (!current.next) {
-        stream.push(null);
-      }
-      if (previous2) {
-        tokenizer.defineSkip(current.start);
-      }
-      if (current._isInFirstContentOfListItem) {
-        tokenizer._gfmTasklistFirstContentOfListItem = true;
-      }
-      tokenizer.write(stream);
-      if (current._isInFirstContentOfListItem) {
-        tokenizer._gfmTasklistFirstContentOfListItem = void 0;
-      }
-    }
-    previous2 = current;
-    current = current.next;
-  }
-  current = token;
-  while (++index < childEvents.length) {
-    if (
-      // Find a void token that includes a break.
-      childEvents[index][0] === "exit" && childEvents[index - 1][0] === "enter" && childEvents[index][1].type === childEvents[index - 1][1].type && childEvents[index][1].start.line !== childEvents[index][1].end.line
-    ) {
-      start = index + 1;
-      breaks.push(start);
-      current._tokenizer = void 0;
-      current.previous = void 0;
-      current = current.next;
-    }
-  }
-  tokenizer.events = [];
-  if (current) {
-    current._tokenizer = void 0;
-    current.previous = void 0;
-  } else {
-    breaks.pop();
-  }
-  index = breaks.length;
-  while (index--) {
-    const slice = childEvents.slice(breaks[index], breaks[index + 1]);
-    const start2 = startPositions.pop();
-    jumps.push([start2, start2 + slice.length - 1]);
-    events.splice(start2, 2, slice);
-  }
-  jumps.reverse();
-  index = -1;
-  while (++index < jumps.length) {
-    gaps[adjust + jumps[index][0]] = adjust + jumps[index][1];
-    adjust += jumps[index][1] - jumps[index][0] - 1;
-  }
-  return gaps;
-}
-const content = {
-  resolve: resolveContent,
-  tokenize: tokenizeContent
-};
-const continuationConstruct = {
-  partial: true,
-  tokenize: tokenizeContinuation
-};
-function resolveContent(events) {
-  subtokenize(events);
-  return events;
-}
-function tokenizeContent(effects, ok) {
-  let previous2;
-  return chunkStart;
-  function chunkStart(code2) {
-    effects.enter("content");
-    previous2 = effects.enter("chunkContent", {
-      contentType: "content"
+      this.defaults = { ...this.defaults, ...opts };
     });
-    return chunkInside(code2);
+    return this;
   }
-  function chunkInside(code2) {
-    if (code2 === null) {
-      return contentEnd(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      return effects.check(continuationConstruct, contentContinue, contentEnd)(code2);
-    }
-    effects.consume(code2);
-    return chunkInside;
+  setOptions(opt) {
+    this.defaults = { ...this.defaults, ...opt };
+    return this;
   }
-  function contentEnd(code2) {
-    effects.exit("chunkContent");
-    effects.exit("content");
-    return ok(code2);
+  lexer(src, options) {
+    return _Lexer.lex(src, options ?? this.defaults);
   }
-  function contentContinue(code2) {
-    effects.consume(code2);
-    effects.exit("chunkContent");
-    previous2.next = effects.enter("chunkContent", {
-      contentType: "content",
-      previous: previous2
-    });
-    previous2 = previous2.next;
-    return chunkInside;
+  parser(tokens, options) {
+    return _Parser.parse(tokens, options ?? this.defaults);
   }
-}
-function tokenizeContinuation(effects, ok, nok) {
-  const self2 = this;
-  return startLookahead;
-  function startLookahead(code2) {
-    effects.exit("chunkContent");
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return factorySpace(effects, prefixed, "linePrefix");
-  }
-  function prefixed(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      return nok(code2);
-    }
-    const tail = self2.events[self2.events.length - 1];
-    if (!self2.parser.constructs.disable.null.includes("codeIndented") && tail && tail[1].type === "linePrefix" && tail[2].sliceSerialize(tail[1], true).length >= 4) {
-      return ok(code2);
-    }
-    return effects.interrupt(self2.parser.constructs.flow, nok, ok)(code2);
-  }
-}
-function factoryDestination(effects, ok, nok, type, literalType, literalMarkerType, rawType, stringType, max) {
-  const limit = max || Number.POSITIVE_INFINITY;
-  let balance = 0;
-  return start;
-  function start(code2) {
-    if (code2 === 60) {
-      effects.enter(type);
-      effects.enter(literalType);
-      effects.enter(literalMarkerType);
-      effects.consume(code2);
-      effects.exit(literalMarkerType);
-      return enclosedBefore;
-    }
-    if (code2 === null || code2 === 32 || code2 === 41 || asciiControl(code2)) {
-      return nok(code2);
-    }
-    effects.enter(type);
-    effects.enter(rawType);
-    effects.enter(stringType);
-    effects.enter("chunkString", {
-      contentType: "string"
-    });
-    return raw(code2);
-  }
-  function enclosedBefore(code2) {
-    if (code2 === 62) {
-      effects.enter(literalMarkerType);
-      effects.consume(code2);
-      effects.exit(literalMarkerType);
-      effects.exit(literalType);
-      effects.exit(type);
-      return ok;
-    }
-    effects.enter(stringType);
-    effects.enter("chunkString", {
-      contentType: "string"
-    });
-    return enclosed(code2);
-  }
-  function enclosed(code2) {
-    if (code2 === 62) {
-      effects.exit("chunkString");
-      effects.exit(stringType);
-      return enclosedBefore(code2);
-    }
-    if (code2 === null || code2 === 60 || markdownLineEnding(code2)) {
-      return nok(code2);
-    }
-    effects.consume(code2);
-    return code2 === 92 ? enclosedEscape : enclosed;
-  }
-  function enclosedEscape(code2) {
-    if (code2 === 60 || code2 === 62 || code2 === 92) {
-      effects.consume(code2);
-      return enclosed;
-    }
-    return enclosed(code2);
-  }
-  function raw(code2) {
-    if (!balance && (code2 === null || code2 === 41 || markdownLineEndingOrSpace(code2))) {
-      effects.exit("chunkString");
-      effects.exit(stringType);
-      effects.exit(rawType);
-      effects.exit(type);
-      return ok(code2);
-    }
-    if (balance < limit && code2 === 40) {
-      effects.consume(code2);
-      balance++;
-      return raw;
-    }
-    if (code2 === 41) {
-      effects.consume(code2);
-      balance--;
-      return raw;
-    }
-    if (code2 === null || code2 === 32 || code2 === 40 || asciiControl(code2)) {
-      return nok(code2);
-    }
-    effects.consume(code2);
-    return code2 === 92 ? rawEscape : raw;
-  }
-  function rawEscape(code2) {
-    if (code2 === 40 || code2 === 41 || code2 === 92) {
-      effects.consume(code2);
-      return raw;
-    }
-    return raw(code2);
-  }
-}
-function factoryLabel(effects, ok, nok, type, markerType, stringType) {
-  const self2 = this;
-  let size = 0;
-  let seen;
-  return start;
-  function start(code2) {
-    effects.enter(type);
-    effects.enter(markerType);
-    effects.consume(code2);
-    effects.exit(markerType);
-    effects.enter(stringType);
-    return atBreak;
-  }
-  function atBreak(code2) {
-    if (size > 999 || code2 === null || code2 === 91 || code2 === 93 && !seen || // To do: remove in the future once we’ve switched from
-    // `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
-    // which doesn’t need this.
-    // Hidden footnotes hook.
-    /* c8 ignore next 3 */
-    code2 === 94 && !size && "_hiddenFootnoteSupport" in self2.parser.constructs) {
-      return nok(code2);
-    }
-    if (code2 === 93) {
-      effects.exit(stringType);
-      effects.enter(markerType);
-      effects.consume(code2);
-      effects.exit(markerType);
-      effects.exit(type);
-      return ok;
-    }
-    if (markdownLineEnding(code2)) {
-      effects.enter("lineEnding");
-      effects.consume(code2);
-      effects.exit("lineEnding");
-      return atBreak;
-    }
-    effects.enter("chunkString", {
-      contentType: "string"
-    });
-    return labelInside(code2);
-  }
-  function labelInside(code2) {
-    if (code2 === null || code2 === 91 || code2 === 93 || markdownLineEnding(code2) || size++ > 999) {
-      effects.exit("chunkString");
-      return atBreak(code2);
-    }
-    effects.consume(code2);
-    if (!seen) seen = !markdownSpace(code2);
-    return code2 === 92 ? labelEscape : labelInside;
-  }
-  function labelEscape(code2) {
-    if (code2 === 91 || code2 === 92 || code2 === 93) {
-      effects.consume(code2);
-      size++;
-      return labelInside;
-    }
-    return labelInside(code2);
-  }
-}
-function factoryTitle(effects, ok, nok, type, markerType, stringType) {
-  let marker;
-  return start;
-  function start(code2) {
-    if (code2 === 34 || code2 === 39 || code2 === 40) {
-      effects.enter(type);
-      effects.enter(markerType);
-      effects.consume(code2);
-      effects.exit(markerType);
-      marker = code2 === 40 ? 41 : code2;
-      return begin;
-    }
-    return nok(code2);
-  }
-  function begin(code2) {
-    if (code2 === marker) {
-      effects.enter(markerType);
-      effects.consume(code2);
-      effects.exit(markerType);
-      effects.exit(type);
-      return ok;
-    }
-    effects.enter(stringType);
-    return atBreak(code2);
-  }
-  function atBreak(code2) {
-    if (code2 === marker) {
-      effects.exit(stringType);
-      return begin(marker);
-    }
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      effects.enter("lineEnding");
-      effects.consume(code2);
-      effects.exit("lineEnding");
-      return factorySpace(effects, atBreak, "linePrefix");
-    }
-    effects.enter("chunkString", {
-      contentType: "string"
-    });
-    return inside(code2);
-  }
-  function inside(code2) {
-    if (code2 === marker || code2 === null || markdownLineEnding(code2)) {
-      effects.exit("chunkString");
-      return atBreak(code2);
-    }
-    effects.consume(code2);
-    return code2 === 92 ? escape2 : inside;
-  }
-  function escape2(code2) {
-    if (code2 === marker || code2 === 92) {
-      effects.consume(code2);
-      return inside;
-    }
-    return inside(code2);
-  }
-}
-function factoryWhitespace(effects, ok) {
-  let seen;
-  return start;
-  function start(code2) {
-    if (markdownLineEnding(code2)) {
-      effects.enter("lineEnding");
-      effects.consume(code2);
-      effects.exit("lineEnding");
-      seen = true;
-      return start;
-    }
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, start, seen ? "linePrefix" : "lineSuffix")(code2);
-    }
-    return ok(code2);
-  }
-}
-const definition = {
-  name: "definition",
-  tokenize: tokenizeDefinition
-};
-const titleBefore = {
-  partial: true,
-  tokenize: tokenizeTitleBefore
-};
-function tokenizeDefinition(effects, ok, nok) {
-  const self2 = this;
-  let identifier;
-  return start;
-  function start(code2) {
-    effects.enter("definition");
-    return before(code2);
-  }
-  function before(code2) {
-    return factoryLabel.call(
-      self2,
-      effects,
-      labelAfter,
-      // Note: we don’t need to reset the way `markdown-rs` does.
-      nok,
-      "definitionLabel",
-      "definitionLabelMarker",
-      "definitionLabelString"
-    )(code2);
-  }
-  function labelAfter(code2) {
-    identifier = normalizeIdentifier(self2.sliceSerialize(self2.events[self2.events.length - 1][1]).slice(1, -1));
-    if (code2 === 58) {
-      effects.enter("definitionMarker");
-      effects.consume(code2);
-      effects.exit("definitionMarker");
-      return markerAfter;
-    }
-    return nok(code2);
-  }
-  function markerAfter(code2) {
-    return markdownLineEndingOrSpace(code2) ? factoryWhitespace(effects, destinationBefore)(code2) : destinationBefore(code2);
-  }
-  function destinationBefore(code2) {
-    return factoryDestination(
-      effects,
-      destinationAfter,
-      // Note: we don’t need to reset the way `markdown-rs` does.
-      nok,
-      "definitionDestination",
-      "definitionDestinationLiteral",
-      "definitionDestinationLiteralMarker",
-      "definitionDestinationRaw",
-      "definitionDestinationString"
-    )(code2);
-  }
-  function destinationAfter(code2) {
-    return effects.attempt(titleBefore, after, after)(code2);
-  }
-  function after(code2) {
-    return markdownSpace(code2) ? factorySpace(effects, afterWhitespace, "whitespace")(code2) : afterWhitespace(code2);
-  }
-  function afterWhitespace(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("definition");
-      self2.parser.defined.push(identifier);
-      return ok(code2);
-    }
-    return nok(code2);
-  }
-}
-function tokenizeTitleBefore(effects, ok, nok) {
-  return titleBefore2;
-  function titleBefore2(code2) {
-    return markdownLineEndingOrSpace(code2) ? factoryWhitespace(effects, beforeMarker)(code2) : nok(code2);
-  }
-  function beforeMarker(code2) {
-    return factoryTitle(effects, titleAfter, nok, "definitionTitle", "definitionTitleMarker", "definitionTitleString")(code2);
-  }
-  function titleAfter(code2) {
-    return markdownSpace(code2) ? factorySpace(effects, titleAfterOptionalWhitespace, "whitespace")(code2) : titleAfterOptionalWhitespace(code2);
-  }
-  function titleAfterOptionalWhitespace(code2) {
-    return code2 === null || markdownLineEnding(code2) ? ok(code2) : nok(code2);
-  }
-}
-const hardBreakEscape = {
-  name: "hardBreakEscape",
-  tokenize: tokenizeHardBreakEscape
-};
-function tokenizeHardBreakEscape(effects, ok, nok) {
-  return start;
-  function start(code2) {
-    effects.enter("hardBreakEscape");
-    effects.consume(code2);
-    return after;
-  }
-  function after(code2) {
-    if (markdownLineEnding(code2)) {
-      effects.exit("hardBreakEscape");
-      return ok(code2);
-    }
-    return nok(code2);
-  }
-}
-const headingAtx = {
-  name: "headingAtx",
-  resolve: resolveHeadingAtx,
-  tokenize: tokenizeHeadingAtx
-};
-function resolveHeadingAtx(events, context) {
-  let contentEnd = events.length - 2;
-  let contentStart = 3;
-  let content2;
-  let text2;
-  if (events[contentStart][1].type === "whitespace") {
-    contentStart += 2;
-  }
-  if (contentEnd - 2 > contentStart && events[contentEnd][1].type === "whitespace") {
-    contentEnd -= 2;
-  }
-  if (events[contentEnd][1].type === "atxHeadingSequence" && (contentStart === contentEnd - 1 || contentEnd - 4 > contentStart && events[contentEnd - 2][1].type === "whitespace")) {
-    contentEnd -= contentStart + 1 === contentEnd ? 2 : 4;
-  }
-  if (contentEnd > contentStart) {
-    content2 = {
-      type: "atxHeadingText",
-      start: events[contentStart][1].start,
-      end: events[contentEnd][1].end
-    };
-    text2 = {
-      type: "chunkText",
-      start: events[contentStart][1].start,
-      end: events[contentEnd][1].end,
-      contentType: "text"
-    };
-    splice(events, contentStart, contentEnd - contentStart + 1, [["enter", content2, context], ["enter", text2, context], ["exit", text2, context], ["exit", content2, context]]);
-  }
-  return events;
-}
-function tokenizeHeadingAtx(effects, ok, nok) {
-  let size = 0;
-  return start;
-  function start(code2) {
-    effects.enter("atxHeading");
-    return before(code2);
-  }
-  function before(code2) {
-    effects.enter("atxHeadingSequence");
-    return sequenceOpen(code2);
-  }
-  function sequenceOpen(code2) {
-    if (code2 === 35 && size++ < 6) {
-      effects.consume(code2);
-      return sequenceOpen;
-    }
-    if (code2 === null || markdownLineEndingOrSpace(code2)) {
-      effects.exit("atxHeadingSequence");
-      return atBreak(code2);
-    }
-    return nok(code2);
-  }
-  function atBreak(code2) {
-    if (code2 === 35) {
-      effects.enter("atxHeadingSequence");
-      return sequenceFurther(code2);
-    }
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("atxHeading");
-      return ok(code2);
-    }
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, atBreak, "whitespace")(code2);
-    }
-    effects.enter("atxHeadingText");
-    return data(code2);
-  }
-  function sequenceFurther(code2) {
-    if (code2 === 35) {
-      effects.consume(code2);
-      return sequenceFurther;
-    }
-    effects.exit("atxHeadingSequence");
-    return atBreak(code2);
-  }
-  function data(code2) {
-    if (code2 === null || code2 === 35 || markdownLineEndingOrSpace(code2)) {
-      effects.exit("atxHeadingText");
-      return atBreak(code2);
-    }
-    effects.consume(code2);
-    return data;
-  }
-}
-const htmlBlockNames = [
-  "address",
-  "article",
-  "aside",
-  "base",
-  "basefont",
-  "blockquote",
-  "body",
-  "caption",
-  "center",
-  "col",
-  "colgroup",
-  "dd",
-  "details",
-  "dialog",
-  "dir",
-  "div",
-  "dl",
-  "dt",
-  "fieldset",
-  "figcaption",
-  "figure",
-  "footer",
-  "form",
-  "frame",
-  "frameset",
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "head",
-  "header",
-  "hr",
-  "html",
-  "iframe",
-  "legend",
-  "li",
-  "link",
-  "main",
-  "menu",
-  "menuitem",
-  "nav",
-  "noframes",
-  "ol",
-  "optgroup",
-  "option",
-  "p",
-  "param",
-  "search",
-  "section",
-  "summary",
-  "table",
-  "tbody",
-  "td",
-  "tfoot",
-  "th",
-  "thead",
-  "title",
-  "tr",
-  "track",
-  "ul"
-];
-const htmlRawNames = ["pre", "script", "style", "textarea"];
-const htmlFlow = {
-  concrete: true,
-  name: "htmlFlow",
-  resolveTo: resolveToHtmlFlow,
-  tokenize: tokenizeHtmlFlow
-};
-const blankLineBefore = {
-  partial: true,
-  tokenize: tokenizeBlankLineBefore
-};
-const nonLazyContinuationStart = {
-  partial: true,
-  tokenize: tokenizeNonLazyContinuationStart
-};
-function resolveToHtmlFlow(events) {
-  let index = events.length;
-  while (index--) {
-    if (events[index][0] === "enter" && events[index][1].type === "htmlFlow") {
-      break;
-    }
-  }
-  if (index > 1 && events[index - 2][1].type === "linePrefix") {
-    events[index][1].start = events[index - 2][1].start;
-    events[index + 1][1].start = events[index - 2][1].start;
-    events.splice(index - 2, 2);
-  }
-  return events;
-}
-function tokenizeHtmlFlow(effects, ok, nok) {
-  const self2 = this;
-  let marker;
-  let closingTag;
-  let buffer;
-  let index;
-  let markerB;
-  return start;
-  function start(code2) {
-    return before(code2);
-  }
-  function before(code2) {
-    effects.enter("htmlFlow");
-    effects.enter("htmlFlowData");
-    effects.consume(code2);
-    return open2;
-  }
-  function open2(code2) {
-    if (code2 === 33) {
-      effects.consume(code2);
-      return declarationOpen;
-    }
-    if (code2 === 47) {
-      effects.consume(code2);
-      closingTag = true;
-      return tagCloseStart;
-    }
-    if (code2 === 63) {
-      effects.consume(code2);
-      marker = 3;
-      return self2.interrupt ? ok : continuationDeclarationInside;
-    }
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      buffer = String.fromCharCode(code2);
-      return tagName;
-    }
-    return nok(code2);
-  }
-  function declarationOpen(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      marker = 2;
-      return commentOpenInside;
-    }
-    if (code2 === 91) {
-      effects.consume(code2);
-      marker = 5;
-      index = 0;
-      return cdataOpenInside;
-    }
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      marker = 4;
-      return self2.interrupt ? ok : continuationDeclarationInside;
-    }
-    return nok(code2);
-  }
-  function commentOpenInside(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      return self2.interrupt ? ok : continuationDeclarationInside;
-    }
-    return nok(code2);
-  }
-  function cdataOpenInside(code2) {
-    const value = "CDATA[";
-    if (code2 === value.charCodeAt(index++)) {
-      effects.consume(code2);
-      if (index === value.length) {
-        return self2.interrupt ? ok : continuation;
+  parseMarkdown(blockType) {
+    const parse = (src, options) => {
+      const origOpt = { ...options };
+      const opt = { ...this.defaults, ...origOpt };
+      const throwError = this.onError(!!opt.silent, !!opt.async);
+      if (this.defaults.async === true && origOpt.async === false) {
+        return throwError(new Error("marked(): The async option was set to true by an extension. Remove async: false from the parse options object to return a Promise."));
       }
-      return cdataOpenInside;
-    }
-    return nok(code2);
-  }
-  function tagCloseStart(code2) {
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      buffer = String.fromCharCode(code2);
-      return tagName;
-    }
-    return nok(code2);
-  }
-  function tagName(code2) {
-    if (code2 === null || code2 === 47 || code2 === 62 || markdownLineEndingOrSpace(code2)) {
-      const slash = code2 === 47;
-      const name = buffer.toLowerCase();
-      if (!slash && !closingTag && htmlRawNames.includes(name)) {
-        marker = 1;
-        return self2.interrupt ? ok(code2) : continuation(code2);
+      if (typeof src === "undefined" || src === null) {
+        return throwError(new Error("marked(): input parameter is undefined or null"));
       }
-      if (htmlBlockNames.includes(buffer.toLowerCase())) {
-        marker = 6;
-        if (slash) {
-          effects.consume(code2);
-          return basicSelfClosing;
+      if (typeof src !== "string") {
+        return throwError(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected"));
+      }
+      if (opt.hooks) {
+        opt.hooks.options = opt;
+        opt.hooks.block = blockType;
+      }
+      const lexer = opt.hooks ? opt.hooks.provideLexer() : blockType ? _Lexer.lex : _Lexer.lexInline;
+      const parser = opt.hooks ? opt.hooks.provideParser() : blockType ? _Parser.parse : _Parser.parseInline;
+      if (opt.async) {
+        return Promise.resolve(opt.hooks ? opt.hooks.preprocess(src) : src).then((src2) => lexer(src2, opt)).then((tokens) => opt.hooks ? opt.hooks.processAllTokens(tokens) : tokens).then((tokens) => opt.walkTokens ? Promise.all(this.walkTokens(tokens, opt.walkTokens)).then(() => tokens) : tokens).then((tokens) => parser(tokens, opt)).then((html2) => opt.hooks ? opt.hooks.postprocess(html2) : html2).catch(throwError);
+      }
+      try {
+        if (opt.hooks) {
+          src = opt.hooks.preprocess(src);
         }
-        return self2.interrupt ? ok(code2) : continuation(code2);
-      }
-      marker = 7;
-      return self2.interrupt && !self2.parser.lazy[self2.now().line] ? nok(code2) : closingTag ? completeClosingTagAfter(code2) : completeAttributeNameBefore(code2);
-    }
-    if (code2 === 45 || asciiAlphanumeric(code2)) {
-      effects.consume(code2);
-      buffer += String.fromCharCode(code2);
-      return tagName;
-    }
-    return nok(code2);
-  }
-  function basicSelfClosing(code2) {
-    if (code2 === 62) {
-      effects.consume(code2);
-      return self2.interrupt ? ok : continuation;
-    }
-    return nok(code2);
-  }
-  function completeClosingTagAfter(code2) {
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return completeClosingTagAfter;
-    }
-    return completeEnd(code2);
-  }
-  function completeAttributeNameBefore(code2) {
-    if (code2 === 47) {
-      effects.consume(code2);
-      return completeEnd;
-    }
-    if (code2 === 58 || code2 === 95 || asciiAlpha(code2)) {
-      effects.consume(code2);
-      return completeAttributeName;
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return completeAttributeNameBefore;
-    }
-    return completeEnd(code2);
-  }
-  function completeAttributeName(code2) {
-    if (code2 === 45 || code2 === 46 || code2 === 58 || code2 === 95 || asciiAlphanumeric(code2)) {
-      effects.consume(code2);
-      return completeAttributeName;
-    }
-    return completeAttributeNameAfter(code2);
-  }
-  function completeAttributeNameAfter(code2) {
-    if (code2 === 61) {
-      effects.consume(code2);
-      return completeAttributeValueBefore;
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return completeAttributeNameAfter;
-    }
-    return completeAttributeNameBefore(code2);
-  }
-  function completeAttributeValueBefore(code2) {
-    if (code2 === null || code2 === 60 || code2 === 61 || code2 === 62 || code2 === 96) {
-      return nok(code2);
-    }
-    if (code2 === 34 || code2 === 39) {
-      effects.consume(code2);
-      markerB = code2;
-      return completeAttributeValueQuoted;
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return completeAttributeValueBefore;
-    }
-    return completeAttributeValueUnquoted(code2);
-  }
-  function completeAttributeValueQuoted(code2) {
-    if (code2 === markerB) {
-      effects.consume(code2);
-      markerB = null;
-      return completeAttributeValueQuotedAfter;
-    }
-    if (code2 === null || markdownLineEnding(code2)) {
-      return nok(code2);
-    }
-    effects.consume(code2);
-    return completeAttributeValueQuoted;
-  }
-  function completeAttributeValueUnquoted(code2) {
-    if (code2 === null || code2 === 34 || code2 === 39 || code2 === 47 || code2 === 60 || code2 === 61 || code2 === 62 || code2 === 96 || markdownLineEndingOrSpace(code2)) {
-      return completeAttributeNameAfter(code2);
-    }
-    effects.consume(code2);
-    return completeAttributeValueUnquoted;
-  }
-  function completeAttributeValueQuotedAfter(code2) {
-    if (code2 === 47 || code2 === 62 || markdownSpace(code2)) {
-      return completeAttributeNameBefore(code2);
-    }
-    return nok(code2);
-  }
-  function completeEnd(code2) {
-    if (code2 === 62) {
-      effects.consume(code2);
-      return completeAfter;
-    }
-    return nok(code2);
-  }
-  function completeAfter(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      return continuation(code2);
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return completeAfter;
-    }
-    return nok(code2);
-  }
-  function continuation(code2) {
-    if (code2 === 45 && marker === 2) {
-      effects.consume(code2);
-      return continuationCommentInside;
-    }
-    if (code2 === 60 && marker === 1) {
-      effects.consume(code2);
-      return continuationRawTagOpen;
-    }
-    if (code2 === 62 && marker === 4) {
-      effects.consume(code2);
-      return continuationClose;
-    }
-    if (code2 === 63 && marker === 3) {
-      effects.consume(code2);
-      return continuationDeclarationInside;
-    }
-    if (code2 === 93 && marker === 5) {
-      effects.consume(code2);
-      return continuationCdataInside;
-    }
-    if (markdownLineEnding(code2) && (marker === 6 || marker === 7)) {
-      effects.exit("htmlFlowData");
-      return effects.check(blankLineBefore, continuationAfter, continuationStart)(code2);
-    }
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("htmlFlowData");
-      return continuationStart(code2);
-    }
-    effects.consume(code2);
-    return continuation;
-  }
-  function continuationStart(code2) {
-    return effects.check(nonLazyContinuationStart, continuationStartNonLazy, continuationAfter)(code2);
-  }
-  function continuationStartNonLazy(code2) {
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return continuationBefore;
-  }
-  function continuationBefore(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      return continuationStart(code2);
-    }
-    effects.enter("htmlFlowData");
-    return continuation(code2);
-  }
-  function continuationCommentInside(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      return continuationDeclarationInside;
-    }
-    return continuation(code2);
-  }
-  function continuationRawTagOpen(code2) {
-    if (code2 === 47) {
-      effects.consume(code2);
-      buffer = "";
-      return continuationRawEndTag;
-    }
-    return continuation(code2);
-  }
-  function continuationRawEndTag(code2) {
-    if (code2 === 62) {
-      const name = buffer.toLowerCase();
-      if (htmlRawNames.includes(name)) {
-        effects.consume(code2);
-        return continuationClose;
-      }
-      return continuation(code2);
-    }
-    if (asciiAlpha(code2) && buffer.length < 8) {
-      effects.consume(code2);
-      buffer += String.fromCharCode(code2);
-      return continuationRawEndTag;
-    }
-    return continuation(code2);
-  }
-  function continuationCdataInside(code2) {
-    if (code2 === 93) {
-      effects.consume(code2);
-      return continuationDeclarationInside;
-    }
-    return continuation(code2);
-  }
-  function continuationDeclarationInside(code2) {
-    if (code2 === 62) {
-      effects.consume(code2);
-      return continuationClose;
-    }
-    if (code2 === 45 && marker === 2) {
-      effects.consume(code2);
-      return continuationDeclarationInside;
-    }
-    return continuation(code2);
-  }
-  function continuationClose(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("htmlFlowData");
-      return continuationAfter(code2);
-    }
-    effects.consume(code2);
-    return continuationClose;
-  }
-  function continuationAfter(code2) {
-    effects.exit("htmlFlow");
-    return ok(code2);
-  }
-}
-function tokenizeNonLazyContinuationStart(effects, ok, nok) {
-  const self2 = this;
-  return start;
-  function start(code2) {
-    if (markdownLineEnding(code2)) {
-      effects.enter("lineEnding");
-      effects.consume(code2);
-      effects.exit("lineEnding");
-      return after;
-    }
-    return nok(code2);
-  }
-  function after(code2) {
-    return self2.parser.lazy[self2.now().line] ? nok(code2) : ok(code2);
-  }
-}
-function tokenizeBlankLineBefore(effects, ok, nok) {
-  return start;
-  function start(code2) {
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return effects.attempt(blankLine, ok, nok);
-  }
-}
-const htmlText = {
-  name: "htmlText",
-  tokenize: tokenizeHtmlText
-};
-function tokenizeHtmlText(effects, ok, nok) {
-  const self2 = this;
-  let marker;
-  let index;
-  let returnState;
-  return start;
-  function start(code2) {
-    effects.enter("htmlText");
-    effects.enter("htmlTextData");
-    effects.consume(code2);
-    return open2;
-  }
-  function open2(code2) {
-    if (code2 === 33) {
-      effects.consume(code2);
-      return declarationOpen;
-    }
-    if (code2 === 47) {
-      effects.consume(code2);
-      return tagCloseStart;
-    }
-    if (code2 === 63) {
-      effects.consume(code2);
-      return instruction;
-    }
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      return tagOpen;
-    }
-    return nok(code2);
-  }
-  function declarationOpen(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      return commentOpenInside;
-    }
-    if (code2 === 91) {
-      effects.consume(code2);
-      index = 0;
-      return cdataOpenInside;
-    }
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      return declaration;
-    }
-    return nok(code2);
-  }
-  function commentOpenInside(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      return commentEnd;
-    }
-    return nok(code2);
-  }
-  function comment(code2) {
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (code2 === 45) {
-      effects.consume(code2);
-      return commentClose;
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = comment;
-      return lineEndingBefore(code2);
-    }
-    effects.consume(code2);
-    return comment;
-  }
-  function commentClose(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      return commentEnd;
-    }
-    return comment(code2);
-  }
-  function commentEnd(code2) {
-    return code2 === 62 ? end(code2) : code2 === 45 ? commentClose(code2) : comment(code2);
-  }
-  function cdataOpenInside(code2) {
-    const value = "CDATA[";
-    if (code2 === value.charCodeAt(index++)) {
-      effects.consume(code2);
-      return index === value.length ? cdata : cdataOpenInside;
-    }
-    return nok(code2);
-  }
-  function cdata(code2) {
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (code2 === 93) {
-      effects.consume(code2);
-      return cdataClose;
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = cdata;
-      return lineEndingBefore(code2);
-    }
-    effects.consume(code2);
-    return cdata;
-  }
-  function cdataClose(code2) {
-    if (code2 === 93) {
-      effects.consume(code2);
-      return cdataEnd;
-    }
-    return cdata(code2);
-  }
-  function cdataEnd(code2) {
-    if (code2 === 62) {
-      return end(code2);
-    }
-    if (code2 === 93) {
-      effects.consume(code2);
-      return cdataEnd;
-    }
-    return cdata(code2);
-  }
-  function declaration(code2) {
-    if (code2 === null || code2 === 62) {
-      return end(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = declaration;
-      return lineEndingBefore(code2);
-    }
-    effects.consume(code2);
-    return declaration;
-  }
-  function instruction(code2) {
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (code2 === 63) {
-      effects.consume(code2);
-      return instructionClose;
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = instruction;
-      return lineEndingBefore(code2);
-    }
-    effects.consume(code2);
-    return instruction;
-  }
-  function instructionClose(code2) {
-    return code2 === 62 ? end(code2) : instruction(code2);
-  }
-  function tagCloseStart(code2) {
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      return tagClose;
-    }
-    return nok(code2);
-  }
-  function tagClose(code2) {
-    if (code2 === 45 || asciiAlphanumeric(code2)) {
-      effects.consume(code2);
-      return tagClose;
-    }
-    return tagCloseBetween(code2);
-  }
-  function tagCloseBetween(code2) {
-    if (markdownLineEnding(code2)) {
-      returnState = tagCloseBetween;
-      return lineEndingBefore(code2);
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return tagCloseBetween;
-    }
-    return end(code2);
-  }
-  function tagOpen(code2) {
-    if (code2 === 45 || asciiAlphanumeric(code2)) {
-      effects.consume(code2);
-      return tagOpen;
-    }
-    if (code2 === 47 || code2 === 62 || markdownLineEndingOrSpace(code2)) {
-      return tagOpenBetween(code2);
-    }
-    return nok(code2);
-  }
-  function tagOpenBetween(code2) {
-    if (code2 === 47) {
-      effects.consume(code2);
-      return end;
-    }
-    if (code2 === 58 || code2 === 95 || asciiAlpha(code2)) {
-      effects.consume(code2);
-      return tagOpenAttributeName;
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = tagOpenBetween;
-      return lineEndingBefore(code2);
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return tagOpenBetween;
-    }
-    return end(code2);
-  }
-  function tagOpenAttributeName(code2) {
-    if (code2 === 45 || code2 === 46 || code2 === 58 || code2 === 95 || asciiAlphanumeric(code2)) {
-      effects.consume(code2);
-      return tagOpenAttributeName;
-    }
-    return tagOpenAttributeNameAfter(code2);
-  }
-  function tagOpenAttributeNameAfter(code2) {
-    if (code2 === 61) {
-      effects.consume(code2);
-      return tagOpenAttributeValueBefore;
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = tagOpenAttributeNameAfter;
-      return lineEndingBefore(code2);
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return tagOpenAttributeNameAfter;
-    }
-    return tagOpenBetween(code2);
-  }
-  function tagOpenAttributeValueBefore(code2) {
-    if (code2 === null || code2 === 60 || code2 === 61 || code2 === 62 || code2 === 96) {
-      return nok(code2);
-    }
-    if (code2 === 34 || code2 === 39) {
-      effects.consume(code2);
-      marker = code2;
-      return tagOpenAttributeValueQuoted;
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = tagOpenAttributeValueBefore;
-      return lineEndingBefore(code2);
-    }
-    if (markdownSpace(code2)) {
-      effects.consume(code2);
-      return tagOpenAttributeValueBefore;
-    }
-    effects.consume(code2);
-    return tagOpenAttributeValueUnquoted;
-  }
-  function tagOpenAttributeValueQuoted(code2) {
-    if (code2 === marker) {
-      effects.consume(code2);
-      marker = void 0;
-      return tagOpenAttributeValueQuotedAfter;
-    }
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      returnState = tagOpenAttributeValueQuoted;
-      return lineEndingBefore(code2);
-    }
-    effects.consume(code2);
-    return tagOpenAttributeValueQuoted;
-  }
-  function tagOpenAttributeValueUnquoted(code2) {
-    if (code2 === null || code2 === 34 || code2 === 39 || code2 === 60 || code2 === 61 || code2 === 96) {
-      return nok(code2);
-    }
-    if (code2 === 47 || code2 === 62 || markdownLineEndingOrSpace(code2)) {
-      return tagOpenBetween(code2);
-    }
-    effects.consume(code2);
-    return tagOpenAttributeValueUnquoted;
-  }
-  function tagOpenAttributeValueQuotedAfter(code2) {
-    if (code2 === 47 || code2 === 62 || markdownLineEndingOrSpace(code2)) {
-      return tagOpenBetween(code2);
-    }
-    return nok(code2);
-  }
-  function end(code2) {
-    if (code2 === 62) {
-      effects.consume(code2);
-      effects.exit("htmlTextData");
-      effects.exit("htmlText");
-      return ok;
-    }
-    return nok(code2);
-  }
-  function lineEndingBefore(code2) {
-    effects.exit("htmlTextData");
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return lineEndingAfter;
-  }
-  function lineEndingAfter(code2) {
-    return markdownSpace(code2) ? factorySpace(effects, lineEndingAfterPrefix, "linePrefix", self2.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code2) : lineEndingAfterPrefix(code2);
-  }
-  function lineEndingAfterPrefix(code2) {
-    effects.enter("htmlTextData");
-    return returnState(code2);
-  }
-}
-const labelEnd = {
-  name: "labelEnd",
-  resolveAll: resolveAllLabelEnd,
-  resolveTo: resolveToLabelEnd,
-  tokenize: tokenizeLabelEnd
-};
-const resourceConstruct = {
-  tokenize: tokenizeResource
-};
-const referenceFullConstruct = {
-  tokenize: tokenizeReferenceFull
-};
-const referenceCollapsedConstruct = {
-  tokenize: tokenizeReferenceCollapsed
-};
-function resolveAllLabelEnd(events) {
-  let index = -1;
-  const newEvents = [];
-  while (++index < events.length) {
-    const token = events[index][1];
-    newEvents.push(events[index]);
-    if (token.type === "labelImage" || token.type === "labelLink" || token.type === "labelEnd") {
-      const offset = token.type === "labelImage" ? 4 : 2;
-      token.type = "data";
-      index += offset;
-    }
-  }
-  if (events.length !== newEvents.length) {
-    splice(events, 0, events.length, newEvents);
-  }
-  return events;
-}
-function resolveToLabelEnd(events, context) {
-  let index = events.length;
-  let offset = 0;
-  let token;
-  let open2;
-  let close2;
-  let media;
-  while (index--) {
-    token = events[index][1];
-    if (open2) {
-      if (token.type === "link" || token.type === "labelLink" && token._inactive) {
-        break;
-      }
-      if (events[index][0] === "enter" && token.type === "labelLink") {
-        token._inactive = true;
-      }
-    } else if (close2) {
-      if (events[index][0] === "enter" && (token.type === "labelImage" || token.type === "labelLink") && !token._balanced) {
-        open2 = index;
-        if (token.type !== "labelLink") {
-          offset = 2;
-          break;
+        let tokens = lexer(src, opt);
+        if (opt.hooks) {
+          tokens = opt.hooks.processAllTokens(tokens);
         }
+        if (opt.walkTokens) {
+          this.walkTokens(tokens, opt.walkTokens);
+        }
+        let html2 = parser(tokens, opt);
+        if (opt.hooks) {
+          html2 = opt.hooks.postprocess(html2);
+        }
+        return html2;
+      } catch (e) {
+        return throwError(e);
       }
-    } else if (token.type === "labelEnd") {
-      close2 = index;
-    }
-  }
-  const group = {
-    type: events[open2][1].type === "labelLink" ? "link" : "image",
-    start: {
-      ...events[open2][1].start
-    },
-    end: {
-      ...events[events.length - 1][1].end
-    }
-  };
-  const label = {
-    type: "label",
-    start: {
-      ...events[open2][1].start
-    },
-    end: {
-      ...events[close2][1].end
-    }
-  };
-  const text2 = {
-    type: "labelText",
-    start: {
-      ...events[open2 + offset + 2][1].end
-    },
-    end: {
-      ...events[close2 - 2][1].start
-    }
-  };
-  media = [["enter", group, context], ["enter", label, context]];
-  media = push(media, events.slice(open2 + 1, open2 + offset + 3));
-  media = push(media, [["enter", text2, context]]);
-  media = push(media, resolveAll(context.parser.constructs.insideSpan.null, events.slice(open2 + offset + 4, close2 - 3), context));
-  media = push(media, [["exit", text2, context], events[close2 - 2], events[close2 - 1], ["exit", label, context]]);
-  media = push(media, events.slice(close2 + 1));
-  media = push(media, [["exit", group, context]]);
-  splice(events, open2, events.length, media);
-  return events;
-}
-function tokenizeLabelEnd(effects, ok, nok) {
-  const self2 = this;
-  let index = self2.events.length;
-  let labelStart;
-  let defined;
-  while (index--) {
-    if ((self2.events[index][1].type === "labelImage" || self2.events[index][1].type === "labelLink") && !self2.events[index][1]._balanced) {
-      labelStart = self2.events[index][1];
-      break;
-    }
-  }
-  return start;
-  function start(code2) {
-    if (!labelStart) {
-      return nok(code2);
-    }
-    if (labelStart._inactive) {
-      return labelEndNok(code2);
-    }
-    defined = self2.parser.defined.includes(normalizeIdentifier(self2.sliceSerialize({
-      start: labelStart.end,
-      end: self2.now()
-    })));
-    effects.enter("labelEnd");
-    effects.enter("labelMarker");
-    effects.consume(code2);
-    effects.exit("labelMarker");
-    effects.exit("labelEnd");
-    return after;
-  }
-  function after(code2) {
-    if (code2 === 40) {
-      return effects.attempt(resourceConstruct, labelEndOk, defined ? labelEndOk : labelEndNok)(code2);
-    }
-    if (code2 === 91) {
-      return effects.attempt(referenceFullConstruct, labelEndOk, defined ? referenceNotFull : labelEndNok)(code2);
-    }
-    return defined ? labelEndOk(code2) : labelEndNok(code2);
-  }
-  function referenceNotFull(code2) {
-    return effects.attempt(referenceCollapsedConstruct, labelEndOk, labelEndNok)(code2);
-  }
-  function labelEndOk(code2) {
-    return ok(code2);
-  }
-  function labelEndNok(code2) {
-    labelStart._balanced = true;
-    return nok(code2);
-  }
-}
-function tokenizeResource(effects, ok, nok) {
-  return resourceStart;
-  function resourceStart(code2) {
-    effects.enter("resource");
-    effects.enter("resourceMarker");
-    effects.consume(code2);
-    effects.exit("resourceMarker");
-    return resourceBefore;
-  }
-  function resourceBefore(code2) {
-    return markdownLineEndingOrSpace(code2) ? factoryWhitespace(effects, resourceOpen)(code2) : resourceOpen(code2);
-  }
-  function resourceOpen(code2) {
-    if (code2 === 41) {
-      return resourceEnd(code2);
-    }
-    return factoryDestination(effects, resourceDestinationAfter, resourceDestinationMissing, "resourceDestination", "resourceDestinationLiteral", "resourceDestinationLiteralMarker", "resourceDestinationRaw", "resourceDestinationString", 32)(code2);
-  }
-  function resourceDestinationAfter(code2) {
-    return markdownLineEndingOrSpace(code2) ? factoryWhitespace(effects, resourceBetween)(code2) : resourceEnd(code2);
-  }
-  function resourceDestinationMissing(code2) {
-    return nok(code2);
-  }
-  function resourceBetween(code2) {
-    if (code2 === 34 || code2 === 39 || code2 === 40) {
-      return factoryTitle(effects, resourceTitleAfter, nok, "resourceTitle", "resourceTitleMarker", "resourceTitleString")(code2);
-    }
-    return resourceEnd(code2);
-  }
-  function resourceTitleAfter(code2) {
-    return markdownLineEndingOrSpace(code2) ? factoryWhitespace(effects, resourceEnd)(code2) : resourceEnd(code2);
-  }
-  function resourceEnd(code2) {
-    if (code2 === 41) {
-      effects.enter("resourceMarker");
-      effects.consume(code2);
-      effects.exit("resourceMarker");
-      effects.exit("resource");
-      return ok;
-    }
-    return nok(code2);
-  }
-}
-function tokenizeReferenceFull(effects, ok, nok) {
-  const self2 = this;
-  return referenceFull;
-  function referenceFull(code2) {
-    return factoryLabel.call(self2, effects, referenceFullAfter, referenceFullMissing, "reference", "referenceMarker", "referenceString")(code2);
-  }
-  function referenceFullAfter(code2) {
-    return self2.parser.defined.includes(normalizeIdentifier(self2.sliceSerialize(self2.events[self2.events.length - 1][1]).slice(1, -1))) ? ok(code2) : nok(code2);
-  }
-  function referenceFullMissing(code2) {
-    return nok(code2);
-  }
-}
-function tokenizeReferenceCollapsed(effects, ok, nok) {
-  return referenceCollapsedStart;
-  function referenceCollapsedStart(code2) {
-    effects.enter("reference");
-    effects.enter("referenceMarker");
-    effects.consume(code2);
-    effects.exit("referenceMarker");
-    return referenceCollapsedOpen;
-  }
-  function referenceCollapsedOpen(code2) {
-    if (code2 === 93) {
-      effects.enter("referenceMarker");
-      effects.consume(code2);
-      effects.exit("referenceMarker");
-      effects.exit("reference");
-      return ok;
-    }
-    return nok(code2);
-  }
-}
-const labelStartImage = {
-  name: "labelStartImage",
-  resolveAll: labelEnd.resolveAll,
-  tokenize: tokenizeLabelStartImage
-};
-function tokenizeLabelStartImage(effects, ok, nok) {
-  const self2 = this;
-  return start;
-  function start(code2) {
-    effects.enter("labelImage");
-    effects.enter("labelImageMarker");
-    effects.consume(code2);
-    effects.exit("labelImageMarker");
-    return open2;
-  }
-  function open2(code2) {
-    if (code2 === 91) {
-      effects.enter("labelMarker");
-      effects.consume(code2);
-      effects.exit("labelMarker");
-      effects.exit("labelImage");
-      return after;
-    }
-    return nok(code2);
-  }
-  function after(code2) {
-    return code2 === 94 && "_hiddenFootnoteSupport" in self2.parser.constructs ? nok(code2) : ok(code2);
-  }
-}
-const labelStartLink = {
-  name: "labelStartLink",
-  resolveAll: labelEnd.resolveAll,
-  tokenize: tokenizeLabelStartLink
-};
-function tokenizeLabelStartLink(effects, ok, nok) {
-  const self2 = this;
-  return start;
-  function start(code2) {
-    effects.enter("labelLink");
-    effects.enter("labelMarker");
-    effects.consume(code2);
-    effects.exit("labelMarker");
-    effects.exit("labelLink");
-    return after;
-  }
-  function after(code2) {
-    return code2 === 94 && "_hiddenFootnoteSupport" in self2.parser.constructs ? nok(code2) : ok(code2);
-  }
-}
-const lineEnding = {
-  name: "lineEnding",
-  tokenize: tokenizeLineEnding
-};
-function tokenizeLineEnding(effects, ok) {
-  return start;
-  function start(code2) {
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    return factorySpace(effects, ok, "linePrefix");
-  }
-}
-const thematicBreak = {
-  name: "thematicBreak",
-  tokenize: tokenizeThematicBreak
-};
-function tokenizeThematicBreak(effects, ok, nok) {
-  let size = 0;
-  let marker;
-  return start;
-  function start(code2) {
-    effects.enter("thematicBreak");
-    return before(code2);
-  }
-  function before(code2) {
-    marker = code2;
-    return atBreak(code2);
-  }
-  function atBreak(code2) {
-    if (code2 === marker) {
-      effects.enter("thematicBreakSequence");
-      return sequence(code2);
-    }
-    if (size >= 3 && (code2 === null || markdownLineEnding(code2))) {
-      effects.exit("thematicBreak");
-      return ok(code2);
-    }
-    return nok(code2);
-  }
-  function sequence(code2) {
-    if (code2 === marker) {
-      effects.consume(code2);
-      size++;
-      return sequence;
-    }
-    effects.exit("thematicBreakSequence");
-    return markdownSpace(code2) ? factorySpace(effects, atBreak, "whitespace")(code2) : atBreak(code2);
-  }
-}
-const list = {
-  continuation: {
-    tokenize: tokenizeListContinuation
-  },
-  exit: tokenizeListEnd,
-  name: "list",
-  tokenize: tokenizeListStart
-};
-const listItemPrefixWhitespaceConstruct = {
-  partial: true,
-  tokenize: tokenizeListItemPrefixWhitespace
-};
-const indentConstruct = {
-  partial: true,
-  tokenize: tokenizeIndent$1
-};
-function tokenizeListStart(effects, ok, nok) {
-  const self2 = this;
-  const tail = self2.events[self2.events.length - 1];
-  let initialSize = tail && tail[1].type === "linePrefix" ? tail[2].sliceSerialize(tail[1], true).length : 0;
-  let size = 0;
-  return start;
-  function start(code2) {
-    const kind = self2.containerState.type || (code2 === 42 || code2 === 43 || code2 === 45 ? "listUnordered" : "listOrdered");
-    if (kind === "listUnordered" ? !self2.containerState.marker || code2 === self2.containerState.marker : asciiDigit(code2)) {
-      if (!self2.containerState.type) {
-        self2.containerState.type = kind;
-        effects.enter(kind, {
-          _container: true
-        });
-      }
-      if (kind === "listUnordered") {
-        effects.enter("listItemPrefix");
-        return code2 === 42 || code2 === 45 ? effects.check(thematicBreak, nok, atMarker)(code2) : atMarker(code2);
-      }
-      if (!self2.interrupt || code2 === 49) {
-        effects.enter("listItemPrefix");
-        effects.enter("listItemValue");
-        return inside(code2);
-      }
-    }
-    return nok(code2);
-  }
-  function inside(code2) {
-    if (asciiDigit(code2) && ++size < 10) {
-      effects.consume(code2);
-      return inside;
-    }
-    if ((!self2.interrupt || size < 2) && (self2.containerState.marker ? code2 === self2.containerState.marker : code2 === 41 || code2 === 46)) {
-      effects.exit("listItemValue");
-      return atMarker(code2);
-    }
-    return nok(code2);
-  }
-  function atMarker(code2) {
-    effects.enter("listItemMarker");
-    effects.consume(code2);
-    effects.exit("listItemMarker");
-    self2.containerState.marker = self2.containerState.marker || code2;
-    return effects.check(
-      blankLine,
-      // Can’t be empty when interrupting.
-      self2.interrupt ? nok : onBlank,
-      effects.attempt(listItemPrefixWhitespaceConstruct, endOfPrefix, otherPrefix)
-    );
-  }
-  function onBlank(code2) {
-    self2.containerState.initialBlankLine = true;
-    initialSize++;
-    return endOfPrefix(code2);
-  }
-  function otherPrefix(code2) {
-    if (markdownSpace(code2)) {
-      effects.enter("listItemPrefixWhitespace");
-      effects.consume(code2);
-      effects.exit("listItemPrefixWhitespace");
-      return endOfPrefix;
-    }
-    return nok(code2);
-  }
-  function endOfPrefix(code2) {
-    self2.containerState.size = initialSize + self2.sliceSerialize(effects.exit("listItemPrefix"), true).length;
-    return ok(code2);
-  }
-}
-function tokenizeListContinuation(effects, ok, nok) {
-  const self2 = this;
-  self2.containerState._closeFlow = void 0;
-  return effects.check(blankLine, onBlank, notBlank);
-  function onBlank(code2) {
-    self2.containerState.furtherBlankLines = self2.containerState.furtherBlankLines || self2.containerState.initialBlankLine;
-    return factorySpace(effects, ok, "listItemIndent", self2.containerState.size + 1)(code2);
-  }
-  function notBlank(code2) {
-    if (self2.containerState.furtherBlankLines || !markdownSpace(code2)) {
-      self2.containerState.furtherBlankLines = void 0;
-      self2.containerState.initialBlankLine = void 0;
-      return notInCurrentItem(code2);
-    }
-    self2.containerState.furtherBlankLines = void 0;
-    self2.containerState.initialBlankLine = void 0;
-    return effects.attempt(indentConstruct, ok, notInCurrentItem)(code2);
-  }
-  function notInCurrentItem(code2) {
-    self2.containerState._closeFlow = true;
-    self2.interrupt = void 0;
-    return factorySpace(effects, effects.attempt(list, ok, nok), "linePrefix", self2.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code2);
-  }
-}
-function tokenizeIndent$1(effects, ok, nok) {
-  const self2 = this;
-  return factorySpace(effects, afterPrefix, "listItemIndent", self2.containerState.size + 1);
-  function afterPrefix(code2) {
-    const tail = self2.events[self2.events.length - 1];
-    return tail && tail[1].type === "listItemIndent" && tail[2].sliceSerialize(tail[1], true).length === self2.containerState.size ? ok(code2) : nok(code2);
-  }
-}
-function tokenizeListEnd(effects) {
-  effects.exit(this.containerState.type);
-}
-function tokenizeListItemPrefixWhitespace(effects, ok, nok) {
-  const self2 = this;
-  return factorySpace(effects, afterPrefix, "listItemPrefixWhitespace", self2.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4 + 1);
-  function afterPrefix(code2) {
-    const tail = self2.events[self2.events.length - 1];
-    return !markdownSpace(code2) && tail && tail[1].type === "listItemPrefixWhitespace" ? ok(code2) : nok(code2);
-  }
-}
-const setextUnderline = {
-  name: "setextUnderline",
-  resolveTo: resolveToSetextUnderline,
-  tokenize: tokenizeSetextUnderline
-};
-function resolveToSetextUnderline(events, context) {
-  let index = events.length;
-  let content2;
-  let text2;
-  let definition2;
-  while (index--) {
-    if (events[index][0] === "enter") {
-      if (events[index][1].type === "content") {
-        content2 = index;
-        break;
-      }
-      if (events[index][1].type === "paragraph") {
-        text2 = index;
-      }
-    } else {
-      if (events[index][1].type === "content") {
-        events.splice(index, 1);
-      }
-      if (!definition2 && events[index][1].type === "definition") {
-        definition2 = index;
-      }
-    }
-  }
-  const heading = {
-    type: "setextHeading",
-    start: {
-      ...events[text2][1].start
-    },
-    end: {
-      ...events[events.length - 1][1].end
-    }
-  };
-  events[text2][1].type = "setextHeadingText";
-  if (definition2) {
-    events.splice(text2, 0, ["enter", heading, context]);
-    events.splice(definition2 + 1, 0, ["exit", events[content2][1], context]);
-    events[content2][1].end = {
-      ...events[definition2][1].end
     };
-  } else {
-    events[content2][1] = heading;
+    return parse;
   }
-  events.push(["exit", heading, context]);
-  return events;
+  onError(silent, async) {
+    return (e) => {
+      e.message += "\nPlease report this to https://github.com/markedjs/marked.";
+      if (silent) {
+        const msg = "<p>An error occurred:</p><pre>" + escape$3(e.message + "", true) + "</pre>";
+        if (async) {
+          return Promise.resolve(msg);
+        }
+        return msg;
+      }
+      if (async) {
+        return Promise.reject(e);
+      }
+      throw e;
+    };
+  }
 }
-function tokenizeSetextUnderline(effects, ok, nok) {
-  const self2 = this;
-  let marker;
-  return start;
-  function start(code2) {
-    let index = self2.events.length;
-    let paragraph;
-    while (index--) {
-      if (self2.events[index][1].type !== "lineEnding" && self2.events[index][1].type !== "linePrefix" && self2.events[index][1].type !== "content") {
-        paragraph = self2.events[index][1].type === "paragraph";
-        break;
+const markedInstance = new Marked();
+function marked(src, opt) {
+  return markedInstance.parse(src, opt);
+}
+marked.options = marked.setOptions = function(options) {
+  markedInstance.setOptions(options);
+  marked.defaults = markedInstance.defaults;
+  changeDefaults(marked.defaults);
+  return marked;
+};
+marked.getDefaults = _getDefaults;
+marked.defaults = _defaults;
+marked.use = function(...args) {
+  markedInstance.use(...args);
+  marked.defaults = markedInstance.defaults;
+  changeDefaults(marked.defaults);
+  return marked;
+};
+marked.walkTokens = function(tokens, callback) {
+  return markedInstance.walkTokens(tokens, callback);
+};
+marked.parseInline = markedInstance.parseInline;
+marked.Parser = _Parser;
+marked.parser = _Parser.parse;
+marked.Renderer = _Renderer;
+marked.TextRenderer = _TextRenderer;
+marked.Lexer = _Lexer;
+marked.lexer = _Lexer.lex;
+marked.Tokenizer = _Tokenizer;
+marked.Hooks = _Hooks;
+marked.parse = marked;
+marked.options;
+marked.setOptions;
+marked.use;
+marked.walkTokens;
+marked.parseInline;
+_Parser.parse;
+_Lexer.lex;
+/*! @license DOMPurify 3.2.4 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.4/LICENSE */
+const {
+  entries,
+  setPrototypeOf,
+  isFrozen,
+  getPrototypeOf,
+  getOwnPropertyDescriptor
+} = Object;
+let {
+  freeze,
+  seal,
+  create
+} = Object;
+let {
+  apply,
+  construct
+} = typeof Reflect !== "undefined" && Reflect;
+if (!freeze) {
+  freeze = function freeze2(x) {
+    return x;
+  };
+}
+if (!seal) {
+  seal = function seal2(x) {
+    return x;
+  };
+}
+if (!apply) {
+  apply = function apply2(fun, thisValue, args) {
+    return fun.apply(thisValue, args);
+  };
+}
+if (!construct) {
+  construct = function construct2(Func, args) {
+    return new Func(...args);
+  };
+}
+const arrayForEach = unapply(Array.prototype.forEach);
+const arrayLastIndexOf = unapply(Array.prototype.lastIndexOf);
+const arrayPop = unapply(Array.prototype.pop);
+const arrayPush = unapply(Array.prototype.push);
+const arraySplice = unapply(Array.prototype.splice);
+const stringToLowerCase = unapply(String.prototype.toLowerCase);
+const stringToString = unapply(String.prototype.toString);
+const stringMatch = unapply(String.prototype.match);
+const stringReplace = unapply(String.prototype.replace);
+const stringIndexOf = unapply(String.prototype.indexOf);
+const stringTrim = unapply(String.prototype.trim);
+const objectHasOwnProperty = unapply(Object.prototype.hasOwnProperty);
+const regExpTest = unapply(RegExp.prototype.test);
+const typeErrorCreate = unconstruct(TypeError);
+function unapply(func) {
+  return function(thisArg) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+    return apply(func, thisArg, args);
+  };
+}
+function unconstruct(func) {
+  return function() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+    return construct(func, args);
+  };
+}
+function addToSet(set2, array) {
+  let transformCaseFunc = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : stringToLowerCase;
+  if (setPrototypeOf) {
+    setPrototypeOf(set2, null);
+  }
+  let l = array.length;
+  while (l--) {
+    let element = array[l];
+    if (typeof element === "string") {
+      const lcElement = transformCaseFunc(element);
+      if (lcElement !== element) {
+        if (!isFrozen(array)) {
+          array[l] = lcElement;
+        }
+        element = lcElement;
       }
     }
-    if (!self2.parser.lazy[self2.now().line] && (self2.interrupt || paragraph)) {
-      effects.enter("setextHeadingLine");
-      marker = code2;
-      return before(code2);
-    }
-    return nok(code2);
+    set2[element] = true;
   }
-  function before(code2) {
-    effects.enter("setextHeadingLineSequence");
-    return inside(code2);
-  }
-  function inside(code2) {
-    if (code2 === marker) {
-      effects.consume(code2);
-      return inside;
-    }
-    effects.exit("setextHeadingLineSequence");
-    return markdownSpace(code2) ? factorySpace(effects, after, "lineSuffix")(code2) : after(code2);
-  }
-  function after(code2) {
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("setextHeadingLine");
-      return ok(code2);
-    }
-    return nok(code2);
-  }
+  return set2;
 }
-const flow$1 = {
-  tokenize: initializeFlow
-};
-function initializeFlow(effects) {
-  const self2 = this;
-  const initial = effects.attempt(
-    // Try to parse a blank line.
-    blankLine,
-    atBlankEnding,
-    // Try to parse initial flow (essentially, only code).
-    effects.attempt(this.parser.constructs.flowInitial, afterConstruct, factorySpace(effects, effects.attempt(this.parser.constructs.flow, afterConstruct, effects.attempt(content, afterConstruct)), "linePrefix"))
-  );
-  return initial;
-  function atBlankEnding(code2) {
-    if (code2 === null) {
-      effects.consume(code2);
-      return;
+function cleanArray(array) {
+  for (let index = 0; index < array.length; index++) {
+    const isPropertyExist = objectHasOwnProperty(array, index);
+    if (!isPropertyExist) {
+      array[index] = null;
     }
-    effects.enter("lineEndingBlank");
-    effects.consume(code2);
-    effects.exit("lineEndingBlank");
-    self2.currentConstruct = void 0;
-    return initial;
   }
-  function afterConstruct(code2) {
-    if (code2 === null) {
-      effects.consume(code2);
-      return;
-    }
-    effects.enter("lineEnding");
-    effects.consume(code2);
-    effects.exit("lineEnding");
-    self2.currentConstruct = void 0;
-    return initial;
-  }
+  return array;
 }
-const resolver = {
-  resolveAll: createResolver()
+function clone(object) {
+  const newObject = create(null);
+  for (const [property, value] of entries(object)) {
+    const isPropertyExist = objectHasOwnProperty(object, property);
+    if (isPropertyExist) {
+      if (Array.isArray(value)) {
+        newObject[property] = cleanArray(value);
+      } else if (value && typeof value === "object" && value.constructor === Object) {
+        newObject[property] = clone(value);
+      } else {
+        newObject[property] = value;
+      }
+    }
+  }
+  return newObject;
+}
+function lookupGetter(object, prop) {
+  while (object !== null) {
+    const desc = getOwnPropertyDescriptor(object, prop);
+    if (desc) {
+      if (desc.get) {
+        return unapply(desc.get);
+      }
+      if (typeof desc.value === "function") {
+        return unapply(desc.value);
+      }
+    }
+    object = getPrototypeOf(object);
+  }
+  function fallbackValue() {
+    return null;
+  }
+  return fallbackValue;
+}
+const html$1 = freeze(["a", "abbr", "acronym", "address", "area", "article", "aside", "audio", "b", "bdi", "bdo", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "content", "data", "datalist", "dd", "decorator", "del", "details", "dfn", "dialog", "dir", "div", "dl", "dt", "element", "em", "fieldset", "figcaption", "figure", "font", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "marquee", "menu", "menuitem", "meter", "nav", "nobr", "ol", "optgroup", "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "section", "select", "shadow", "small", "source", "spacer", "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"]);
+const svg$1 = freeze(["svg", "a", "altglyph", "altglyphdef", "altglyphitem", "animatecolor", "animatemotion", "animatetransform", "circle", "clippath", "defs", "desc", "ellipse", "filter", "font", "g", "glyph", "glyphref", "hkern", "image", "line", "lineargradient", "marker", "mask", "metadata", "mpath", "path", "pattern", "polygon", "polyline", "radialgradient", "rect", "stop", "style", "switch", "symbol", "text", "textpath", "title", "tref", "tspan", "view", "vkern"]);
+const svgFilters = freeze(["feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feDistantLight", "feDropShadow", "feFlood", "feFuncA", "feFuncB", "feFuncG", "feFuncR", "feGaussianBlur", "feImage", "feMerge", "feMergeNode", "feMorphology", "feOffset", "fePointLight", "feSpecularLighting", "feSpotLight", "feTile", "feTurbulence"]);
+const svgDisallowed = freeze(["animate", "color-profile", "cursor", "discard", "font-face", "font-face-format", "font-face-name", "font-face-src", "font-face-uri", "foreignobject", "hatch", "hatchpath", "mesh", "meshgradient", "meshpatch", "meshrow", "missing-glyph", "script", "set", "solidcolor", "unknown", "use"]);
+const mathMl$1 = freeze(["math", "menclose", "merror", "mfenced", "mfrac", "mglyph", "mi", "mlabeledtr", "mmultiscripts", "mn", "mo", "mover", "mpadded", "mphantom", "mroot", "mrow", "ms", "mspace", "msqrt", "mstyle", "msub", "msup", "msubsup", "mtable", "mtd", "mtext", "mtr", "munder", "munderover", "mprescripts"]);
+const mathMlDisallowed = freeze(["maction", "maligngroup", "malignmark", "mlongdiv", "mscarries", "mscarry", "msgroup", "mstack", "msline", "msrow", "semantics", "annotation", "annotation-xml", "mprescripts", "none"]);
+const text$2 = freeze(["#text"]);
+const html = freeze(["accept", "action", "align", "alt", "autocapitalize", "autocomplete", "autopictureinpicture", "autoplay", "background", "bgcolor", "border", "capture", "cellpadding", "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "controls", "controlslist", "coords", "crossorigin", "datetime", "decoding", "default", "dir", "disabled", "disablepictureinpicture", "disableremoteplayback", "download", "draggable", "enctype", "enterkeyhint", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "inputmode", "integrity", "ismap", "kind", "label", "lang", "list", "loading", "loop", "low", "max", "maxlength", "media", "method", "min", "minlength", "multiple", "muted", "name", "nonce", "noshade", "novalidate", "nowrap", "open", "optimum", "pattern", "placeholder", "playsinline", "popover", "popovertarget", "popovertargetaction", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "spellcheck", "scope", "selected", "shape", "size", "sizes", "span", "srclang", "start", "src", "srcset", "step", "style", "summary", "tabindex", "title", "translate", "type", "usemap", "valign", "value", "width", "wrap", "xmlns", "slot"]);
+const svg = freeze(["accent-height", "accumulate", "additive", "alignment-baseline", "amplitude", "ascent", "attributename", "attributetype", "azimuth", "basefrequency", "baseline-shift", "begin", "bias", "by", "class", "clip", "clippathunits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cx", "cy", "d", "dx", "dy", "diffuseconstant", "direction", "display", "divisor", "dur", "edgemode", "elevation", "end", "exponent", "fill", "fill-opacity", "fill-rule", "filter", "filterunits", "flood-color", "flood-opacity", "font-family", "font-size", "font-size-adjust", "font-stretch", "font-style", "font-variant", "font-weight", "fx", "fy", "g1", "g2", "glyph-name", "glyphref", "gradientunits", "gradienttransform", "height", "href", "id", "image-rendering", "in", "in2", "intercept", "k", "k1", "k2", "k3", "k4", "kerning", "keypoints", "keysplines", "keytimes", "lang", "lengthadjust", "letter-spacing", "kernelmatrix", "kernelunitlength", "lighting-color", "local", "marker-end", "marker-mid", "marker-start", "markerheight", "markerunits", "markerwidth", "maskcontentunits", "maskunits", "max", "mask", "media", "method", "mode", "min", "name", "numoctaves", "offset", "operator", "opacity", "order", "orient", "orientation", "origin", "overflow", "paint-order", "path", "pathlength", "patterncontentunits", "patterntransform", "patternunits", "points", "preservealpha", "preserveaspectratio", "primitiveunits", "r", "rx", "ry", "radius", "refx", "refy", "repeatcount", "repeatdur", "restart", "result", "rotate", "scale", "seed", "shape-rendering", "slope", "specularconstant", "specularexponent", "spreadmethod", "startoffset", "stddeviation", "stitchtiles", "stop-color", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke", "stroke-width", "style", "surfacescale", "systemlanguage", "tabindex", "tablevalues", "targetx", "targety", "transform", "transform-origin", "text-anchor", "text-decoration", "text-rendering", "textlength", "type", "u1", "u2", "unicode", "values", "viewbox", "visibility", "version", "vert-adv-y", "vert-origin-x", "vert-origin-y", "width", "word-spacing", "wrap", "writing-mode", "xchannelselector", "ychannelselector", "x", "x1", "x2", "xmlns", "y", "y1", "y2", "z", "zoomandpan"]);
+const mathMl = freeze(["accent", "accentunder", "align", "bevelled", "close", "columnsalign", "columnlines", "columnspan", "denomalign", "depth", "dir", "display", "displaystyle", "encoding", "fence", "frame", "height", "href", "id", "largeop", "length", "linethickness", "lspace", "lquote", "mathbackground", "mathcolor", "mathsize", "mathvariant", "maxsize", "minsize", "movablelimits", "notation", "numalign", "open", "rowalign", "rowlines", "rowspacing", "rowspan", "rspace", "rquote", "scriptlevel", "scriptminsize", "scriptsizemultiplier", "selection", "separator", "separators", "stretchy", "subscriptshift", "supscriptshift", "symmetric", "voffset", "width", "xmlns"]);
+const xml = freeze(["xlink:href", "xml:id", "xlink:title", "xml:space", "xmlns:xlink"]);
+const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm);
+const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
+const TMPLIT_EXPR = seal(/\$\{[\w\W]*/gm);
+const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/);
+const ARIA_ATTR = seal(/^aria-[\-\w]+$/);
+const IS_ALLOWED_URI = seal(
+  /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+  // eslint-disable-line no-useless-escape
+);
+const IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+const ATTR_WHITESPACE = seal(
+  /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g
+  // eslint-disable-line no-control-regex
+);
+const DOCTYPE_NAME = seal(/^html$/i);
+const CUSTOM_ELEMENT = seal(/^[a-z][.\w]*(-[.\w]+)+$/i);
+var EXPRESSIONS = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  ARIA_ATTR,
+  ATTR_WHITESPACE,
+  CUSTOM_ELEMENT,
+  DATA_ATTR,
+  DOCTYPE_NAME,
+  ERB_EXPR,
+  IS_ALLOWED_URI,
+  IS_SCRIPT_OR_DATA,
+  MUSTACHE_EXPR,
+  TMPLIT_EXPR
+});
+const NODE_TYPE = {
+  element: 1,
+  attribute: 2,
+  text: 3,
+  cdataSection: 4,
+  entityReference: 5,
+  // Deprecated
+  entityNode: 6,
+  // Deprecated
+  progressingInstruction: 7,
+  comment: 8,
+  document: 9,
+  documentType: 10,
+  documentFragment: 11,
+  notation: 12
+  // Deprecated
 };
-const string$1 = initializeFactory("string");
-const text$4 = initializeFactory("text");
-function initializeFactory(field) {
+const getGlobal = function getGlobal2() {
+  return typeof window === "undefined" ? null : window;
+};
+const _createTrustedTypesPolicy = function _createTrustedTypesPolicy2(trustedTypes, purifyHostElement) {
+  if (typeof trustedTypes !== "object" || typeof trustedTypes.createPolicy !== "function") {
+    return null;
+  }
+  let suffix = null;
+  const ATTR_NAME = "data-tt-policy-suffix";
+  if (purifyHostElement && purifyHostElement.hasAttribute(ATTR_NAME)) {
+    suffix = purifyHostElement.getAttribute(ATTR_NAME);
+  }
+  const policyName = "dompurify" + (suffix ? "#" + suffix : "");
+  try {
+    return trustedTypes.createPolicy(policyName, {
+      createHTML(html2) {
+        return html2;
+      },
+      createScriptURL(scriptUrl) {
+        return scriptUrl;
+      }
+    });
+  } catch (_) {
+    console.warn("TrustedTypes policy " + policyName + " could not be created.");
+    return null;
+  }
+};
+const _createHooksMap = function _createHooksMap2() {
   return {
-    resolveAll: createResolver(field === "text" ? resolveAllLineSuffixes : void 0),
-    tokenize: initializeText
+    afterSanitizeAttributes: [],
+    afterSanitizeElements: [],
+    afterSanitizeShadowDOM: [],
+    beforeSanitizeAttributes: [],
+    beforeSanitizeElements: [],
+    beforeSanitizeShadowDOM: [],
+    uponSanitizeAttribute: [],
+    uponSanitizeElement: [],
+    uponSanitizeShadowNode: []
   };
-  function initializeText(effects) {
-    const self2 = this;
-    const constructs2 = this.parser.constructs[field];
-    const text2 = effects.attempt(constructs2, start, notText);
-    return start;
-    function start(code2) {
-      return atBreak(code2) ? text2(code2) : notText(code2);
+};
+function createDOMPurify() {
+  let window2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getGlobal();
+  const DOMPurify = (root) => createDOMPurify(root);
+  DOMPurify.version = "3.2.4";
+  DOMPurify.removed = [];
+  if (!window2 || !window2.document || window2.document.nodeType !== NODE_TYPE.document || !window2.Element) {
+    DOMPurify.isSupported = false;
+    return DOMPurify;
+  }
+  let {
+    document: document2
+  } = window2;
+  const originalDocument = document2;
+  const currentScript = originalDocument.currentScript;
+  const {
+    DocumentFragment: DocumentFragment2,
+    HTMLTemplateElement,
+    Node,
+    Element,
+    NodeFilter,
+    NamedNodeMap = window2.NamedNodeMap || window2.MozNamedAttrMap,
+    HTMLFormElement,
+    DOMParser,
+    trustedTypes
+  } = window2;
+  const ElementPrototype = Element.prototype;
+  const cloneNode = lookupGetter(ElementPrototype, "cloneNode");
+  const remove = lookupGetter(ElementPrototype, "remove");
+  const getNextSibling = lookupGetter(ElementPrototype, "nextSibling");
+  const getChildNodes = lookupGetter(ElementPrototype, "childNodes");
+  const getParentNode = lookupGetter(ElementPrototype, "parentNode");
+  if (typeof HTMLTemplateElement === "function") {
+    const template = document2.createElement("template");
+    if (template.content && template.content.ownerDocument) {
+      document2 = template.content.ownerDocument;
     }
-    function notText(code2) {
-      if (code2 === null) {
-        effects.consume(code2);
-        return;
-      }
-      effects.enter("data");
-      effects.consume(code2);
-      return data;
+  }
+  let trustedTypesPolicy;
+  let emptyHTML = "";
+  const {
+    implementation,
+    createNodeIterator,
+    createDocumentFragment,
+    getElementsByTagName
+  } = document2;
+  const {
+    importNode
+  } = originalDocument;
+  let hooks = _createHooksMap();
+  DOMPurify.isSupported = typeof entries === "function" && typeof getParentNode === "function" && implementation && implementation.createHTMLDocument !== void 0;
+  const {
+    MUSTACHE_EXPR: MUSTACHE_EXPR2,
+    ERB_EXPR: ERB_EXPR2,
+    TMPLIT_EXPR: TMPLIT_EXPR2,
+    DATA_ATTR: DATA_ATTR2,
+    ARIA_ATTR: ARIA_ATTR2,
+    IS_SCRIPT_OR_DATA: IS_SCRIPT_OR_DATA2,
+    ATTR_WHITESPACE: ATTR_WHITESPACE2,
+    CUSTOM_ELEMENT: CUSTOM_ELEMENT2
+  } = EXPRESSIONS;
+  let {
+    IS_ALLOWED_URI: IS_ALLOWED_URI$1
+  } = EXPRESSIONS;
+  let ALLOWED_TAGS = null;
+  const DEFAULT_ALLOWED_TAGS = addToSet({}, [...html$1, ...svg$1, ...svgFilters, ...mathMl$1, ...text$2]);
+  let ALLOWED_ATTR = null;
+  const DEFAULT_ALLOWED_ATTR = addToSet({}, [...html, ...svg, ...mathMl, ...xml]);
+  let CUSTOM_ELEMENT_HANDLING = Object.seal(create(null, {
+    tagNameCheck: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: null
+    },
+    attributeNameCheck: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: null
+    },
+    allowCustomizedBuiltInElements: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: false
     }
-    function data(code2) {
-      if (atBreak(code2)) {
-        effects.exit("data");
-        return text2(code2);
-      }
-      effects.consume(code2);
-      return data;
+  }));
+  let FORBID_TAGS = null;
+  let FORBID_ATTR = null;
+  let ALLOW_ARIA_ATTR = true;
+  let ALLOW_DATA_ATTR = true;
+  let ALLOW_UNKNOWN_PROTOCOLS = false;
+  let ALLOW_SELF_CLOSE_IN_ATTR = true;
+  let SAFE_FOR_TEMPLATES = false;
+  let SAFE_FOR_XML = true;
+  let WHOLE_DOCUMENT = false;
+  let SET_CONFIG = false;
+  let FORCE_BODY = false;
+  let RETURN_DOM = false;
+  let RETURN_DOM_FRAGMENT = false;
+  let RETURN_TRUSTED_TYPE = false;
+  let SANITIZE_DOM = true;
+  let SANITIZE_NAMED_PROPS = false;
+  const SANITIZE_NAMED_PROPS_PREFIX = "user-content-";
+  let KEEP_CONTENT = true;
+  let IN_PLACE = false;
+  let USE_PROFILES = {};
+  let FORBID_CONTENTS = null;
+  const DEFAULT_FORBID_CONTENTS = addToSet({}, ["annotation-xml", "audio", "colgroup", "desc", "foreignobject", "head", "iframe", "math", "mi", "mn", "mo", "ms", "mtext", "noembed", "noframes", "noscript", "plaintext", "script", "style", "svg", "template", "thead", "title", "video", "xmp"]);
+  let DATA_URI_TAGS = null;
+  const DEFAULT_DATA_URI_TAGS = addToSet({}, ["audio", "video", "img", "source", "image", "track"]);
+  let URI_SAFE_ATTRIBUTES = null;
+  const DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ["alt", "class", "for", "id", "label", "name", "pattern", "placeholder", "role", "summary", "title", "value", "style", "xmlns"]);
+  const MATHML_NAMESPACE = "http://www.w3.org/1998/Math/MathML";
+  const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+  const HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
+  let NAMESPACE = HTML_NAMESPACE;
+  let IS_EMPTY_INPUT = false;
+  let ALLOWED_NAMESPACES = null;
+  const DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
+  let MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ["mi", "mo", "mn", "ms", "mtext"]);
+  let HTML_INTEGRATION_POINTS = addToSet({}, ["annotation-xml"]);
+  const COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, ["title", "style", "font", "a", "script"]);
+  let PARSER_MEDIA_TYPE = null;
+  const SUPPORTED_PARSER_MEDIA_TYPES = ["application/xhtml+xml", "text/html"];
+  const DEFAULT_PARSER_MEDIA_TYPE = "text/html";
+  let transformCaseFunc = null;
+  let CONFIG = null;
+  const formElement = document2.createElement("form");
+  const isRegexOrFunction = function isRegexOrFunction2(testValue) {
+    return testValue instanceof RegExp || testValue instanceof Function;
+  };
+  const _parseConfig = function _parseConfig2() {
+    let cfg = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    if (CONFIG && CONFIG === cfg) {
+      return;
     }
-    function atBreak(code2) {
-      if (code2 === null) {
-        return true;
+    if (!cfg || typeof cfg !== "object") {
+      cfg = {};
+    }
+    cfg = clone(cfg);
+    PARSER_MEDIA_TYPE = // eslint-disable-next-line unicorn/prefer-includes
+    SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? DEFAULT_PARSER_MEDIA_TYPE : cfg.PARSER_MEDIA_TYPE;
+    transformCaseFunc = PARSER_MEDIA_TYPE === "application/xhtml+xml" ? stringToString : stringToLowerCase;
+    ALLOWED_TAGS = objectHasOwnProperty(cfg, "ALLOWED_TAGS") ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
+    ALLOWED_ATTR = objectHasOwnProperty(cfg, "ALLOWED_ATTR") ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
+    ALLOWED_NAMESPACES = objectHasOwnProperty(cfg, "ALLOWED_NAMESPACES") ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
+    URI_SAFE_ATTRIBUTES = objectHasOwnProperty(cfg, "ADD_URI_SAFE_ATTR") ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR, transformCaseFunc) : DEFAULT_URI_SAFE_ATTRIBUTES;
+    DATA_URI_TAGS = objectHasOwnProperty(cfg, "ADD_DATA_URI_TAGS") ? addToSet(clone(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS, transformCaseFunc) : DEFAULT_DATA_URI_TAGS;
+    FORBID_CONTENTS = objectHasOwnProperty(cfg, "FORBID_CONTENTS") ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
+    FORBID_TAGS = objectHasOwnProperty(cfg, "FORBID_TAGS") ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : {};
+    FORBID_ATTR = objectHasOwnProperty(cfg, "FORBID_ATTR") ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : {};
+    USE_PROFILES = objectHasOwnProperty(cfg, "USE_PROFILES") ? cfg.USE_PROFILES : false;
+    ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false;
+    ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false;
+    ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false;
+    ALLOW_SELF_CLOSE_IN_ATTR = cfg.ALLOW_SELF_CLOSE_IN_ATTR !== false;
+    SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false;
+    SAFE_FOR_XML = cfg.SAFE_FOR_XML !== false;
+    WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false;
+    RETURN_DOM = cfg.RETURN_DOM || false;
+    RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false;
+    RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false;
+    FORCE_BODY = cfg.FORCE_BODY || false;
+    SANITIZE_DOM = cfg.SANITIZE_DOM !== false;
+    SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false;
+    KEEP_CONTENT = cfg.KEEP_CONTENT !== false;
+    IN_PLACE = cfg.IN_PLACE || false;
+    IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI;
+    NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
+    MATHML_TEXT_INTEGRATION_POINTS = cfg.MATHML_TEXT_INTEGRATION_POINTS || MATHML_TEXT_INTEGRATION_POINTS;
+    HTML_INTEGRATION_POINTS = cfg.HTML_INTEGRATION_POINTS || HTML_INTEGRATION_POINTS;
+    CUSTOM_ELEMENT_HANDLING = cfg.CUSTOM_ELEMENT_HANDLING || {};
+    if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
+      CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
+    }
+    if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck)) {
+      CUSTOM_ELEMENT_HANDLING.attributeNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck;
+    }
+    if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === "boolean") {
+      CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
+    }
+    if (SAFE_FOR_TEMPLATES) {
+      ALLOW_DATA_ATTR = false;
+    }
+    if (RETURN_DOM_FRAGMENT) {
+      RETURN_DOM = true;
+    }
+    if (USE_PROFILES) {
+      ALLOWED_TAGS = addToSet({}, text$2);
+      ALLOWED_ATTR = [];
+      if (USE_PROFILES.html === true) {
+        addToSet(ALLOWED_TAGS, html$1);
+        addToSet(ALLOWED_ATTR, html);
       }
-      const list2 = constructs2[code2];
-      let index = -1;
-      if (list2) {
-        while (++index < list2.length) {
-          const item = list2[index];
-          if (!item.previous || item.previous.call(self2, self2.previous)) {
-            return true;
-          }
-        }
+      if (USE_PROFILES.svg === true) {
+        addToSet(ALLOWED_TAGS, svg$1);
+        addToSet(ALLOWED_ATTR, svg);
+        addToSet(ALLOWED_ATTR, xml);
       }
+      if (USE_PROFILES.svgFilters === true) {
+        addToSet(ALLOWED_TAGS, svgFilters);
+        addToSet(ALLOWED_ATTR, svg);
+        addToSet(ALLOWED_ATTR, xml);
+      }
+      if (USE_PROFILES.mathMl === true) {
+        addToSet(ALLOWED_TAGS, mathMl$1);
+        addToSet(ALLOWED_ATTR, mathMl);
+        addToSet(ALLOWED_ATTR, xml);
+      }
+    }
+    if (cfg.ADD_TAGS) {
+      if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
+        ALLOWED_TAGS = clone(ALLOWED_TAGS);
+      }
+      addToSet(ALLOWED_TAGS, cfg.ADD_TAGS, transformCaseFunc);
+    }
+    if (cfg.ADD_ATTR) {
+      if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
+        ALLOWED_ATTR = clone(ALLOWED_ATTR);
+      }
+      addToSet(ALLOWED_ATTR, cfg.ADD_ATTR, transformCaseFunc);
+    }
+    if (cfg.ADD_URI_SAFE_ATTR) {
+      addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR, transformCaseFunc);
+    }
+    if (cfg.FORBID_CONTENTS) {
+      if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+        FORBID_CONTENTS = clone(FORBID_CONTENTS);
+      }
+      addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
+    }
+    if (KEEP_CONTENT) {
+      ALLOWED_TAGS["#text"] = true;
+    }
+    if (WHOLE_DOCUMENT) {
+      addToSet(ALLOWED_TAGS, ["html", "head", "body"]);
+    }
+    if (ALLOWED_TAGS.table) {
+      addToSet(ALLOWED_TAGS, ["tbody"]);
+      delete FORBID_TAGS.tbody;
+    }
+    if (cfg.TRUSTED_TYPES_POLICY) {
+      if (typeof cfg.TRUSTED_TYPES_POLICY.createHTML !== "function") {
+        throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createHTML" hook.');
+      }
+      if (typeof cfg.TRUSTED_TYPES_POLICY.createScriptURL !== "function") {
+        throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createScriptURL" hook.');
+      }
+      trustedTypesPolicy = cfg.TRUSTED_TYPES_POLICY;
+      emptyHTML = trustedTypesPolicy.createHTML("");
+    } else {
+      if (trustedTypesPolicy === void 0) {
+        trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
+      }
+      if (trustedTypesPolicy !== null && typeof emptyHTML === "string") {
+        emptyHTML = trustedTypesPolicy.createHTML("");
+      }
+    }
+    if (freeze) {
+      freeze(cfg);
+    }
+    CONFIG = cfg;
+  };
+  const ALL_SVG_TAGS = addToSet({}, [...svg$1, ...svgFilters, ...svgDisallowed]);
+  const ALL_MATHML_TAGS = addToSet({}, [...mathMl$1, ...mathMlDisallowed]);
+  const _checkValidNamespace = function _checkValidNamespace2(element) {
+    let parent = getParentNode(element);
+    if (!parent || !parent.tagName) {
+      parent = {
+        namespaceURI: NAMESPACE,
+        tagName: "template"
+      };
+    }
+    const tagName = stringToLowerCase(element.tagName);
+    const parentTagName = stringToLowerCase(parent.tagName);
+    if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
       return false;
     }
-  }
-}
-function createResolver(extraResolver) {
-  return resolveAllText;
-  function resolveAllText(events, context) {
-    let index = -1;
-    let enter;
-    while (++index <= events.length) {
-      if (enter === void 0) {
-        if (events[index] && events[index][1].type === "data") {
-          enter = index;
-          index++;
-        }
-      } else if (!events[index] || events[index][1].type !== "data") {
-        if (index !== enter + 2) {
-          events[enter][1].end = events[index - 1][1].end;
-          events.splice(enter + 2, index - enter - 2);
-          index = enter + 2;
-        }
-        enter = void 0;
+    if (element.namespaceURI === SVG_NAMESPACE) {
+      if (parent.namespaceURI === HTML_NAMESPACE) {
+        return tagName === "svg";
       }
+      if (parent.namespaceURI === MATHML_NAMESPACE) {
+        return tagName === "svg" && (parentTagName === "annotation-xml" || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
+      }
+      return Boolean(ALL_SVG_TAGS[tagName]);
     }
-    return extraResolver ? extraResolver(events, context) : events;
-  }
-}
-function resolveAllLineSuffixes(events, context) {
-  let eventIndex = 0;
-  while (++eventIndex <= events.length) {
-    if ((eventIndex === events.length || events[eventIndex][1].type === "lineEnding") && events[eventIndex - 1][1].type === "data") {
-      const data = events[eventIndex - 1][1];
-      const chunks = context.sliceStream(data);
-      let index = chunks.length;
-      let bufferIndex = -1;
-      let size = 0;
-      let tabs;
-      while (index--) {
-        const chunk = chunks[index];
-        if (typeof chunk === "string") {
-          bufferIndex = chunk.length;
-          while (chunk.charCodeAt(bufferIndex - 1) === 32) {
-            size++;
-            bufferIndex--;
-          }
-          if (bufferIndex) break;
-          bufferIndex = -1;
-        } else if (chunk === -2) {
-          tabs = true;
-          size++;
-        } else if (chunk === -1) ;
-        else {
-          index++;
-          break;
-        }
+    if (element.namespaceURI === MATHML_NAMESPACE) {
+      if (parent.namespaceURI === HTML_NAMESPACE) {
+        return tagName === "math";
       }
-      if (size) {
-        const token = {
-          type: eventIndex === events.length || tabs || size < 2 ? "lineSuffix" : "hardBreakTrailing",
-          start: {
-            _bufferIndex: index ? bufferIndex : data.start._bufferIndex + bufferIndex,
-            _index: data.start._index + index,
-            line: data.end.line,
-            column: data.end.column - size,
-            offset: data.end.offset - size
-          },
-          end: {
-            ...data.end
-          }
-        };
-        data.end = {
-          ...token.start
-        };
-        if (data.start.offset === data.end.offset) {
-          Object.assign(data, token);
-        } else {
-          events.splice(eventIndex, 0, ["enter", token, context], ["exit", token, context]);
-          eventIndex += 2;
-        }
+      if (parent.namespaceURI === SVG_NAMESPACE) {
+        return tagName === "math" && HTML_INTEGRATION_POINTS[parentTagName];
       }
-      eventIndex++;
+      return Boolean(ALL_MATHML_TAGS[tagName]);
     }
-  }
-  return events;
-}
-const document$1 = {
-  [42]: list,
-  [43]: list,
-  [45]: list,
-  [48]: list,
-  [49]: list,
-  [50]: list,
-  [51]: list,
-  [52]: list,
-  [53]: list,
-  [54]: list,
-  [55]: list,
-  [56]: list,
-  [57]: list,
-  [62]: blockQuote
-};
-const contentInitial = {
-  [91]: definition
-};
-const flowInitial = {
-  [-2]: codeIndented,
-  [-1]: codeIndented,
-  [32]: codeIndented
-};
-const flow = {
-  [35]: headingAtx,
-  [42]: thematicBreak,
-  [45]: [setextUnderline, thematicBreak],
-  [60]: htmlFlow,
-  [61]: setextUnderline,
-  [95]: thematicBreak,
-  [96]: codeFenced,
-  [126]: codeFenced
-};
-const string = {
-  [38]: characterReference,
-  [92]: characterEscape
-};
-const text$3 = {
-  [-5]: lineEnding,
-  [-4]: lineEnding,
-  [-3]: lineEnding,
-  [33]: labelStartImage,
-  [38]: characterReference,
-  [42]: attention,
-  [60]: [autolink, htmlText],
-  [91]: labelStartLink,
-  [92]: [hardBreakEscape, characterEscape],
-  [93]: labelEnd,
-  [95]: attention,
-  [96]: codeText
-};
-const insideSpan = {
-  null: [attention, resolver]
-};
-const attentionMarkers = {
-  null: [42, 95]
-};
-const disable = {
-  null: []
-};
-const defaultConstructs = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  attentionMarkers,
-  contentInitial,
-  disable,
-  document: document$1,
-  flow,
-  flowInitial,
-  insideSpan,
-  string,
-  text: text$3
-}, Symbol.toStringTag, { value: "Module" }));
-function createTokenizer(parser, initialize, from) {
-  let point = {
-    _bufferIndex: -1,
-    _index: 0,
-    line: from && from.line || 1,
-    column: from && from.column || 1,
-    offset: from && from.offset || 0
+    if (element.namespaceURI === HTML_NAMESPACE) {
+      if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
+        return false;
+      }
+      if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
+        return false;
+      }
+      return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+    }
+    if (PARSER_MEDIA_TYPE === "application/xhtml+xml" && ALLOWED_NAMESPACES[element.namespaceURI]) {
+      return true;
+    }
+    return false;
   };
-  const columnStart = {};
-  const resolveAllConstructs = [];
-  let chunks = [];
-  let stack = [];
-  const effects = {
-    attempt: constructFactory(onsuccessfulconstruct),
-    check: constructFactory(onsuccessfulcheck),
-    consume,
-    enter,
-    exit: exit2,
-    interrupt: constructFactory(onsuccessfulcheck, {
-      interrupt: true
-    })
-  };
-  const context = {
-    code: null,
-    containerState: {},
-    defineSkip,
-    events: [],
-    now: now2,
-    parser,
-    previous: null,
-    sliceSerialize,
-    sliceStream,
-    write
-  };
-  let state = initialize.tokenize.call(context, effects);
-  if (initialize.resolveAll) {
-    resolveAllConstructs.push(initialize);
-  }
-  return context;
-  function write(slice) {
-    chunks = push(chunks, slice);
-    main2();
-    if (chunks[chunks.length - 1] !== null) {
-      return [];
-    }
-    addResult(initialize, 0);
-    context.events = resolveAll(resolveAllConstructs, context.events, context);
-    return context.events;
-  }
-  function sliceSerialize(token, expandTabs) {
-    return serializeChunks(sliceStream(token), expandTabs);
-  }
-  function sliceStream(token) {
-    return sliceChunks(chunks, token);
-  }
-  function now2() {
-    const {
-      _bufferIndex,
-      _index,
-      line,
-      column,
-      offset
-    } = point;
-    return {
-      _bufferIndex,
-      _index,
-      line,
-      column,
-      offset
-    };
-  }
-  function defineSkip(value) {
-    columnStart[value.line] = value.column;
-    accountForPotentialSkip();
-  }
-  function main2() {
-    let chunkIndex;
-    while (point._index < chunks.length) {
-      const chunk = chunks[point._index];
-      if (typeof chunk === "string") {
-        chunkIndex = point._index;
-        if (point._bufferIndex < 0) {
-          point._bufferIndex = 0;
-        }
-        while (point._index === chunkIndex && point._bufferIndex < chunk.length) {
-          go(chunk.charCodeAt(point._bufferIndex));
-        }
-      } else {
-        go(chunk);
-      }
-    }
-  }
-  function go(code2) {
-    state = state(code2);
-  }
-  function consume(code2) {
-    if (markdownLineEnding(code2)) {
-      point.line++;
-      point.column = 1;
-      point.offset += code2 === -3 ? 2 : 1;
-      accountForPotentialSkip();
-    } else if (code2 !== -1) {
-      point.column++;
-      point.offset++;
-    }
-    if (point._bufferIndex < 0) {
-      point._index++;
-    } else {
-      point._bufferIndex++;
-      if (point._bufferIndex === // Points w/ non-negative `_bufferIndex` reference
-      // strings.
-      /** @type {string} */
-      chunks[point._index].length) {
-        point._bufferIndex = -1;
-        point._index++;
-      }
-    }
-    context.previous = code2;
-  }
-  function enter(type, fields) {
-    const token = fields || {};
-    token.type = type;
-    token.start = now2();
-    context.events.push(["enter", token, context]);
-    stack.push(token);
-    return token;
-  }
-  function exit2(type) {
-    const token = stack.pop();
-    token.end = now2();
-    context.events.push(["exit", token, context]);
-    return token;
-  }
-  function onsuccessfulconstruct(construct, info) {
-    addResult(construct, info.from);
-  }
-  function onsuccessfulcheck(_, info) {
-    info.restore();
-  }
-  function constructFactory(onreturn, fields) {
-    return hook;
-    function hook(constructs2, returnState, bogusState) {
-      let listOfConstructs;
-      let constructIndex;
-      let currentConstruct;
-      let info;
-      return Array.isArray(constructs2) ? (
-        /* c8 ignore next 1 */
-        handleListOfConstructs(constructs2)
-      ) : "tokenize" in constructs2 ? (
-        // Looks like a construct.
-        handleListOfConstructs([
-          /** @type {Construct} */
-          constructs2
-        ])
-      ) : handleMapOfConstructs(constructs2);
-      function handleMapOfConstructs(map) {
-        return start;
-        function start(code2) {
-          const left = code2 !== null && map[code2];
-          const all = code2 !== null && map.null;
-          const list2 = [
-            // To do: add more extension tests.
-            /* c8 ignore next 2 */
-            ...Array.isArray(left) ? left : left ? [left] : [],
-            ...Array.isArray(all) ? all : all ? [all] : []
-          ];
-          return handleListOfConstructs(list2)(code2);
-        }
-      }
-      function handleListOfConstructs(list2) {
-        listOfConstructs = list2;
-        constructIndex = 0;
-        if (list2.length === 0) {
-          return bogusState;
-        }
-        return handleConstruct(list2[constructIndex]);
-      }
-      function handleConstruct(construct) {
-        return start;
-        function start(code2) {
-          info = store();
-          currentConstruct = construct;
-          if (!construct.partial) {
-            context.currentConstruct = construct;
-          }
-          if (construct.name && context.parser.constructs.disable.null.includes(construct.name)) {
-            return nok();
-          }
-          return construct.tokenize.call(
-            // If we do have fields, create an object w/ `context` as its
-            // prototype.
-            // This allows a “live binding”, which is needed for `interrupt`.
-            fields ? Object.assign(Object.create(context), fields) : context,
-            effects,
-            ok,
-            nok
-          )(code2);
-        }
-      }
-      function ok(code2) {
-        onreturn(currentConstruct, info);
-        return returnState;
-      }
-      function nok(code2) {
-        info.restore();
-        if (++constructIndex < listOfConstructs.length) {
-          return handleConstruct(listOfConstructs[constructIndex]);
-        }
-        return bogusState;
-      }
-    }
-  }
-  function addResult(construct, from2) {
-    if (construct.resolveAll && !resolveAllConstructs.includes(construct)) {
-      resolveAllConstructs.push(construct);
-    }
-    if (construct.resolve) {
-      splice(context.events, from2, context.events.length - from2, construct.resolve(context.events.slice(from2), context));
-    }
-    if (construct.resolveTo) {
-      context.events = construct.resolveTo(context.events, context);
-    }
-  }
-  function store() {
-    const startPoint = now2();
-    const startPrevious = context.previous;
-    const startCurrentConstruct = context.currentConstruct;
-    const startEventsIndex = context.events.length;
-    const startStack = Array.from(stack);
-    return {
-      from: startEventsIndex,
-      restore
-    };
-    function restore() {
-      point = startPoint;
-      context.previous = startPrevious;
-      context.currentConstruct = startCurrentConstruct;
-      context.events.length = startEventsIndex;
-      stack = startStack;
-      accountForPotentialSkip();
-    }
-  }
-  function accountForPotentialSkip() {
-    if (point.line in columnStart && point.column < 2) {
-      point.column = columnStart[point.line];
-      point.offset += columnStart[point.line] - 1;
-    }
-  }
-}
-function sliceChunks(chunks, token) {
-  const startIndex = token.start._index;
-  const startBufferIndex = token.start._bufferIndex;
-  const endIndex = token.end._index;
-  const endBufferIndex = token.end._bufferIndex;
-  let view;
-  if (startIndex === endIndex) {
-    view = [chunks[startIndex].slice(startBufferIndex, endBufferIndex)];
-  } else {
-    view = chunks.slice(startIndex, endIndex);
-    if (startBufferIndex > -1) {
-      const head = view[0];
-      if (typeof head === "string") {
-        view[0] = head.slice(startBufferIndex);
-      } else {
-        view.shift();
-      }
-    }
-    if (endBufferIndex > 0) {
-      view.push(chunks[endIndex].slice(0, endBufferIndex));
-    }
-  }
-  return view;
-}
-function serializeChunks(chunks, expandTabs) {
-  let index = -1;
-  const result = [];
-  let atTab;
-  while (++index < chunks.length) {
-    const chunk = chunks[index];
-    let value;
-    if (typeof chunk === "string") {
-      value = chunk;
-    } else switch (chunk) {
-      case -5: {
-        value = "\r";
-        break;
-      }
-      case -4: {
-        value = "\n";
-        break;
-      }
-      case -3: {
-        value = "\r\n";
-        break;
-      }
-      case -2: {
-        value = expandTabs ? " " : "	";
-        break;
-      }
-      case -1: {
-        if (!expandTabs && atTab) continue;
-        value = " ";
-        break;
-      }
-      default: {
-        value = String.fromCharCode(chunk);
-      }
-    }
-    atTab = chunk === -2;
-    result.push(value);
-  }
-  return result.join("");
-}
-function parse(options) {
-  const settings = options || {};
-  const constructs2 = (
-    /** @type {FullNormalizedExtension} */
-    combineExtensions([defaultConstructs, ...settings.extensions || []])
-  );
-  const parser = {
-    constructs: constructs2,
-    content: create(content$1),
-    defined: [],
-    document: create(document$2),
-    flow: create(flow$1),
-    lazy: {},
-    string: create(string$1),
-    text: create(text$4)
-  };
-  return parser;
-  function create(initial) {
-    return creator;
-    function creator(from) {
-      return createTokenizer(parser, initial, from);
-    }
-  }
-}
-function postprocess(events) {
-  while (!subtokenize(events)) {
-  }
-  return events;
-}
-const search = /[\0\t\n\r]/g;
-function preprocess() {
-  let column = 1;
-  let buffer = "";
-  let start = true;
-  let atCarriageReturn;
-  return preprocessor;
-  function preprocessor(value, encoding, end) {
-    const chunks = [];
-    let match;
-    let next;
-    let startPosition;
-    let endPosition;
-    let code2;
-    value = buffer + (typeof value === "string" ? value.toString() : new TextDecoder(encoding || void 0).decode(value));
-    startPosition = 0;
-    buffer = "";
-    if (start) {
-      if (value.charCodeAt(0) === 65279) {
-        startPosition++;
-      }
-      start = void 0;
-    }
-    while (startPosition < value.length) {
-      search.lastIndex = startPosition;
-      match = search.exec(value);
-      endPosition = match && match.index !== void 0 ? match.index : value.length;
-      code2 = value.charCodeAt(endPosition);
-      if (!match) {
-        buffer = value.slice(startPosition);
-        break;
-      }
-      if (code2 === 10 && startPosition === endPosition && atCarriageReturn) {
-        chunks.push(-3);
-        atCarriageReturn = void 0;
-      } else {
-        if (atCarriageReturn) {
-          chunks.push(-5);
-          atCarriageReturn = void 0;
-        }
-        if (startPosition < endPosition) {
-          chunks.push(value.slice(startPosition, endPosition));
-          column += endPosition - startPosition;
-        }
-        switch (code2) {
-          case 0: {
-            chunks.push(65533);
-            column++;
-            break;
-          }
-          case 9: {
-            next = Math.ceil(column / 4) * 4;
-            chunks.push(-2);
-            while (column++ < next) chunks.push(-1);
-            break;
-          }
-          case 10: {
-            chunks.push(-4);
-            column = 1;
-            break;
-          }
-          default: {
-            atCarriageReturn = true;
-            column = 1;
-          }
-        }
-      }
-      startPosition = endPosition + 1;
-    }
-    if (end) {
-      if (atCarriageReturn) chunks.push(-5);
-      if (buffer) chunks.push(buffer);
-      chunks.push(null);
-    }
-    return chunks;
-  }
-}
-function micromark(value, encoding, options) {
-  if (typeof encoding !== "string") {
-    options = encoding;
-    encoding = void 0;
-  }
-  return compile(options)(postprocess(parse(options).document().write(preprocess()(value, encoding, true))));
-}
-const wwwPrefix = {
-  tokenize: tokenizeWwwPrefix,
-  partial: true
-};
-const domain = {
-  tokenize: tokenizeDomain,
-  partial: true
-};
-const path$1 = {
-  tokenize: tokenizePath,
-  partial: true
-};
-const trail = {
-  tokenize: tokenizeTrail,
-  partial: true
-};
-const emailDomainDotTrail = {
-  tokenize: tokenizeEmailDomainDotTrail,
-  partial: true
-};
-const wwwAutolink = {
-  name: "wwwAutolink",
-  tokenize: tokenizeWwwAutolink,
-  previous: previousWww
-};
-const protocolAutolink = {
-  name: "protocolAutolink",
-  tokenize: tokenizeProtocolAutolink,
-  previous: previousProtocol
-};
-const emailAutolink = {
-  name: "emailAutolink",
-  tokenize: tokenizeEmailAutolink,
-  previous: previousEmail
-};
-const text$2 = {};
-function gfmAutolinkLiteral() {
-  return {
-    text: text$2
-  };
-}
-let code = 48;
-while (code < 123) {
-  text$2[code] = emailAutolink;
-  code++;
-  if (code === 58) code = 65;
-  else if (code === 91) code = 97;
-}
-text$2[43] = emailAutolink;
-text$2[45] = emailAutolink;
-text$2[46] = emailAutolink;
-text$2[95] = emailAutolink;
-text$2[72] = [emailAutolink, protocolAutolink];
-text$2[104] = [emailAutolink, protocolAutolink];
-text$2[87] = [emailAutolink, wwwAutolink];
-text$2[119] = [emailAutolink, wwwAutolink];
-function tokenizeEmailAutolink(effects, ok, nok) {
-  const self2 = this;
-  let dot;
-  let data;
-  return start;
-  function start(code2) {
-    if (!gfmAtext(code2) || !previousEmail.call(self2, self2.previous) || previousUnbalanced(self2.events)) {
-      return nok(code2);
-    }
-    effects.enter("literalAutolink");
-    effects.enter("literalAutolinkEmail");
-    return atext(code2);
-  }
-  function atext(code2) {
-    if (gfmAtext(code2)) {
-      effects.consume(code2);
-      return atext;
-    }
-    if (code2 === 64) {
-      effects.consume(code2);
-      return emailDomain;
-    }
-    return nok(code2);
-  }
-  function emailDomain(code2) {
-    if (code2 === 46) {
-      return effects.check(emailDomainDotTrail, emailDomainAfter, emailDomainDot)(code2);
-    }
-    if (code2 === 45 || code2 === 95 || asciiAlphanumeric(code2)) {
-      data = true;
-      effects.consume(code2);
-      return emailDomain;
-    }
-    return emailDomainAfter(code2);
-  }
-  function emailDomainDot(code2) {
-    effects.consume(code2);
-    dot = true;
-    return emailDomain;
-  }
-  function emailDomainAfter(code2) {
-    if (data && dot && asciiAlpha(self2.previous)) {
-      effects.exit("literalAutolinkEmail");
-      effects.exit("literalAutolink");
-      return ok(code2);
-    }
-    return nok(code2);
-  }
-}
-function tokenizeWwwAutolink(effects, ok, nok) {
-  const self2 = this;
-  return wwwStart;
-  function wwwStart(code2) {
-    if (code2 !== 87 && code2 !== 119 || !previousWww.call(self2, self2.previous) || previousUnbalanced(self2.events)) {
-      return nok(code2);
-    }
-    effects.enter("literalAutolink");
-    effects.enter("literalAutolinkWww");
-    return effects.check(wwwPrefix, effects.attempt(domain, effects.attempt(path$1, wwwAfter), nok), nok)(code2);
-  }
-  function wwwAfter(code2) {
-    effects.exit("literalAutolinkWww");
-    effects.exit("literalAutolink");
-    return ok(code2);
-  }
-}
-function tokenizeProtocolAutolink(effects, ok, nok) {
-  const self2 = this;
-  let buffer = "";
-  let seen = false;
-  return protocolStart;
-  function protocolStart(code2) {
-    if ((code2 === 72 || code2 === 104) && previousProtocol.call(self2, self2.previous) && !previousUnbalanced(self2.events)) {
-      effects.enter("literalAutolink");
-      effects.enter("literalAutolinkHttp");
-      buffer += String.fromCodePoint(code2);
-      effects.consume(code2);
-      return protocolPrefixInside;
-    }
-    return nok(code2);
-  }
-  function protocolPrefixInside(code2) {
-    if (asciiAlpha(code2) && buffer.length < 5) {
-      buffer += String.fromCodePoint(code2);
-      effects.consume(code2);
-      return protocolPrefixInside;
-    }
-    if (code2 === 58) {
-      const protocol = buffer.toLowerCase();
-      if (protocol === "http" || protocol === "https") {
-        effects.consume(code2);
-        return protocolSlashesInside;
-      }
-    }
-    return nok(code2);
-  }
-  function protocolSlashesInside(code2) {
-    if (code2 === 47) {
-      effects.consume(code2);
-      if (seen) {
-        return afterProtocol;
-      }
-      seen = true;
-      return protocolSlashesInside;
-    }
-    return nok(code2);
-  }
-  function afterProtocol(code2) {
-    return code2 === null || asciiControl(code2) || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2) || unicodePunctuation(code2) ? nok(code2) : effects.attempt(domain, effects.attempt(path$1, protocolAfter), nok)(code2);
-  }
-  function protocolAfter(code2) {
-    effects.exit("literalAutolinkHttp");
-    effects.exit("literalAutolink");
-    return ok(code2);
-  }
-}
-function tokenizeWwwPrefix(effects, ok, nok) {
-  let size = 0;
-  return wwwPrefixInside;
-  function wwwPrefixInside(code2) {
-    if ((code2 === 87 || code2 === 119) && size < 3) {
-      size++;
-      effects.consume(code2);
-      return wwwPrefixInside;
-    }
-    if (code2 === 46 && size === 3) {
-      effects.consume(code2);
-      return wwwPrefixAfter;
-    }
-    return nok(code2);
-  }
-  function wwwPrefixAfter(code2) {
-    return code2 === null ? nok(code2) : ok(code2);
-  }
-}
-function tokenizeDomain(effects, ok, nok) {
-  let underscoreInLastSegment;
-  let underscoreInLastLastSegment;
-  let seen;
-  return domainInside;
-  function domainInside(code2) {
-    if (code2 === 46 || code2 === 95) {
-      return effects.check(trail, domainAfter, domainAtPunctuation)(code2);
-    }
-    if (code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2) || code2 !== 45 && unicodePunctuation(code2)) {
-      return domainAfter(code2);
-    }
-    seen = true;
-    effects.consume(code2);
-    return domainInside;
-  }
-  function domainAtPunctuation(code2) {
-    if (code2 === 95) {
-      underscoreInLastSegment = true;
-    } else {
-      underscoreInLastLastSegment = underscoreInLastSegment;
-      underscoreInLastSegment = void 0;
-    }
-    effects.consume(code2);
-    return domainInside;
-  }
-  function domainAfter(code2) {
-    if (underscoreInLastLastSegment || underscoreInLastSegment || !seen) {
-      return nok(code2);
-    }
-    return ok(code2);
-  }
-}
-function tokenizePath(effects, ok) {
-  let sizeOpen = 0;
-  let sizeClose = 0;
-  return pathInside;
-  function pathInside(code2) {
-    if (code2 === 40) {
-      sizeOpen++;
-      effects.consume(code2);
-      return pathInside;
-    }
-    if (code2 === 41 && sizeClose < sizeOpen) {
-      return pathAtPunctuation(code2);
-    }
-    if (code2 === 33 || code2 === 34 || code2 === 38 || code2 === 39 || code2 === 41 || code2 === 42 || code2 === 44 || code2 === 46 || code2 === 58 || code2 === 59 || code2 === 60 || code2 === 63 || code2 === 93 || code2 === 95 || code2 === 126) {
-      return effects.check(trail, ok, pathAtPunctuation)(code2);
-    }
-    if (code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)) {
-      return ok(code2);
-    }
-    effects.consume(code2);
-    return pathInside;
-  }
-  function pathAtPunctuation(code2) {
-    if (code2 === 41) {
-      sizeClose++;
-    }
-    effects.consume(code2);
-    return pathInside;
-  }
-}
-function tokenizeTrail(effects, ok, nok) {
-  return trail2;
-  function trail2(code2) {
-    if (code2 === 33 || code2 === 34 || code2 === 39 || code2 === 41 || code2 === 42 || code2 === 44 || code2 === 46 || code2 === 58 || code2 === 59 || code2 === 63 || code2 === 95 || code2 === 126) {
-      effects.consume(code2);
-      return trail2;
-    }
-    if (code2 === 38) {
-      effects.consume(code2);
-      return trailCharacterReferenceStart;
-    }
-    if (code2 === 93) {
-      effects.consume(code2);
-      return trailBracketAfter;
-    }
-    if (
-      // `<` is an end.
-      code2 === 60 || // So is whitespace.
-      code2 === null || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)
-    ) {
-      return ok(code2);
-    }
-    return nok(code2);
-  }
-  function trailBracketAfter(code2) {
-    if (code2 === null || code2 === 40 || code2 === 91 || markdownLineEndingOrSpace(code2) || unicodeWhitespace(code2)) {
-      return ok(code2);
-    }
-    return trail2(code2);
-  }
-  function trailCharacterReferenceStart(code2) {
-    return asciiAlpha(code2) ? trailCharacterReferenceInside(code2) : nok(code2);
-  }
-  function trailCharacterReferenceInside(code2) {
-    if (code2 === 59) {
-      effects.consume(code2);
-      return trail2;
-    }
-    if (asciiAlpha(code2)) {
-      effects.consume(code2);
-      return trailCharacterReferenceInside;
-    }
-    return nok(code2);
-  }
-}
-function tokenizeEmailDomainDotTrail(effects, ok, nok) {
-  return start;
-  function start(code2) {
-    effects.consume(code2);
-    return after;
-  }
-  function after(code2) {
-    return asciiAlphanumeric(code2) ? nok(code2) : ok(code2);
-  }
-}
-function previousWww(code2) {
-  return code2 === null || code2 === 40 || code2 === 42 || code2 === 95 || code2 === 91 || code2 === 93 || code2 === 126 || markdownLineEndingOrSpace(code2);
-}
-function previousProtocol(code2) {
-  return !asciiAlpha(code2);
-}
-function previousEmail(code2) {
-  return !(code2 === 47 || gfmAtext(code2));
-}
-function gfmAtext(code2) {
-  return code2 === 43 || code2 === 45 || code2 === 46 || code2 === 95 || asciiAlphanumeric(code2);
-}
-function previousUnbalanced(events) {
-  let index = events.length;
-  let result = false;
-  while (index--) {
-    const token = events[index][1];
-    if ((token.type === "labelLink" || token.type === "labelImage") && !token._balanced) {
-      result = true;
-      break;
-    }
-    if (token._gfmAutolinkLiteralWalkedInto) {
-      result = false;
-      break;
-    }
-  }
-  if (events.length > 0 && !result) {
-    events[events.length - 1][1]._gfmAutolinkLiteralWalkedInto = true;
-  }
-  return result;
-}
-function gfmAutolinkLiteralHtml() {
-  return {
-    exit: {
-      literalAutolinkEmail,
-      literalAutolinkHttp,
-      literalAutolinkWww
-    }
-  };
-}
-function literalAutolinkWww(token) {
-  anchorFromToken.call(this, token, "http://");
-}
-function literalAutolinkEmail(token) {
-  anchorFromToken.call(this, token, "mailto:");
-}
-function literalAutolinkHttp(token) {
-  anchorFromToken.call(this, token);
-}
-function anchorFromToken(token, protocol) {
-  const url = this.sliceSerialize(token);
-  this.tag('<a href="' + sanitizeUri((protocol || "") + url) + '">');
-  this.raw(this.encode(url));
-  this.tag("</a>");
-}
-const indent = {
-  tokenize: tokenizeIndent,
-  partial: true
-};
-function gfmFootnote() {
-  return {
-    document: {
-      [91]: {
-        name: "gfmFootnoteDefinition",
-        tokenize: tokenizeDefinitionStart,
-        continuation: {
-          tokenize: tokenizeDefinitionContinuation
-        },
-        exit: gfmFootnoteDefinitionEnd
-      }
-    },
-    text: {
-      [91]: {
-        name: "gfmFootnoteCall",
-        tokenize: tokenizeGfmFootnoteCall
-      },
-      [93]: {
-        name: "gfmPotentialFootnoteCall",
-        add: "after",
-        tokenize: tokenizePotentialGfmFootnoteCall,
-        resolveTo: resolveToPotentialGfmFootnoteCall
-      }
-    }
-  };
-}
-function tokenizePotentialGfmFootnoteCall(effects, ok, nok) {
-  const self2 = this;
-  let index = self2.events.length;
-  const defined = self2.parser.gfmFootnotes || (self2.parser.gfmFootnotes = []);
-  let labelStart;
-  while (index--) {
-    const token = self2.events[index][1];
-    if (token.type === "labelImage") {
-      labelStart = token;
-      break;
-    }
-    if (token.type === "gfmFootnoteCall" || token.type === "labelLink" || token.type === "label" || token.type === "image" || token.type === "link") {
-      break;
-    }
-  }
-  return start;
-  function start(code2) {
-    if (!labelStart || !labelStart._balanced) {
-      return nok(code2);
-    }
-    const id = normalizeIdentifier(self2.sliceSerialize({
-      start: labelStart.end,
-      end: self2.now()
-    }));
-    if (id.codePointAt(0) !== 94 || !defined.includes(id.slice(1))) {
-      return nok(code2);
-    }
-    effects.enter("gfmFootnoteCallLabelMarker");
-    effects.consume(code2);
-    effects.exit("gfmFootnoteCallLabelMarker");
-    return ok(code2);
-  }
-}
-function resolveToPotentialGfmFootnoteCall(events, context) {
-  let index = events.length;
-  while (index--) {
-    if (events[index][1].type === "labelImage" && events[index][0] === "enter") {
-      events[index][1];
-      break;
-    }
-  }
-  events[index + 1][1].type = "data";
-  events[index + 3][1].type = "gfmFootnoteCallLabelMarker";
-  const call = {
-    type: "gfmFootnoteCall",
-    start: Object.assign({}, events[index + 3][1].start),
-    end: Object.assign({}, events[events.length - 1][1].end)
-  };
-  const marker = {
-    type: "gfmFootnoteCallMarker",
-    start: Object.assign({}, events[index + 3][1].end),
-    end: Object.assign({}, events[index + 3][1].end)
-  };
-  marker.end.column++;
-  marker.end.offset++;
-  marker.end._bufferIndex++;
-  const string2 = {
-    type: "gfmFootnoteCallString",
-    start: Object.assign({}, marker.end),
-    end: Object.assign({}, events[events.length - 1][1].start)
-  };
-  const chunk = {
-    type: "chunkString",
-    contentType: "string",
-    start: Object.assign({}, string2.start),
-    end: Object.assign({}, string2.end)
-  };
-  const replacement = [
-    // Take the `labelImageMarker` (now `data`, the `!`)
-    events[index + 1],
-    events[index + 2],
-    ["enter", call, context],
-    // The `[`
-    events[index + 3],
-    events[index + 4],
-    // The `^`.
-    ["enter", marker, context],
-    ["exit", marker, context],
-    // Everything in between.
-    ["enter", string2, context],
-    ["enter", chunk, context],
-    ["exit", chunk, context],
-    ["exit", string2, context],
-    // The ending (`]`, properly parsed and labelled).
-    events[events.length - 2],
-    events[events.length - 1],
-    ["exit", call, context]
-  ];
-  events.splice(index, events.length - index + 1, ...replacement);
-  return events;
-}
-function tokenizeGfmFootnoteCall(effects, ok, nok) {
-  const self2 = this;
-  const defined = self2.parser.gfmFootnotes || (self2.parser.gfmFootnotes = []);
-  let size = 0;
-  let data;
-  return start;
-  function start(code2) {
-    effects.enter("gfmFootnoteCall");
-    effects.enter("gfmFootnoteCallLabelMarker");
-    effects.consume(code2);
-    effects.exit("gfmFootnoteCallLabelMarker");
-    return callStart;
-  }
-  function callStart(code2) {
-    if (code2 !== 94) return nok(code2);
-    effects.enter("gfmFootnoteCallMarker");
-    effects.consume(code2);
-    effects.exit("gfmFootnoteCallMarker");
-    effects.enter("gfmFootnoteCallString");
-    effects.enter("chunkString").contentType = "string";
-    return callData;
-  }
-  function callData(code2) {
-    if (
-      // Too long.
-      size > 999 || // Closing brace with nothing.
-      code2 === 93 && !data || // Space or tab is not supported by GFM for some reason.
-      // `\n` and `[` not being supported makes sense.
-      code2 === null || code2 === 91 || markdownLineEndingOrSpace(code2)
-    ) {
-      return nok(code2);
-    }
-    if (code2 === 93) {
-      effects.exit("chunkString");
-      const token = effects.exit("gfmFootnoteCallString");
-      if (!defined.includes(normalizeIdentifier(self2.sliceSerialize(token)))) {
-        return nok(code2);
-      }
-      effects.enter("gfmFootnoteCallLabelMarker");
-      effects.consume(code2);
-      effects.exit("gfmFootnoteCallLabelMarker");
-      effects.exit("gfmFootnoteCall");
-      return ok;
-    }
-    if (!markdownLineEndingOrSpace(code2)) {
-      data = true;
-    }
-    size++;
-    effects.consume(code2);
-    return code2 === 92 ? callEscape : callData;
-  }
-  function callEscape(code2) {
-    if (code2 === 91 || code2 === 92 || code2 === 93) {
-      effects.consume(code2);
-      size++;
-      return callData;
-    }
-    return callData(code2);
-  }
-}
-function tokenizeDefinitionStart(effects, ok, nok) {
-  const self2 = this;
-  const defined = self2.parser.gfmFootnotes || (self2.parser.gfmFootnotes = []);
-  let identifier;
-  let size = 0;
-  let data;
-  return start;
-  function start(code2) {
-    effects.enter("gfmFootnoteDefinition")._container = true;
-    effects.enter("gfmFootnoteDefinitionLabel");
-    effects.enter("gfmFootnoteDefinitionLabelMarker");
-    effects.consume(code2);
-    effects.exit("gfmFootnoteDefinitionLabelMarker");
-    return labelAtMarker;
-  }
-  function labelAtMarker(code2) {
-    if (code2 === 94) {
-      effects.enter("gfmFootnoteDefinitionMarker");
-      effects.consume(code2);
-      effects.exit("gfmFootnoteDefinitionMarker");
-      effects.enter("gfmFootnoteDefinitionLabelString");
-      effects.enter("chunkString").contentType = "string";
-      return labelInside;
-    }
-    return nok(code2);
-  }
-  function labelInside(code2) {
-    if (
-      // Too long.
-      size > 999 || // Closing brace with nothing.
-      code2 === 93 && !data || // Space or tab is not supported by GFM for some reason.
-      // `\n` and `[` not being supported makes sense.
-      code2 === null || code2 === 91 || markdownLineEndingOrSpace(code2)
-    ) {
-      return nok(code2);
-    }
-    if (code2 === 93) {
-      effects.exit("chunkString");
-      const token = effects.exit("gfmFootnoteDefinitionLabelString");
-      identifier = normalizeIdentifier(self2.sliceSerialize(token));
-      effects.enter("gfmFootnoteDefinitionLabelMarker");
-      effects.consume(code2);
-      effects.exit("gfmFootnoteDefinitionLabelMarker");
-      effects.exit("gfmFootnoteDefinitionLabel");
-      return labelAfter;
-    }
-    if (!markdownLineEndingOrSpace(code2)) {
-      data = true;
-    }
-    size++;
-    effects.consume(code2);
-    return code2 === 92 ? labelEscape : labelInside;
-  }
-  function labelEscape(code2) {
-    if (code2 === 91 || code2 === 92 || code2 === 93) {
-      effects.consume(code2);
-      size++;
-      return labelInside;
-    }
-    return labelInside(code2);
-  }
-  function labelAfter(code2) {
-    if (code2 === 58) {
-      effects.enter("definitionMarker");
-      effects.consume(code2);
-      effects.exit("definitionMarker");
-      if (!defined.includes(identifier)) {
-        defined.push(identifier);
-      }
-      return factorySpace(effects, whitespaceAfter, "gfmFootnoteDefinitionWhitespace");
-    }
-    return nok(code2);
-  }
-  function whitespaceAfter(code2) {
-    return ok(code2);
-  }
-}
-function tokenizeDefinitionContinuation(effects, ok, nok) {
-  return effects.check(blankLine, ok, effects.attempt(indent, ok, nok));
-}
-function gfmFootnoteDefinitionEnd(effects) {
-  effects.exit("gfmFootnoteDefinition");
-}
-function tokenizeIndent(effects, ok, nok) {
-  const self2 = this;
-  return factorySpace(effects, afterPrefix, "gfmFootnoteDefinitionIndent", 4 + 1);
-  function afterPrefix(code2) {
-    const tail = self2.events[self2.events.length - 1];
-    return tail && tail[1].type === "gfmFootnoteDefinitionIndent" && tail[2].sliceSerialize(tail[1], true).length === 4 ? ok(code2) : nok(code2);
-  }
-}
-const own = {}.hasOwnProperty;
-const emptyOptions = {};
-function defaultBackLabel(referenceIndex, rereferenceIndex) {
-  return "Back to reference " + (referenceIndex + 1) + (rereferenceIndex > 1 ? "-" + rereferenceIndex : "");
-}
-function gfmFootnoteHtml(options) {
-  const config = emptyOptions;
-  const label = config.label || "Footnotes";
-  const labelTagName = config.labelTagName || "h2";
-  const labelAttributes = config.labelAttributes === null || config.labelAttributes === void 0 ? 'class="sr-only"' : config.labelAttributes;
-  const backLabel = config.backLabel || defaultBackLabel;
-  const clobberPrefix = config.clobberPrefix === null || config.clobberPrefix === void 0 ? "user-content-" : config.clobberPrefix;
-  return {
-    enter: {
-      gfmFootnoteDefinition() {
-        const stack = this.getData("tightStack");
-        stack.push(false);
-      },
-      gfmFootnoteDefinitionLabelString() {
-        this.buffer();
-      },
-      gfmFootnoteCallString() {
-        this.buffer();
-      }
-    },
-    exit: {
-      gfmFootnoteDefinition() {
-        let definitions = this.getData("gfmFootnoteDefinitions");
-        const footnoteStack = this.getData("gfmFootnoteDefinitionStack");
-        const tightStack = this.getData("tightStack");
-        const current = footnoteStack.pop();
-        const value = this.resume();
-        if (!definitions) {
-          this.setData("gfmFootnoteDefinitions", definitions = {});
-        }
-        if (!own.call(definitions, current)) definitions[current] = value;
-        tightStack.pop();
-        this.setData("slurpOneLineEnding", true);
-        this.setData("lastWasTag");
-      },
-      gfmFootnoteDefinitionLabelString(token) {
-        let footnoteStack = this.getData("gfmFootnoteDefinitionStack");
-        if (!footnoteStack) {
-          this.setData("gfmFootnoteDefinitionStack", footnoteStack = []);
-        }
-        footnoteStack.push(normalizeIdentifier(this.sliceSerialize(token)));
-        this.resume();
-        this.buffer();
-      },
-      gfmFootnoteCallString(token) {
-        let calls = this.getData("gfmFootnoteCallOrder");
-        let counts = this.getData("gfmFootnoteCallCounts");
-        const id = normalizeIdentifier(this.sliceSerialize(token));
-        let counter;
-        this.resume();
-        if (!calls) this.setData("gfmFootnoteCallOrder", calls = []);
-        if (!counts) this.setData("gfmFootnoteCallCounts", counts = {});
-        const index = calls.indexOf(id);
-        const safeId = sanitizeUri(id.toLowerCase());
-        if (index === -1) {
-          calls.push(id);
-          counts[id] = 1;
-          counter = calls.length;
-        } else {
-          counts[id]++;
-          counter = index + 1;
-        }
-        const reuseCounter = counts[id];
-        this.tag('<sup><a href="#' + clobberPrefix + "fn-" + safeId + '" id="' + clobberPrefix + "fnref-" + safeId + (reuseCounter > 1 ? "-" + reuseCounter : "") + '" data-footnote-ref="" aria-describedby="footnote-label">' + String(counter) + "</a></sup>");
-      },
-      null() {
-        const calls = this.getData("gfmFootnoteCallOrder") || [];
-        const counts = this.getData("gfmFootnoteCallCounts") || {};
-        const definitions = this.getData("gfmFootnoteDefinitions") || {};
-        let index = -1;
-        if (calls.length > 0) {
-          this.lineEndingIfNeeded();
-          this.tag('<section data-footnotes="" class="footnotes"><' + labelTagName + ' id="footnote-label"' + (labelAttributes ? " " + labelAttributes : "") + ">");
-          this.raw(this.encode(label));
-          this.tag("</" + labelTagName + ">");
-          this.lineEndingIfNeeded();
-          this.tag("<ol>");
-        }
-        while (++index < calls.length) {
-          const id = calls[index];
-          const safeId = sanitizeUri(id.toLowerCase());
-          let referenceIndex = 0;
-          const references = [];
-          while (++referenceIndex <= counts[id]) {
-            references.push('<a href="#' + clobberPrefix + "fnref-" + safeId + (referenceIndex > 1 ? "-" + referenceIndex : "") + '" data-footnote-backref="" aria-label="' + this.encode(typeof backLabel === "string" ? backLabel : backLabel(index, referenceIndex)) + '" class="data-footnote-backref">↩' + (referenceIndex > 1 ? "<sup>" + referenceIndex + "</sup>" : "") + "</a>");
-          }
-          const reference = references.join(" ");
-          let injected = false;
-          this.lineEndingIfNeeded();
-          this.tag('<li id="' + clobberPrefix + "fn-" + safeId + '">');
-          this.lineEndingIfNeeded();
-          this.tag(definitions[id].replace(/<\/p>(?:\r?\n|\r)?$/, function($0) {
-            injected = true;
-            return " " + reference + $0;
-          }));
-          if (!injected) {
-            this.lineEndingIfNeeded();
-            this.tag(reference);
-          }
-          this.lineEndingIfNeeded();
-          this.tag("</li>");
-        }
-        if (calls.length > 0) {
-          this.lineEndingIfNeeded();
-          this.tag("</ol>");
-          this.lineEndingIfNeeded();
-          this.tag("</section>");
-        }
-      }
-    }
-  };
-}
-function gfmStrikethroughHtml() {
-  return {
-    enter: {
-      strikethrough() {
-        this.tag("<del>");
-      }
-    },
-    exit: {
-      strikethrough() {
-        this.tag("</del>");
-      }
-    }
-  };
-}
-function gfmStrikethrough(options) {
-  const options_ = {};
-  let single = options_.singleTilde;
-  const tokenizer = {
-    name: "strikethrough",
-    tokenize: tokenizeStrikethrough,
-    resolveAll: resolveAllStrikethrough
-  };
-  if (single === null || single === void 0) {
-    single = true;
-  }
-  return {
-    text: {
-      [126]: tokenizer
-    },
-    insideSpan: {
-      null: [tokenizer]
-    },
-    attentionMarkers: {
-      null: [126]
-    }
-  };
-  function resolveAllStrikethrough(events, context) {
-    let index = -1;
-    while (++index < events.length) {
-      if (events[index][0] === "enter" && events[index][1].type === "strikethroughSequenceTemporary" && events[index][1]._close) {
-        let open2 = index;
-        while (open2--) {
-          if (events[open2][0] === "exit" && events[open2][1].type === "strikethroughSequenceTemporary" && events[open2][1]._open && // If the sizes are the same:
-          events[index][1].end.offset - events[index][1].start.offset === events[open2][1].end.offset - events[open2][1].start.offset) {
-            events[index][1].type = "strikethroughSequence";
-            events[open2][1].type = "strikethroughSequence";
-            const strikethrough = {
-              type: "strikethrough",
-              start: Object.assign({}, events[open2][1].start),
-              end: Object.assign({}, events[index][1].end)
-            };
-            const text2 = {
-              type: "strikethroughText",
-              start: Object.assign({}, events[open2][1].end),
-              end: Object.assign({}, events[index][1].start)
-            };
-            const nextEvents = [["enter", strikethrough, context], ["enter", events[open2][1], context], ["exit", events[open2][1], context], ["enter", text2, context]];
-            const insideSpan2 = context.parser.constructs.insideSpan.null;
-            if (insideSpan2) {
-              splice(nextEvents, nextEvents.length, 0, resolveAll(insideSpan2, events.slice(open2 + 1, index), context));
-            }
-            splice(nextEvents, nextEvents.length, 0, [["exit", text2, context], ["enter", events[index][1], context], ["exit", events[index][1], context], ["exit", strikethrough, context]]);
-            splice(events, open2 - 1, index - open2 + 3, nextEvents);
-            index = open2 + nextEvents.length - 2;
-            break;
-          }
-        }
-      }
-    }
-    index = -1;
-    while (++index < events.length) {
-      if (events[index][1].type === "strikethroughSequenceTemporary") {
-        events[index][1].type = "data";
-      }
-    }
-    return events;
-  }
-  function tokenizeStrikethrough(effects, ok, nok) {
-    const previous2 = this.previous;
-    const events = this.events;
-    let size = 0;
-    return start;
-    function start(code2) {
-      if (previous2 === 126 && events[events.length - 1][1].type !== "characterEscape") {
-        return nok(code2);
-      }
-      effects.enter("strikethroughSequenceTemporary");
-      return more(code2);
-    }
-    function more(code2) {
-      const before = classifyCharacter(previous2);
-      if (code2 === 126) {
-        if (size > 1) return nok(code2);
-        effects.consume(code2);
-        size++;
-        return more;
-      }
-      if (size < 2 && !single) return nok(code2);
-      const token = effects.exit("strikethroughSequenceTemporary");
-      const after = classifyCharacter(code2);
-      token._open = !after || after === 2 && Boolean(before);
-      token._close = !before || before === 2 && Boolean(after);
-      return ok(code2);
-    }
-  }
-}
-const alignment = {
-  none: "",
-  left: ' align="left"',
-  right: ' align="right"',
-  center: ' align="center"'
-};
-function gfmTableHtml() {
-  return {
-    enter: {
-      table(token) {
-        const tableAlign = token._align;
-        this.lineEndingIfNeeded();
-        this.tag("<table>");
-        this.setData("tableAlign", tableAlign);
-      },
-      tableBody() {
-        this.tag("<tbody>");
-      },
-      tableData() {
-        const tableAlign = this.getData("tableAlign");
-        const tableColumn = this.getData("tableColumn");
-        const align = alignment[tableAlign[tableColumn]];
-        if (align === void 0) {
-          this.buffer();
-        } else {
-          this.lineEndingIfNeeded();
-          this.tag("<td" + align + ">");
-        }
-      },
-      tableHead() {
-        this.lineEndingIfNeeded();
-        this.tag("<thead>");
-      },
-      tableHeader() {
-        const tableAlign = this.getData("tableAlign");
-        const tableColumn = this.getData("tableColumn");
-        const align = alignment[tableAlign[tableColumn]];
-        this.lineEndingIfNeeded();
-        this.tag("<th" + align + ">");
-      },
-      tableRow() {
-        this.setData("tableColumn", 0);
-        this.lineEndingIfNeeded();
-        this.tag("<tr>");
-      }
-    },
-    exit: {
-      // Overwrite the default code text data handler to unescape escaped pipes when
-      // they are in tables.
-      codeTextData(token) {
-        let value = this.sliceSerialize(token);
-        if (this.getData("tableAlign")) {
-          value = value.replace(/\\([\\|])/g, replace);
-        }
-        this.raw(this.encode(value));
-      },
-      table() {
-        this.setData("tableAlign");
-        this.setData("slurpAllLineEndings");
-        this.lineEndingIfNeeded();
-        this.tag("</table>");
-      },
-      tableBody() {
-        this.lineEndingIfNeeded();
-        this.tag("</tbody>");
-      },
-      tableData() {
-        const tableAlign = this.getData("tableAlign");
-        const tableColumn = this.getData("tableColumn");
-        if (tableColumn in tableAlign) {
-          this.tag("</td>");
-          this.setData("tableColumn", tableColumn + 1);
-        } else {
-          this.resume();
-        }
-      },
-      tableHead() {
-        this.lineEndingIfNeeded();
-        this.tag("</thead>");
-      },
-      tableHeader() {
-        const tableColumn = this.getData("tableColumn");
-        this.tag("</th>");
-        this.setData("tableColumn", tableColumn + 1);
-      },
-      tableRow() {
-        const tableAlign = this.getData("tableAlign");
-        let tableColumn = this.getData("tableColumn");
-        while (tableColumn < tableAlign.length) {
-          this.lineEndingIfNeeded();
-          this.tag("<td" + alignment[tableAlign[tableColumn]] + "></td>");
-          tableColumn++;
-        }
-        this.setData("tableColumn", tableColumn);
-        this.lineEndingIfNeeded();
-        this.tag("</tr>");
-      }
-    }
-  };
-}
-function replace($0, $1) {
-  return $1 === "|" ? $1 : $0;
-}
-class EditMap {
-  /**
-   * Create a new edit map.
-   */
-  constructor() {
-    this.map = [];
-  }
-  /**
-   * Create an edit: a remove and/or add at a certain place.
-   *
-   * @param {number} index
-   * @param {number} remove
-   * @param {Array<Event>} add
-   * @returns {undefined}
-   */
-  add(index, remove, add) {
-    addImplementation(this, index, remove, add);
-  }
-  // To do: add this when moving to `micromark`.
-  // /**
-  //  * Create an edit: but insert `add` before existing additions.
-  //  *
-  //  * @param {number} index
-  //  * @param {number} remove
-  //  * @param {Array<Event>} add
-  //  * @returns {undefined}
-  //  */
-  // addBefore(index, remove, add) {
-  //   addImplementation(this, index, remove, add, true)
-  // }
-  /**
-   * Done, change the events.
-   *
-   * @param {Array<Event>} events
-   * @returns {undefined}
-   */
-  consume(events) {
-    this.map.sort(function(a, b) {
-      return a[0] - b[0];
+  const _forceRemove = function _forceRemove2(node) {
+    arrayPush(DOMPurify.removed, {
+      element: node
     });
-    if (this.map.length === 0) {
-      return;
+    try {
+      getParentNode(node).removeChild(node);
+    } catch (_) {
+      remove(node);
     }
-    let index = this.map.length;
-    const vecs = [];
-    while (index > 0) {
-      index -= 1;
-      vecs.push(events.slice(this.map[index][0] + this.map[index][1]), this.map[index][2]);
-      events.length = this.map[index][0];
+  };
+  const _removeAttribute = function _removeAttribute2(name, element) {
+    try {
+      arrayPush(DOMPurify.removed, {
+        attribute: element.getAttributeNode(name),
+        from: element
+      });
+    } catch (_) {
+      arrayPush(DOMPurify.removed, {
+        attribute: null,
+        from: element
+      });
     }
-    vecs.push(events.slice());
-    events.length = 0;
-    let slice = vecs.pop();
-    while (slice) {
-      for (const element2 of slice) {
-        events.push(element2);
-      }
-      slice = vecs.pop();
-    }
-    this.map.length = 0;
-  }
-}
-function addImplementation(editMap, at, remove, add) {
-  let index = 0;
-  if (remove === 0 && add.length === 0) {
-    return;
-  }
-  while (index < editMap.map.length) {
-    if (editMap.map[index][0] === at) {
-      editMap.map[index][1] += remove;
-      editMap.map[index][2].push(...add);
-      return;
-    }
-    index += 1;
-  }
-  editMap.map.push([at, remove, add]);
-}
-function gfmTableAlign(events, index) {
-  let inDelimiterRow = false;
-  const align = [];
-  while (index < events.length) {
-    const event = events[index];
-    if (inDelimiterRow) {
-      if (event[0] === "enter") {
-        if (event[1].type === "tableContent") {
-          align.push(events[index + 1][1].type === "tableDelimiterMarker" ? "left" : "none");
+    element.removeAttribute(name);
+    if (name === "is") {
+      if (RETURN_DOM || RETURN_DOM_FRAGMENT) {
+        try {
+          _forceRemove(element);
+        } catch (_) {
         }
-      } else if (event[1].type === "tableContent") {
-        if (events[index - 1][1].type === "tableDelimiterMarker") {
-          const alignIndex = align.length - 1;
-          align[alignIndex] = align[alignIndex] === "left" ? "center" : "right";
+      } else {
+        try {
+          element.setAttribute(name, "");
+        } catch (_) {
         }
-      } else if (event[1].type === "tableDelimiterRow") {
-        break;
-      }
-    } else if (event[0] === "enter" && event[1].type === "tableDelimiterRow") {
-      inDelimiterRow = true;
-    }
-    index += 1;
-  }
-  return align;
-}
-function gfmTable() {
-  return {
-    flow: {
-      null: {
-        name: "table",
-        tokenize: tokenizeTable,
-        resolveAll: resolveTable
       }
     }
   };
-}
-function tokenizeTable(effects, ok, nok) {
-  const self2 = this;
-  let size = 0;
-  let sizeB = 0;
-  let seen;
-  return start;
-  function start(code2) {
-    let index = self2.events.length - 1;
-    while (index > -1) {
-      const type = self2.events[index][1].type;
-      if (type === "lineEnding" || // Note: markdown-rs uses `whitespace` instead of `linePrefix`
-      type === "linePrefix") index--;
-      else break;
+  const _initDocument = function _initDocument2(dirty) {
+    let doc = null;
+    let leadingWhitespace = null;
+    if (FORCE_BODY) {
+      dirty = "<remove></remove>" + dirty;
+    } else {
+      const matches = stringMatch(dirty, /^[\r\n\t ]+/);
+      leadingWhitespace = matches && matches[0];
     }
-    const tail = index > -1 ? self2.events[index][1].type : null;
-    const next = tail === "tableHead" || tail === "tableRow" ? bodyRowStart : headRowBefore;
-    if (next === bodyRowStart && self2.parser.lazy[self2.now().line]) {
-      return nok(code2);
+    if (PARSER_MEDIA_TYPE === "application/xhtml+xml" && NAMESPACE === HTML_NAMESPACE) {
+      dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + "</body></html>";
     }
-    return next(code2);
-  }
-  function headRowBefore(code2) {
-    effects.enter("tableHead");
-    effects.enter("tableRow");
-    return headRowStart(code2);
-  }
-  function headRowStart(code2) {
-    if (code2 === 124) {
-      return headRowBreak(code2);
-    }
-    seen = true;
-    sizeB += 1;
-    return headRowBreak(code2);
-  }
-  function headRowBreak(code2) {
-    if (code2 === null) {
-      return nok(code2);
-    }
-    if (markdownLineEnding(code2)) {
-      if (sizeB > 1) {
-        sizeB = 0;
-        self2.interrupt = true;
-        effects.exit("tableRow");
-        effects.enter("lineEnding");
-        effects.consume(code2);
-        effects.exit("lineEnding");
-        return headDelimiterStart;
+    const dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+    if (NAMESPACE === HTML_NAMESPACE) {
+      try {
+        doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
+      } catch (_) {
       }
-      return nok(code2);
     }
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, headRowBreak, "whitespace")(code2);
-    }
-    sizeB += 1;
-    if (seen) {
-      seen = false;
-      size += 1;
-    }
-    if (code2 === 124) {
-      effects.enter("tableCellDivider");
-      effects.consume(code2);
-      effects.exit("tableCellDivider");
-      seen = true;
-      return headRowBreak;
-    }
-    effects.enter("data");
-    return headRowData(code2);
-  }
-  function headRowData(code2) {
-    if (code2 === null || code2 === 124 || markdownLineEndingOrSpace(code2)) {
-      effects.exit("data");
-      return headRowBreak(code2);
-    }
-    effects.consume(code2);
-    return code2 === 92 ? headRowEscape : headRowData;
-  }
-  function headRowEscape(code2) {
-    if (code2 === 92 || code2 === 124) {
-      effects.consume(code2);
-      return headRowData;
-    }
-    return headRowData(code2);
-  }
-  function headDelimiterStart(code2) {
-    self2.interrupt = false;
-    if (self2.parser.lazy[self2.now().line]) {
-      return nok(code2);
-    }
-    effects.enter("tableDelimiterRow");
-    seen = false;
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, headDelimiterBefore, "linePrefix", self2.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4)(code2);
-    }
-    return headDelimiterBefore(code2);
-  }
-  function headDelimiterBefore(code2) {
-    if (code2 === 45 || code2 === 58) {
-      return headDelimiterValueBefore(code2);
-    }
-    if (code2 === 124) {
-      seen = true;
-      effects.enter("tableCellDivider");
-      effects.consume(code2);
-      effects.exit("tableCellDivider");
-      return headDelimiterCellBefore;
-    }
-    return headDelimiterNok(code2);
-  }
-  function headDelimiterCellBefore(code2) {
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, headDelimiterValueBefore, "whitespace")(code2);
-    }
-    return headDelimiterValueBefore(code2);
-  }
-  function headDelimiterValueBefore(code2) {
-    if (code2 === 58) {
-      sizeB += 1;
-      seen = true;
-      effects.enter("tableDelimiterMarker");
-      effects.consume(code2);
-      effects.exit("tableDelimiterMarker");
-      return headDelimiterLeftAlignmentAfter;
-    }
-    if (code2 === 45) {
-      sizeB += 1;
-      return headDelimiterLeftAlignmentAfter(code2);
-    }
-    if (code2 === null || markdownLineEnding(code2)) {
-      return headDelimiterCellAfter(code2);
-    }
-    return headDelimiterNok(code2);
-  }
-  function headDelimiterLeftAlignmentAfter(code2) {
-    if (code2 === 45) {
-      effects.enter("tableDelimiterFiller");
-      return headDelimiterFiller(code2);
-    }
-    return headDelimiterNok(code2);
-  }
-  function headDelimiterFiller(code2) {
-    if (code2 === 45) {
-      effects.consume(code2);
-      return headDelimiterFiller;
-    }
-    if (code2 === 58) {
-      seen = true;
-      effects.exit("tableDelimiterFiller");
-      effects.enter("tableDelimiterMarker");
-      effects.consume(code2);
-      effects.exit("tableDelimiterMarker");
-      return headDelimiterRightAlignmentAfter;
-    }
-    effects.exit("tableDelimiterFiller");
-    return headDelimiterRightAlignmentAfter(code2);
-  }
-  function headDelimiterRightAlignmentAfter(code2) {
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, headDelimiterCellAfter, "whitespace")(code2);
-    }
-    return headDelimiterCellAfter(code2);
-  }
-  function headDelimiterCellAfter(code2) {
-    if (code2 === 124) {
-      return headDelimiterBefore(code2);
-    }
-    if (code2 === null || markdownLineEnding(code2)) {
-      if (!seen || size !== sizeB) {
-        return headDelimiterNok(code2);
+    if (!doc || !doc.documentElement) {
+      doc = implementation.createDocument(NAMESPACE, "template", null);
+      try {
+        doc.documentElement.innerHTML = IS_EMPTY_INPUT ? emptyHTML : dirtyPayload;
+      } catch (_) {
       }
-      effects.exit("tableDelimiterRow");
-      effects.exit("tableHead");
-      return ok(code2);
     }
-    return headDelimiterNok(code2);
-  }
-  function headDelimiterNok(code2) {
-    return nok(code2);
-  }
-  function bodyRowStart(code2) {
-    effects.enter("tableRow");
-    return bodyRowBreak(code2);
-  }
-  function bodyRowBreak(code2) {
-    if (code2 === 124) {
-      effects.enter("tableCellDivider");
-      effects.consume(code2);
-      effects.exit("tableCellDivider");
-      return bodyRowBreak;
+    const body = doc.body || doc.documentElement;
+    if (dirty && leadingWhitespace) {
+      body.insertBefore(document2.createTextNode(leadingWhitespace), body.childNodes[0] || null);
     }
-    if (code2 === null || markdownLineEnding(code2)) {
-      effects.exit("tableRow");
-      return ok(code2);
+    if (NAMESPACE === HTML_NAMESPACE) {
+      return getElementsByTagName.call(doc, WHOLE_DOCUMENT ? "html" : "body")[0];
     }
-    if (markdownSpace(code2)) {
-      return factorySpace(effects, bodyRowBreak, "whitespace")(code2);
-    }
-    effects.enter("data");
-    return bodyRowData(code2);
-  }
-  function bodyRowData(code2) {
-    if (code2 === null || code2 === 124 || markdownLineEndingOrSpace(code2)) {
-      effects.exit("data");
-      return bodyRowBreak(code2);
-    }
-    effects.consume(code2);
-    return code2 === 92 ? bodyRowEscape : bodyRowData;
-  }
-  function bodyRowEscape(code2) {
-    if (code2 === 92 || code2 === 124) {
-      effects.consume(code2);
-      return bodyRowData;
-    }
-    return bodyRowData(code2);
-  }
-}
-function resolveTable(events, context) {
-  let index = -1;
-  let inFirstCellAwaitingPipe = true;
-  let rowKind = 0;
-  let lastCell = [0, 0, 0, 0];
-  let cell = [0, 0, 0, 0];
-  let afterHeadAwaitingFirstBodyRow = false;
-  let lastTableEnd = 0;
-  let currentTable;
-  let currentBody;
-  let currentCell;
-  const map = new EditMap();
-  while (++index < events.length) {
-    const event = events[index];
-    const token = event[1];
-    if (event[0] === "enter") {
-      if (token.type === "tableHead") {
-        afterHeadAwaitingFirstBodyRow = false;
-        if (lastTableEnd !== 0) {
-          flushTableEnd(map, context, lastTableEnd, currentTable, currentBody);
-          currentBody = void 0;
-          lastTableEnd = 0;
-        }
-        currentTable = {
-          type: "table",
-          start: Object.assign({}, token.start),
-          // Note: correct end is set later.
-          end: Object.assign({}, token.end)
-        };
-        map.add(index, 0, [["enter", currentTable, context]]);
-      } else if (token.type === "tableRow" || token.type === "tableDelimiterRow") {
-        inFirstCellAwaitingPipe = true;
-        currentCell = void 0;
-        lastCell = [0, 0, 0, 0];
-        cell = [0, index + 1, 0, 0];
-        if (afterHeadAwaitingFirstBodyRow) {
-          afterHeadAwaitingFirstBodyRow = false;
-          currentBody = {
-            type: "tableBody",
-            start: Object.assign({}, token.start),
-            // Note: correct end is set later.
-            end: Object.assign({}, token.end)
-          };
-          map.add(index, 0, [["enter", currentBody, context]]);
-        }
-        rowKind = token.type === "tableDelimiterRow" ? 2 : currentBody ? 3 : 1;
-      } else if (rowKind && (token.type === "data" || token.type === "tableDelimiterMarker" || token.type === "tableDelimiterFiller")) {
-        inFirstCellAwaitingPipe = false;
-        if (cell[2] === 0) {
-          if (lastCell[1] !== 0) {
-            cell[0] = cell[1];
-            currentCell = flushCell(map, context, lastCell, rowKind, void 0, currentCell);
-            lastCell = [0, 0, 0, 0];
-          }
-          cell[2] = index;
-        }
-      } else if (token.type === "tableCellDivider") {
-        if (inFirstCellAwaitingPipe) {
-          inFirstCellAwaitingPipe = false;
-        } else {
-          if (lastCell[1] !== 0) {
-            cell[0] = cell[1];
-            currentCell = flushCell(map, context, lastCell, rowKind, void 0, currentCell);
-          }
-          lastCell = cell;
-          cell = [lastCell[1], index, 0, 0];
-        }
-      }
-    } else if (token.type === "tableHead") {
-      afterHeadAwaitingFirstBodyRow = true;
-      lastTableEnd = index;
-    } else if (token.type === "tableRow" || token.type === "tableDelimiterRow") {
-      lastTableEnd = index;
-      if (lastCell[1] !== 0) {
-        cell[0] = cell[1];
-        currentCell = flushCell(map, context, lastCell, rowKind, index, currentCell);
-      } else if (cell[1] !== 0) {
-        currentCell = flushCell(map, context, cell, rowKind, index, currentCell);
-      }
-      rowKind = 0;
-    } else if (rowKind && (token.type === "data" || token.type === "tableDelimiterMarker" || token.type === "tableDelimiterFiller")) {
-      cell[3] = index;
-    }
-  }
-  if (lastTableEnd !== 0) {
-    flushTableEnd(map, context, lastTableEnd, currentTable, currentBody);
-  }
-  map.consume(context.events);
-  index = -1;
-  while (++index < context.events.length) {
-    const event = context.events[index];
-    if (event[0] === "enter" && event[1].type === "table") {
-      event[1]._align = gfmTableAlign(context.events, index);
-    }
-  }
-  return events;
-}
-function flushCell(map, context, range, rowKind, rowEnd, previousCell) {
-  const groupName = rowKind === 1 ? "tableHeader" : rowKind === 2 ? "tableDelimiter" : "tableData";
-  const valueName = "tableContent";
-  if (range[0] !== 0) {
-    previousCell.end = Object.assign({}, getPoint(context.events, range[0]));
-    map.add(range[0], 0, [["exit", previousCell, context]]);
-  }
-  const now2 = getPoint(context.events, range[1]);
-  previousCell = {
-    type: groupName,
-    start: Object.assign({}, now2),
-    // Note: correct end is set later.
-    end: Object.assign({}, now2)
+    return WHOLE_DOCUMENT ? doc.documentElement : body;
   };
-  map.add(range[1], 0, [["enter", previousCell, context]]);
-  if (range[2] !== 0) {
-    const relatedStart = getPoint(context.events, range[2]);
-    const relatedEnd = getPoint(context.events, range[3]);
-    const valueToken = {
-      type: valueName,
-      start: Object.assign({}, relatedStart),
-      end: Object.assign({}, relatedEnd)
+  const _createNodeIterator = function _createNodeIterator2(root) {
+    return createNodeIterator.call(
+      root.ownerDocument || root,
+      root,
+      // eslint-disable-next-line no-bitwise
+      NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT | NodeFilter.SHOW_PROCESSING_INSTRUCTION | NodeFilter.SHOW_CDATA_SECTION,
+      null
+    );
+  };
+  const _isClobbered = function _isClobbered2(element) {
+    return element instanceof HTMLFormElement && (typeof element.nodeName !== "string" || typeof element.textContent !== "string" || typeof element.removeChild !== "function" || !(element.attributes instanceof NamedNodeMap) || typeof element.removeAttribute !== "function" || typeof element.setAttribute !== "function" || typeof element.namespaceURI !== "string" || typeof element.insertBefore !== "function" || typeof element.hasChildNodes !== "function");
+  };
+  const _isNode = function _isNode2(value) {
+    return typeof Node === "function" && value instanceof Node;
+  };
+  function _executeHooks(hooks2, currentNode, data) {
+    arrayForEach(hooks2, (hook) => {
+      hook.call(DOMPurify, currentNode, data, CONFIG);
+    });
+  }
+  const _sanitizeElements = function _sanitizeElements2(currentNode) {
+    let content = null;
+    _executeHooks(hooks.beforeSanitizeElements, currentNode, null);
+    if (_isClobbered(currentNode)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    const tagName = transformCaseFunc(currentNode.nodeName);
+    _executeHooks(hooks.uponSanitizeElement, currentNode, {
+      tagName,
+      allowedTags: ALLOWED_TAGS
+    });
+    if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (currentNode.nodeType === NODE_TYPE.progressingInstruction) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (SAFE_FOR_XML && currentNode.nodeType === NODE_TYPE.comment && regExpTest(/<[/\w]/g, currentNode.data)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+      if (!FORBID_TAGS[tagName] && _isBasicCustomElement(tagName)) {
+        if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) {
+          return false;
+        }
+        if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) {
+          return false;
+        }
+      }
+      if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
+        const parentNode = getParentNode(currentNode) || currentNode.parentNode;
+        const childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+        if (childNodes && parentNode) {
+          const childCount = childNodes.length;
+          for (let i = childCount - 1; i >= 0; --i) {
+            const childClone = cloneNode(childNodes[i], true);
+            childClone.__removalCount = (currentNode.__removalCount || 0) + 1;
+            parentNode.insertBefore(childClone, getNextSibling(currentNode));
+          }
+        }
+      }
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (currentNode instanceof Element && !_checkValidNamespace(currentNode)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if ((tagName === "noscript" || tagName === "noembed" || tagName === "noframes") && regExpTest(/<\/no(script|embed|frames)/i, currentNode.innerHTML)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (SAFE_FOR_TEMPLATES && currentNode.nodeType === NODE_TYPE.text) {
+      content = currentNode.textContent;
+      arrayForEach([MUSTACHE_EXPR2, ERB_EXPR2, TMPLIT_EXPR2], (expr) => {
+        content = stringReplace(content, expr, " ");
+      });
+      if (currentNode.textContent !== content) {
+        arrayPush(DOMPurify.removed, {
+          element: currentNode.cloneNode()
+        });
+        currentNode.textContent = content;
+      }
+    }
+    _executeHooks(hooks.afterSanitizeElements, currentNode, null);
+    return false;
+  };
+  const _isValidAttribute = function _isValidAttribute2(lcTag, lcName, value) {
+    if (SANITIZE_DOM && (lcName === "id" || lcName === "name") && (value in document2 || value in formElement)) {
+      return false;
+    }
+    if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR2, lcName)) ;
+    else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR2, lcName)) ;
+    else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
+      if (
+        // First condition does a very basic check if a) it's basically a valid custom element tagname AND
+        // b) if the tagName passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
+        // and c) if the attribute name passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.attributeNameCheck
+        _isBasicCustomElement(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName)) || // Alternative, second condition checks if it's an `is`-attribute, AND
+        // the value passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
+        lcName === "is" && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value))
+      ) ;
+      else {
+        return false;
+      }
+    } else if (URI_SAFE_ATTRIBUTES[lcName]) ;
+    else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE2, ""))) ;
+    else if ((lcName === "src" || lcName === "xlink:href" || lcName === "href") && lcTag !== "script" && stringIndexOf(value, "data:") === 0 && DATA_URI_TAGS[lcTag]) ;
+    else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA2, stringReplace(value, ATTR_WHITESPACE2, ""))) ;
+    else if (value) {
+      return false;
+    } else ;
+    return true;
+  };
+  const _isBasicCustomElement = function _isBasicCustomElement2(tagName) {
+    return tagName !== "annotation-xml" && stringMatch(tagName, CUSTOM_ELEMENT2);
+  };
+  const _sanitizeAttributes = function _sanitizeAttributes2(currentNode) {
+    _executeHooks(hooks.beforeSanitizeAttributes, currentNode, null);
+    const {
+      attributes
+    } = currentNode;
+    if (!attributes || _isClobbered(currentNode)) {
+      return;
+    }
+    const hookEvent = {
+      attrName: "",
+      attrValue: "",
+      keepAttr: true,
+      allowedAttributes: ALLOWED_ATTR,
+      forceKeepAttr: void 0
     };
-    map.add(range[2], 0, [["enter", valueToken, context]]);
-    if (rowKind !== 2) {
-      const start = context.events[range[2]];
-      const end = context.events[range[3]];
-      start[1].end = Object.assign({}, end[1].end);
-      start[1].type = "chunkText";
-      start[1].contentType = "text";
-      if (range[3] > range[2] + 1) {
-        const a = range[2] + 1;
-        const b = range[3] - range[2] - 1;
-        map.add(a, b, []);
+    let l = attributes.length;
+    while (l--) {
+      const attr = attributes[l];
+      const {
+        name,
+        namespaceURI,
+        value: attrValue
+      } = attr;
+      const lcName = transformCaseFunc(name);
+      let value = name === "value" ? attrValue : stringTrim(attrValue);
+      hookEvent.attrName = lcName;
+      hookEvent.attrValue = value;
+      hookEvent.keepAttr = true;
+      hookEvent.forceKeepAttr = void 0;
+      _executeHooks(hooks.uponSanitizeAttribute, currentNode, hookEvent);
+      value = hookEvent.attrValue;
+      if (SANITIZE_NAMED_PROPS && (lcName === "id" || lcName === "name")) {
+        _removeAttribute(name, currentNode);
+        value = SANITIZE_NAMED_PROPS_PREFIX + value;
+      }
+      if (SAFE_FOR_XML && regExpTest(/((--!?|])>)|<\/(style|title)/i, value)) {
+        _removeAttribute(name, currentNode);
+        continue;
+      }
+      if (hookEvent.forceKeepAttr) {
+        continue;
+      }
+      _removeAttribute(name, currentNode);
+      if (!hookEvent.keepAttr) {
+        continue;
+      }
+      if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(/\/>/i, value)) {
+        _removeAttribute(name, currentNode);
+        continue;
+      }
+      if (SAFE_FOR_TEMPLATES) {
+        arrayForEach([MUSTACHE_EXPR2, ERB_EXPR2, TMPLIT_EXPR2], (expr) => {
+          value = stringReplace(value, expr, " ");
+        });
+      }
+      const lcTag = transformCaseFunc(currentNode.nodeName);
+      if (!_isValidAttribute(lcTag, lcName, value)) {
+        continue;
+      }
+      if (trustedTypesPolicy && typeof trustedTypes === "object" && typeof trustedTypes.getAttributeType === "function") {
+        if (namespaceURI) ;
+        else {
+          switch (trustedTypes.getAttributeType(lcTag, lcName)) {
+            case "TrustedHTML": {
+              value = trustedTypesPolicy.createHTML(value);
+              break;
+            }
+            case "TrustedScriptURL": {
+              value = trustedTypesPolicy.createScriptURL(value);
+              break;
+            }
+          }
+        }
+      }
+      try {
+        if (namespaceURI) {
+          currentNode.setAttributeNS(namespaceURI, name, value);
+        } else {
+          currentNode.setAttribute(name, value);
+        }
+        if (_isClobbered(currentNode)) {
+          _forceRemove(currentNode);
+        } else {
+          arrayPop(DOMPurify.removed);
+        }
+      } catch (_) {
       }
     }
-    map.add(range[3] + 1, 0, [["exit", valueToken, context]]);
-  }
-  if (rowEnd !== void 0) {
-    previousCell.end = Object.assign({}, getPoint(context.events, rowEnd));
-    map.add(rowEnd, 0, [["exit", previousCell, context]]);
-    previousCell = void 0;
-  }
-  return previousCell;
-}
-function flushTableEnd(map, context, index, table, tableBody) {
-  const exits = [];
-  const related = getPoint(context.events, index);
-  if (tableBody) {
-    tableBody.end = Object.assign({}, related);
-    exits.push(["exit", tableBody, context]);
-  }
-  table.end = Object.assign({}, related);
-  exits.push(["exit", table, context]);
-  map.add(index + 1, 0, exits);
-}
-function getPoint(events, index) {
-  const event = events[index];
-  const side = event[0] === "enter" ? "start" : "end";
-  return event[1][side];
-}
-const reFlow = /<(\/?)(iframe|noembed|noframes|plaintext|script|style|title|textarea|xmp)(?=[\t\n\f\r />])/gi;
-const reText = new RegExp("^" + reFlow.source, "i");
-function gfmTagfilterHtml() {
-  return {
-    exit: {
-      htmlFlowData(token) {
-        exitHtmlData.call(this, token, reFlow);
-      },
-      htmlTextData(token) {
-        exitHtmlData.call(this, token, reText);
-      }
-    }
+    _executeHooks(hooks.afterSanitizeAttributes, currentNode, null);
   };
-}
-function exitHtmlData(token, filter) {
-  let value = this.sliceSerialize(token);
-  if (this.options.allowDangerousHtml) {
-    value = value.replace(filter, "&lt;$1$2");
-  }
-  this.raw(this.encode(value));
-}
-function gfmTaskListItemHtml() {
-  return {
-    enter: {
-      taskListCheck() {
-        this.tag('<input type="checkbox" disabled="" ');
-      }
-    },
-    exit: {
-      taskListCheck() {
-        this.tag("/>");
-      },
-      taskListCheckValueChecked() {
-        this.tag('checked="" ');
+  const _sanitizeShadowDOM = function _sanitizeShadowDOM2(fragment) {
+    let shadowNode = null;
+    const shadowIterator = _createNodeIterator(fragment);
+    _executeHooks(hooks.beforeSanitizeShadowDOM, fragment, null);
+    while (shadowNode = shadowIterator.nextNode()) {
+      _executeHooks(hooks.uponSanitizeShadowNode, shadowNode, null);
+      _sanitizeElements(shadowNode);
+      _sanitizeAttributes(shadowNode);
+      if (shadowNode.content instanceof DocumentFragment2) {
+        _sanitizeShadowDOM2(shadowNode.content);
       }
     }
+    _executeHooks(hooks.afterSanitizeShadowDOM, fragment, null);
   };
-}
-const tasklistCheck = {
-  name: "tasklistCheck",
-  tokenize: tokenizeTasklistCheck
-};
-function gfmTaskListItem() {
-  return {
-    text: {
-      [91]: tasklistCheck
+  DOMPurify.sanitize = function(dirty) {
+    let cfg = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+    let body = null;
+    let importedNode = null;
+    let currentNode = null;
+    let returnNode = null;
+    IS_EMPTY_INPUT = !dirty;
+    if (IS_EMPTY_INPUT) {
+      dirty = "<!-->";
     }
+    if (typeof dirty !== "string" && !_isNode(dirty)) {
+      if (typeof dirty.toString === "function") {
+        dirty = dirty.toString();
+        if (typeof dirty !== "string") {
+          throw typeErrorCreate("dirty is not a string, aborting");
+        }
+      } else {
+        throw typeErrorCreate("toString is not a function");
+      }
+    }
+    if (!DOMPurify.isSupported) {
+      return dirty;
+    }
+    if (!SET_CONFIG) {
+      _parseConfig(cfg);
+    }
+    DOMPurify.removed = [];
+    if (typeof dirty === "string") {
+      IN_PLACE = false;
+    }
+    if (IN_PLACE) {
+      if (dirty.nodeName) {
+        const tagName = transformCaseFunc(dirty.nodeName);
+        if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+          throw typeErrorCreate("root node is forbidden and cannot be sanitized in-place");
+        }
+      }
+    } else if (dirty instanceof Node) {
+      body = _initDocument("<!---->");
+      importedNode = body.ownerDocument.importNode(dirty, true);
+      if (importedNode.nodeType === NODE_TYPE.element && importedNode.nodeName === "BODY") {
+        body = importedNode;
+      } else if (importedNode.nodeName === "HTML") {
+        body = importedNode;
+      } else {
+        body.appendChild(importedNode);
+      }
+    } else {
+      if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT && // eslint-disable-next-line unicorn/prefer-includes
+      dirty.indexOf("<") === -1) {
+        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
+      }
+      body = _initDocument(dirty);
+      if (!body) {
+        return RETURN_DOM ? null : RETURN_TRUSTED_TYPE ? emptyHTML : "";
+      }
+    }
+    if (body && FORCE_BODY) {
+      _forceRemove(body.firstChild);
+    }
+    const nodeIterator = _createNodeIterator(IN_PLACE ? dirty : body);
+    while (currentNode = nodeIterator.nextNode()) {
+      _sanitizeElements(currentNode);
+      _sanitizeAttributes(currentNode);
+      if (currentNode.content instanceof DocumentFragment2) {
+        _sanitizeShadowDOM(currentNode.content);
+      }
+    }
+    if (IN_PLACE) {
+      return dirty;
+    }
+    if (RETURN_DOM) {
+      if (RETURN_DOM_FRAGMENT) {
+        returnNode = createDocumentFragment.call(body.ownerDocument);
+        while (body.firstChild) {
+          returnNode.appendChild(body.firstChild);
+        }
+      } else {
+        returnNode = body;
+      }
+      if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmode) {
+        returnNode = importNode.call(originalDocument, returnNode, true);
+      }
+      return returnNode;
+    }
+    let serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+    if (WHOLE_DOCUMENT && ALLOWED_TAGS["!doctype"] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
+      serializedHTML = "<!DOCTYPE " + body.ownerDocument.doctype.name + ">\n" + serializedHTML;
+    }
+    if (SAFE_FOR_TEMPLATES) {
+      arrayForEach([MUSTACHE_EXPR2, ERB_EXPR2, TMPLIT_EXPR2], (expr) => {
+        serializedHTML = stringReplace(serializedHTML, expr, " ");
+      });
+    }
+    return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
   };
+  DOMPurify.setConfig = function() {
+    let cfg = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    _parseConfig(cfg);
+    SET_CONFIG = true;
+  };
+  DOMPurify.clearConfig = function() {
+    CONFIG = null;
+    SET_CONFIG = false;
+  };
+  DOMPurify.isValidAttribute = function(tag2, attr, value) {
+    if (!CONFIG) {
+      _parseConfig({});
+    }
+    const lcTag = transformCaseFunc(tag2);
+    const lcName = transformCaseFunc(attr);
+    return _isValidAttribute(lcTag, lcName, value);
+  };
+  DOMPurify.addHook = function(entryPoint, hookFunction) {
+    if (typeof hookFunction !== "function") {
+      return;
+    }
+    arrayPush(hooks[entryPoint], hookFunction);
+  };
+  DOMPurify.removeHook = function(entryPoint, hookFunction) {
+    if (hookFunction !== void 0) {
+      const index = arrayLastIndexOf(hooks[entryPoint], hookFunction);
+      return index === -1 ? void 0 : arraySplice(hooks[entryPoint], index, 1)[0];
+    }
+    return arrayPop(hooks[entryPoint]);
+  };
+  DOMPurify.removeHooks = function(entryPoint) {
+    hooks[entryPoint] = [];
+  };
+  DOMPurify.removeAllHooks = function() {
+    hooks = _createHooksMap();
+  };
+  return DOMPurify;
 }
-function tokenizeTasklistCheck(effects, ok, nok) {
-  const self2 = this;
-  return open2;
-  function open2(code2) {
-    if (
-      // Exit if there’s stuff before.
-      self2.previous !== null || // Exit if not in the first content that is the first child of a list
-      // item.
-      !self2._gfmTasklistFirstContentOfListItem
-    ) {
-      return nok(code2);
-    }
-    effects.enter("taskListCheck");
-    effects.enter("taskListCheckMarker");
-    effects.consume(code2);
-    effects.exit("taskListCheckMarker");
-    return inside;
-  }
-  function inside(code2) {
-    if (markdownLineEndingOrSpace(code2)) {
-      effects.enter("taskListCheckValueUnchecked");
-      effects.consume(code2);
-      effects.exit("taskListCheckValueUnchecked");
-      return close2;
-    }
-    if (code2 === 88 || code2 === 120) {
-      effects.enter("taskListCheckValueChecked");
-      effects.consume(code2);
-      effects.exit("taskListCheckValueChecked");
-      return close2;
-    }
-    return nok(code2);
-  }
-  function close2(code2) {
-    if (code2 === 93) {
-      effects.enter("taskListCheckMarker");
-      effects.consume(code2);
-      effects.exit("taskListCheckMarker");
-      effects.exit("taskListCheck");
-      return after;
-    }
-    return nok(code2);
-  }
-  function after(code2) {
-    if (markdownLineEnding(code2)) {
-      return ok(code2);
-    }
-    if (markdownSpace(code2)) {
-      return effects.check({
-        tokenize: spaceThenNonSpace
-      }, ok, nok)(code2);
-    }
-    return nok(code2);
-  }
-}
-function spaceThenNonSpace(effects, ok, nok) {
-  return factorySpace(effects, after, "whitespace");
-  function after(code2) {
-    return code2 === null ? nok(code2) : ok(code2);
-  }
-}
-function gfm(options) {
-  return combineExtensions([
-    gfmAutolinkLiteral(),
-    gfmFootnote(),
-    gfmStrikethrough(),
-    gfmTable(),
-    gfmTaskListItem()
-  ]);
-}
-function gfmHtml(options) {
-  return combineHtmlExtensions([
-    gfmAutolinkLiteralHtml(),
-    gfmFootnoteHtml(),
-    gfmStrikethroughHtml(),
-    gfmTableHtml(),
-    gfmTagfilterHtml(),
-    gfmTaskListItemHtml()
-  ]);
-}
+var purify = createDOMPurify();
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
@@ -11498,13 +6146,13 @@ function expandOrCloneMode(mode) {
 }
 var version$1 = "11.11.1";
 class HTMLInjectionError extends Error {
-  constructor(reason, html) {
+  constructor(reason, html2) {
     super(reason);
     this.name = "HTMLInjectionError";
-    this.html = html;
+    this.html = html2;
   }
 }
-const escape$1 = escapeHTML;
+const escape$2 = escapeHTML;
 const inherit = inherit$1;
 const NO_MATCH = Symbol("nomatch");
 const MAX_KEYWORD_HITS = 7;
@@ -11530,38 +6178,38 @@ const HLJS = function(hljs2) {
   function shouldNotHighlight(languageName) {
     return options.noHighlightRe.test(languageName);
   }
-  function blockLanguage(block) {
-    let classes = block.className + " ";
-    classes += block.parentNode ? block.parentNode.className : "";
+  function blockLanguage(block2) {
+    let classes = block2.className + " ";
+    classes += block2.parentNode ? block2.parentNode.className : "";
     const match = options.languageDetectRe.exec(classes);
     if (match) {
       const language = getLanguage(match[1]);
       if (!language) {
         warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
-        warn("Falling back to no-highlight mode for this block.", block);
+        warn("Falling back to no-highlight mode for this block.", block2);
       }
       return language ? match[1] : "no-highlight";
     }
     return classes.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
   }
   function highlight2(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
-    let code2 = "";
+    let code = "";
     let languageName = "";
     if (typeof optionsOrCode === "object") {
-      code2 = codeOrLanguageName;
+      code = codeOrLanguageName;
       ignoreIllegals = optionsOrCode.ignoreIllegals;
       languageName = optionsOrCode.language;
     } else {
       deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
       deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
       languageName = codeOrLanguageName;
-      code2 = optionsOrCode;
+      code = optionsOrCode;
     }
     if (ignoreIllegals === void 0) {
       ignoreIllegals = true;
     }
     const context = {
-      code: code2,
+      code,
       language: languageName
     };
     fire("before:highlight", context);
@@ -11871,7 +6519,7 @@ const HLJS = function(hljs2) {
       if (err.message && err.message.includes("Illegal")) {
         return {
           language: languageName,
-          value: escape$1(codeToHighlight),
+          value: escape$2(codeToHighlight),
           illegal: true,
           relevance: 0,
           _illegalBy: {
@@ -11886,7 +6534,7 @@ const HLJS = function(hljs2) {
       } else if (SAFE_MODE) {
         return {
           language: languageName,
-          value: escape$1(codeToHighlight),
+          value: escape$2(codeToHighlight),
           illegal: false,
           relevance: 0,
           errorRaised: err,
@@ -11898,22 +6546,22 @@ const HLJS = function(hljs2) {
       }
     }
   }
-  function justTextHighlightResult(code2) {
+  function justTextHighlightResult(code) {
     const result = {
-      value: escape$1(code2),
+      value: escape$2(code),
       illegal: false,
       relevance: 0,
       _top: PLAINTEXT_LANGUAGE,
       _emitter: new options.__emitter(options)
     };
-    result._emitter.addText(code2);
+    result._emitter.addText(code);
     return result;
   }
-  function highlightAuto(code2, languageSubset) {
+  function highlightAuto(code, languageSubset) {
     languageSubset = languageSubset || options.languages || Object.keys(languages);
-    const plaintext = justTextHighlightResult(code2);
+    const plaintext = justTextHighlightResult(code);
     const results = languageSubset.filter(getLanguage).filter(autoDetection).map(
-      (name) => _highlight(name, code2, false)
+      (name) => _highlight(name, code, false)
     );
     results.unshift(plaintext);
     const sorted = results.sort((a, b) => {
@@ -11932,57 +6580,57 @@ const HLJS = function(hljs2) {
     result.secondBest = secondBest;
     return result;
   }
-  function updateClassName(element2, currentLang, resultLang) {
+  function updateClassName(element, currentLang, resultLang) {
     const language = currentLang && aliases[currentLang] || resultLang;
-    element2.classList.add("hljs");
-    element2.classList.add(`language-${language}`);
+    element.classList.add("hljs");
+    element.classList.add(`language-${language}`);
   }
-  function highlightElement(element2) {
+  function highlightElement(element) {
     let node = null;
-    const language = blockLanguage(element2);
+    const language = blockLanguage(element);
     if (shouldNotHighlight(language)) return;
     fire(
       "before:highlightElement",
-      { el: element2, language }
+      { el: element, language }
     );
-    if (element2.dataset.highlighted) {
-      console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", element2);
+    if (element.dataset.highlighted) {
+      console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", element);
       return;
     }
-    if (element2.children.length > 0) {
+    if (element.children.length > 0) {
       if (!options.ignoreUnescapedHTML) {
         console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
         console.warn("https://github.com/highlightjs/highlight.js/wiki/security");
         console.warn("The element with unescaped HTML:");
-        console.warn(element2);
+        console.warn(element);
       }
       if (options.throwUnescapedHTML) {
         const err = new HTMLInjectionError(
           "One of your code blocks includes unescaped HTML.",
-          element2.innerHTML
+          element.innerHTML
         );
         throw err;
       }
     }
-    node = element2;
+    node = element;
     const text2 = node.textContent;
     const result = language ? highlight2(text2, { language, ignoreIllegals: true }) : highlightAuto(text2);
-    element2.innerHTML = result.value;
-    element2.dataset.highlighted = "yes";
-    updateClassName(element2, language, result.language);
-    element2.result = {
+    element.innerHTML = result.value;
+    element.dataset.highlighted = "yes";
+    updateClassName(element, language, result.language);
+    element.result = {
       language: result.language,
       // TODO: remove with version 11.0
       re: result.relevance,
       relevance: result.relevance
     };
     if (result.secondBest) {
-      element2.secondBest = {
+      element.secondBest = {
         language: result.secondBest.language,
         relevance: result.secondBest.relevance
       };
     }
-    fire("after:highlightElement", { el: element2, result, text: text2 });
+    fire("after:highlightElement", { el: element, result, text: text2 });
   }
   function configure(userOptions) {
     options = inherit(options, userOptions);
@@ -14696,7 +9344,7 @@ var hasRequiredXml;
 function requireXml() {
   if (hasRequiredXml) return xml_1;
   hasRequiredXml = 1;
-  function xml(hljs2) {
+  function xml2(hljs2) {
     const regex = hljs2.regex;
     const TAG_NAME_RE = regex.concat(/[\p{L}_]/u, regex.optional(/[\p{L}0-9_.-]*:/u), /[\p{L}0-9_.-]*/u);
     const XML_IDENT_RE = /[\p{L}0-9._:-]+/u;
@@ -14920,7 +9568,7 @@ function requireXml() {
       ]
     };
   }
-  xml_1 = xml;
+  xml_1 = xml2;
   return xml_1;
 }
 var asciidoc_1;
@@ -17301,7 +11949,7 @@ function requireCeylon() {
       keywords: KEYWORDS,
       relevance: 10
     };
-    const EXPRESSIONS = [
+    const EXPRESSIONS2 = [
       {
         // verbatim string
         className: "string",
@@ -17329,7 +11977,7 @@ function requireCeylon() {
         relevance: 0
       }
     ];
-    SUBST.contains = EXPRESSIONS;
+    SUBST.contains = EXPRESSIONS2;
     return {
       name: "Ceylon",
       keywords: {
@@ -17345,7 +11993,7 @@ function requireCeylon() {
           className: "meta",
           begin: '@[a-z]\\w*(?::"[^"]*")?'
         }
-      ].concat(EXPRESSIONS)
+      ].concat(EXPRESSIONS2)
     };
   }
   ceylon_1 = ceylon;
@@ -17477,7 +12125,7 @@ function requireClojure() {
       contains: [hljs2.BACKSLASH_ESCAPE]
     };
     const STRING = hljs2.inherit(hljs2.QUOTE_STRING_MODE, { illegal: null });
-    const COMMA2 = {
+    const COMMA = {
       scope: "punctuation",
       match: /,/,
       relevance: 0
@@ -17516,7 +12164,7 @@ function requireClojure() {
       starts: BODY
     };
     const DEFAULT_CONTAINS = [
-      COMMA2,
+      COMMA,
       LIST,
       CHARACTER,
       REGEX,
@@ -17561,7 +12209,7 @@ function requireClojure() {
       ],
       illegal: /\S/,
       contains: [
-        COMMA2,
+        COMMA,
         LIST,
         CHARACTER,
         REGEX,
@@ -17818,7 +12466,7 @@ function requireCoffeescript() {
       end: /\}/,
       keywords: KEYWORDS$1
     };
-    const EXPRESSIONS = [
+    const EXPRESSIONS2 = [
       hljs2.BINARY_NUMBER_MODE,
       hljs2.inherit(hljs2.C_NUMBER_MODE, { starts: {
         end: "(\\s*/)?",
@@ -17898,7 +12546,7 @@ function requireCoffeescript() {
         ]
       }
     ];
-    SUBST.contains = EXPRESSIONS;
+    SUBST.contains = EXPRESSIONS2;
     const TITLE = hljs2.inherit(hljs2.TITLE_MODE, { begin: JS_IDENT_RE });
     const POSSIBLE_PARAMS_RE = "(\\(.*\\)\\s*)?\\B[-=]>";
     const PARAMS = {
@@ -17912,7 +12560,7 @@ function requireCoffeescript() {
           begin: /\(/,
           end: /\)/,
           keywords: KEYWORDS$1,
-          contains: ["self"].concat(EXPRESSIONS)
+          contains: ["self"].concat(EXPRESSIONS2)
         }
       ]
     };
@@ -17945,7 +12593,7 @@ function requireCoffeescript() {
       keywords: KEYWORDS$1,
       illegal: /\/\*/,
       contains: [
-        ...EXPRESSIONS,
+        ...EXPRESSIONS2,
         hljs2.COMMENT("###", "###"),
         hljs2.HASH_COMMENT_MODE,
         {
@@ -31696,8 +26344,8 @@ function requireJavascript() {
   function javascript(hljs2) {
     const regex = hljs2.regex;
     const hasClosingTag = (match, { after }) => {
-      const tag = "</" + match[0].slice(1);
-      const pos = match.input.indexOf(tag, after);
+      const tag2 = "</" + match[0].slice(1);
+      const pos = match.input.indexOf(tag2, after);
       return pos !== -1;
     };
     const IDENT_RE$1 = IDENT_RE2;
@@ -35038,7 +29686,7 @@ function requireLivescript() {
       end: /(?:-[0-9A-Za-z$_]|[0-9A-Za-z$_])*/,
       keywords: KEYWORDS$1
     };
-    const EXPRESSIONS = [
+    const EXPRESSIONS2 = [
       hljs2.BINARY_NUMBER_MODE,
       {
         className: "number",
@@ -35115,7 +29763,7 @@ function requireLivescript() {
         subLanguage: "javascript"
       }
     ];
-    SUBST.contains = EXPRESSIONS;
+    SUBST.contains = EXPRESSIONS2;
     const PARAMS = {
       className: "params",
       begin: "\\(",
@@ -35127,7 +29775,7 @@ function requireLivescript() {
           begin: /\(/,
           end: /\)/,
           keywords: KEYWORDS$1,
-          contains: ["self"].concat(EXPRESSIONS)
+          contains: ["self"].concat(EXPRESSIONS2)
         }
       ]
     };
@@ -35156,7 +29804,7 @@ function requireLivescript() {
       aliases: ["ls"],
       keywords: KEYWORDS$1,
       illegal: /\/\*/,
-      contains: EXPRESSIONS.concat([
+      contains: EXPRESSIONS2.concat([
         hljs2.COMMENT("\\/\\*", "\\*\\/"),
         hljs2.HASH_COMMENT_MODE,
         SYMBOLS,
@@ -43925,7 +38573,7 @@ function requireMoonscript() {
       end: /\}/,
       keywords: KEYWORDS
     };
-    const EXPRESSIONS = [
+    const EXPRESSIONS2 = [
       hljs2.inherit(
         hljs2.C_NUMBER_MODE,
         { starts: {
@@ -43965,7 +38613,7 @@ function requireMoonscript() {
         // inst\method
       }
     ];
-    SUBST.contains = EXPRESSIONS;
+    SUBST.contains = EXPRESSIONS2;
     const TITLE = hljs2.inherit(hljs2.TITLE_MODE, { begin: JS_IDENT_RE });
     const POSSIBLE_PARAMS_RE = "(\\(.*\\)\\s*)?\\B[-=]>";
     const PARAMS = {
@@ -43979,7 +38627,7 @@ function requireMoonscript() {
           begin: /\(/,
           end: /\)/,
           keywords: KEYWORDS,
-          contains: ["self"].concat(EXPRESSIONS)
+          contains: ["self"].concat(EXPRESSIONS2)
         }
       ]
     };
@@ -43988,7 +38636,7 @@ function requireMoonscript() {
       aliases: ["moon"],
       keywords: KEYWORDS,
       illegal: /\/\*/,
-      contains: EXPRESSIONS.concat([
+      contains: EXPRESSIONS2.concat([
         hljs2.COMMENT("--", "$"),
         {
           className: "function",
@@ -45129,7 +39777,7 @@ function requireNix() {
       scope: "params",
       match: new RegExp(`${IDENTIFIER_REGEX}\\s*:(?=\\s)`)
     };
-    const EXPRESSIONS = [
+    const EXPRESSIONS2 = [
       NUMBER,
       hljs2.HASH_COMMENT_MODE,
       hljs2.C_BLOCK_COMMENT_MODE,
@@ -45150,7 +39798,7 @@ function requireNix() {
       MINUS_OPERATOR,
       OPERATOR
     ];
-    ANTIQUOTE.contains = EXPRESSIONS;
+    ANTIQUOTE.contains = EXPRESSIONS2;
     const REPL = [
       {
         scope: "meta.prompt",
@@ -45167,7 +39815,7 @@ function requireNix() {
       name: "Nix",
       aliases: ["nixos"],
       keywords: KEYWORDS,
-      contains: EXPRESSIONS.concat(REPL)
+      contains: EXPRESSIONS2.concat(REPL)
     };
   }
   nix_1 = nix;
@@ -50966,7 +45614,7 @@ var hasRequiredScheme;
 function requireScheme() {
   if (hasRequiredScheme) return scheme_1;
   hasRequiredScheme = 1;
-  function scheme2(hljs2) {
+  function scheme(hljs2) {
     const SCHEME_IDENT_RE = "[^\\(\\)\\[\\]\\{\\}\",'`;#|\\\\\\s]+";
     const SCHEME_SIMPLE_NUMBER_RE = "(-|\\+)?\\d+([./]\\d+)?";
     const SCHEME_COMPLEX_NUMBER_RE = SCHEME_SIMPLE_NUMBER_RE + "[+\\-]" + SCHEME_SIMPLE_NUMBER_RE + "i";
@@ -51103,7 +45751,7 @@ function requireScheme() {
       ].concat(COMMENT_MODES)
     };
   }
-  scheme_1 = scheme2;
+  scheme_1 = scheme;
   return scheme_1;
 }
 var scilab_1;
@@ -59312,8 +53960,8 @@ function requireTypescript() {
   function javascript(hljs2) {
     const regex = hljs2.regex;
     const hasClosingTag = (match, { after }) => {
-      const tag = "</" + match[0].slice(1);
-      const pos = match.input.indexOf(tag, after);
+      const tag2 = "</" + match[0].slice(1);
+      const pos = match.input.indexOf(tag2, after);
       return pos !== -1;
     };
     const IDENT_RE$1 = IDENT_RE2;
@@ -62564,6 +57212,90 @@ hljs.HighlightJS = hljs;
 hljs.default = hljs;
 var lib = hljs;
 const HighlightJS = /* @__PURE__ */ getDefaultExportFromCjs(lib);
+function markedHighlight(options) {
+  if (typeof options === "function") {
+    options = {
+      highlight: options
+    };
+  }
+  if (!options || typeof options.highlight !== "function") {
+    throw new Error("Must provide highlight function");
+  }
+  if (typeof options.langPrefix !== "string") {
+    options.langPrefix = "language-";
+  }
+  if (typeof options.emptyLangClass !== "string") {
+    options.emptyLangClass = "";
+  }
+  return {
+    async: !!options.async,
+    walkTokens(token) {
+      if (token.type !== "code") {
+        return;
+      }
+      const lang = getLang(token.lang);
+      if (options.async) {
+        return Promise.resolve(options.highlight(token.text, lang, token.lang || "")).then(updateToken(token));
+      }
+      const code = options.highlight(token.text, lang, token.lang || "");
+      if (code instanceof Promise) {
+        throw new Error("markedHighlight is not set to async but the highlight function is async. Set the async option to true on markedHighlight to await the async highlight function.");
+      }
+      updateToken(token)(code);
+    },
+    useNewRenderer: true,
+    renderer: {
+      code(code, infoString, escaped) {
+        if (typeof code === "object") {
+          escaped = code.escaped;
+          infoString = code.lang;
+          code = code.text;
+        }
+        const lang = getLang(infoString);
+        const classValue = lang ? options.langPrefix + escape$1(lang) : options.emptyLangClass;
+        const classAttr = classValue ? ` class="${classValue}"` : "";
+        code = code.replace(/\n$/, "");
+        return `<pre><code${classAttr}>${escaped ? code : escape$1(code, true)}
+</code></pre>`;
+      }
+    }
+  };
+}
+function getLang(lang) {
+  return (lang || "").match(/\S*/)[0];
+}
+function updateToken(token) {
+  return (code) => {
+    if (typeof code === "string" && code !== token.text) {
+      token.escaped = true;
+      token.text = code;
+    }
+  };
+}
+const escapeTest = /[&<>"']/;
+const escapeReplace = new RegExp(escapeTest.source, "g");
+const escapeTestNoEncode = /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/;
+const escapeReplaceNoEncode = new RegExp(escapeTestNoEncode.source, "g");
+const escapeReplacements = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;"
+};
+const getEscapeReplacement = (ch) => escapeReplacements[ch];
+function escape$1(html2, encode) {
+  if (encode) {
+    if (escapeTest.test(html2)) {
+      return html2.replace(escapeReplace, getEscapeReplacement);
+    }
+  } else {
+    if (escapeTestNoEncode.test(html2)) {
+      return html2.replace(escapeReplaceNoEncode, getEscapeReplacement);
+    }
+  }
+  return html2;
+}
 class SourceLocation {
   // The + prefix indicates that these fields aren't writeable
   // Lexer holding the input string.
@@ -62774,8 +57506,8 @@ var SETTINGS_SCHEMA = {
     cli: "-m, --macro <def>",
     cliDescription: "Define custom macro of the form '\\foo:expansion' (use multiple -m arguments for multiple macros).",
     cliDefault: [],
-    cliProcessor: (def, defs) => {
-      defs.push(def);
+    cliProcessor: (def2, defs) => {
+      defs.push(def2);
       return defs;
     }
   },
@@ -63076,8 +57808,8 @@ function scriptFromCodepoint(codepoint) {
   for (var i = 0; i < scriptData.length; i++) {
     var script = scriptData[i];
     for (var _i = 0; _i < script.blocks.length; _i++) {
-      var block = script.blocks[_i];
-      if (codepoint >= block[0] && codepoint <= block[1]) {
+      var block2 = script.blocks[_i];
+      if (codepoint >= block2[0] && codepoint <= block2[1]) {
         return script.name;
       }
     }
@@ -66331,14 +61063,14 @@ var symbols = {
   "math": {},
   "text": {}
 };
-function defineSymbol(mode, font, group, replace2, name, acceptUnicodeChar) {
+function defineSymbol(mode, font, group, replace, name, acceptUnicodeChar) {
   symbols[mode][name] = {
     font,
     group,
-    replace: replace2
+    replace
   };
-  if (acceptUnicodeChar && replace2) {
-    symbols[mode][replace2] = symbols[mode][name];
+  if (acceptUnicodeChar && replace) {
+    symbols[mode][replace] = symbols[mode][name];
   }
 }
 var math = "math";
@@ -67899,9 +62631,9 @@ function buildHTMLUnbreakable(children, options) {
   return body;
 }
 function buildHTML(tree, options) {
-  var tag = null;
+  var tag2 = null;
   if (tree.length === 1 && tree[0].type === "tag") {
-    tag = tree[0].tag;
+    tag2 = tree[0].tag;
     tree = tree[0].body;
   }
   var expression = buildExpression$1(tree, options, "root");
@@ -67939,8 +62671,8 @@ function buildHTML(tree, options) {
     children.push(buildHTMLUnbreakable(parts, options));
   }
   var tagChild;
-  if (tag) {
-    tagChild = buildHTMLUnbreakable(buildExpression$1(tag, options, true));
+  if (tag2) {
+    tagChild = buildHTMLUnbreakable(buildExpression$1(tag2, options, true));
     tagChild.classes = ["tag"];
     children.push(tagChild);
   } else if (eqnNum) {
@@ -69380,17 +64112,17 @@ defineFunction({
       var node = assertNodeType(group[i], "textord");
       number += node.text;
     }
-    var code2 = parseInt(number);
+    var code = parseInt(number);
     var text2;
-    if (isNaN(code2)) {
+    if (isNaN(code)) {
       throw new ParseError("\\@char has non-numeric argument " + number);
-    } else if (code2 < 0 || code2 >= 1114111) {
+    } else if (code < 0 || code >= 1114111) {
       throw new ParseError("\\@char with invalid code point " + number);
-    } else if (code2 <= 65535) {
-      text2 = String.fromCharCode(code2);
+    } else if (code <= 65535) {
+      text2 = String.fromCharCode(code);
     } else {
-      code2 -= 65536;
-      text2 = String.fromCharCode((code2 >> 10) + 55296, (code2 & 1023) + 56320);
+      code -= 65536;
+      text2 = String.fromCharCode((code >> 10) + 55296, (code & 1023) + 56320);
     }
     return {
       type: "textord",
@@ -69694,8 +64426,8 @@ defineFunction({
   }
 });
 var getMetrics = function getMetrics2(symbol, font, mode) {
-  var replace2 = symbols.math[symbol] && symbols.math[symbol].replace;
-  var metrics = getCharacterMetrics(replace2 || symbol, font, mode);
+  var replace = symbols.math[symbol] && symbols.math[symbol].replace;
+  var metrics = getCharacterMetrics(replace || symbol, font, mode);
   if (!metrics) {
     throw new Error("Unsupported symbol " + symbol + " and font size " + font + ".");
   }
@@ -69925,12 +64657,12 @@ var makeStackedDelim = function makeStackedDelim2(delim, heightTotal, center, op
     var path2 = new PathNode(svgLabel, pathStr);
     var width = (viewBoxWidth / 1e3).toFixed(3) + "em";
     var height = (viewBoxHeight / 1e3).toFixed(3) + "em";
-    var svg = new SvgNode([path2], {
+    var svg2 = new SvgNode([path2], {
       "width": width,
       "height": height,
       "viewBox": "0 0 " + viewBoxWidth + " " + viewBoxHeight
     });
-    var wrapper = buildCommon.makeSvgSpan([], [svg], options);
+    var wrapper = buildCommon.makeSvgSpan([], [svg2], options);
     wrapper.height = viewBoxHeight / 1e3;
     wrapper.style.width = width;
     wrapper.style.height = height;
@@ -69968,14 +64700,14 @@ var emPad = 0.08;
 var sqrtSvg = function sqrtSvg2(sqrtName, height, viewBoxHeight, extraVinculum, options) {
   var path2 = sqrtPath(sqrtName, extraVinculum, viewBoxHeight);
   var pathNode = new PathNode(sqrtName, path2);
-  var svg = new SvgNode([pathNode], {
+  var svg2 = new SvgNode([pathNode], {
     // Note: 1000:1 ratio of viewBox to document em width.
     "width": "400em",
     "height": makeEm(height),
     "viewBox": "0 0 400000 " + viewBoxHeight,
     "preserveAspectRatio": "xMinYMin slice"
   });
-  return buildCommon.makeSvgSpan(["hide-tail"], [svg], options);
+  return buildCommon.makeSvgSpan(["hide-tail"], [svg2], options);
 };
 var makeSqrtImage = function makeSqrtImage2(height, options) {
   var newOptions = options.havingBaseSizing();
@@ -71019,18 +65751,18 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
   var colSep;
   var colDescrNum;
   var tagSpans = [];
-  if (group.tags && group.tags.some((tag2) => tag2)) {
+  if (group.tags && group.tags.some((tag3) => tag3)) {
     for (r = 0; r < nr; ++r) {
       var rw = body[r];
       var shift = rw.pos - offset;
-      var tag = group.tags[r];
+      var tag2 = group.tags[r];
       var tagSpan = void 0;
-      if (tag === true) {
+      if (tag2 === true) {
         tagSpan = buildCommon.makeSpan(["eqn-num"], [], options);
-      } else if (tag === false) {
+      } else if (tag2 === false) {
         tagSpan = buildCommon.makeSpan([], [], options);
       } else {
-        tagSpan = buildCommon.makeSpan([], buildExpression$1(tag, options, true), options);
+        tagSpan = buildCommon.makeSpan([], buildExpression$1(tag2, options, true), options);
       }
       tagSpan.depth = rw.depth;
       tagSpan.height = rw.height;
@@ -71168,7 +65900,7 @@ var alignMap = {
 var mathmlBuilder$5 = function mathmlBuilder(group, options) {
   var tbl = [];
   var glue = new mathMLTree.MathNode("mtd", [], ["mtr-glue"]);
-  var tag = new mathMLTree.MathNode("mtd", [], ["mml-eqn-num"]);
+  var tag2 = new mathMLTree.MathNode("mtd", [], ["mml-eqn-num"]);
   for (var i = 0; i < group.body.length; i++) {
     var rw = group.body[i];
     var row = [];
@@ -71179,9 +65911,9 @@ var mathmlBuilder$5 = function mathmlBuilder(group, options) {
       row.unshift(glue);
       row.push(glue);
       if (group.leqno) {
-        row.unshift(tag);
+        row.unshift(tag2);
       } else {
-        row.push(tag);
+        row.push(tag2);
       }
     }
     tbl.push(new mathMLTree.MathNode("mtr", row));
@@ -74418,8 +69150,8 @@ class Lexer {
       // active character
     };
   }
-  setCatcode(char, code2) {
-    this.catcodes[char] = code2;
+  setCatcode(char, code) {
+    this.catcodes[char] = code;
   }
   /**
    * This function lexes a single token.
@@ -75558,9 +70290,9 @@ class MacroExpander {
    * argument count.  Or returns `null` if no such macro.
    */
   _getExpansion(name) {
-    var definition2 = this.macros.get(name);
-    if (definition2 == null) {
-      return definition2;
+    var definition = this.macros.get(name);
+    if (definition == null) {
+      return definition;
     }
     if (name.length === 1) {
       var catcode = this.lexer.catcodes[name];
@@ -75568,7 +70300,7 @@ class MacroExpander {
         return;
       }
     }
-    var expansion = typeof definition2 === "function" ? definition2(this) : definition2;
+    var expansion = typeof definition === "function" ? definition(this) : definition;
     if (typeof expansion === "string") {
       var numArgs = 0;
       if (expansion.indexOf("#") !== -1) {
@@ -76171,12 +70903,12 @@ class Parser {
       this.gullet.macros.set("\\color", "\\textcolor");
     }
     try {
-      var parse2 = this.parseExpression(false);
+      var parse = this.parseExpression(false);
       this.expect("EOF");
       if (!this.settings.globalGroup) {
         this.gullet.endGroup();
       }
-      return parse2;
+      return parse;
     } finally {
       this.gullet.endGroups();
     }
@@ -76190,10 +70922,10 @@ class Parser {
     this.consume();
     this.gullet.pushToken(new Token("}"));
     this.gullet.pushTokens(tokens);
-    var parse2 = this.parseExpression(false);
+    var parse = this.parseExpression(false);
     this.expect("}");
     this.nextToken = oldToken;
-    return parse2;
+    return parse;
   }
   /**
    * Parses an "expression", which is a list of atoms.
@@ -77063,229 +71795,90 @@ var katex = {
    */
   __domTree
 };
-var findEndOfMath = function findEndOfMath2(delimiter2, text2, startIndex) {
-  var index = startIndex;
-  var braceLevel = 0;
-  var delimLength = delimiter2.length;
-  while (index < text2.length) {
-    var character = text2[index];
-    if (braceLevel <= 0 && text2.slice(index, index + delimLength) === delimiter2) {
-      return index;
-    } else if (character === "\\") {
-      index++;
-    } else if (character === "{") {
-      braceLevel++;
-    } else if (character === "}") {
-      braceLevel--;
+const katexBlockExtension = {
+  name: "katexBlock",
+  level: "block",
+  start(src) {
+    const match = src.match(/(\${2}|\\\[)/);
+    return match ? match.index : -1;
+  },
+  tokenizer(src) {
+    const rule1 = /^\${2}([\s\S]+?)\${2}/;
+    const match1 = rule1.exec(src);
+    if (match1) {
+      const token = {
+        type: "katexBlock",
+        raw: match1[0],
+        text: match1[1].trim(),
+        displayMode: true
+      };
+      return token;
     }
-    index++;
-  }
-  return -1;
-};
-var escapeRegex = function escapeRegex2(string2) {
-  return string2.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-};
-var amsRegex = /^\\begin{/;
-var splitAtDelimiters = function splitAtDelimiters2(text2, delimiters2) {
-  var index;
-  var data = [];
-  var regexLeft = new RegExp("(" + delimiters2.map((x) => escapeRegex(x.left)).join("|") + ")");
-  while (true) {
-    index = text2.search(regexLeft);
-    if (index === -1) {
-      break;
+    const rule2 = /^\\\[([\s\S]+?)\\\]/;
+    const match2 = rule2.exec(src);
+    if (match2) {
+      const token = {
+        type: "katexBlock",
+        raw: match2[0],
+        text: match2[1].trim(),
+        displayMode: true
+      };
+      return token;
     }
-    if (index > 0) {
-      data.push({
-        type: "text",
-        data: text2.slice(0, index)
+    return void 0;
+  },
+  renderer(token) {
+    if (token.type === "katexBlock") {
+      return katex.renderToString(token.text, {
+        throwOnError: false,
+        displayMode: token.displayMode
       });
-      text2 = text2.slice(index);
     }
-    var i = delimiters2.findIndex((delim) => text2.startsWith(delim.left));
-    index = findEndOfMath(delimiters2[i].right, text2, delimiters2[i].left.length);
-    if (index === -1) {
-      break;
-    }
-    var rawData = text2.slice(0, index + delimiters2[i].right.length);
-    var math2 = amsRegex.test(rawData) ? rawData : text2.slice(delimiters2[i].left.length, index);
-    data.push({
-      type: "math",
-      data: math2,
-      rawData,
-      display: delimiters2[i].display
-    });
-    text2 = text2.slice(index + delimiters2[i].right.length);
-  }
-  if (text2 !== "") {
-    data.push({
-      type: "text",
-      data: text2
-    });
-  }
-  return data;
-};
-var renderMathInText = function renderMathInText2(text2, optionsCopy) {
-  var data = splitAtDelimiters(text2, optionsCopy.delimiters);
-  if (data.length === 1 && data[0].type === "text") {
-    return null;
-  }
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < data.length; i++) {
-    if (data[i].type === "text") {
-      fragment.appendChild(document.createTextNode(data[i].data));
-    } else {
-      var span = document.createElement("span");
-      var math2 = data[i].data;
-      optionsCopy.displayMode = data[i].display;
-      try {
-        if (optionsCopy.preProcess) {
-          math2 = optionsCopy.preProcess(math2);
-        }
-        katex.render(math2, span, optionsCopy);
-      } catch (e) {
-        if (!(e instanceof katex.ParseError)) {
-          throw e;
-        }
-        optionsCopy.errorCallback("KaTeX auto-render: Failed to parse `" + data[i].data + "` with ", e);
-        fragment.appendChild(document.createTextNode(data[i].rawData));
-        continue;
-      }
-      fragment.appendChild(span);
-    }
-  }
-  return fragment;
-};
-var renderElem = function renderElem2(elem, optionsCopy) {
-  for (var i = 0; i < elem.childNodes.length; i++) {
-    var childNode = elem.childNodes[i];
-    if (childNode.nodeType === 3) {
-      var textContentConcat = childNode.textContent;
-      var sibling = childNode.nextSibling;
-      var nSiblings = 0;
-      while (sibling && sibling.nodeType === Node.TEXT_NODE) {
-        textContentConcat += sibling.textContent;
-        sibling = sibling.nextSibling;
-        nSiblings++;
-      }
-      var frag = renderMathInText(textContentConcat, optionsCopy);
-      if (frag) {
-        for (var j = 0; j < nSiblings; j++) {
-          childNode.nextSibling.remove();
-        }
-        i += frag.childNodes.length - 1;
-        elem.replaceChild(frag, childNode);
-      } else {
-        i += nSiblings;
-      }
-    } else if (childNode.nodeType === 1) {
-      (function() {
-        var className = " " + childNode.className + " ";
-        var shouldRender = optionsCopy.ignoredTags.indexOf(childNode.nodeName.toLowerCase()) === -1 && optionsCopy.ignoredClasses.every((x) => className.indexOf(" " + x + " ") === -1);
-        if (shouldRender) {
-          renderElem2(childNode, optionsCopy);
-        }
-      })();
-    }
+    return void 0;
   }
 };
-var renderMathInElement = function renderMathInElement2(elem, options) {
-  if (!elem) {
-    throw new Error("No element provided to render");
-  }
-  var optionsCopy = {};
-  for (var option in options) {
-    if (options.hasOwnProperty(option)) {
-      optionsCopy[option] = options[option];
+const katexInlineExtension = {
+  name: "katexInline",
+  level: "inline",
+  start(src) {
+    const match = src.match(/(\$|\\\()/);
+    return match ? match.index : -1;
+  },
+  tokenizer(src) {
+    const rule1 = /^\$([^$]+?)\$/;
+    const match1 = rule1.exec(src);
+    if (match1) {
+      const token = {
+        type: "katexInline",
+        raw: match1[0],
+        text: match1[1].trim(),
+        displayMode: false
+      };
+      return token;
     }
-  }
-  optionsCopy.delimiters = optionsCopy.delimiters || [
-    {
-      left: "$$",
-      right: "$$",
-      display: true
-    },
-    {
-      left: "\\(",
-      right: "\\)",
-      display: false
-    },
-    // LaTeX uses $…$, but it ruins the display of normal `$` in text:
-    // {left: "$", right: "$", display: false},
-    // $ must come after $$
-    // Render AMS environments even if outside $$…$$ delimiters.
-    {
-      left: "\\begin{equation}",
-      right: "\\end{equation}",
-      display: true
-    },
-    {
-      left: "\\begin{align}",
-      right: "\\end{align}",
-      display: true
-    },
-    {
-      left: "\\begin{alignat}",
-      right: "\\end{alignat}",
-      display: true
-    },
-    {
-      left: "\\begin{gather}",
-      right: "\\end{gather}",
-      display: true
-    },
-    {
-      left: "\\begin{CD}",
-      right: "\\end{CD}",
-      display: true
-    },
-    {
-      left: "\\[",
-      right: "\\]",
-      display: true
+    const rule2 = /^\\\(([\s\S]+?)\\\)/;
+    const match2 = rule2.exec(src);
+    if (match2) {
+      const token = {
+        type: "katexInline",
+        raw: match2[0],
+        text: match2[1].trim(),
+        displayMode: false
+      };
+      return token;
     }
-  ];
-  optionsCopy.ignoredTags = optionsCopy.ignoredTags || ["script", "noscript", "style", "textarea", "pre", "code", "option"];
-  optionsCopy.ignoredClasses = optionsCopy.ignoredClasses || [];
-  optionsCopy.errorCallback = optionsCopy.errorCallback || console.error;
-  optionsCopy.macros = optionsCopy.macros || {};
-  renderElem(elem, optionsCopy);
+    return void 0;
+  },
+  renderer(token) {
+    if (token.type === "katexInline") {
+      return katex.renderToString(token.text, {
+        throwOnError: false,
+        displayMode: token.displayMode
+      });
+    }
+    return void 0;
+  }
 };
-function containsHTML(str) {
-  const a = document.createElement("div");
-  a.innerHTML = str;
-  for (var c = a.childNodes, i = c.length; i--; ) {
-    if (c[i].nodeType == 1) return true;
-  }
-  return false;
-}
-function containsMarkdownFormatting(input) {
-  const markdownPatterns = [
-    /(\*\*.*?\*\*)|(\_\_.*?\_\_)/,
-    // Bold
-    /(\*.*?\*)|(\_.*?\_)/,
-    // Italics
-    /(`.*?`)/,
-    // Inline code
-    /(\!\[.*?\]\(.*?\))|(\[.*?\]\(.*?\))/,
-    // Images and links
-    /(\>\s.*?)/,
-    // Blockquote
-    /(\s*[-*+] .*)/,
-    // Unordered list
-    /(\s*\d+\.\s.*?)/,
-    // Ordered list
-    /(\[\^.*?\]:\s.*?)/,
-    // Footnotes
-    /(\s*`{3}.*?`{3})/s,
-    // Fenced code blocks
-    /(\s*~~~.*?~~~)/s,
-    // Fenced code blocks (tilde)
-    /(\|.*?\|(\|[-:]+[-|:]*)?(\|.*?\|)+)/
-    // Tables
-  ];
-  return markdownPatterns.some((pattern) => pattern.test(input));
-}
 const _sfc_main$9 = /* @__PURE__ */ defineComponent({
   __name: "button",
   props: {
@@ -77333,8 +71926,30 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
     const appOptions = appOptionsSingleton.getOptions();
     const props = __props;
     const showFullText = ref(false);
-    function getLinkyfiedSourceContent() {
-      return linkifyHtml(props.footnote.content, { target: "_blank" });
+    purify.addHook("afterSanitizeAttributes", (node) => {
+      if (node.tagName === "A") {
+        node.setAttribute("rel", "noreferrer");
+        node.setAttribute("target", "_blank");
+      }
+    });
+    const marked2 = new Marked({
+      ...markedHighlight({
+        emptyLangClass: "hljs",
+        langPrefix: "hljs language-",
+        highlight(code, lang, info) {
+          const language = HighlightJS.getLanguage(lang) ? lang : "plaintext";
+          return HighlightJS.highlight(code, { language }).value;
+        }
+      }),
+      hooks: {
+        postprocess: (html2) => purify.sanitize(html2)
+      },
+      extensions: [katexBlockExtension, katexInlineExtension],
+      gfm: true
+    });
+    function getMarkUp() {
+      let output = marked2.parse(props.footnote.content);
+      return output;
     }
     const contentTxt = ref(null);
     function isClamped() {
@@ -77362,7 +71977,7 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
             })
           }, [
             createElementVNode("span", {
-              innerHTML: getLinkyfiedSourceContent()
+              innerHTML: getMarkUp()
             }, null, 8, _hoisted_5$2)
           ], 6),
           props.footnote.content && unref(appOptions).preferences.messages.footNotes.clampSourceContent && !showFullText.value && isClamped() ? (openBlock(), createElementBlock("a", {
@@ -77405,49 +72020,34 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const appOptions = appOptionsSingleton.getOptions();
     const props = __props;
-    const whiteSpaceStyle = ref("pre-line");
     const messageContentWrapper = ref();
-    function getMarkUp() {
-      let output = props.message.text;
-      if (props.message.author !== MessageAuthor.bot) return output;
-      output = output.replace(/【[^】]*】/g, "").replace(/\\\(((?:[^\\]|\\[^)])*?)\\\)/g, (_, math2) => `$${math2.trim()}$`).replace(
-        /\\\[((?:[^\\]|\\[^\]])*?)\\]/g,
-        (_, math2) => `$$${math2.trim().replace(/\n/g, " ")}$$`
-      );
-      if (containsMarkdownFormatting(output)) {
-        whiteSpaceStyle.value = "normal";
-        output = micromark(output, {
-          allowDangerousHtml: true,
-          // Html markup can easily be detected as MD. We need this to allow it and render html properly or to render properly html fragments in MD source
-          extensions: [gfm()],
-          htmlExtensions: [gfmHtml()]
-        });
-      } else if (containsHTML(output)) {
-        whiteSpaceStyle.value = "normal";
-      } else {
-        whiteSpaceStyle.value = "pre-line";
-        output = linkifyHtml(output, { target: "_blank" });
+    purify.addHook("afterSanitizeAttributes", (node) => {
+      if (node.tagName === "A") {
+        node.setAttribute("rel", "noreferrer");
+        node.setAttribute("target", "_blank");
       }
-      setTimeout(() => {
-        highlightAll();
-        copyButtonsInit();
-      });
-      return output;
-    }
-    function highlightAll() {
-      messageContentWrapper.value.querySelectorAll("code").forEach((e) => {
-        if (!e.dataset.highlighted) {
-          HighlightJS.highlightElement(e);
+    });
+    const marked2 = new Marked({
+      ...markedHighlight({
+        emptyLangClass: "hljs",
+        langPrefix: "hljs language-",
+        highlight(code, lang, info) {
+          const language = HighlightJS.getLanguage(lang) ? lang : "plaintext";
+          return HighlightJS.highlight(code, { language }).value;
         }
-      });
-      renderMathInElement(messageContentWrapper.value, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false },
-          { left: "\\(", right: "\\)", display: false },
-          { left: "\\[", right: "\\]", display: true }
-        ]
-      });
+      }),
+      hooks: {
+        postprocess: (html2) => purify.sanitize(html2)
+      },
+      extensions: [katexBlockExtension, katexInlineExtension],
+      gfm: true
+    });
+    function getMarkUp() {
+      let output = marked2.parse(props.message.text);
+      setTimeout(() => {
+        copyButtonsInit();
+      }, 100);
+      return output;
     }
     function copyButtonsInit() {
       messageContentWrapper.value.querySelectorAll("pre:has(> code)").forEach((preEl) => {
@@ -77486,9 +72086,8 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent({
           ref: messageContentWrapper,
           class: "tvk-message-content-wrapper",
           innerHTML: getMarkUp(),
-          style: normalizeStyle({ "white-space": whiteSpaceStyle.value }),
           tabindex: "1"
-        }, null, 12, _hoisted_1$3),
+        }, null, 8, _hoisted_1$3),
         ((_a = props.message.footnotes) == null ? void 0 : _a.length) && unref(appOptions).preferences.messages.footNotes.display && !unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (openBlock(), createBlock(_sfc_main$7, {
           key: 0,
           footnotes: props.message.footnotes

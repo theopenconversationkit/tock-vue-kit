@@ -123,11 +123,11 @@
   );
 }
 
-@media only screen and (prefers-color-scheme: dark) {
-  :root:not([data-theme]):not([data-bs-theme]) {
-    @include dark-mode;
-  }
-}
+// @media only screen and (prefers-color-scheme: dark) {
+//   :root:not([data-theme]):not([data-bs-theme]) {
+//     @include dark-mode;
+//   }
+// }
 
 [data-theme="dark"],
 [data-bs-theme="dark"] {
