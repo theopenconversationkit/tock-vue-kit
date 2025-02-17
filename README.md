@@ -308,12 +308,13 @@ TockVueKit.renderChat(
 
 #### Messages
 
-| Property name     | Description                                                        | Type                    | Default |
-| ----------------- | ------------------------------------------------------------------ | ----------------------- | ------- |
-| hideIfNoMessages  | Hide messages container if there is no messages to display.        | Boolean                 | true    |
-| clearOnNewRequest | If true, deletes previous messages when a new user request is sent | Boolean                 | false   |
-| message           | Message options                                                    | [Message](#Message)     |         |
-| footNotes         | Footnotes options                                                  | [FootNotes](#FootNotes) |         |
+| Property name             | Description                                                                                                                                                                                                                                                                                                        | Type                    | Default |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- | ------- |
+| hideIfNoMessages          | Hide messages container if there is no messages to display.                                                                                                                                                                                                                                                        | Boolean                 | true    |
+| clearOnNewRequest         | If true, deletes previous messages when a new user request is sent                                                                                                                                                                                                                                                 | Boolean                 | false   |
+| parseBotResponsesMarkdown | If true, the text of the bot's responses is parsed and transformed into html markup if it contains markdown. This includes syntax highlighting of code blocks and display of Latex and MathML content. If false, the textual content of the bot's responses is displayed in plain text, even if it's html content. | Boolean                 | true    |
+| message                   | Message options                                                                                                                                                                                                                                                                                                    | [Message](#Message)     |         |
+| footNotes                 | Footnotes options                                                                                                                                                                                                                                                                                                  | [FootNotes](#FootNotes) |         |
 
 ##### Message
 
@@ -350,13 +351,14 @@ TockVueKit.renderChat(
 
 Footnotes can optionally be added to Rag messages.
 
-| Property name             | Description                                                                                                                   | Type    | Default |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
-| display                   | For RAG responses, display the sources used to generate the answer if any.                                                    | Boolean | true    |
-| requireSourcesContent     | For RAG responses, request the textual content of the source in addition to the source title and link.                        | Boolean | false   |
-| clampSourceContent        | For RAG responses with sources content, truncate the textual source content.                                                  | Boolean | true    |
-| clampSourceContentNbLines | For RAG responses with sources content, number of lines after which to truncate text.                                         | Integer | 2       |
-| displayOnMessageSide      | For RAG responses, any sources are displayed on one side of the message response rather than directly following the response. | Boolean | false   |
+| Property name             | Description                                                                                                                                                         | Type    | Default |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
+| display                   | For RAG responses, display the sources used to generate the answer if any.                                                                                          | Boolean | true    |
+| requireSourcesContent     | For RAG responses, request the textual content of the source in addition to the source title and link.                                                              | Boolean | false   |
+| parseContentMarkdown      | If true, the text content of footnotes is parsed and transformed into html markup if it contains markdown. If false, content of sources is displayed in plain text. | Boolean | true    |
+| clampSourceContent        | For RAG responses with sources content, truncate the textual source content.                                                                                        | Boolean | true    |
+| clampSourceContentNbLines | For RAG responses with sources content, number of lines after which to truncate text.                                                                               | Integer | 2       |
+| displayOnMessageSide      | For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.                                       | Boolean | false   |
 
 #### QuestionBar
 

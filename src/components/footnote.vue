@@ -3,17 +3,18 @@ import { ref } from "vue";
 
 import { Marked } from "marked";
 import DOMPurify from "dompurify";
-
-import "katex/dist/katex.min.css";
+import { sanitizeURLSync } from "url-sanitizer";
 
 import hljs from "highlight.js";
-import "highlight.js/styles/default.min.css";
+
 import { markedHighlight } from "marked-highlight";
 
+import "katex/dist/katex.min.css";
 import { katexBlockExtension, katexInlineExtension } from "../utils/markup";
 
 import type { MessageFootnote } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
+
 const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps<{
@@ -36,7 +37,6 @@ const marked = new Marked({
     highlight(code, lang, info) {
       const language = hljs.getLanguage(lang) ? lang : "plaintext";
       return hljs.highlight(code, { language }).value;
-      // return hljs.highlightAuto(code).value;
     },
   }),
   hooks: {
@@ -58,13 +58,17 @@ function isClamped(): boolean {
   if (!contentTxt.value) return false;
   return contentTxt.value.offsetHeight < contentTxt.value.scrollHeight;
 }
+
+function sanitizeUrl(url: string): string | undefined {
+  return sanitizeURLSync(url) || undefined;
+}
 </script>
 
 <template>
   <div class="tvk-footnote">
     <a
       v-if="props.footnote!.url"
-      :href="props.footnote!.url"
+      :href="sanitizeUrl(props.footnote!.url)"
       target="_blank"
       class="tvk-footnote-title"
     >
@@ -88,7 +92,14 @@ function isClamped(): boolean {
             !showFullText,
         }"
       >
-        <span v-html="getMarkUp()"></span>
+        <template
+          v-if="!appOptions.preferences.messages.footNotes.parseContentMarkdown"
+          >{{ props.footnote!.content }}</template
+        >
+        <span
+          v-if="appOptions.preferences.messages.footNotes.parseContentMarkdown"
+          v-html="getMarkUp()"
+        ></span>
       </div>
 
       <a

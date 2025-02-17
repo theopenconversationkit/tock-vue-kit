@@ -78,6 +78,15 @@ const preferences: Preferences = {
         "If true, deletes previous messages when a new user request is sent",
       index: 21,
     },
+    parseBotResponsesMarkdown: {
+      title: "Markdown evaluation of bot responses",
+      type: "boolean",
+      default: true,
+      description:
+        "If true, the text of the bot's responses is parsed and transformed into html markup if it contains markdown. This includes syntax highlighting of code blocks and display of Latex and MathML content.",
+      index: 21,
+    },
+
     message: {
       hideUserMessages: {
         title: "Hide user messages",
@@ -169,13 +178,25 @@ const preferences: Preferences = {
         index: 51,
         conditions: ["preferences.messages.footNotes.display"],
       },
+      parseContentMarkdown: {
+        title: "Markdown evaluation of footnotes content",
+        type: "boolean",
+        default: true,
+        description:
+          "If true, the text content of footnotes is parsed and transformed into html markup if it contains markdown.",
+        index: 52,
+        conditions: [
+          "preferences.messages.footNotes.display",
+          "preferences.messages.footNotes.requireSourcesContent",
+        ],
+      },
       clampSourceContent: {
         title: "Clamp content of sources",
         type: "boolean",
         default: true,
         description:
           "For RAG answers with sources content, truncate the textual source content.",
-        index: 52,
+        index: 53,
         conditions: [
           "preferences.messages.footNotes.display",
           "preferences.messages.footNotes.requireSourcesContent",
@@ -187,7 +208,7 @@ const preferences: Preferences = {
         default: 2,
         description:
           "For RAG answers with sources content, number of lines after which to truncate text.",
-        index: 53,
+        index: 54,
         conditions: [
           "preferences.messages.footNotes.display",
           "preferences.messages.footNotes.requireSourcesContent",
@@ -200,7 +221,7 @@ const preferences: Preferences = {
         default: false,
         description:
           "For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.",
-        index: 54,
+        index: 55,
         conditions: ["preferences.messages.footNotes.display"],
       },
     },

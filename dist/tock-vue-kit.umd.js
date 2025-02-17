@@ -2,9 +2,25 @@
   typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("vue")) : typeof define === "function" && define.amd ? define(["exports", "vue"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.TockVueKit = {}, global2.Vue));
 })(this, function(exports2, vue) {
   "use strict";var __defProp = Object.defineProperty;
+var __typeError = (msg) => {
+  throw TypeError(msg);
+};
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
+var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
+var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
+var __privateWrapper = (obj, member, setter, getter) => ({
+  set _(value) {
+    __privateSet(obj, member, value, setter);
+  },
+  get _() {
+    return __privateGet(obj, member, getter);
+  }
+});
 
+  var _e, _a, _e2, _t, _b;
   function set(target, key, val) {
     if (Array.isArray(target)) {
       target.length = Math.max(target.length, key);
@@ -33,14 +49,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   let supported;
   let perf;
   function isPerformanceSupported() {
-    var _a;
+    var _a2;
     if (supported !== void 0) {
       return supported;
     }
     if (typeof window !== "undefined" && window.performance) {
       supported = true;
       perf = window.performance;
-    } else if (typeof globalThis !== "undefined" && ((_a = globalThis.perf_hooks) === null || _a === void 0 ? void 0 : _a.performance)) {
+    } else if (typeof globalThis !== "undefined" && ((_a2 = globalThis.perf_hooks) === null || _a2 === void 0 ? void 0 : _a2.performance)) {
       supported = true;
       perf = globalThis.perf_hooks.performance;
     } else {
@@ -1567,6 +1583,13 @@ This will fail in production.`);
         description: "If true, deletes previous messages when a new user request is sent",
         index: 21
       },
+      parseBotResponsesMarkdown: {
+        title: "Markdown evaluation of bot responses",
+        type: "boolean",
+        default: true,
+        description: "If true, the text of the bot's responses is parsed and transformed into html markup if it contains markdown. This includes syntax highlighting of code blocks and display of Latex and MathML content.",
+        index: 21
+      },
       message: {
         hideUserMessages: {
           title: "Hide user messages",
@@ -1653,12 +1676,23 @@ This will fail in production.`);
           index: 51,
           conditions: ["preferences.messages.footNotes.display"]
         },
+        parseContentMarkdown: {
+          title: "Markdown evaluation of footnotes content",
+          type: "boolean",
+          default: true,
+          description: "If true, the text content of footnotes is parsed and transformed into html markup if it contains markdown.",
+          index: 52,
+          conditions: [
+            "preferences.messages.footNotes.display",
+            "preferences.messages.footNotes.requireSourcesContent"
+          ]
+        },
         clampSourceContent: {
           title: "Clamp content of sources",
           type: "boolean",
           default: true,
           description: "For RAG answers with sources content, truncate the textual source content.",
-          index: 52,
+          index: 53,
           conditions: [
             "preferences.messages.footNotes.display",
             "preferences.messages.footNotes.requireSourcesContent"
@@ -1669,7 +1703,7 @@ This will fail in production.`);
           type: "number",
           default: 2,
           description: "For RAG answers with sources content, number of lines after which to truncate text.",
-          index: 53,
+          index: 54,
           conditions: [
             "preferences.messages.footNotes.display",
             "preferences.messages.footNotes.requireSourcesContent",
@@ -1681,7 +1715,7 @@ This will fail in production.`);
           type: "boolean",
           default: false,
           description: "For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.",
-          index: 54,
+          index: 55,
           conditions: ["preferences.messages.footNotes.display"]
         }
       }
@@ -2053,7 +2087,7 @@ This will fail in production.`);
     };
   });
   const _hoisted_1$6 = ["aria-label"];
-  const _hoisted_2$5 = ["src"];
+  const _hoisted_2$6 = ["src"];
   const _hoisted_3$3 = ["maxlength", "placeholder"];
   const _hoisted_4$3 = { class: "tvk-question-bar-chars-count" };
   const _hoisted_5$3 = ["disabled", "aria-label"];
@@ -2087,12 +2121,12 @@ This will fail in production.`);
         mainStore.clearHistory();
       }
       return (_ctx, _cache) => {
-        var _a;
+        var _a2;
         return vue.openBlock(), vue.createElementBlock("div", {
           class: "tvk-question-bar",
           onClick: handleClick
         }, [
-          ((_a = vue.unref(appOptions).preferences.questionBar.clearHistory) == null ? void 0 : _a.display) ? (vue.openBlock(), vue.createElementBlock("button", {
+          ((_a2 = vue.unref(appOptions).preferences.questionBar.clearHistory) == null ? void 0 : _a2.display) ? (vue.openBlock(), vue.createElementBlock("button", {
             key: 0,
             class: "tvk-btn tvk-question-bar-btn-clear-history",
             "aria-label": vue.unref(appOptions).wording.questionBar.clearHistoryAriaLabel,
@@ -2109,7 +2143,7 @@ This will fail in production.`);
                 width: vue.unref(appOptions).preferences.questionBar.clearHistory.image.width,
                 height: vue.unref(appOptions).preferences.questionBar.clearHistory.image.height
               })
-            }, null, 12, _hoisted_2$5)) : vue.createCommentVNode("", true),
+            }, null, 12, _hoisted_2$6)) : vue.createCommentVNode("", true),
             vue.createTextVNode(" " + vue.toDisplayString(vue.unref(appOptions).wording.questionBar.clearHistory), 1)
           ], 8, _hoisted_1$6)) : vue.createCommentVNode("", true),
           vue.createElementVNode("form", {
@@ -2403,7 +2437,7 @@ This will fail in production.`);
     return href;
   }
   function splitCells(tableRow, count) {
-    var _a;
+    var _a2;
     const row = tableRow.replace(other.findPipe, (match, offset, str) => {
       let escaped = false;
       let curr = offset;
@@ -2419,7 +2453,7 @@ This will fail in production.`);
     if (!cells[0].trim()) {
       cells.shift();
     }
-    if (cells.length > 0 && !((_a = cells.at(-1)) == null ? void 0 : _a.trim())) {
+    if (cells.length > 0 && !((_a2 = cells.at(-1)) == null ? void 0 : _a2.trim())) {
       cells.pop();
     }
     if (count) {
@@ -2451,17 +2485,17 @@ This will fail in production.`);
     }
     return str.slice(0, l - suffLen);
   }
-  function findClosingBracket(str, b) {
-    if (str.indexOf(b[1]) === -1) {
+  function findClosingBracket(str, b2) {
+    if (str.indexOf(b2[1]) === -1) {
       return -1;
     }
     let level = 0;
     for (let i2 = 0; i2 < str.length; i2++) {
       if (str[i2] === "\\") {
         i2++;
-      } else if (str[i2] === b[0]) {
+      } else if (str[i2] === b2[0]) {
         level++;
-      } else if (str[i2] === b[1]) {
+      } else if (str[i2] === b2[1]) {
         level--;
         if (level < 0) {
           return i2;
@@ -2842,7 +2876,7 @@ ${currentText}` : currentText;
       }
     }
     table(src) {
-      var _a;
+      var _a2;
       const cap = this.rules.block.table.exec(src);
       if (!cap) {
         return;
@@ -2852,7 +2886,7 @@ ${currentText}` : currentText;
       }
       const headers = splitCells(cap[1]);
       const aligns = cap[2].replace(this.rules.other.tableAlignChars, "").split("|");
-      const rows = ((_a = cap[3]) == null ? void 0 : _a.trim()) ? cap[3].replace(this.rules.other.tableRowBlankLine, "").split("\n") : [];
+      const rows = ((_a2 = cap[3]) == null ? void 0 : _a2.trim()) ? cap[3].replace(this.rules.other.tableRowBlankLine, "").split("\n") : [];
       const item = {
         type: "table",
         raw: cap[0],
@@ -3140,7 +3174,7 @@ ${currentText}` : currentText;
       }
     }
     url(src) {
-      var _a;
+      var _a2;
       let cap;
       if (cap = this.rules.inline.url.exec(src)) {
         let text2, href;
@@ -3151,7 +3185,7 @@ ${currentText}` : currentText;
           let prevCapZero;
           do {
             prevCapZero = cap[0];
-            cap[0] = ((_a = this.rules.inline._backpedal.exec(cap[0])) == null ? void 0 : _a[0]) ?? "";
+            cap[0] = ((_a2 = this.rules.inline._backpedal.exec(cap[0])) == null ? void 0 : _a2[0]) ?? "";
           } while (prevCapZero !== cap[0]);
           text2 = cap[0];
           if (cap[1] === "www.") {
@@ -3263,13 +3297,13 @@ ${currentText}` : currentText;
       return this.tokens;
     }
     blockTokens(src, tokens = [], lastParagraphClipped = false) {
-      var _a, _b, _c;
+      var _a2, _b2, _c;
       if (this.options.pedantic) {
         src = src.replace(other.tabCharGlobal, "    ").replace(other.spaceLine, "");
       }
       while (src) {
         let token;
-        if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.block) == null ? void 0 : _b.some((extTokenizer) => {
+        if ((_b2 = (_a2 = this.options.extensions) == null ? void 0 : _a2.block) == null ? void 0 : _b2.some((extTokenizer) => {
           if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
             src = src.substring(token.raw.length);
             tokens.push(token);
@@ -3419,7 +3453,7 @@ ${currentText}` : currentText;
      * Lexing/Compiling
      */
     inlineTokens(src, tokens = []) {
-      var _a, _b, _c;
+      var _a2, _b2, _c;
       let maskedSrc = src;
       let match = null;
       if (this.tokens.links) {
@@ -3446,7 +3480,7 @@ ${currentText}` : currentText;
         }
         keepPrevChar = false;
         let token;
-        if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.inline) == null ? void 0 : _b.some((extTokenizer) => {
+        if ((_b2 = (_a2 = this.options.extensions) == null ? void 0 : _a2.inline) == null ? void 0 : _b2.some((extTokenizer) => {
           if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
             src = src.substring(token.raw.length);
             tokens.push(token);
@@ -3566,8 +3600,8 @@ ${currentText}` : currentText;
       return "";
     }
     code({ text: text2, lang, escaped }) {
-      var _a;
-      const langString = (_a = (lang || "").match(other.notSpaceStart)) == null ? void 0 : _a[0];
+      var _a2;
+      const langString = (_a2 = (lang || "").match(other.notSpaceStart)) == null ? void 0 : _a2[0];
       const code = text2.replace(other.endingNewline, "") + "\n";
       if (!langString) {
         return "<pre><code>" + (escaped ? code : escape$3(code, true)) + "</code></pre>\n";
@@ -3594,8 +3628,8 @@ ${body}</blockquote>
       const ordered = token.ordered;
       const start = token.start;
       let body = "";
-      for (let j = 0; j < token.items.length; j++) {
-        const item = token.items[j];
+      for (let j2 = 0; j2 < token.items.length; j2++) {
+        const item = token.items[j2];
         body += this.listitem(item);
       }
       const type = ordered ? "ol" : "ul";
@@ -3603,12 +3637,12 @@ ${body}</blockquote>
       return "<" + type + startAttr + ">\n" + body + "</" + type + ">\n";
     }
     listitem(item) {
-      var _a;
+      var _a2;
       let itemBody = "";
       if (item.task) {
         const checkbox = this.checkbox({ checked: !!item.checked });
         if (item.loose) {
-          if (((_a = item.tokens[0]) == null ? void 0 : _a.type) === "paragraph") {
+          if (((_a2 = item.tokens[0]) == null ? void 0 : _a2.type) === "paragraph") {
             item.tokens[0].text = checkbox + " " + item.tokens[0].text;
             if (item.tokens[0].tokens && item.tokens[0].tokens.length > 0 && item.tokens[0].tokens[0].type === "text") {
               item.tokens[0].tokens[0].text = checkbox + " " + escape$3(item.tokens[0].tokens[0].text);
@@ -3640,16 +3674,16 @@ ${body}</blockquote>
     table(token) {
       let header = "";
       let cell = "";
-      for (let j = 0; j < token.header.length; j++) {
-        cell += this.tablecell(token.header[j]);
+      for (let j2 = 0; j2 < token.header.length; j2++) {
+        cell += this.tablecell(token.header[j2]);
       }
       header += this.tablerow({ text: cell });
       let body = "";
-      for (let j = 0; j < token.rows.length; j++) {
-        const row = token.rows[j];
+      for (let j2 = 0; j2 < token.rows.length; j2++) {
+        const row = token.rows[j2];
         cell = "";
-        for (let k = 0; k < row.length; k++) {
-          cell += this.tablecell(row[k]);
+        for (let k2 = 0; k2 < row.length; k2++) {
+          cell += this.tablecell(row[k2]);
         }
         body += this.tablerow({ text: cell });
       }
@@ -3778,11 +3812,11 @@ ${text2}</tr>
      * Parse Loop
      */
     parse(tokens, top = true) {
-      var _a, _b;
+      var _a2, _b2;
       let out = "";
       for (let i2 = 0; i2 < tokens.length; i2++) {
         const anyToken = tokens[i2];
-        if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.renderers) == null ? void 0 : _b[anyToken.type]) {
+        if ((_b2 = (_a2 = this.options.extensions) == null ? void 0 : _a2.renderers) == null ? void 0 : _b2[anyToken.type]) {
           const genericToken = anyToken;
           const ret = this.options.extensions.renderers[genericToken.type].call({ parser: this }, genericToken);
           if (ret !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "paragraph", "text"].includes(genericToken.type)) {
@@ -3864,11 +3898,11 @@ ${text2}</tr>
      * Parse Inline Tokens
      */
     parseInline(tokens, renderer = this.renderer) {
-      var _a, _b;
+      var _a2, _b2;
       let out = "";
       for (let i2 = 0; i2 < tokens.length; i2++) {
         const anyToken = tokens[i2];
-        if ((_b = (_a = this.options.extensions) == null ? void 0 : _a.renderers) == null ? void 0 : _b[anyToken.type]) {
+        if ((_b2 = (_a2 = this.options.extensions) == null ? void 0 : _a2.renderers) == null ? void 0 : _b2[anyToken.type]) {
           const ret = this.options.extensions.renderers[anyToken.type].call({ parser: this }, anyToken);
           if (ret !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(anyToken.type)) {
             out += ret || "";
@@ -3991,7 +4025,7 @@ ${text2}</tr>
      * Run callback for every token
      */
     walkTokens(tokens, callback) {
-      var _a, _b;
+      var _a2, _b2;
       let values = [];
       for (const token of tokens) {
         values = values.concat(callback.call(this, token));
@@ -4015,7 +4049,7 @@ ${text2}</tr>
           }
           default: {
             const genericToken = token;
-            if ((_b = (_a = this.defaults.extensions) == null ? void 0 : _a.childTokens) == null ? void 0 : _b[genericToken.type]) {
+            if ((_b2 = (_a2 = this.defaults.extensions) == null ? void 0 : _a2.childTokens) == null ? void 0 : _b2[genericToken.type]) {
               this.defaults.extensions.childTokens[genericToken.type].forEach((childTokens) => {
                 const tokens2 = genericToken[childTokens].flat(Infinity);
                 values = values.concat(this.walkTokens(tokens2, callback));
@@ -6567,12 +6601,12 @@ ${text2}</tr>
         (name) => _highlight(name, code, false)
       );
       results.unshift(plaintext);
-      const sorted = results.sort((a, b) => {
-        if (a.relevance !== b.relevance) return b.relevance - a.relevance;
-        if (a.language && b.language) {
-          if (getLanguage(a.language).supersetOf === b.language) {
+      const sorted = results.sort((a, b2) => {
+        if (a.relevance !== b2.relevance) return b2.relevance - a.relevance;
+        if (a.language && b2.language) {
+          if (getLanguage(a.language).supersetOf === b2.language) {
             return 1;
-          } else if (getLanguage(b.language).supersetOf === a.language) {
+          } else if (getLanguage(b2.language).supersetOf === a.language) {
             return -1;
           }
         }
@@ -15531,7 +15565,7 @@ ${text2}</tr>
   function requireD() {
     if (hasRequiredD) return d_1;
     hasRequiredD = 1;
-    function d(hljs2) {
+    function d2(hljs2) {
       const D_KEYWORDS = {
         $pattern: hljs2.UNDERSCORE_IDENT_RE,
         keyword: "abstract alias align asm assert auto body break byte case cast catch class const continue debug default delete deprecated do else enum export extern final finally for foreach foreach_reverse|10 goto if immutable import in inout int interface invariant is lazy macro mixin module new nothrow out override package pragma private protected public pure ref return scope shared static struct super switch synchronized template this throw try typedef typeid typeof union unittest version void volatile while with __FILE__ __LINE__ __gshared|10 __thread __traits __DATE__ __EOF__ __TIME__ __TIMESTAMP__ __VENDOR__ __VERSION__",
@@ -15641,7 +15675,7 @@ ${text2}</tr>
         ]
       };
     }
-    d_1 = d;
+    d_1 = d2;
     return d_1;
   }
   var markdown_1;
@@ -39640,7 +39674,7 @@ ${text2}</tr>
           "unsafeGetAttrPos",
           "warn",
           "zipAttrsWith"
-        ].map((b) => `builtins\\.${b}`)),
+        ].map((b2) => `builtins\\.${b2}`)),
         relevance: 10
       };
       const IDENTIFIER_REGEX = "[A-Za-z_][A-Za-z0-9_'-]*";
@@ -43581,7 +43615,7 @@ ${text2}</tr>
   function requireQ() {
     if (hasRequiredQ) return q_1;
     hasRequiredQ = 1;
-    function q(hljs2) {
+    function q2(hljs2) {
       const KEYWORDS = {
         $pattern: /(`?)[A-Za-z0-9_]+\b/,
         keyword: "do while select delete by update from",
@@ -43603,7 +43637,7 @@ ${text2}</tr>
         ]
       };
     }
-    q_1 = q;
+    q_1 = q2;
     return q_1;
   }
   var qml_1;
@@ -57727,25 +57761,25 @@ ${text2}</tr>
       return this.size >= 2;
     }
   }
-  var D = 0;
+  var D$1 = 0;
   var Dc = 1;
   var T = 2;
   var Tc = 3;
-  var S = 4;
+  var S$1 = 4;
   var Sc = 5;
   var SS = 6;
   var SSc = 7;
-  var styles = [new Style(D, 0, false), new Style(Dc, 0, true), new Style(T, 1, false), new Style(Tc, 1, true), new Style(S, 2, false), new Style(Sc, 2, true), new Style(SS, 3, false), new Style(SSc, 3, true)];
-  var sup = [S, Sc, S, Sc, SS, SSc, SS, SSc];
+  var styles = [new Style(D$1, 0, false), new Style(Dc, 0, true), new Style(T, 1, false), new Style(Tc, 1, true), new Style(S$1, 2, false), new Style(Sc, 2, true), new Style(SS, 3, false), new Style(SSc, 3, true)];
+  var sup = [S$1, Sc, S$1, Sc, SS, SSc, SS, SSc];
   var sub = [Sc, Sc, Sc, Sc, SSc, SSc, SSc, SSc];
-  var fracNum = [T, Tc, S, Sc, SS, SSc, SS, SSc];
+  var fracNum = [T, Tc, S$1, Sc, SS, SSc, SS, SSc];
   var fracDen = [Tc, Tc, Sc, Sc, SSc, SSc, SSc, SSc];
   var cramp = [Dc, Dc, Tc, Tc, Sc, Sc, SSc, SSc];
-  var text$1 = [D, Dc, T, Tc, T, Tc, T, Tc];
+  var text$1 = [D$1, Dc, T, Tc, T, Tc, T, Tc];
   var Style$1 = {
-    DISPLAY: styles[D],
+    DISPLAY: styles[D$1],
     TEXT: styles[T],
-    SCRIPT: styles[S],
+    SCRIPT: styles[S$1],
     SCRIPTSCRIPT: styles[SS]
   };
   var scriptData = [{
@@ -57820,7 +57854,7 @@ ${text2}</tr>
     return null;
   }
   var allBlocks = [];
-  scriptData.forEach((s) => s.blocks.forEach((b) => allBlocks.push(...b)));
+  scriptData.forEach((s) => s.blocks.forEach((b2) => allBlocks.push(...b2)));
   function supportedCodepoint(codepoint) {
     for (var i2 = 0; i2 < allBlocks.length; i2 += 2) {
       if (codepoint >= allBlocks[i2] && codepoint <= allBlocks[i2 + 1]) {
@@ -61854,18 +61888,18 @@ ${text2}</tr>
     // 0-9 monospace
   ];
   var wideCharacterFont = function wideCharacterFont2(wideChar2, mode) {
-    var H = wideChar2.charCodeAt(0);
-    var L = wideChar2.charCodeAt(1);
-    var codePoint = (H - 55296) * 1024 + (L - 56320) + 65536;
-    var j = mode === "math" ? 0 : 1;
+    var H2 = wideChar2.charCodeAt(0);
+    var L2 = wideChar2.charCodeAt(1);
+    var codePoint = (H2 - 55296) * 1024 + (L2 - 56320) + 65536;
+    var j2 = mode === "math" ? 0 : 1;
     if (119808 <= codePoint && codePoint < 120484) {
       var i2 = Math.floor((codePoint - 119808) / 26);
-      return [wideLatinLetterData[i2][2], wideLatinLetterData[i2][j]];
+      return [wideLatinLetterData[i2][2], wideLatinLetterData[i2][j2]];
     } else if (120782 <= codePoint && codePoint <= 120831) {
       var _i6 = Math.floor((codePoint - 120782) / 10);
-      return [wideNumeralData[_i6][2], wideNumeralData[_i6][j]];
+      return [wideNumeralData[_i6][2], wideNumeralData[_i6][j2]];
     } else if (codePoint === 120485 || codePoint === 120486) {
-      return [wideLatinLetterData[0][2], wideLatinLetterData[0][j]];
+      return [wideLatinLetterData[0][2], wideLatinLetterData[0][j2]];
     } else if (120486 < codePoint && codePoint < 120782) {
       return ["", ""];
     } else {
@@ -63949,13 +63983,13 @@ ${text2}</tr>
     for (var i2 = 0; i2 < parsedRows.length; i2++) {
       var rowNodes = parsedRows[i2];
       var cell = newCell();
-      for (var j = 0; j < rowNodes.length; j++) {
-        if (!isStartOfArrow(rowNodes[j])) {
-          cell.body.push(rowNodes[j]);
+      for (var j2 = 0; j2 < rowNodes.length; j2++) {
+        if (!isStartOfArrow(rowNodes[j2])) {
+          cell.body.push(rowNodes[j2]);
         } else {
           row.push(cell);
-          j += 1;
-          var arrowChar = assertSymbolNodeType(rowNodes[j]).text;
+          j2 += 1;
+          var arrowChar = assertSymbolNodeType(rowNodes[j2]).text;
           var labels = new Array(2);
           labels[0] = {
             type: "ordgroup",
@@ -63971,23 +64005,23 @@ ${text2}</tr>
           else if ("<>AV".indexOf(arrowChar) > -1) {
             for (var labelNum = 0; labelNum < 2; labelNum++) {
               var inLabel = true;
-              for (var k = j + 1; k < rowNodes.length; k++) {
-                if (isLabelEnd(rowNodes[k], arrowChar)) {
+              for (var k2 = j2 + 1; k2 < rowNodes.length; k2++) {
+                if (isLabelEnd(rowNodes[k2], arrowChar)) {
                   inLabel = false;
-                  j = k;
+                  j2 = k2;
                   break;
                 }
-                if (isStartOfArrow(rowNodes[k])) {
-                  throw new ParseError("Missing a " + arrowChar + " character to complete a CD arrow.", rowNodes[k]);
+                if (isStartOfArrow(rowNodes[k2])) {
+                  throw new ParseError("Missing a " + arrowChar + " character to complete a CD arrow.", rowNodes[k2]);
                 }
-                labels[labelNum].body.push(rowNodes[k]);
+                labels[labelNum].body.push(rowNodes[k2]);
               }
               if (inLabel) {
-                throw new ParseError("Missing a " + arrowChar + " character to complete a CD arrow.", rowNodes[j]);
+                throw new ParseError("Missing a " + arrowChar + " character to complete a CD arrow.", rowNodes[j2]);
               }
             }
           } else {
-            throw new ParseError('Expected one of "<>AV=|." after @', rowNodes[j]);
+            throw new ParseError('Expected one of "<>AV=|." after @', rowNodes[j2]);
           }
           var arrow = cdArrow(arrowChar, labels, parser);
           var wrappedArrow = {
@@ -65907,8 +65941,8 @@ ${text2}</tr>
     for (var i2 = 0; i2 < group.body.length; i2++) {
       var rw = group.body[i2];
       var row = [];
-      for (var j = 0; j < rw.length; j++) {
-        row.push(new mathMLTree.MathNode("mtd", [buildGroup(rw[j], options)]));
+      for (var j2 = 0; j2 < rw.length; j2++) {
+        row.push(new mathMLTree.MathNode("mtd", [buildGroup(rw[j2], options)]));
       }
       if (group.tags && group.tags[i2]) {
         row.unshift(glue);
@@ -71909,8 +71943,216 @@ ${text2}</tr>
       };
     }
   });
+  var { DOMPurify: N } = globalThis;
+  var H = /^[\w+/=-]+$/;
+  var S = /data:[\w#&+./;=-]*,/, D = /data:[\w#&+./;=^]*base64,[\w+/=-]+/i, q = /data:[\w#&+./;=-]*,[^\x22]+/g, X = /&#(x(?:00)?[\dA-F]{2}|0?\d{1,3});?/gi, Y = /^(?:application\/(?:[\w#&.;-]+\+)?x|image\/svg\+x|text\/(?:ht|x))ml;?/;
+  var Q = /^[a-z][\da-z+.-]*$/, J = /^(?:ext|web)\+[a-z]+$/, j = /(?:java|vb)script/, A = /(?:java|vb)script|blob/, M = /%(?:22|27|3C|3E)|[\x22\x27<>]/, K = /^%[\dA-F]{2}$/i;
+  var g = (t) => Object.prototype.toString.call(t).slice(8, -1), d = (t) => typeof t == "string" || t instanceof String;
+  var L = [7, 8, 9, 10, 11, 12, 13, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255];
+  var C = ["aaa", "aaas", "about", "acap", "acct", "acd", "acr", "adiumxtra", "adt", "afp", "afs", "aim", "amss", "android", "appdata", "apt", "ar", "ark", "at", "attachment", "aw", "barion", "beshare", "bitcoin", "bitcoincash", "blob", "bluetooth", "bolo", "brid", "browserext", "cabal", "calculator", "callto", "cap", "cast", "casts", "chrome", "chrome-extension", "cid", "coap", "coaps", "com-eventbrite-attendee", "content", "content-type", "crid", "cstr", "cvs", "dab", "dat", "data", "dav", "dhttp", "diaspora", "dict", "did", "dis", "dlna-playcontainer", "dlna-playsingle", "dns", "dntp", "doi", "dpp", "drm", "dtmi", "dtn", "dvb", "dvx", "dweb", "ed2k", "eid", "elsi", "embedded", "ens", "ethereum", "example", "facetime", "feed", "feedready", "fido", "file", "finger", "first-run-pen-experience", "fish", "fm", "ftp", "fuchsia-pkg", "geo", "gg", "git", "gitoid", "gizmoproject", "go", "gopher", "graph", "gtalk", "h323", "ham", "hcap", "hcp", "hs20", "http", "https", "hxxp", "hxxps", "hydrazone", "hyper", "iax", "icap", "icon", "im", "imap", "info", "iotdisco", "ipfs", "ipn", "ipns", "ipp", "ipps", "irc", "irc6", "ircs", "iris", "iris.beep", "iris.lwz", "iris.xpc", "iris.xpcs", "isostore", "itms", "jabber", "jar", "jms", "keyparc", "lastfm", "lbry", "ldap", "ldaps", "leaptofrogans", "lid", "lorawan", "lpa", "lvlt", "machineProvisioningProgressReporter", "magnet", "mailto", "maps", "market", "matrix", "message", "microsoft.windows.camera", "microsoft.windows.camera.multipicker", "microsoft.windows.camera.picker", "mid", "mms", "mongodb", "moz", "moz-extension", "ms-access", "ms-appinstaller", "ms-browser-extension", "ms-calculator", "ms-drive-to", "ms-enrollment", "ms-excel", "ms-eyecontrolspeech", "ms-gamebarservices", "ms-gamingoverlay", "ms-getoffice", "ms-help", "ms-infopath", "ms-inputapp", "ms-launchremotedesktop", "ms-lockscreencomponent-config", "ms-media-stream-id", "ms-meetnow", "ms-mixedrealitycapture", "ms-mobileplans", "ms-newsandinterests", "ms-officeapp", "ms-people", "ms-personacard", "ms-powerpoint", "ms-project", "ms-publisher", "ms-recall", "ms-remotedesktop", "ms-remotedesktop-launch", "ms-restoretabcompanion", "ms-screenclip", "ms-screensketch", "ms-search", "ms-search-repair", "ms-secondary-screen-controller", "ms-secondary-screen-setup", "ms-settings", "ms-settings-airplanemode", "ms-settings-bluetooth", "ms-settings-camera", "ms-settings-cellular", "ms-settings-cloudstorage", "ms-settings-connectabledevices", "ms-settings-displays-topology", "ms-settings-emailandaccounts", "ms-settings-language", "ms-settings-location", "ms-settings-lock", "ms-settings-nfctransactions", "ms-settings-notifications", "ms-settings-power", "ms-settings-privacy", "ms-settings-proximity", "ms-settings-screenrotation", "ms-settings-wifi", "ms-settings-workplace", "ms-spd", "ms-stickers", "ms-sttoverlay", "ms-transit-to", "ms-useractivityset", "ms-virtualtouchpad", "ms-visio", "ms-walk-to", "ms-whiteboard", "ms-whiteboard-cmd", "ms-word", "msnim", "msrp", "msrps", "mss", "mt", "mtqp", "mumble", "mupdate", "mvn", "mvrp", "mvrps", "news", "nfs", "ni", "nih", "nntp", "notes", "num", "ocf", "oid", "onenote", "onenote-cmd", "opaquelocktoken", "openid", "openpgp4fpr", "otpauth", "palm", "paparazzi", "payto", "pkcs11", "platform", "pop", "pres", "proxy", "psyc", "pttp", "pwid", "qb", "query", "quic-transport", "redis", "rediss", "reload", "res", "resource", "rmi", "rsync", "rtmfp", "rtmp", "rtsp", "rtsps", "rtspu", "sarif", "secondlife", "secret-token", "service", "session", "sftp", "sgn", "shc", "shelter", "sieve", "simpleledger", "simplex", "sip", "sips", "skype", "smb", "smp", "sms", "smtp", "snmp", "soap.beep", "soap.beeps", "soldat", "spiffe", "spotify", "ssb", "ssh", "starknet", "steam", "stun", "stuns", "submit", "svn", "swh", "swid", "swidpath", "tag", "taler", "teamspeak", "teapot", "teapots", "tel", "teliaeid", "telnet", "tftp", "things", "thismessage", "tip", "tn3270", "tool", "turn", "turns", "tv", "udp", "unreal", "urn", "ut2004", "uuid-in-package", "v-event", "vemmi", "ventrilo", "ves", "view-source", "vnc", "vscode", "vscode-insiders", "vsls", "w3", "wcr", "web3", "webcal", "wifi", "ws", "wss", "wtai", "wyciwyg", "xcon", "xcon-userid", "xfire", "xftp", "xmlrpc.beep", "xmlrpc.beeps", "xmpp", "xrcp", "xri", "ymsgr", "z39.50r", "z39.50s"];
+  var W = (t) => {
+    if (!d(t)) throw new TypeError(`Expected String but got ${g(t)}.`);
+    let e = [];
+    for (let s of t) e.push(`%${s.charCodeAt(0).toString(16).toUpperCase()}`);
+    return e.join("");
+  }, Z = (t) => {
+    d(t) && K.test(t) && (t = t.toUpperCase());
+    let [e, s, r, i2, a, o] = ["&", "#", "<", ">", '"', "'"].map(W), c;
+    return t === e ? c = `${e}amp;` : t === r ? c = `${e}lt;` : t === i2 ? c = `${e}gt;` : t === a ? c = `${e}quot;` : t === o ? c = `${e}${s}39;` : c = t, c;
+  }, ee = (t) => {
+    if (d(t)) {
+      if (!H.test(t)) throw new Error(`Invalid base64 data: ${t}`);
+    } else throw new TypeError(`Expected String but got ${g(t)}.`);
+    let e = atob(t), s = Uint8Array.from([...e].map((a) => a.charCodeAt(0))), r = new Set(L), i2;
+    return s.every((a) => r.has(a)) ? i2 = e.replace(/\s/g, W) : i2 = t, i2;
+  }, P = (t, e = 0) => {
+    if (!d(t)) throw new TypeError(`Expected String but got ${g(t)}.`);
+    if (Number.isInteger(e)) {
+      if (e > 16) throw new Error("Character references nested too deeply.");
+    } else throw new TypeError(`Expected Number but got ${g(e)}.`);
+    let s = decodeURIComponent(t);
+    if (/&#/.test(s)) {
+      let r = new Set(L), i2 = [...s.matchAll(X)].reverse();
+      for (let a of i2) {
+        let [o, c] = a, l;
+        if (/^x[\dA-F]+/i.test(c) ? l = parseInt(`0${c}`, 16) : /^\d+/.test(c) && (l = parseInt(c)), Number.isInteger(l)) {
+          let { index: u } = a, [p, n] = [s.substring(0, u), s.substring(u + o.length)];
+          r.has(l) ? (s = `${p}${String.fromCharCode(l)}${n}`, (/#x?$/.test(p) || /^#(?:x(?:00)?[2-7]|\d)/.test(n)) && (s = P(s, ++e))) : l < 16 * 16 && (s = `${p}${n}`);
+        }
+      }
+    }
+    return s;
+  }, k = (_a = class {
+    constructor() {
+      __privateAdd(this, _e);
+      __privateSet(this, _e, new Set(C));
+    }
+    get() {
+      return [...__privateGet(this, _e)];
+    }
+    has(e) {
+      return __privateGet(this, _e).has(e);
+    }
+    add(e) {
+      if (d(e)) {
+        if (j.test(e) || !Q.test(e)) throw new Error(`Invalid scheme: ${e}`);
+      } else throw new TypeError(`Expected String but got ${g(e)}.`);
+      return __privateGet(this, _e).add(e), [...__privateGet(this, _e)];
+    }
+    remove(e) {
+      return __privateGet(this, _e).delete(e);
+    }
+    verify(e) {
+      let s;
+      if (d(e)) try {
+        let { protocol: r } = new URL(e), i2 = r.replace(/:$/, ""), a = i2.split("+");
+        s = !j.test(i2) && J.test(i2) || a.every((o) => __privateGet(this, _e).has(o));
+      } catch {
+        s = false;
+      }
+      return !!s;
+    }
+    reset() {
+      __privateGet(this, _e).clear();
+      for (let e of C) __privateGet(this, _e).add(e);
+    }
+  }, _e = new WeakMap(), _a);
+  var O = (_b = class extends k {
+    constructor() {
+      super();
+      __privateAdd(this, _e2);
+      __privateAdd(this, _t);
+      __privateSet(this, _e2, 0), __privateSet(this, _t, /* @__PURE__ */ new Set());
+    }
+    replace(e) {
+      if (!d(e)) throw new TypeError(`Expected String but got ${g(e)}.`);
+      let s = e;
+      if (S.test(s)) {
+        let i2 = [...s.matchAll(q)].reverse();
+        for (let a of i2) {
+          let [o] = a;
+          D.test(o) && ([o] = D.exec(o)), __privateWrapper(this, _e2)._++, __privateGet(this, _t).add(o);
+          let c = this.sanitize(o, { allow: ["data"] }), { index: l } = a, [u, p] = [s.substring(0, l), s.substring(l + o.length)];
+          c ? s = `${u}${c}${p}` : s = `${u}${p}`;
+        }
+      }
+      return s;
+    }
+    purify(e) {
+      if (!d(e)) throw new TypeError(`Expected String but got ${g(e)}.`);
+      let s = N.sanitize(decodeURIComponent(e));
+      return s && S.test(s) && (s = this.replace(s)), s = s.replace(/(?:#|%23)$/, "").replace(new RegExp("(?<!(?:#|%23).*)(?:\\?|%3F)$"), ""), encodeURI(s);
+    }
+    sanitize(e, s) {
+      if (__privateGet(this, _e2) > 16) throw __privateSet(this, _e2, 0), new Error("Data URLs nested too deeply.");
+      let { allow: r, deny: i2, only: a } = s ?? {}, o = /* @__PURE__ */ new Map([["blob", false], ["data", false], ["file", false], ["javascrpt", false], ["vbscript", false]]), c = /* @__PURE__ */ new Set(), l = false;
+      if (Array.isArray(a) && a.length) {
+        let p = super.get();
+        for (let m of p) o.set(m, false);
+        let n = Object.values(a);
+        for (let m of n) if (d(m) && (m = m.trim(), !A.test(m))) {
+          if (super.has(m)) o.set(m, true);
+          else {
+            try {
+              super.add(m);
+            } catch {
+            }
+            super.has(m) && (o.set(m, true), c.add(m));
+          }
+          !l && o.has(m) && (l = o.get(m));
+        }
+      } else {
+        if (Array.isArray(r) && r.length) {
+          let p = Object.values(r);
+          for (let n of p) if (d(n) && (n = n.trim(), !A.test(n))) if (super.has(n)) o.set(n, true);
+          else {
+            try {
+              super.add(n);
+            } catch {
+            }
+            super.has(n) && (o.set(n, true), c.add(n));
+          }
+        }
+        if (Array.isArray(i2) && i2.length) {
+          let p = Object.values(i2);
+          for (let n of p) d(n) && (n = n.trim(), n && o.set(n, false));
+        }
+      }
+      let u;
+      if (super.verify(e)) {
+        let { hash: p, href: n, pathname: m, protocol: U, search: w } = new URL(e), E = U.replace(/:$/, ""), G = E.split("+"), _;
+        if (l) _ = G.every((y) => o.get(y));
+        else for (let [y, R] of o.entries()) if (_ = R || E !== y && G.every((f) => f !== y), !_) break;
+        if (_) {
+          let y = G.includes("data"), R, f = n;
+          if (y) {
+            let [v, ...z] = m.split(","), $ = `${z.join(",")}${w}${p}`, T2 = v.split(";"), I = T2[T2.length - 1] === "base64", h = $;
+            I && (h = ee($));
+            try {
+              let F = P(h).trim(), { protocol: se } = new URL(F);
+              se.replace(/:$/, "").split("+").some((re) => A.test(re)) && (f = "");
+            } catch {
+            }
+            let B = S.test(h);
+            h !== $ || B ? B ? h = this.replace(h) : __privateGet(this, _t).has(e) ? __privateGet(this, _t).delete(e) : R = true : __privateGet(this, _t).has(e) ? __privateGet(this, _t).delete(e) : R = true, (!v || Y.test(v)) && (h = this.purify(h)), f && h ? (I && h !== $ && T2.pop(), f = `${E}:${T2.join(";")},${h}`) : f = "";
+          } else R = true;
+          if (!y && M.test(f)) {
+            let v = M.exec(f), { index: z } = v;
+            f = f.substring(0, z).replace(/[?&]$/, "");
+          }
+          f ? (u = f.replace(/%26/g, Z), R && __privateSet(this, _e2, 0)) : __privateSet(this, _e2, 0);
+        }
+        c.size && c.forEach((y) => {
+          super.remove(y);
+        });
+      }
+      return u || null;
+    }
+    parse(e, s) {
+      if (!d(e)) throw new TypeError(`Expected String but got ${g(e)}.`);
+      let r = /* @__PURE__ */ new Map([["input", e]]), i2;
+      if (this.verify(e)) {
+        let { protocol: a } = new URL(e);
+        a === "blob:" ? i2 = e : i2 = this.sanitize(e, s ?? { allow: ["data", "file"] });
+      }
+      if (i2) {
+        let a = new URL(i2), { pathname: o, protocol: c } = a, u = c.replace(/:$/, "").split("+").includes("data");
+        if (r.set("valid", true), u) {
+          let p = /* @__PURE__ */ new Map(), [n, ...m] = o.split(","), U = `${m.join(",")}`, w = n.split(";"), E = w[w.length - 1] === "base64";
+          E && w.pop(), p.set("mime", w.join(";")), p.set("base64", E), p.set("data", U), r.set("data", Object.fromEntries(p));
+        } else r.set("data", null);
+        for (let p in a) {
+          let n = a[p];
+          d(n) && r.set(p, n);
+        }
+      } else r.set("valid", false);
+      return Object.fromEntries(r);
+    }
+    reset() {
+      super.reset(), __privateSet(this, _e2, 0), __privateGet(this, _t).clear();
+    }
+  }, _e2 = new WeakMap(), _t = new WeakMap(), _b), b = new O(), pe = (t, e) => {
+    let s;
+    if (t && d(t)) {
+      let r;
+      try {
+        let { protocol: i2 } = new URL(t);
+        r = i2.replace(/:$/, "");
+      } catch {
+      }
+      r === "blob" ? URL.revokeObjectURL(t) : r && (s = b.sanitize(t, e));
+    }
+    return s || null;
+  };
+  /*!
+  * URL Sanitizer
+  *
+  * @license MIT
+  * @copyright asamuzaK (Kazz)
+  * @see {@link https://github.com/asamuzaK/urlSanitizer/blob/main/LICENSE}
+  */
   const _hoisted_1$5 = { class: "tvk-footnote" };
-  const _hoisted_2$4 = ["href"];
+  const _hoisted_2$5 = ["href"];
   const _hoisted_3$2 = {
     key: 1,
     class: "tvk-footnote-title"
@@ -71959,14 +72201,17 @@ ${text2}</tr>
         if (!contentTxt.value) return false;
         return contentTxt.value.offsetHeight < contentTxt.value.scrollHeight;
       }
+      function sanitizeUrl(url) {
+        return pe(url) || void 0;
+      }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$5, [
           props.footnote.url ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 0,
-            href: props.footnote.url,
+            href: sanitizeUrl(props.footnote.url),
             target: "_blank",
             class: "tvk-footnote-title"
-          }, vue.toDisplayString(props.footnote.title), 9, _hoisted_2$4)) : vue.createCommentVNode("", true),
+          }, vue.toDisplayString(props.footnote.title), 9, _hoisted_2$5)) : vue.createCommentVNode("", true),
           !props.footnote.url ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$2, vue.toDisplayString(props.footnote.title), 1)) : vue.createCommentVNode("", true),
           props.footnote.content ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$2, [
             vue.createElementVNode("div", {
@@ -71979,9 +72224,13 @@ ${text2}</tr>
                 "tvk-clamp": vue.unref(appOptions).preferences.messages.footNotes.clampSourceContent && !showFullText.value
               })
             }, [
-              vue.createElementVNode("span", {
+              !vue.unref(appOptions).preferences.messages.footNotes.parseContentMarkdown ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
+                vue.createTextVNode(vue.toDisplayString(props.footnote.content), 1)
+              ], 64)) : vue.createCommentVNode("", true),
+              vue.unref(appOptions).preferences.messages.footNotes.parseContentMarkdown ? (vue.openBlock(), vue.createElementBlock("span", {
+                key: 1,
                 innerHTML: getMarkUp()
-              }, null, 8, _hoisted_5$2)
+              }, null, 8, _hoisted_5$2)) : vue.createCommentVNode("", true)
             ], 6),
             props.footnote.content && vue.unref(appOptions).preferences.messages.footNotes.clampSourceContent && !showFullText.value && isClamped() ? (vue.openBlock(), vue.createElementBlock("a", {
               key: 0,
@@ -71995,7 +72244,7 @@ ${text2}</tr>
     }
   });
   const _hoisted_1$4 = { class: "tvk-footnotes" };
-  const _hoisted_2$3 = { class: "tvk-footnotes-sources-label" };
+  const _hoisted_2$4 = { class: "tvk-footnotes-sources-label" };
   const _sfc_main$7 = /* @__PURE__ */ vue.defineComponent({
     __name: "footnotes",
     props: {
@@ -72006,7 +72255,7 @@ ${text2}</tr>
       const props = __props;
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$4, [
-          vue.createElementVNode("span", _hoisted_2$3, vue.toDisplayString(vue.unref(appOptions).wording.messages.message.footnotes.sources), 1),
+          vue.createElementVNode("span", _hoisted_2$4, vue.toDisplayString(vue.unref(appOptions).wording.messages.message.footnotes.sources), 1),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(props.footnotes, (footnote) => {
             return vue.openBlock(), vue.createBlock(_sfc_main$8, { footnote }, null, 8, ["footnote"]);
           }), 256))
@@ -72014,7 +72263,11 @@ ${text2}</tr>
       };
     }
   });
-  const _hoisted_1$3 = ["innerHTML"];
+  const _hoisted_1$3 = {
+    key: 1,
+    style: { "white-space": "pre-wrap" }
+  };
+  const _hoisted_2$3 = ["innerHTML"];
   const _sfc_main$6 = /* @__PURE__ */ vue.defineComponent({
     __name: "message-text",
     props: {
@@ -72082,17 +72335,22 @@ ${text2}</tr>
         preEl.dataset.copyButtonInjected = "true";
       }
       return (_ctx, _cache) => {
-        var _a;
+        var _a2;
         return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [
-          vue.createElementVNode("div", {
+          props.message.author === vue.unref(MessageAuthor).user ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
+            vue.createTextVNode(vue.toDisplayString(props.message.text), 1)
+          ], 64)) : vue.createCommentVNode("", true),
+          !vue.unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === vue.unref(MessageAuthor).bot ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$3, vue.toDisplayString(props.message.text), 1)) : vue.createCommentVNode("", true),
+          vue.unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === vue.unref(MessageAuthor).bot ? (vue.openBlock(), vue.createElementBlock("div", {
+            key: 2,
             ref_key: "messageContentWrapper",
             ref: messageContentWrapper,
             class: "tvk-message-content-wrapper",
             innerHTML: getMarkUp(),
             tabindex: "1"
-          }, null, 8, _hoisted_1$3),
-          ((_a = props.message.footnotes) == null ? void 0 : _a.length) && vue.unref(appOptions).preferences.messages.footNotes.display && !vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createBlock(_sfc_main$7, {
-            key: 0,
+          }, null, 8, _hoisted_2$3)) : vue.createCommentVNode("", true),
+          ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && vue.unref(appOptions).preferences.messages.footNotes.display && !vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createBlock(_sfc_main$7, {
+            key: 3,
             footnotes: props.message.footnotes
           }, null, 8, ["footnotes"])) : vue.createCommentVNode("", true),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(props.message.buttons, (button) => {
@@ -72120,25 +72378,25 @@ ${text2}</tr>
       card: {}
     },
     setup(__props) {
-      var _a, _b, _c;
+      var _a2, _b2, _c;
       const mainStore = useMainStore();
       const props = __props;
-      const imageAlternative = ((_b = (_a = props.card) == null ? void 0 : _a.file) == null ? void 0 : _b.description) ?? ((_c = props.card) == null ? void 0 : _c.title);
+      const imageAlternative = ((_b2 = (_a2 = props.card) == null ? void 0 : _a2.file) == null ? void 0 : _b2.description) ?? ((_c = props.card) == null ? void 0 : _c.title);
       function onImgLoad(event) {
         if (props.card.file._loaded) return;
         props.card.file._loaded = true;
         mainStore.scrollMessages();
       }
       return (_ctx, _cache) => {
-        var _a2, _b2, _c2, _d, _e, _f, _g, _h, _i6, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t;
+        var _a3, _b3, _c2, _d, _e3, _f, _g, _h, _i6, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t2;
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
-          ((_b2 = (_a2 = props.card) == null ? void 0 : _a2.file) == null ? void 0 : _b2.type) === "image" ? (vue.openBlock(), vue.createElementBlock("a", {
+          ((_b3 = (_a3 = props.card) == null ? void 0 : _a3.file) == null ? void 0 : _b3.type) === "image" ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 0,
             href: (_d = (_c2 = props.card) == null ? void 0 : _c2.file) == null ? void 0 : _d.url,
             target: "_blank"
           }, [
             vue.createElementVNode("img", {
-              src: (_f = (_e = props.card) == null ? void 0 : _e.file) == null ? void 0 : _f.url,
+              src: (_f = (_e3 = props.card) == null ? void 0 : _e3.file) == null ? void 0 : _f.url,
               alt: vue.unref(imageAlternative),
               onLoad: onImgLoad,
               class: "tvk-thumbnail"
@@ -72153,7 +72411,7 @@ ${text2}</tr>
             vue.createElementVNode("strong", null, vue.toDisplayString((_n = props.card) == null ? void 0 : _n.title), 1)
           ])) : vue.createCommentVNode("", true),
           ((_o = props.card) == null ? void 0 : _o.subTitle) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$1, vue.toDisplayString((_p = props.card) == null ? void 0 : _p.subTitle), 1)) : vue.createCommentVNode("", true),
-          ((_r = (_q = props.card) == null ? void 0 : _q.file) == null ? void 0 : _r.description) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$1, vue.toDisplayString((_t = (_s = props.card) == null ? void 0 : _s.file) == null ? void 0 : _t.description), 1)) : vue.createCommentVNode("", true),
+          ((_r = (_q = props.card) == null ? void 0 : _q.file) == null ? void 0 : _r.description) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$1, vue.toDisplayString((_t2 = (_s = props.card) == null ? void 0 : _s.file) == null ? void 0 : _t2.description), 1)) : vue.createCommentVNode("", true),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(props.card.buttons, (button) => {
             return vue.openBlock(), vue.createBlock(_sfc_main$9, { button }, {
               default: vue.withCtx(() => [
@@ -72182,8 +72440,8 @@ ${text2}</tr>
       const innerStyles = vue.ref({});
       const transitioning = vue.ref(false);
       function freezeCarouselWidth() {
-        var _a;
-        const carouselWidth = (_a = carouselRef.value) == null ? void 0 : _a.offsetWidth;
+        var _a2;
+        const carouselWidth = (_a2 = carouselRef.value) == null ? void 0 : _a2.offsetWidth;
         carouselStyles.value = {
           overflow: "hidden",
           "max-width": `${carouselWidth}px`
@@ -72240,13 +72498,13 @@ ${text2}</tr>
         });
       }
       function afterTransition(callback) {
-        var _a;
+        var _a2;
         const listener = () => {
-          var _a2;
+          var _a3;
           callback();
-          (_a2 = innerRef.value) == null ? void 0 : _a2.removeEventListener("transitionend", listener);
+          (_a3 = innerRef.value) == null ? void 0 : _a3.removeEventListener("transitionend", listener);
         };
-        (_a = innerRef.value) == null ? void 0 : _a.addEventListener("transitionend", listener);
+        (_a2 = innerRef.value) == null ? void 0 : _a2.addEventListener("transitionend", listener);
       }
       function resetTranslate() {
         carouselStyles.value = {};
@@ -72353,7 +72611,7 @@ ${text2}</tr>
       const appOptions = appOptionsSingleton.getOptions();
       const props = __props;
       return (_ctx, _cache) => {
-        var _a;
+        var _a2;
         return props.message.author !== vue.unref(MessageAuthor).user || !vue.unref(appOptions).preferences.messages.message.hideUserMessages ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 0,
           class: vue.normalizeClass(["tvk-message", {
@@ -72428,7 +72686,7 @@ ${text2}</tr>
               ])) : vue.createCommentVNode("", true)
             ])) : vue.createCommentVNode("", true)
           ]),
-          ((_a = props.message.footnotes) == null ? void 0 : _a.length) && vue.unref(appOptions).preferences.messages.footNotes.display && vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, [
+          ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && vue.unref(appOptions).preferences.messages.footNotes.display && vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, [
             vue.createVNode(_sfc_main$7, {
               footnotes: props.message.footnotes
             }, null, 8, ["footnotes"])
@@ -72509,9 +72767,9 @@ ${text2}</tr>
     }
   });
   function appInitialization() {
-    var _a, _b;
+    var _a2, _b2;
     const appOptions = appOptionsSingleton.getOptions();
-    if (((_a = appOptions == null ? void 0 : appOptions.initialization) == null ? void 0 : _a.welcomeMessage) || ((_b = appOptions == null ? void 0 : appOptions.initialization) == null ? void 0 : _b.openingMessage)) {
+    if (((_a2 = appOptions == null ? void 0 : appOptions.initialization) == null ? void 0 : _a2.welcomeMessage) || ((_b2 = appOptions == null ? void 0 : appOptions.initialization) == null ? void 0 : _b2.openingMessage)) {
       const mainStore = useMainStore();
       const storedState = mainStore.getStoredState();
       if (!storedState || !storedState.messages.length) {

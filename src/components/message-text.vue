@@ -4,15 +4,13 @@ import { ref } from "vue";
 import { Marked } from "marked";
 import DOMPurify from "dompurify";
 
-import "katex/dist/katex.min.css";
-
 import hljs from "highlight.js";
-import "highlight.js/styles/default.min.css";
+
 import { markedHighlight } from "marked-highlight";
 
 import { katexBlockExtension, katexInlineExtension } from "../utils/markup";
 
-import { type TextMessage } from "../models/messages";
+import { MessageAuthor, type TextMessage } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
 
 import Button from "./button.vue";
@@ -41,7 +39,6 @@ const marked = new Marked({
     highlight(code, lang, info) {
       const language = hljs.getLanguage(lang) ? lang : "plaintext";
       return hljs.highlight(code, { language }).value;
-      // return hljs.highlightAuto(code).value;
     },
   }),
   hooks: {
@@ -100,7 +97,18 @@ function injectCopyButton(preEl: HTMLElement) {
 </script>
 
 <template>
+  <template v-if="props.message!.author === MessageAuthor.user">
+    {{ props.message!.text }}
+  </template>
+
+  <span
+    v-if="!appOptions.preferences.messages.parseBotResponsesMarkdown && props.message!.author === MessageAuthor.bot"
+    style="white-space: pre-wrap"
+    >{{ props.message!.text }}</span
+  >
+
   <div
+    v-if="appOptions.preferences.messages.parseBotResponsesMarkdown && props.message!.author === MessageAuthor.bot"
     ref="messageContentWrapper"
     class="tvk-message-content-wrapper"
     v-html="getMarkUp()"

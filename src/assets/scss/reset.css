@@ -1,0 +1,9 @@
+@namespace only_html "http://www.w3.org/1999/xhtml";
+
+.tvk-wrapper {
+  all: revert;
+}
+
+.tvk-wrapper only_html|* {
+  all: revert;
+}
