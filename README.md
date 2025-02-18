@@ -20,11 +20,11 @@ Include js and css files:
 <script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
 <link
   rel="stylesheet"
-  href="https://unpkg.com/tock-vue-kit@0.3.6/dist/style.css"
+  href="https://unpkg.com/tock-vue-kit@0.4/dist/style.css"
 />
 <script
   crossorigin
-  src="https://unpkg.com/tock-vue-kit@0.3.6/dist/tock-vue-kit.iife.js"
+  src="https://unpkg.com/tock-vue-kit@0.4/dist/tock-vue-kit.iife.js"
 ></script>
 ```
 
