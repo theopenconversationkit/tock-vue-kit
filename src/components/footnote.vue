@@ -9,7 +9,6 @@ import hljs from "highlight.js";
 
 import { markedHighlight } from "marked-highlight";
 
-import "katex/dist/katex.min.css";
 import { katexBlockExtension, katexInlineExtension } from "../utils/markup";
 
 import type { MessageFootnote } from "../models/messages";

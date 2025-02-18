@@ -26,6 +26,12 @@ Include js and css files:
   crossorigin
   src="https://unpkg.com/tock-vue-kit@1.0/dist/tock-vue-kit.iife.js"
 ></script>
+
+<!-- Next line can be omitted if no Latex formula is expected in bot responses -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/katex@0.16.21/dist/katex.min.css"
+/>
 ```
 
 Display the chat widget in desired target:
@@ -86,6 +92,28 @@ In the desired component:
 </style>
 ```
 
+If Latex formulas are expected in bot responses, include the katex css file as well.
+
+For example, directly in the component :
+
+```html
+<style lang="scss">
+  @import url("https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css");
+</style>
+```
+
+Or by installing the library locally:
+
+```bash
+npm install katex
+```
+
+And then by including the css in your imports :
+
+```bash
+import "katex/dist/katex.min.css";
+```
+
 ### Angular 18.1.0 integration example
 
 Install the dependency:
@@ -134,6 +162,32 @@ export class MyComponentComponent {
 }
 ```
 
+If Latex formulas are expected in bot responses, include the katex css file as well.
+
+For example, by localy installing the katex library:
+
+```bash
+npm install katex
+```
+
+And then including katex css file in your angular.json :
+
+```json
+"projects": {
+    "YOUR_PROJECT": {
+      ...
+      "architect": {
+        "build": {
+          ...
+          "options": {
+            ...
+            "styles": [
+              ...
+              "node_modules/katex/dist/katex.min.css"
+            ],
+          ...
+```
+
 ### React 18.3.1 integration example
 
 Install the dependency:
@@ -179,6 +233,8 @@ function App() {
 export default App;
 ```
 
+If Latex formulas are expected in bot responses, include the katex css file as well (See above for examples).
+
 ### Svelte 4.2.7 integration example
 
 Install the dependency:
@@ -218,6 +274,8 @@ In the desired component:
 
 <div bind:this="{chatTarget}"></div>
 ```
+
+If Latex formulas are expected in bot responses, include the katex css file as well (See above for examples).
 
 ## Render method arguments
 
@@ -308,13 +366,13 @@ TockVueKit.renderChat(
 
 #### Messages
 
-| Property name             | Description                                                                                                                                                                                                                                                                                                        | Type                    | Default |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- | ------- |
-| hideIfNoMessages          | Hide messages container if there is no messages to display.                                                                                                                                                                                                                                                        | Boolean                 | true    |
-| clearOnNewRequest         | If true, deletes previous messages when a new user request is sent                                                                                                                                                                                                                                                 | Boolean                 | false   |
-| parseBotResponsesMarkdown | If true, the text of the bot's responses is parsed and transformed into html markup if it contains markdown. This includes syntax highlighting of code blocks and display of Latex and MathML content. If false, the textual content of the bot's responses is displayed in plain text, even if it's html content. | Boolean                 | true    |
-| message                   | Message options                                                                                                                                                                                                                                                                                                    | [Message](#Message)     |         |
-| footNotes                 | Footnotes options                                                                                                                                                                                                                                                                                                  | [FootNotes](#FootNotes) |         |
+| Property name             | Description                                                                                                                                                                                                                                                                                                                                                              | Type                    | Default |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- | ------- |
+| hideIfNoMessages          | Hide messages container if there is no messages to display.                                                                                                                                                                                                                                                                                                              | Boolean                 | true    |
+| clearOnNewRequest         | If true, deletes previous messages when a new user request is sent                                                                                                                                                                                                                                                                                                       | Boolean                 | false   |
+| parseBotResponsesMarkdown | If true, the text of the bot's responses is evaluated by a markown parser, transformed into html markup and then injected in dom after sanitizing. This includes syntax highlighting of code blocks and display of Latex and MathML content. If false, the textual content of the bot's responses is displayed in plain text, even if it's markdown and/or html content. | Boolean                 | true    |
+| message                   | Message options                                                                                                                                                                                                                                                                                                                                                          | [Message](#Message)     |         |
+| footNotes                 | Footnotes options                                                                                                                                                                                                                                                                                                                                                        | [FootNotes](#FootNotes) |         |
 
 ##### Message
 
@@ -351,14 +409,14 @@ TockVueKit.renderChat(
 
 Footnotes can optionally be added to Rag messages.
 
-| Property name             | Description                                                                                                                                                         | Type    | Default |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
-| display                   | For RAG responses, display the sources used to generate the answer if any.                                                                                          | Boolean | true    |
-| requireSourcesContent     | For RAG responses, request the textual content of the source in addition to the source title and link.                                                              | Boolean | false   |
-| parseContentMarkdown      | If true, the text content of footnotes is parsed and transformed into html markup if it contains markdown. If false, content of sources is displayed in plain text. | Boolean | true    |
-| clampSourceContent        | For RAG responses with sources content, truncate the textual source content.                                                                                        | Boolean | true    |
-| clampSourceContentNbLines | For RAG responses with sources content, number of lines after which to truncate text.                                                                               | Integer | 2       |
-| displayOnMessageSide      | For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.                                       | Boolean | false   |
+| Property name             | Description                                                                                                                                                                                               | Type    | Default |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
+| display                   | For RAG responses, display the sources used to generate the answer if any.                                                                                                                                | Boolean | true    |
+| requireSourcesContent     | For RAG responses, request the textual content of the source in addition to the source title and link.                                                                                                    | Boolean | false   |
+| parseContentMarkdown      | If true, the text content of footnotes is evaluated by a markown parser, transformed into html markup and then injected in dom after sanitizing. If false, content of sources is displayed in plain text. | Boolean | true    |
+| clampSourceContent        | For RAG responses with sources content, truncate the textual source content.                                                                                                                              | Boolean | true    |
+| clampSourceContentNbLines | For RAG responses with sources content, number of lines after which to truncate text.                                                                                                                     | Integer | 2       |
+| displayOnMessageSide      | For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.                                                                             | Boolean | false   |
 
 #### QuestionBar
 
