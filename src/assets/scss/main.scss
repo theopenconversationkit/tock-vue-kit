@@ -1,19 +1,16 @@
-@import "./reset.css";
+@use "./reset.css";
+
+@use "./normalize";
+@use "./colors";
+@use "./base";
+@use "./buttons";
 
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 @import url("https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css");
 
-@import "./normalize";
-@import "./colors";
-@import "./base";
-@import "./buttons";
-
 .tvk-wrapper {
   box-sizing: border-box;
-  * {
-    box-sizing: border-box;
-  }
 
   display: flex;
 
@@ -41,6 +38,10 @@
   border-radius: var(--tvk_wrapper_border-radius);
 
   box-shadow: var(--tvk_wrapper_box-shadow);
+
+  * {
+    box-sizing: border-box;
+  }
 
   // messages
   .tvk-messages {
@@ -142,6 +143,15 @@
               margin: 0;
             }
 
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+              margin: 0;
+            }
+
             hr {
               margin: 1em 0;
               border: 0;
@@ -184,7 +194,7 @@
               .hljs-operator,
               .hljs-punctuation,
               .hljs-subst {
-                color: #e0e0e0;
+                color: #878787;
               }
               .hljs-operator {
                 opacity: 0.7;
@@ -257,6 +267,7 @@
 
             pre:has(> code) {
               position: relative;
+              margin: 0.25em 0;
 
               .tvk-message-content-copy-button {
                 position: absolute;

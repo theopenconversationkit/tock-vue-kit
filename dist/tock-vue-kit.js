@@ -17,7 +17,7 @@ var __privateWrapper = (obj, member, setter, getter) => ({
   }
 });
 var _e, _a, _e2, _t, _b;
-import { effectScope, ref, markRaw, toRaw, watch, unref, hasInjectionContext, inject, getCurrentInstance, reactive, isRef, isReactive, toRef, nextTick, computed, getCurrentScope, onScopeDispose, toRefs, defineComponent, openBlock, createElementBlock, normalizeClass, createCommentVNode, normalizeStyle, createTextVNode, toDisplayString, createElementVNode, withModifiers, withDirectives, vModelText, Fragment, renderList, createBlock, withCtx, createVNode, onMounted, createApp } from "vue";
+import { effectScope, ref, markRaw, hasInjectionContext, inject, getCurrentInstance, toRaw, reactive, isRef, isReactive, toRef, nextTick, watch, unref, getCurrentScope, onScopeDispose, toRefs, computed, defineComponent, createElementBlock, openBlock, createCommentVNode, createElementVNode, createTextVNode, normalizeClass, normalizeStyle, toDisplayString, withModifiers, withDirectives, vModelText, Fragment, renderList, createBlock, withCtx, createVNode, onMounted, createApp } from "vue";
 function set(target, key, val) {
   if (Array.isArray(target)) {
     target.length = Math.max(target.length, key);
@@ -183,8 +183,8 @@ function setupDevtoolsPlugin(pluginDescriptor, setupFn) {
   }
 }
 /*!
- * pinia v2.1.7
- * (c) 2023 Eduardo San Martin Morote
+ * pinia v2.3.1
+ * (c) 2025 Eduardo San Martin Morote
  * @license MIT
  */
 let activePinia;
@@ -200,7 +200,6 @@ var MutationType;
   MutationType2["patchFunction"] = "patch function";
 })(MutationType || (MutationType = {}));
 const IS_CLIENT = typeof window !== "undefined";
-const USE_DEVTOOLS = IS_CLIENT;
 const _global = /* @__PURE__ */ (() => typeof window === "object" && window.window === window ? window : typeof self === "object" && self.self === self ? self : typeof global === "object" && global.global === global ? global : typeof globalThis === "object" ? globalThis : { HTMLElement: null })();
 function bom(blob, { autoBom = false } = {}) {
   if (autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
@@ -681,6 +680,7 @@ function registerPiniaDevtools(app, pinia) {
         payload.rootNodes = (payload.filter ? stores.filter((store) => "$id" in store ? store.$id.toLowerCase().includes(payload.filter.toLowerCase()) : PINIA_ROOT_LABEL.toLowerCase().includes(payload.filter.toLowerCase())) : stores).map(formatStoreForInspectorTree);
       }
     });
+    globalThis.$pinia = pinia;
     api.on.getInspectorState((payload) => {
       if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
         const inspectedStore = payload.nodeId === PINIA_ROOT_ID ? pinia : pinia._s.get(payload.nodeId);
@@ -688,6 +688,8 @@ function registerPiniaDevtools(app, pinia) {
           return;
         }
         if (inspectedStore) {
+          if (payload.nodeId !== PINIA_ROOT_ID)
+            globalThis.$store = toRaw(inspectedStore);
           payload.state = formatStoreForInspectorState(inspectedStore);
         }
       }
@@ -931,12 +933,14 @@ function devtoolsPlugin({ app, store, options }) {
     return;
   }
   store._isOptionsAPI = !!options.state;
-  patchActionForGrouping(store, Object.keys(options.actions), store._isOptionsAPI);
-  const originalHotUpdate = store._hotUpdate;
-  toRaw(store)._hotUpdate = function(newStore) {
-    originalHotUpdate.apply(this, arguments);
-    patchActionForGrouping(store, Object.keys(newStore._hmrPayload.actions), !!store._isOptionsAPI);
-  };
+  if (!store._p._testing) {
+    patchActionForGrouping(store, Object.keys(options.actions), store._isOptionsAPI);
+    const originalHotUpdate = store._hotUpdate;
+    toRaw(store)._hotUpdate = function(newStore) {
+      originalHotUpdate.apply(this, arguments);
+      patchActionForGrouping(store, Object.keys(newStore._hmrPayload.actions), !!store._isOptionsAPI);
+    };
+  }
   addStoreToDevtools(
     app,
     // FIXME: is there a way to allow the assignment from Store<Id, S, G, A> to StoreGeneric?
@@ -955,7 +959,7 @@ function createPinia() {
         pinia._a = app;
         app.provide(piniaSymbol, pinia);
         app.config.globalProperties.$pinia = pinia;
-        if (USE_DEVTOOLS) {
+        if (IS_CLIENT) {
           registerPiniaDevtools(app, pinia);
         }
         toBeInstalled.forEach((plugin) => _p.push(plugin));
@@ -978,7 +982,7 @@ function createPinia() {
     _s: /* @__PURE__ */ new Map(),
     state
   });
-  if (USE_DEVTOOLS && typeof Proxy !== "undefined") {
+  if (IS_CLIENT && typeof Proxy !== "undefined") {
     pinia.use(devtoolsPlugin);
   }
   return pinia;
@@ -1022,11 +1026,12 @@ function triggerSubscriptions(subscriptions, ...args) {
   });
 }
 const fallbackRunWithContext = (fn) => fn();
+const ACTION_MARKER = Symbol();
+const ACTION_NAME = Symbol();
 function mergeReactiveObjects(target, patchToApply) {
   if (target instanceof Map && patchToApply instanceof Map) {
     patchToApply.forEach((value, key) => target.set(key, value));
-  }
-  if (target instanceof Set && patchToApply instanceof Set) {
+  } else if (target instanceof Set && patchToApply instanceof Set) {
     patchToApply.forEach(target.add, target);
   }
   for (const key in patchToApply) {
@@ -1085,10 +1090,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
   if (!pinia._e.active) {
     throw new Error("Pinia destroyed");
   }
-  const $subscribeOptions = {
-    deep: true
-    // flush: 'post',
-  };
+  const $subscribeOptions = { deep: true };
   {
     $subscribeOptions.onTrigger = (event) => {
       if (isListening) {
@@ -1164,8 +1166,12 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
     actionSubscriptions = [];
     pinia._s.delete($id);
   }
-  function wrapAction(name, action) {
-    return function() {
+  const action = (fn, name = "") => {
+    if (ACTION_MARKER in fn) {
+      fn[ACTION_NAME] = name;
+      return fn;
+    }
+    const wrappedAction = function() {
       setActivePinia(pinia);
       const args = Array.from(arguments);
       const afterCallbackList = [];
@@ -1178,14 +1184,14 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
       }
       triggerSubscriptions(actionSubscriptions, {
         args,
-        name,
+        name: wrappedAction[ACTION_NAME],
         store,
         after,
         onError
       });
       let ret;
       try {
-        ret = action.apply(this && this.$id === $id ? this : store, args);
+        ret = fn.apply(this && this.$id === $id ? this : store, args);
       } catch (error2) {
         triggerSubscriptions(onErrorCallbackList, error2);
         throw error2;
@@ -1202,7 +1208,10 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
       triggerSubscriptions(afterCallbackList, ret);
       return ret;
     };
-  }
+    wrappedAction[ACTION_MARKER] = true;
+    wrappedAction[ACTION_NAME] = name;
+    return wrappedAction;
+  };
   const _hmrPayload = /* @__PURE__ */ markRaw({
     actions: {},
     getters: {},
@@ -1243,7 +1252,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
   ));
   pinia._s.set($id, store);
   const runWithContext = pinia._a && pinia._a.runWithContext || fallbackRunWithContext;
-  const setupStore = runWithContext(() => pinia._e.run(() => (scope = effectScope()).run(setup)));
+  const setupStore = runWithContext(() => pinia._e.run(() => (scope = effectScope()).run(() => setup({ action }))));
   for (const key in setupStore) {
     const prop = setupStore[key];
     if (isRef(prop) && !isComputed(prop) || isReactive(prop)) {
@@ -1265,7 +1274,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
         _hmrPayload.state.push(key);
       }
     } else if (typeof prop === "function") {
-      const actionValue = hot ? prop : wrapAction(key, prop);
+      const actionValue = hot ? prop : action(prop, key);
       {
         setupStore[key] = actionValue;
       }
@@ -1330,8 +1339,8 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
         isListening = true;
       });
       for (const actionName in newStore._hmrPayload.actions) {
-        const action = newStore[actionName];
-        set(store, actionName, wrapAction(actionName, action));
+        const actionFn = newStore[actionName];
+        set(store, actionName, action(actionFn, actionName));
       }
       for (const getterName in newStore._hmrPayload.getters) {
         const getter = newStore._hmrPayload.getters[getterName];
@@ -1359,7 +1368,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
       store._hotUpdating = false;
     });
   }
-  if (USE_DEVTOOLS) {
+  if (IS_CLIENT) {
     const nonEnumerable = {
       writable: true,
       configurable: true,
@@ -1371,7 +1380,7 @@ function createSetupStore($id, setup, options = {}, pinia, hot, isOptionsStore) 
     });
   }
   pinia._p.forEach((extender) => {
-    if (USE_DEVTOOLS) {
+    if (IS_CLIENT) {
       const extensions = scope.run(() => extender({
         store,
         app: pinia._a,
@@ -1401,6 +1410,8 @@ Found in store "${store.$id}".`);
   isSyncListening = true;
   return store;
 }
+/*! #__NO_SIDE_EFFECTS__ */
+// @__NO_SIDE_EFFECTS__
 function defineStore(idOrOptions, setup, setupOptions) {
   let id;
   let options;
@@ -1901,7 +1912,7 @@ const initNewState = () => ({
   userId: forgeNewUserId(),
   messages: []
 });
-const useMainStore = defineStore(MAIN_STORE_NAME, () => {
+const useMainStore = /* @__PURE__ */ defineStore(MAIN_STORE_NAME, () => {
   const tockEndPoint = inject(tockEndpointKey);
   const appOptions = appOptionsSingleton.getOptions();
   const state = ref(getState());
@@ -2083,8 +2094,8 @@ const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     scrollMessages
   };
 });
-const _hoisted_1$6 = ["aria-label"];
-const _hoisted_2$6 = ["src"];
+const _hoisted_1$5 = ["aria-label"];
+const _hoisted_2$5 = ["src"];
 const _hoisted_3$3 = ["maxlength", "placeholder"];
 const _hoisted_4$3 = { class: "tvk-question-bar-chars-count" };
 const _hoisted_5$3 = ["disabled", "aria-label"];
@@ -2140,9 +2151,9 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
               width: unref(appOptions).preferences.questionBar.clearHistory.image.width,
               height: unref(appOptions).preferences.questionBar.clearHistory.image.height
             })
-          }, null, 12, _hoisted_2$6)) : createCommentVNode("", true),
+          }, null, 12, _hoisted_2$5)) : createCommentVNode("", true),
           createTextVNode(" " + toDisplayString(unref(appOptions).wording.questionBar.clearHistory), 1)
-        ], 8, _hoisted_1$6)) : createCommentVNode("", true),
+        ], 8, _hoisted_1$5)) : createCommentVNode("", true),
         createElementVNode("form", {
           onSubmit: withModifiers(onSubmit, ["prevent"]),
           class: "tvk-question-bar-form"
@@ -2283,7 +2294,9 @@ const fences = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\
 const hr = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/;
 const heading = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/;
 const bullet = /(?:[*+-]|\d{1,9}[.)])/;
-const lheading = edit(/^(?!bull |blockCode|fences|blockquote|heading|html)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).getRegex();
+const lheadingCore = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/;
+const lheading = edit(lheadingCore).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex();
+const lheadingGfm = edit(lheadingCore).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex();
 const _paragraph = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/;
 const blockText = /^[^\n]+/;
 const _blockLabel = /(?!\s*\])(?:\\.|[^\[\]\\])+/;
@@ -2312,6 +2325,7 @@ const blockNormal = {
 const gfmTable = edit("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex();
 const blockGfm = {
   ...blockNormal,
+  lheading: lheadingGfm,
   table: gfmTable,
   paragraph: edit(_paragraph).replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", gfmTable).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex()
 };
@@ -4492,20 +4506,11 @@ var EXPRESSIONS = /* @__PURE__ */ Object.freeze({
 });
 const NODE_TYPE = {
   element: 1,
-  attribute: 2,
   text: 3,
-  cdataSection: 4,
-  entityReference: 5,
-  // Deprecated
-  entityNode: 6,
   // Deprecated
   progressingInstruction: 7,
   comment: 8,
-  document: 9,
-  documentType: 10,
-  documentFragment: 11,
-  notation: 12
-  // Deprecated
+  document: 9
 };
 const getGlobal = function getGlobal2() {
   return typeof window === "undefined" ? null : window;
@@ -16663,9 +16668,7 @@ function requireDos() {
       { relevance: 10 }
     );
     const LABEL = {
-      className: "symbol",
-      begin: "^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)",
-      relevance: 0
+      begin: "^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)"
     };
     const KEYWORDS = [
       "if",
@@ -72148,8 +72151,8 @@ var O = (_b = class extends k {
 * @copyright asamuzaK (Kazz)
 * @see {@link https://github.com/asamuzaK/urlSanitizer/blob/main/LICENSE}
 */
-const _hoisted_1$5 = { class: "tvk-footnote" };
-const _hoisted_2$5 = ["href"];
+const _hoisted_1$4 = { class: "tvk-footnote" };
+const _hoisted_2$4 = ["href"];
 const _hoisted_3$2 = {
   key: 1,
   class: "tvk-footnote-title"
@@ -72202,13 +72205,13 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
       return pe(url) || void 0;
     }
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$5, [
+      return openBlock(), createElementBlock("div", _hoisted_1$4, [
         props.footnote.url ? (openBlock(), createElementBlock("a", {
           key: 0,
           href: sanitizeUrl(props.footnote.url),
           target: "_blank",
           class: "tvk-footnote-title"
-        }, toDisplayString(props.footnote.title), 9, _hoisted_2$5)) : createCommentVNode("", true),
+        }, toDisplayString(props.footnote.title), 9, _hoisted_2$4)) : createCommentVNode("", true),
         !props.footnote.url ? (openBlock(), createElementBlock("span", _hoisted_3$2, toDisplayString(props.footnote.title), 1)) : createCommentVNode("", true),
         props.footnote.content ? (openBlock(), createElementBlock("div", _hoisted_4$2, [
           createElementVNode("div", {
@@ -72240,8 +72243,8 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1$4 = { class: "tvk-footnotes" };
-const _hoisted_2$4 = { class: "tvk-footnotes-sources-label" };
+const _hoisted_1$3 = { class: "tvk-footnotes" };
+const _hoisted_2$3 = { class: "tvk-footnotes-sources-label" };
 const _sfc_main$7 = /* @__PURE__ */ defineComponent({
   __name: "footnotes",
   props: {
@@ -72251,8 +72254,8 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
     const appOptions = appOptionsSingleton.getOptions();
     const props = __props;
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$4, [
-        createElementVNode("span", _hoisted_2$4, toDisplayString(unref(appOptions).wording.messages.message.footnotes.sources), 1),
+      return openBlock(), createElementBlock("div", _hoisted_1$3, [
+        createElementVNode("span", _hoisted_2$3, toDisplayString(unref(appOptions).wording.messages.message.footnotes.sources), 1),
         (openBlock(true), createElementBlock(Fragment, null, renderList(props.footnotes, (footnote) => {
           return openBlock(), createBlock(_sfc_main$8, { footnote }, null, 8, ["footnote"]);
         }), 256))
@@ -72260,11 +72263,11 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1$3 = {
+const _hoisted_1$2 = {
   key: 1,
   style: { "white-space": "pre-wrap" }
 };
-const _hoisted_2$3 = ["innerHTML"];
+const _hoisted_2$2 = ["innerHTML"];
 const _sfc_main$6 = /* @__PURE__ */ defineComponent({
   __name: "message-text",
   props: {
@@ -72337,7 +72340,7 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent({
         props.message.author === unref(MessageAuthor).user ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [
           createTextVNode(toDisplayString(props.message.text), 1)
         ], 64)) : createCommentVNode("", true),
-        !unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === unref(MessageAuthor).bot ? (openBlock(), createElementBlock("span", _hoisted_1$3, toDisplayString(props.message.text), 1)) : createCommentVNode("", true),
+        !unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === unref(MessageAuthor).bot ? (openBlock(), createElementBlock("span", _hoisted_1$2, toDisplayString(props.message.text), 1)) : createCommentVNode("", true),
         unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === unref(MessageAuthor).bot ? (openBlock(), createElementBlock("div", {
           key: 2,
           ref_key: "messageContentWrapper",
@@ -72345,7 +72348,7 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent({
           class: "tvk-message-content-wrapper",
           innerHTML: getMarkUp(),
           tabindex: "1"
-        }, null, 8, _hoisted_2$3)) : createCommentVNode("", true),
+        }, null, 8, _hoisted_2$2)) : createCommentVNode("", true),
         ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && unref(appOptions).preferences.messages.footNotes.display && !unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (openBlock(), createBlock(_sfc_main$7, {
           key: 3,
           footnotes: props.message.footnotes
@@ -72362,8 +72365,8 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1$2 = { class: "tvk-card" };
-const _hoisted_2$2 = ["href"];
+const _hoisted_1$1 = { class: "tvk-card" };
+const _hoisted_2$1 = ["href"];
 const _hoisted_3$1 = ["src", "alt"];
 const _hoisted_4$1 = ["href"];
 const _hoisted_5$1 = { key: 2 };
@@ -72386,7 +72389,7 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
     }
     return (_ctx, _cache) => {
       var _a3, _b3, _c2, _d, _e3, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t2;
-      return openBlock(), createElementBlock("div", _hoisted_1$2, [
+      return openBlock(), createElementBlock("div", _hoisted_1$1, [
         ((_b3 = (_a3 = props.card) == null ? void 0 : _a3.file) == null ? void 0 : _b3.type) === "image" ? (openBlock(), createElementBlock("a", {
           key: 0,
           href: (_d = (_c2 = props.card) == null ? void 0 : _c2.file) == null ? void 0 : _d.url,
@@ -72398,7 +72401,7 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
             onLoad: onImgLoad,
             class: "tvk-thumbnail"
           }, null, 40, _hoisted_3$1)
-        ], 8, _hoisted_2$2)) : createCommentVNode("", true),
+        ], 8, _hoisted_2$1)) : createCommentVNode("", true),
         ((_h = (_g = props.card) == null ? void 0 : _g.file) == null ? void 0 : _h.type) === "file" ? (openBlock(), createElementBlock("a", {
           key: 1,
           href: (_j = (_i = props.card) == null ? void 0 : _i.file) == null ? void 0 : _j.url,
@@ -72561,8 +72564,8 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1$1 = { class: "tvk-message-answer" };
-const _hoisted_2$1 = {
+const _hoisted_1 = { class: "tvk-message-answer" };
+const _hoisted_2 = {
   key: 0,
   class: "tvk-message-header"
 };
@@ -72594,8 +72597,7 @@ const _hoisted_12 = {
   key: 1,
   class: "tvk-error-connection"
 };
-const _hoisted_13 = /* @__PURE__ */ createElementVNode("i", { class: "tvk-error-icon bi bi-exclamation-triangle" }, null, -1);
-const _hoisted_14 = {
+const _hoisted_13 = {
   key: 0,
   class: "tvk-side-footnotes"
 };
@@ -72616,8 +72618,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           "tvk-message-bot": props.message.author === unref(MessageAuthor).bot
         }])
       }, [
-        createElementVNode("div", _hoisted_1$1, [
-          unref(appOptions).preferences.messages.message.header.display && props.message.author !== unref(MessageAuthor).app ? (openBlock(), createElementBlock("div", _hoisted_2$1, [
+        createElementVNode("div", _hoisted_1, [
+          unref(appOptions).preferences.messages.message.header.display && props.message.author !== unref(MessageAuthor).app ? (openBlock(), createElementBlock("div", _hoisted_2, [
             unref(appOptions).preferences.messages.message.header.avatar.display ? (openBlock(), createElementBlock("div", _hoisted_3, [
               !unref(appOptions).preferences.messages.message.header.avatar.userImage && unref(appOptions).preferences.messages.message.header.avatar.userIcon && props.message.author === unref(MessageAuthor).user ? (openBlock(), createElementBlock("i", {
                 key: 0,
@@ -72678,12 +72680,12 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           props.message.author === unref(MessageAuthor).app ? (openBlock(), createElementBlock("div", _hoisted_10, [
             props.message.type === unref(MessageType).loader ? (openBlock(), createElementBlock("div", _hoisted_11)) : createCommentVNode("", true),
             props.message.type === unref(MessageType).error ? (openBlock(), createElementBlock("div", _hoisted_12, [
-              _hoisted_13,
+              _cache[0] || (_cache[0] = createElementVNode("i", { class: "tvk-error-icon bi bi-exclamation-triangle" }, null, -1)),
               createTextVNode(" " + toDisplayString(props.message.text), 1)
             ])) : createCommentVNode("", true)
           ])) : createCommentVNode("", true)
         ]),
-        ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && unref(appOptions).preferences.messages.footNotes.display && unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (openBlock(), createElementBlock("div", _hoisted_14, [
+        ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && unref(appOptions).preferences.messages.footNotes.display && unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (openBlock(), createElementBlock("div", _hoisted_13, [
           createVNode(_sfc_main$7, {
             footnotes: props.message.footnotes
           }, null, 8, ["footnotes"])
@@ -72692,8 +72694,6 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1 = /* @__PURE__ */ createElementVNode("div", { class: "tvk-shader tvk-shader-top" }, null, -1);
-const _hoisted_2 = /* @__PURE__ */ createElementVNode("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1);
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "messages",
   setup(__props) {
@@ -72722,11 +72722,11 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         ref: messagesWrapper,
         class: "tvk-messages"
       }, [
-        _hoisted_1,
+        _cache[0] || (_cache[0] = createElementVNode("div", { class: "tvk-shader tvk-shader-top" }, null, -1)),
         (openBlock(true), createElementBlock(Fragment, null, renderList(unref(mainStore).getMessages, (mssg) => {
           return openBlock(), createBlock(_sfc_main$2, { message: mssg }, null, 8, ["message"]);
         }), 256)),
-        _hoisted_2
+        _cache[1] || (_cache[1] = createElementVNode("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1))
       ], 512);
     };
   }

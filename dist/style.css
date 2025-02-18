@@ -642,7 +642,7 @@
   margin: var(--tvk_button_action-margin);
 }
 .tvk-btn-action:hover:not([disabled]) {
-  background: hsl(var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation) var(--tvk_colors_brand-lightness)/0.7);
+  background: hsl(var(--tvk_colors_brand-hue), var(--tvk_colors_brand-saturation), var(--tvk_colors_brand-lightness), 0.7);
   box-shadow: 0px 0px 0px 5px var(--tvk_colors_neutral);
 }
 .tvk-wrapper {
@@ -742,6 +742,14 @@
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper p {
   margin: 0;
 }
+.tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper h1,
+.tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper h2,
+.tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper h3,
+.tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper h4,
+.tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper h5,
+.tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper h6 {
+  margin: 0;
+}
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper hr {
   margin: 1em 0;
   border: 0;
@@ -775,7 +783,7 @@
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper code .hljs-operator,
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper code .hljs-punctuation,
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper code .hljs-subst {
-  color: #e0e0e0;
+  color: #878787;
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper code .hljs-operator {
   opacity: 0.7;
@@ -846,6 +854,7 @@
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper pre:has(> code) {
   position: relative;
+  margin: 0.25em 0;
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper pre:has(> code) .tvk-message-content-copy-button {
   position: absolute;
@@ -859,7 +868,7 @@
   padding: var(--tvk_base_spacing);
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper pre:has(> code) .tvk-message-content-copy-button:hover:not([disabled]) {
-  background: hsl(var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation) var(--tvk_colors_brand-lightness)/0.7);
+  background: hsl(var(--tvk_colors_brand-hue), var(--tvk_colors_brand-saturation), var(--tvk_colors_brand-lightness), 0.7);
   box-shadow: none;
 }
 .tvk-wrapper .tvk-messages .tvk-message .tvk-message-answer .tvk-message-body .tvk-message-content-wrapper pre:has(> code) code {

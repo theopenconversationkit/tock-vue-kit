@@ -23,13 +23,13 @@
     "dompurify": "^3.2.4",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.21",
-    "marked": "^15.0.6",
+    "marked": "^15.0.7",
     "marked-highlight": "^2.2.1",
-    "pinia": "^2.1.7",
+    "pinia": "^2.2.0",
     "url-sanitizer": "^2.0.7"
   },
   "peerDependencies": {
-    "vue": "^3.4.15"
+    "vue": "^3.4.35"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
@@ -39,11 +39,11 @@
     "@vue/tsconfig": "^0.5.1",
     "npm-run-all2": "^6.1.1",
     "sass": "^1.71.1",
-    "typescript": "~5.3.0",
+    "typescript": "~5.4.5",
     "vite": "^5.0.11",
     "vite-plugin-dts": "3.7.3",
     "vite-plugin-static-copy": "^1.0.5",
-    "vue": "^3.4.15",
+    "vue": "^3.4.35",
     "vue-tsc": "^1.8.27"
   }
 }

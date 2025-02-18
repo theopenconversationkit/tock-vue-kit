@@ -184,8 +184,8 @@ var __privateWrapper = (obj, member, setter, getter) => ({
     }
   }
   /*!
-   * pinia v2.1.7
-   * (c) 2023 Eduardo San Martin Morote
+   * pinia v2.3.1
+   * (c) 2025 Eduardo San Martin Morote
    * @license MIT
    */
   let activePinia;
@@ -201,7 +201,6 @@ var __privateWrapper = (obj, member, setter, getter) => ({
     MutationType2["patchFunction"] = "patch function";
   })(MutationType || (MutationType = {}));
   const IS_CLIENT = typeof window !== "undefined";
-  const USE_DEVTOOLS = IS_CLIENT;
   const _global = /* @__PURE__ */ (() => typeof window === "object" && window.window === window ? window : typeof self === "object" && self.self === self ? self : typeof global === "object" && global.global === global ? global : typeof globalThis === "object" ? globalThis : { HTMLElement: null })();
   function bom(blob, { autoBom = false } = {}) {
     if (autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
@@ -682,6 +681,7 @@ var __privateWrapper = (obj, member, setter, getter) => ({
           payload.rootNodes = (payload.filter ? stores.filter((store) => "$id" in store ? store.$id.toLowerCase().includes(payload.filter.toLowerCase()) : PINIA_ROOT_LABEL.toLowerCase().includes(payload.filter.toLowerCase())) : stores).map(formatStoreForInspectorTree);
         }
       });
+      globalThis.$pinia = pinia;
       api.on.getInspectorState((payload) => {
         if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
           const inspectedStore = payload.nodeId === PINIA_ROOT_ID ? pinia : pinia._s.get(payload.nodeId);
@@ -689,6 +689,8 @@ var __privateWrapper = (obj, member, setter, getter) => ({
             return;
           }
           if (inspectedStore) {
+            if (payload.nodeId !== PINIA_ROOT_ID)
+              globalThis.$store = vue.toRaw(inspectedStore);
             payload.state = formatStoreForInspectorState(inspectedStore);
           }
         }
@@ -932,12 +934,14 @@ Only state can be modified.`);
       return;
     }
     store._isOptionsAPI = !!options.state;
-    patchActionForGrouping(store, Object.keys(options.actions), store._isOptionsAPI);
-    const originalHotUpdate = store._hotUpdate;
-    vue.toRaw(store)._hotUpdate = function(newStore) {
-      originalHotUpdate.apply(this, arguments);
-      patchActionForGrouping(store, Object.keys(newStore._hmrPayload.actions), !!store._isOptionsAPI);
-    };
+    if (!store._p._testing) {
+      patchActionForGrouping(store, Object.keys(options.actions), store._isOptionsAPI);
+      const originalHotUpdate = store._hotUpdate;
+      vue.toRaw(store)._hotUpdate = function(newStore) {
+        originalHotUpdate.apply(this, arguments);
+        patchActionForGrouping(store, Object.keys(newStore._hmrPayload.actions), !!store._isOptionsAPI);
+      };
+    }
     addStoreToDevtools(
       app,
       // FIXME: is there a way to allow the assignment from Store<Id, S, G, A> to StoreGeneric?
@@ -956,7 +960,7 @@ Only state can be modified.`);
           pinia._a = app;
           app.provide(piniaSymbol, pinia);
           app.config.globalProperties.$pinia = pinia;
-          if (USE_DEVTOOLS) {
+          if (IS_CLIENT) {
             registerPiniaDevtools(app, pinia);
           }
           toBeInstalled.forEach((plugin) => _p.push(plugin));
@@ -979,7 +983,7 @@ Only state can be modified.`);
       _s: /* @__PURE__ */ new Map(),
       state
     });
-    if (USE_DEVTOOLS && typeof Proxy !== "undefined") {
+    if (IS_CLIENT && typeof Proxy !== "undefined") {
       pinia.use(devtoolsPlugin);
     }
     return pinia;
@@ -1023,11 +1027,12 @@ Only state can be modified.`);
     });
   }
   const fallbackRunWithContext = (fn) => fn();
+  const ACTION_MARKER = Symbol();
+  const ACTION_NAME = Symbol();
   function mergeReactiveObjects(target, patchToApply) {
     if (target instanceof Map && patchToApply instanceof Map) {
       patchToApply.forEach((value, key) => target.set(key, value));
-    }
-    if (target instanceof Set && patchToApply instanceof Set) {
+    } else if (target instanceof Set && patchToApply instanceof Set) {
       patchToApply.forEach(target.add, target);
     }
     for (const key in patchToApply) {
@@ -1086,10 +1091,7 @@ Only state can be modified.`);
     if (!pinia._e.active) {
       throw new Error("Pinia destroyed");
     }
-    const $subscribeOptions = {
-      deep: true
-      // flush: 'post',
-    };
+    const $subscribeOptions = { deep: true };
     {
       $subscribeOptions.onTrigger = (event) => {
         if (isListening) {
@@ -1165,8 +1167,12 @@ Only state can be modified.`);
       actionSubscriptions = [];
       pinia._s.delete($id);
     }
-    function wrapAction(name, action) {
-      return function() {
+    const action = (fn, name = "") => {
+      if (ACTION_MARKER in fn) {
+        fn[ACTION_NAME] = name;
+        return fn;
+      }
+      const wrappedAction = function() {
         setActivePinia(pinia);
         const args = Array.from(arguments);
         const afterCallbackList = [];
@@ -1179,14 +1185,14 @@ Only state can be modified.`);
         }
         triggerSubscriptions(actionSubscriptions, {
           args,
-          name,
+          name: wrappedAction[ACTION_NAME],
           store,
           after,
           onError
         });
         let ret;
         try {
-          ret = action.apply(this && this.$id === $id ? this : store, args);
+          ret = fn.apply(this && this.$id === $id ? this : store, args);
         } catch (error2) {
           triggerSubscriptions(onErrorCallbackList, error2);
           throw error2;
@@ -1203,7 +1209,10 @@ Only state can be modified.`);
         triggerSubscriptions(afterCallbackList, ret);
         return ret;
       };
-    }
+      wrappedAction[ACTION_MARKER] = true;
+      wrappedAction[ACTION_NAME] = name;
+      return wrappedAction;
+    };
     const _hmrPayload = /* @__PURE__ */ vue.markRaw({
       actions: {},
       getters: {},
@@ -1244,7 +1253,7 @@ Only state can be modified.`);
     ));
     pinia._s.set($id, store);
     const runWithContext = pinia._a && pinia._a.runWithContext || fallbackRunWithContext;
-    const setupStore = runWithContext(() => pinia._e.run(() => (scope = vue.effectScope()).run(setup)));
+    const setupStore = runWithContext(() => pinia._e.run(() => (scope = vue.effectScope()).run(() => setup({ action }))));
     for (const key in setupStore) {
       const prop = setupStore[key];
       if (vue.isRef(prop) && !isComputed(prop) || vue.isReactive(prop)) {
@@ -1266,7 +1275,7 @@ Only state can be modified.`);
           _hmrPayload.state.push(key);
         }
       } else if (typeof prop === "function") {
-        const actionValue = hot ? prop : wrapAction(key, prop);
+        const actionValue = hot ? prop : action(prop, key);
         {
           setupStore[key] = actionValue;
         }
@@ -1331,8 +1340,8 @@ Only state can be modified.`);
           isListening = true;
         });
         for (const actionName in newStore._hmrPayload.actions) {
-          const action = newStore[actionName];
-          set(store, actionName, wrapAction(actionName, action));
+          const actionFn = newStore[actionName];
+          set(store, actionName, action(actionFn, actionName));
         }
         for (const getterName in newStore._hmrPayload.getters) {
           const getter = newStore._hmrPayload.getters[getterName];
@@ -1360,7 +1369,7 @@ Only state can be modified.`);
         store._hotUpdating = false;
       });
     }
-    if (USE_DEVTOOLS) {
+    if (IS_CLIENT) {
       const nonEnumerable = {
         writable: true,
         configurable: true,
@@ -1372,7 +1381,7 @@ Only state can be modified.`);
       });
     }
     pinia._p.forEach((extender) => {
-      if (USE_DEVTOOLS) {
+      if (IS_CLIENT) {
         const extensions = scope.run(() => extender({
           store,
           app: pinia._a,
@@ -1402,6 +1411,8 @@ Found in store "${store.$id}".`);
     isSyncListening = true;
     return store;
   }
+  /*! #__NO_SIDE_EFFECTS__ */
+  // @__NO_SIDE_EFFECTS__
   function defineStore(idOrOptions, setup, setupOptions) {
     let id;
     let options;
@@ -1902,7 +1913,7 @@ This will fail in production.`);
     userId: forgeNewUserId(),
     messages: []
   });
-  const useMainStore = defineStore(MAIN_STORE_NAME, () => {
+  const useMainStore = /* @__PURE__ */ defineStore(MAIN_STORE_NAME, () => {
     const tockEndPoint = vue.inject(tockEndpointKey);
     const appOptions = appOptionsSingleton.getOptions();
     const state = vue.ref(getState());
@@ -2084,8 +2095,8 @@ This will fail in production.`);
       scrollMessages
     };
   });
-  const _hoisted_1$6 = ["aria-label"];
-  const _hoisted_2$6 = ["src"];
+  const _hoisted_1$5 = ["aria-label"];
+  const _hoisted_2$5 = ["src"];
   const _hoisted_3$3 = ["maxlength", "placeholder"];
   const _hoisted_4$3 = { class: "tvk-question-bar-chars-count" };
   const _hoisted_5$3 = ["disabled", "aria-label"];
@@ -2141,9 +2152,9 @@ This will fail in production.`);
                 width: vue.unref(appOptions).preferences.questionBar.clearHistory.image.width,
                 height: vue.unref(appOptions).preferences.questionBar.clearHistory.image.height
               })
-            }, null, 12, _hoisted_2$6)) : vue.createCommentVNode("", true),
+            }, null, 12, _hoisted_2$5)) : vue.createCommentVNode("", true),
             vue.createTextVNode(" " + vue.toDisplayString(vue.unref(appOptions).wording.questionBar.clearHistory), 1)
-          ], 8, _hoisted_1$6)) : vue.createCommentVNode("", true),
+          ], 8, _hoisted_1$5)) : vue.createCommentVNode("", true),
           vue.createElementVNode("form", {
             onSubmit: vue.withModifiers(onSubmit, ["prevent"]),
             class: "tvk-question-bar-form"
@@ -2284,7 +2295,9 @@ This will fail in production.`);
   const hr = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/;
   const heading = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/;
   const bullet = /(?:[*+-]|\d{1,9}[.)])/;
-  const lheading = edit(/^(?!bull |blockCode|fences|blockquote|heading|html)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).getRegex();
+  const lheadingCore = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/;
+  const lheading = edit(lheadingCore).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex();
+  const lheadingGfm = edit(lheadingCore).replace(/bull/g, bullet).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex();
   const _paragraph = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/;
   const blockText = /^[^\n]+/;
   const _blockLabel = /(?!\s*\])(?:\\.|[^\[\]\\])+/;
@@ -2313,6 +2326,7 @@ This will fail in production.`);
   const gfmTable = edit("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex();
   const blockGfm = {
     ...blockNormal,
+    lheading: lheadingGfm,
     table: gfmTable,
     paragraph: edit(_paragraph).replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", gfmTable).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex()
   };
@@ -4493,20 +4507,11 @@ ${text2}</tr>
   });
   const NODE_TYPE = {
     element: 1,
-    attribute: 2,
     text: 3,
-    cdataSection: 4,
-    entityReference: 5,
-    // Deprecated
-    entityNode: 6,
     // Deprecated
     progressingInstruction: 7,
     comment: 8,
-    document: 9,
-    documentType: 10,
-    documentFragment: 11,
-    notation: 12
-    // Deprecated
+    document: 9
   };
   const getGlobal = function getGlobal2() {
     return typeof window === "undefined" ? null : window;
@@ -16664,9 +16669,7 @@ ${text2}</tr>
         { relevance: 10 }
       );
       const LABEL = {
-        className: "symbol",
-        begin: "^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)",
-        relevance: 0
+        begin: "^\\s*[A-Za-z._?][A-Za-z0-9_$#@~.?]*(:|\\s+label)"
       };
       const KEYWORDS = [
         "if",
@@ -72149,8 +72152,8 @@ ${text2}</tr>
   * @copyright asamuzaK (Kazz)
   * @see {@link https://github.com/asamuzaK/urlSanitizer/blob/main/LICENSE}
   */
-  const _hoisted_1$5 = { class: "tvk-footnote" };
-  const _hoisted_2$5 = ["href"];
+  const _hoisted_1$4 = { class: "tvk-footnote" };
+  const _hoisted_2$4 = ["href"];
   const _hoisted_3$2 = {
     key: 1,
     class: "tvk-footnote-title"
@@ -72203,13 +72206,13 @@ ${text2}</tr>
         return pe(url) || void 0;
       }
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$5, [
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$4, [
           props.footnote.url ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 0,
             href: sanitizeUrl(props.footnote.url),
             target: "_blank",
             class: "tvk-footnote-title"
-          }, vue.toDisplayString(props.footnote.title), 9, _hoisted_2$5)) : vue.createCommentVNode("", true),
+          }, vue.toDisplayString(props.footnote.title), 9, _hoisted_2$4)) : vue.createCommentVNode("", true),
           !props.footnote.url ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$2, vue.toDisplayString(props.footnote.title), 1)) : vue.createCommentVNode("", true),
           props.footnote.content ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$2, [
             vue.createElementVNode("div", {
@@ -72241,8 +72244,8 @@ ${text2}</tr>
       };
     }
   });
-  const _hoisted_1$4 = { class: "tvk-footnotes" };
-  const _hoisted_2$4 = { class: "tvk-footnotes-sources-label" };
+  const _hoisted_1$3 = { class: "tvk-footnotes" };
+  const _hoisted_2$3 = { class: "tvk-footnotes-sources-label" };
   const _sfc_main$7 = /* @__PURE__ */ vue.defineComponent({
     __name: "footnotes",
     props: {
@@ -72252,8 +72255,8 @@ ${text2}</tr>
       const appOptions = appOptionsSingleton.getOptions();
       const props = __props;
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$4, [
-          vue.createElementVNode("span", _hoisted_2$4, vue.toDisplayString(vue.unref(appOptions).wording.messages.message.footnotes.sources), 1),
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$3, [
+          vue.createElementVNode("span", _hoisted_2$3, vue.toDisplayString(vue.unref(appOptions).wording.messages.message.footnotes.sources), 1),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(props.footnotes, (footnote) => {
             return vue.openBlock(), vue.createBlock(_sfc_main$8, { footnote }, null, 8, ["footnote"]);
           }), 256))
@@ -72261,11 +72264,11 @@ ${text2}</tr>
       };
     }
   });
-  const _hoisted_1$3 = {
+  const _hoisted_1$2 = {
     key: 1,
     style: { "white-space": "pre-wrap" }
   };
-  const _hoisted_2$3 = ["innerHTML"];
+  const _hoisted_2$2 = ["innerHTML"];
   const _sfc_main$6 = /* @__PURE__ */ vue.defineComponent({
     __name: "message-text",
     props: {
@@ -72338,7 +72341,7 @@ ${text2}</tr>
           props.message.author === vue.unref(MessageAuthor).user ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
             vue.createTextVNode(vue.toDisplayString(props.message.text), 1)
           ], 64)) : vue.createCommentVNode("", true),
-          !vue.unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === vue.unref(MessageAuthor).bot ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$3, vue.toDisplayString(props.message.text), 1)) : vue.createCommentVNode("", true),
+          !vue.unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === vue.unref(MessageAuthor).bot ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$2, vue.toDisplayString(props.message.text), 1)) : vue.createCommentVNode("", true),
           vue.unref(appOptions).preferences.messages.parseBotResponsesMarkdown && props.message.author === vue.unref(MessageAuthor).bot ? (vue.openBlock(), vue.createElementBlock("div", {
             key: 2,
             ref_key: "messageContentWrapper",
@@ -72346,7 +72349,7 @@ ${text2}</tr>
             class: "tvk-message-content-wrapper",
             innerHTML: getMarkUp(),
             tabindex: "1"
-          }, null, 8, _hoisted_2$3)) : vue.createCommentVNode("", true),
+          }, null, 8, _hoisted_2$2)) : vue.createCommentVNode("", true),
           ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && vue.unref(appOptions).preferences.messages.footNotes.display && !vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createBlock(_sfc_main$7, {
             key: 3,
             footnotes: props.message.footnotes
@@ -72363,8 +72366,8 @@ ${text2}</tr>
       };
     }
   });
-  const _hoisted_1$2 = { class: "tvk-card" };
-  const _hoisted_2$2 = ["href"];
+  const _hoisted_1$1 = { class: "tvk-card" };
+  const _hoisted_2$1 = ["href"];
   const _hoisted_3$1 = ["src", "alt"];
   const _hoisted_4$1 = ["href"];
   const _hoisted_5$1 = { key: 2 };
@@ -72387,7 +72390,7 @@ ${text2}</tr>
       }
       return (_ctx, _cache) => {
         var _a3, _b3, _c2, _d, _e3, _f, _g, _h, _i6, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t2;
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
           ((_b3 = (_a3 = props.card) == null ? void 0 : _a3.file) == null ? void 0 : _b3.type) === "image" ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 0,
             href: (_d = (_c2 = props.card) == null ? void 0 : _c2.file) == null ? void 0 : _d.url,
@@ -72399,7 +72402,7 @@ ${text2}</tr>
               onLoad: onImgLoad,
               class: "tvk-thumbnail"
             }, null, 40, _hoisted_3$1)
-          ], 8, _hoisted_2$2)) : vue.createCommentVNode("", true),
+          ], 8, _hoisted_2$1)) : vue.createCommentVNode("", true),
           ((_h = (_g = props.card) == null ? void 0 : _g.file) == null ? void 0 : _h.type) === "file" ? (vue.openBlock(), vue.createElementBlock("a", {
             key: 1,
             href: (_j = (_i6 = props.card) == null ? void 0 : _i6.file) == null ? void 0 : _j.url,
@@ -72562,8 +72565,8 @@ ${text2}</tr>
       };
     }
   });
-  const _hoisted_1$1 = { class: "tvk-message-answer" };
-  const _hoisted_2$1 = {
+  const _hoisted_1 = { class: "tvk-message-answer" };
+  const _hoisted_2 = {
     key: 0,
     class: "tvk-message-header"
   };
@@ -72595,8 +72598,7 @@ ${text2}</tr>
     key: 1,
     class: "tvk-error-connection"
   };
-  const _hoisted_13 = /* @__PURE__ */ vue.createElementVNode("i", { class: "tvk-error-icon bi bi-exclamation-triangle" }, null, -1);
-  const _hoisted_14 = {
+  const _hoisted_13 = {
     key: 0,
     class: "tvk-side-footnotes"
   };
@@ -72617,8 +72619,8 @@ ${text2}</tr>
             "tvk-message-bot": props.message.author === vue.unref(MessageAuthor).bot
           }])
         }, [
-          vue.createElementVNode("div", _hoisted_1$1, [
-            vue.unref(appOptions).preferences.messages.message.header.display && props.message.author !== vue.unref(MessageAuthor).app ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$1, [
+          vue.createElementVNode("div", _hoisted_1, [
+            vue.unref(appOptions).preferences.messages.message.header.display && props.message.author !== vue.unref(MessageAuthor).app ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2, [
               vue.unref(appOptions).preferences.messages.message.header.avatar.display ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3, [
                 !vue.unref(appOptions).preferences.messages.message.header.avatar.userImage && vue.unref(appOptions).preferences.messages.message.header.avatar.userIcon && props.message.author === vue.unref(MessageAuthor).user ? (vue.openBlock(), vue.createElementBlock("i", {
                   key: 0,
@@ -72679,12 +72681,12 @@ ${text2}</tr>
             props.message.author === vue.unref(MessageAuthor).app ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_10, [
               props.message.type === vue.unref(MessageType).loader ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_11)) : vue.createCommentVNode("", true),
               props.message.type === vue.unref(MessageType).error ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_12, [
-                _hoisted_13,
+                _cache[0] || (_cache[0] = vue.createElementVNode("i", { class: "tvk-error-icon bi bi-exclamation-triangle" }, null, -1)),
                 vue.createTextVNode(" " + vue.toDisplayString(props.message.text), 1)
               ])) : vue.createCommentVNode("", true)
             ])) : vue.createCommentVNode("", true)
           ]),
-          ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && vue.unref(appOptions).preferences.messages.footNotes.display && vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, [
+          ((_a2 = props.message.footnotes) == null ? void 0 : _a2.length) && vue.unref(appOptions).preferences.messages.footNotes.display && vue.unref(appOptions).preferences.messages.footNotes.displayOnMessageSide ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_13, [
             vue.createVNode(_sfc_main$7, {
               footnotes: props.message.footnotes
             }, null, 8, ["footnotes"])
@@ -72693,8 +72695,6 @@ ${text2}</tr>
       };
     }
   });
-  const _hoisted_1 = /* @__PURE__ */ vue.createElementVNode("div", { class: "tvk-shader tvk-shader-top" }, null, -1);
-  const _hoisted_2 = /* @__PURE__ */ vue.createElementVNode("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1);
   const _sfc_main$1 = /* @__PURE__ */ vue.defineComponent({
     __name: "messages",
     setup(__props) {
@@ -72723,11 +72723,11 @@ ${text2}</tr>
           ref: messagesWrapper,
           class: "tvk-messages"
         }, [
-          _hoisted_1,
+          _cache[0] || (_cache[0] = vue.createElementVNode("div", { class: "tvk-shader tvk-shader-top" }, null, -1)),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(mainStore).getMessages, (mssg) => {
             return vue.openBlock(), vue.createBlock(_sfc_main$2, { message: mssg }, null, 8, ["message"]);
           }), 256)),
-          _hoisted_2
+          _cache[1] || (_cache[1] = vue.createElementVNode("div", { class: "tvk-shader tvk-shader-bottom" }, null, -1))
         ], 512);
       };
     }
