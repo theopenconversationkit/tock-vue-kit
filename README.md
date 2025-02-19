@@ -233,7 +233,7 @@ function App() {
 export default App;
 ```
 
-If Latex formulas are expected in bot responses, include the katex css file as well (See above for examples).
+If Latex formulas are expected in bot responses, include the katex css file as well `https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css`.
 
 ### Svelte 4.2.7 integration example
 
@@ -275,7 +275,22 @@ In the desired component:
 <div bind:this="{chatTarget}"></div>
 ```
 
-If Latex formulas are expected in bot responses, include the katex css file as well (See above for examples).
+If Latex formulas are expected in bot responses, include the katex css file as well `https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css`.
+
+## Note on KaTeX Integration
+
+To optimize the size of our library and cater to the diverse needs of our users, we have chosen not to include the KaTeX CSS by default. Since the display of LaTeX formulas is not a required feature for all users, this approach helps reduce the overall weight of the library.
+
+If you need the LaTeX formula display functionality, you can easily include the KaTeX CSS in your project by adding the following line to your HTML file or importing it into your CSS:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+/>
+```
+
+This will enable the display of mathematical formulas while giving you control over the resources loaded in your application.
 
 ## Render method arguments
 
