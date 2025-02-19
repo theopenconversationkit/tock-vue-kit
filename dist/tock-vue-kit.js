@@ -64789,7 +64789,12 @@ const cC = { class: "tvk-footnote" }, dC = ["href"], _C = {
   }
 });
 function VC() {
+  var r = document.createElement("style");
+  r.innerHTML = '@namespace only_html "http://www.w3.org/1999/xhtml"; .tvk-wrapper only_html|* {all: revert;}', r.appendChild(document.createTextNode("")), document.head.insertBefore(r, document.head.childNodes[0]);
+}
+function $C() {
   var e, t;
+  VC();
   const r = gt.getOptions();
   if ((e = r == null ? void 0 : r.initialization) != null && e.welcomeMessage || (t = r == null ? void 0 : r.initialization) != null && t.openingMessage) {
     const n = qt(), a = n.getStoredState();
@@ -64805,24 +64810,24 @@ function VC() {
   }
 }
 let or, Rg;
-function uN(r, e, t) {
+function mN(r, e, t) {
   return Rg = r, Cg(e, t), or;
 }
-function mN(r, e) {
+function pN(r, e) {
   Cg(r, e);
 }
 function Cg(r, e) {
   or != null && or.unmount && or.unmount(), or = Kg(HC), or.provide(Bp, r), gt.clearInstance(), gt.setOptions(e);
   const t = Qg();
-  or.use(t), or.mount(Rg), VC();
-}
-function pN() {
-  return JSON.parse(JSON.stringify(Gp));
+  or.use(t), or.mount(Rg), $C();
 }
 function gN() {
+  return JSON.parse(JSON.stringify(Gp));
+}
+function EN() {
   return JSON.parse(JSON.stringify(gt.getOptions()));
 }
-function EN(r, e) {
+function SN(r, e) {
   const t = gt.getOptions(), n = r.split(".");
   let a = t;
   for (let i = 0; i < n.length; i++) {
@@ -64830,14 +64835,14 @@ function EN(r, e) {
     i < n.length - 1 ? (a[s] || (a[s] = {}), a = a[s]) : (a[s] = e, qt().updateApplication());
   }
 }
-function SN(r) {
+function fN(r) {
   qt().addMessage(r);
 }
 export {
-  SN as addTvkMessage,
-  gN as getTvkCurrentOptions,
-  pN as getTvkDefaultOptions,
-  mN as reload,
-  uN as renderChat,
-  EN as updateTvkOption
+  fN as addTvkMessage,
+  EN as getTvkCurrentOptions,
+  gN as getTvkDefaultOptions,
+  pN as reload,
+  mN as renderChat,
+  SN as updateTvkOption
 };
