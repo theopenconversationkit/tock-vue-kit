@@ -1,10 +1,4 @@
 .tvk-wrapper {
-  all: revert;
-
-  * {
-    all: revert;
-  }
-
   /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
   /* Document
@@ -71,6 +65,7 @@
   pre {
     font-family: monospace, monospace; /* 1 */
     font-size: 1em; /* 2 */
+    margin: 0;
   }
 
   /* Text-level semantics

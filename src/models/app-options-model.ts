@@ -33,6 +33,8 @@ export interface Preferences {
   messages: {
     clearOnNewRequest: OptionDefinition<boolean>;
     hideIfNoMessages: OptionDefinition<boolean>;
+    parseBotResponsesMarkdown: OptionDefinition<boolean>;
+
     message: {
       hideUserMessages: OptionDefinition<boolean>;
       header: {
@@ -52,6 +54,7 @@ export interface Preferences {
     footNotes: {
       display: OptionDefinition<boolean>;
       requireSourcesContent: OptionDefinition<boolean>;
+      parseContentMarkdown: OptionDefinition<boolean>;
       clampSourceContent: OptionDefinition<boolean>;
       clampSourceContentNbLines: OptionDefinition<number>;
       displayOnMessageSide: OptionDefinition<boolean>;
