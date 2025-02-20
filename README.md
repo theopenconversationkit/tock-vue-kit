@@ -20,11 +20,11 @@ Include js and css files:
 <script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
 <link
   rel="stylesheet"
-  href="https://unpkg.com/tock-vue-kit@1.0/dist/style.css"
+  href="https://unpkg.com/tock-vue-kit@1.0.1/dist/style.css"
 />
 <script
   crossorigin
-  src="https://unpkg.com/tock-vue-kit@1.0/dist/tock-vue-kit.iife.js"
+  src="https://unpkg.com/tock-vue-kit@1.0.1/dist/tock-vue-kit.iife.js"
 ></script>
 
 <!-- Next line can be omitted if no Latex formula is expected in bot responses -->
@@ -277,7 +277,7 @@ In the desired component:
 
 If Latex formulas are expected in bot responses, include the katex css file as well `https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css`.
 
-## Note on KaTeX Integration
+## Note on KaTeX Integration
 
 To optimize the size of our library and cater to the diverse needs of our users, we have chosen not to include the KaTeX CSS by default. Since the display of LaTeX formulas is not a required feature for all users, this approach helps reduce the overall weight of the library.
 
