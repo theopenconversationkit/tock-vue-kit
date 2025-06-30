@@ -224,6 +224,18 @@ const preferences: Preferences = {
         index: 55,
         conditions: ["preferences.messages.footNotes.display"],
       },
+      condensedDisplay: {
+        title: "Condensed display of source links",
+        type: "boolean",
+        default: false,
+        description:
+          "Displays source links without their titles but with a number. This parameter has no effect if requireSourcesContent is enabled.",
+        index: 56,
+        conditions: [
+          "preferences.messages.footNotes.display",
+          "!preferences.messages.footNotes.requireSourcesContent",
+        ],
+      },
     },
   },
   questionBar: {

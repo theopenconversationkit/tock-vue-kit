@@ -58,6 +58,7 @@ export interface Preferences {
       clampSourceContent: OptionDefinition<boolean>;
       clampSourceContentNbLines: OptionDefinition<number>;
       displayOnMessageSide: OptionDefinition<boolean>;
+      condensedDisplay: OptionDefinition<boolean>;
     };
   };
   questionBar: {

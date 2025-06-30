@@ -18,6 +18,7 @@ const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps<{
   footnote: MessageFootnote;
+  index: number;
 }>();
 
 const showFullText = ref<boolean>(false);
@@ -70,8 +71,16 @@ function sanitizeUrl(url: string): string | undefined {
       :href="sanitizeUrl(props.footnote!.url)"
       target="_blank"
       class="tvk-footnote-title"
+      :title="props.footnote!.title"
     >
-      {{ props.footnote!.title }}
+      <template
+        v-if="!appOptions.preferences.messages.footNotes.condensedDisplay"
+        >{{ props.footnote!.title }}</template
+      >
+      <template
+        v-if="appOptions.preferences.messages.footNotes.condensedDisplay"
+        >{{ props.index + 1 }}</template
+      >
     </a>
 
     <span v-if="!props.footnote!.url" class="tvk-footnote-title">
