@@ -432,6 +432,7 @@ Footnotes can optionally be added to Rag messages.
 | clampSourceContent        | For RAG responses with sources content, truncate the textual source content.                                                                                                                              | Boolean | true    |
 | clampSourceContentNbLines | For RAG responses with sources content, number of lines after which to truncate text.                                                                                                                     | Integer | 2       |
 | displayOnMessageSide      | For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.                                                                             | Boolean | false   |
+| condensedDisplay          | Displays source links without their titles but with a number. This parameter has no effect if requireSourcesContent is enabled.                                                                           | Boolean | false   |
 
 #### QuestionBar
 
