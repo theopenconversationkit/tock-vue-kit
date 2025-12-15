@@ -6,6 +6,9 @@
   --tvk_colors_brand-saturation: 0%;
   --tvk_colors_brand-lightness: 50%;
 
+  --tvk_colors_good-hue: 150;
+  --tvk_colors_bad-hue: 15;
+
   /* light mode vars */
   --tvk_colors_light_brand: hsl(
     var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
@@ -39,6 +42,9 @@
     var(--tvk_colors_brand-hue) 20% 30%
   );
 
+  --tvk_colors_light_good: hsl(var(--tvk_colors_good-hue) 60% 50%);
+  --tvk_colors_light_bad: hsl(var(--tvk_colors_bad-hue) 70% 50%);
+
   /* dark mode vars */
   --tvk_colors_dark_brand: hsl(
     var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
@@ -69,6 +75,9 @@
   --tvk_colors_dark_message-content-elements-text: hsl(
     var(--tvk_colors_brand-hue) 10% 85%
   );
+
+  --tvk_colors_dark_good: hsl(var(--tvk_colors_good-hue) 50% 50%);
+  --tvk_colors_dark_bad: hsl(var(--tvk_colors_bad-hue) 50% 50%);
 }
 
 [data-theme="light"],
@@ -97,6 +106,9 @@
   --tvk_colors_message-content-elements-text: var(
     --tvk_colors_light_message-content-elements-text
   );
+
+  --tvk_colors_good: var(--tvk_colors_light_good);
+  --tvk_colors_bad: var(--tvk_colors_light_bad);
 }
 
 @mixin dark-mode {
@@ -121,6 +133,9 @@
   --tvk_colors_message-content-elements-text: var(
     --tvk_colors_dark_message-content-elements-text
   );
+
+  --tvk_colors_good: var(--tvk_colors_dark_good);
+  --tvk_colors_bad: var(--tvk_colors_dark_bad);
 }
 
 // @media only screen and (prefers-color-scheme: dark) {

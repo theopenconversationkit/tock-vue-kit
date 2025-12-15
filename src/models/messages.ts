@@ -1,6 +1,7 @@
 export type Message =
   | LoaderMessage
   | ErrorMessage
+  | NotificationMessage
   | TextMessage
   | CardMessage
   | CarouselMessage
@@ -18,14 +19,25 @@ export enum MessageType {
   carousel = "carousel",
   image = "image",
 
+  notification = "notification",
   loader = "loader",
   error = "error",
+}
+
+export enum FeedbackVoteValue {
+  Up = "UP",
+  Down = "DOWN",
 }
 
 interface MessageBase {
   type: MessageType;
   author: MessageAuthor;
-  metadata?: Record<string, string>;
+  actionId?: string;
+  metadata?: Record<string, string> & {
+    feedback?: {
+      vote: FeedbackVoteValue | null;
+    };
+  };
   footnotes?: MessageFootnote[];
   date: number;
 }
@@ -60,6 +72,16 @@ export interface ImageMessage extends Partial<MessageBase> {
 export interface LoaderMessage extends Partial<MessageBase> {
   type: MessageType.loader;
   message?: string;
+}
+
+export enum NotificationMessageStyle {
+  Info = "info",
+  Warning = "warning",
+}
+export interface NotificationMessage extends Partial<MessageBase> {
+  type: MessageType.notification;
+  message: string;
+  style: NotificationMessageStyle;
 }
 
 export interface ErrorMessage extends Partial<MessageBase> {

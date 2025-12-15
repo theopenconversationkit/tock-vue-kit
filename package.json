@@ -14,12 +14,14 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite build --mode development --watch",
+    "docs": "tsx ./scripts/generate-docs.ts",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.13.1",
     "dompurify": "^3.2.4",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.21",
@@ -34,11 +36,11 @@
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
     "@types/katex": "^0.16.7",
-    "@types/node": "^20.11.10",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/tsconfig": "^0.5.1",
     "npm-run-all2": "^6.1.1",
     "sass": "^1.71.1",
+    "tsx": "^4.21.0",
     "typescript": "~5.4.5",
     "vite": "^5.0.11",
     "vite-plugin-dts": "3.7.3",
