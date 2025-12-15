@@ -269,7 +269,7 @@ const sE = {
     title: "Storage key prefix",
     type: "string",
     default: void 0,
-    description: "Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. Required when localStorage.enabled is true.",
+    description: "Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. If undefined, a default prefix is used.",
     index: 1.1,
     conditions: ["localStorage.enabled"]
   },
@@ -277,7 +277,7 @@ const sE = {
     title: "Maximum stored messages",
     type: "number",
     default: 20,
-    description: "Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed. Only applies when localStorage.enabled is true.",
+    description: "Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed.",
     index: 2,
     conditions: ["localStorage.enabled"]
   }
@@ -470,7 +470,7 @@ const sE = {
       enabled: {
         title: "Enable feedback buttons",
         type: "boolean",
-        default: !0,
+        default: !1,
         description: "Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality.",
         index: 23
       },
@@ -64788,7 +64788,7 @@ const _C = { class: "tvk-footnote" }, uC = ["href", "title"], mC = {
 }, GC = {
   key: 2,
   class: "tvk-message-feedback"
-}, YC = ["title", "aria-pressed", "aria-label"], qC = ["title", "aria-pressed", "aria-label"], zC = {
+}, YC = ["aria-pressed", "title", "aria-label"], qC = ["aria-pressed", "title", "aria-label"], zC = {
   key: 3,
   class: "tvk-message-body-from-app"
 }, HC = {
@@ -64887,8 +64887,8 @@ const _C = { class: "tvk-footnote" }, uC = ["href", "title"], mC = {
               class: qt(["tvk-btn", {
                 "tvk-message-feedback-thumbsUpActive": ((l = (o = t.message.metadata) == null ? void 0 : o.feedback) == null ? void 0 : l.vote) === G(Lr).Up
               }]),
-              title: G(e).wording.messages.feedback.thumbsUpTitle,
               "aria-pressed": ((_ = (c = t.message.metadata) == null ? void 0 : c.feedback) == null ? void 0 : _.vote) === G(Lr).Up,
+              title: G(e).wording.messages.feedback.thumbsUpTitle,
               "aria-label": G(e).wording.messages.feedback.thumbsUpAriaLabel,
               onClick: s[0] || (s[0] = Il((h) => a(G(Lr).Up), ["prevent"]))
             }, [
@@ -64900,8 +64900,8 @@ const _C = { class: "tvk-footnote" }, uC = ["href", "title"], mC = {
               class: qt(["tvk-btn", {
                 "tvk-message-feedback-thumbsDownActive": ((g = (m = t.message.metadata) == null ? void 0 : m.feedback) == null ? void 0 : g.vote) === G(Lr).Down
               }]),
-              title: G(e).wording.messages.feedback.thumbsDownTitle,
               "aria-pressed": ((f = (E = t.message.metadata) == null ? void 0 : E.feedback) == null ? void 0 : f.vote) === G(Lr).Down,
+              title: G(e).wording.messages.feedback.thumbsDownTitle,
               "aria-label": G(e).wording.messages.feedback.thumbsDownAriaLabel,
               onClick: s[1] || (s[1] = Il((h) => a(G(Lr).Down), ["prevent"]))
             }, [

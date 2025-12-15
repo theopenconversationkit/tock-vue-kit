@@ -505,7 +505,7 @@ Customization options for the chat interface and user experience:
 
 | Property name | Description | Type | Default |
 | ------------- | ----------- | ---- | ------- |
-| enabled | Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality. | boolean | `true` |
+| enabled | Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality. | boolean | `false` |
 | thumbsUpIcon | CSS class for the thumbs-up icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class. | string | `bi bi-hand-thumbs-up` |
 | thumbsDownIcon | CSS class for the thumbs-down icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class. | string | `bi bi-hand-thumbs-down` |
 

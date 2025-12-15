@@ -243,7 +243,7 @@ export const preferences: Preferences = {
       enabled: {
         title: "Enable feedback buttons",
         type: "boolean",
-        default: true,
+        default: false,
         description:
           "Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality.",
         index: 23,
