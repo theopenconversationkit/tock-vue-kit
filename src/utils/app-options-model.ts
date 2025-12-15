@@ -20,7 +20,7 @@ export const localStorage: LocalStorage = {
     type: "string",
     default: undefined,
     description:
-      "Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. Required when localStorage.enabled is true.",
+      "Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. If undefined, a default prefix is used.",
     index: 1.1,
     conditions: ["localStorage.enabled"],
   },
@@ -29,7 +29,7 @@ export const localStorage: LocalStorage = {
     type: "number",
     default: 20,
     description:
-      "Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed. Only applies when localStorage.enabled is true.",
+      "Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed.",
     index: 2,
     conditions: ["localStorage.enabled"],
   },

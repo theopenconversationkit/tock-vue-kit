@@ -8,6 +8,8 @@ import {
   wording,
 } from "../src/utils/app-options-model";
 
+import packageJson from "../package.json";
+
 // Helper to format complex types
 function formatType(type: string): string {
   const typeMap: Record<string, string> = {
@@ -181,6 +183,12 @@ function generateSectionWithIntro(
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const readmePath = path.join(__dirname, "../README.md");
 let readmeContent = readFileSync(readmePath, "utf8");
+
+const currentVersion = packageJson.version;
+readmeContent = readmeContent.replace(
+  /tock-vue-kit@[\d.]+/g,
+  `tock-vue-kit@${currentVersion}`
+);
 
 // Define sections with their introductions
 const sections = [
