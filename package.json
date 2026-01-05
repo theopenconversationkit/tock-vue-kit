@@ -1,6 +1,6 @@
 {
   "name": "tock-vue-kit",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "description": "Vue 3 client application for dialog with a Tock Bot REST API",
   "type": "module",
   "files": [
