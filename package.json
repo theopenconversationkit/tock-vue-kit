@@ -21,7 +21,6 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "bootstrap-icons": "^1.13.1",
     "dompurify": "^3.2.4",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.21",
