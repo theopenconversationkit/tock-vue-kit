@@ -60,6 +60,11 @@ export interface Preferences {
       displayOnMessageSide: OptionDefinition<boolean>;
       condensedDisplay: OptionDefinition<boolean>;
     };
+    feedback: {
+      enabled: OptionDefinition<boolean>;
+      thumbsUpIcon: OptionDefinition<string>;
+      thumbsDownIcon: OptionDefinition<string>;
+    };
   };
   questionBar: {
     clearTypedCharsOnSubmit: OptionDefinition<boolean>;
@@ -88,9 +93,18 @@ export interface Wording {
         showMoreLink: OptionDefinition<string>;
       };
     };
+    feedback: {
+      confirmationMessage: OptionDefinition<string>;
+      errorMessage: OptionDefinition<string>;
+      thumbsUpTitle: OptionDefinition<string>;
+      thumbsDownTitle: OptionDefinition<string>;
+      thumbsUpAriaLabel: OptionDefinition<string>;
+      thumbsDownAriaLabel: OptionDefinition<string>;
+    };
   };
   questionBar: {
     clearHistory: OptionDefinition<string>;
+    clearHistoryTitle: OptionDefinition<string>;
     clearHistoryAriaLabel: OptionDefinition<string>;
     input: {
       placeholder: OptionDefinition<string>;

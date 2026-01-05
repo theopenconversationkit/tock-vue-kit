@@ -3,7 +3,13 @@ import { forgeNewUserId } from "../utils/user-id";
 import { computed, inject, ref, type ComputedRef, type Ref } from "vue";
 import { tockEndpointKey } from "../keys/app-keys";
 import type { mainState } from "../models/main-state";
-import { MessageAuthor, MessageType, type Message } from "../models/messages";
+import {
+  MessageAuthor,
+  MessageType,
+  FeedbackVoteValue,
+  type Message,
+  NotificationMessageStyle,
+} from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
 import type { TockQuery } from "../models/query";
 
@@ -61,12 +67,19 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     });
   }
 
+  function clearNotificationMessages(): void {
+    state.value.messages = state.value.messages.filter((mssg) => {
+      return mssg.type !== MessageType.notification;
+    });
+  }
+
   function scrollMessages(): void {
     // empty action watched by messages component to scroll down when a message is added or images load
   }
 
   function addMessage(message: Message): void {
     const mainStoreInstance = useMainStore();
+    mainStoreInstance.clearNotificationMessages();
     mainStoreInstance.clearLoaderMessages();
     mainStoreInstance.scrollMessages();
 
@@ -261,6 +274,82 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     }
   }
 
+  async function reportFeedback(
+    message: Message,
+    vote: FeedbackVoteValue | null
+  ): Promise<void> {
+    const mainStoreInstance = useMainStore();
+
+    message.metadata = message.metadata || {};
+
+    const existingVote = message.metadata.feedback?.vote || null;
+
+    // reset previous vote if same button is clicked
+    if (message.metadata?.feedback?.vote === vote) vote = null;
+
+    // Write the vote optimistically
+    message.metadata.feedback = { vote };
+
+    // Send to bot
+    try {
+      const locale = navigator.language;
+      const payload = {
+        userId: state.value.userId,
+        locale: locale,
+        feedback: {
+          actionId: message.actionId,
+          vote: vote,
+        },
+      };
+
+      const query = await fetch(tockEndPoint!, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: getHeaders(),
+      });
+
+      if (query.ok) {
+        // Persist to localStorage if query ok and local storage enabled
+        if (appOptions.localStorage.enabled) {
+          localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
+        }
+        mainStoreInstance.addMessage({
+          type: MessageType.notification,
+          author: MessageAuthor.app,
+          date: Date.now(),
+          message: appOptions.wording.messages.feedback.confirmationMessage,
+          style: NotificationMessageStyle.Info,
+        });
+      } else {
+        // Revert the optimistic update
+        message.metadata.feedback!.vote = existingVote;
+        mainStoreInstance.addMessage({
+          type: MessageType.notification,
+          author: MessageAuthor.app,
+          date: Date.now(),
+          message: appOptions.wording.messages.feedback.errorMessage,
+          style: NotificationMessageStyle.Warning,
+        });
+        console.warn("Failed to report feedback to bot.");
+      }
+    } catch (error) {
+      // Revert the optimistic update
+      message.metadata.feedback!.vote = existingVote;
+      mainStoreInstance.addMessage({
+        type: MessageType.notification,
+        author: MessageAuthor.app,
+        date: Date.now(),
+        message: appOptions.wording.messages.feedback.errorMessage,
+        style: NotificationMessageStyle.Warning,
+      });
+      console.warn("Failed to report feedback to bot:", error);
+    } finally {
+      setTimeout(() => {
+        mainStoreInstance.clearNotificationMessages();
+      }, 3000);
+    }
+  }
+
   return {
     state,
     updateApplication,
@@ -269,7 +358,9 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     sendUserMessage,
     addMessage,
     clearHistory,
+    clearNotificationMessages,
     clearLoaderMessages,
     scrollMessages,
+    reportFeedback,
   };
 });

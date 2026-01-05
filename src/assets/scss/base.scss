@@ -184,6 +184,17 @@
 
   --tvk_message_body_bot_font-weight: normal;
 
+  // feedback
+  --tvk_feedback_align-self: unset;
+  --tvk_feedback_display: flex;
+  --tvk_feedback_flex-direction: row;
+  --tvk_feedback_gap: var(--tvk_base_spacing);
+  --tvk_feedback_margin: 0;
+  --tvk_feedback_padding: calc(var(--tvk_base_spacing) / 2);
+  --tvk_feedback_font-size: 90%;
+  --tvk_feedback_thumbsUpActive_color: var(--tvk_colors_good);
+  --tvk_feedback_thumbsDownActive_color: var(--tvk_colors_bad);
+
   // Side footnotes
   --tvk_side-footnotes_flex-grow: 1;
   --tvk_side-footnotes_flex-shrink: 0;
@@ -236,6 +247,12 @@
   --tvk_message_loader_margin: 0 0 0 var(--tvk_message_loader_size);
   --tvk_message_loader_color-a: var(--tvk_colors_surface1);
   --tvk_message_loader_color-b: var(--tvk_colors_surface2);
+
+  // Messsage notification
+  --tvk_message_notification_margin: 0 0 -1em 0;
+
+  // Messsage error
+  --tvk_message_error_margin: 0.5em 0.5em -0.5em 0.5em;
 
   // Question bar
   --tvk_question_flex-direction: row;

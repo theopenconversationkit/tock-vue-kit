@@ -1,11 +1,7 @@
-// @use "./reset.css";
-
 @use "./normalize";
 @use "./colors";
 @use "./base";
 @use "./buttons";
-
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 .tvk-wrapper {
   box-sizing: border-box;
@@ -349,9 +345,38 @@
         .tvk-message-body-from-app {
           display: inline-block;
           flex-grow: var(--tvk_message_body_grow);
-          padding: var(--tvk_message_body_padding);
+          // padding: var(--tvk_message_body_padding);
           border-radius: var(--tvk_message_body_radius);
           width: 100%;
+
+          .tvk-message-notification {
+            margin: var(--tvk_message_notification_margin);
+            color: var(--tvk_colors_text-muted);
+            font-size: 80%;
+            text-align: start;
+            font-style: italic;
+
+            &.tvk-message-notification-info {
+              color: var(--tvk_colors_good);
+            }
+            &.tvk-message-notification-warning {
+              color: var(--tvk_colors_bad);
+            }
+          }
+
+          .tvk-error-connection {
+            color: white;
+            background: var(--tvk_colors_bad);
+            margin: var(--tvk_message_error_margin);
+            padding: 0.5em;
+            text-align: center;
+
+            .tvk-error-icon {
+              font-size: 150%;
+              vertical-align: middle;
+              margin-right: 0.3em;
+            }
+          }
 
           .tvk-message-loader {
             position: relative;
@@ -372,6 +397,23 @@
 
             animation: tvk-loader-animation 0.5s ease-out infinite alternate;
           }
+        }
+      }
+
+      .tvk-message-feedback {
+        align-self: var(--tvk_feedback_align-self);
+        display: var(--tvk_feedback_display);
+        flex-direction: var(--tvk_feedback_flex-direction);
+        gap: var(--tvk_feedback_gap);
+        margin: var(--tvk_feedback_margin);
+        padding: var(--tvk_feedback_padding);
+        font-size: var(--tvk_feedback_font-size);
+
+        .tvk-message-feedback-thumbsUpActive {
+          color: var(--tvk_feedback_thumbsUpActive_color);
+        }
+        .tvk-message-feedback-thumbsDownActive {
+          color: var(--tvk_feedback_thumbsDownActive_color);
         }
       }
 
@@ -694,21 +736,9 @@
 .tvk-clamp {
   --tvk-clamp-nb-line: 3;
   -webkit-line-clamp: var(--tvk-clamp-nb-line);
+  line-clamp: var(--tvk-clamp-nb-line);
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.tvk-error-connection {
-  color: white;
-  background: orangered;
-  padding: 0.5em;
-  text-align: center;
-
-  .tvk-error-icon {
-    font-size: 150%;
-    vertical-align: middle;
-    margin-right: 0.3em;
-  }
 }

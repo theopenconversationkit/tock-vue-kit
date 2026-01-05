@@ -6,34 +6,36 @@ import type {
   Wording,
 } from "../models/app-options-model";
 
-const localStorage: LocalStorage = {
+export const localStorage: LocalStorage = {
   enabled: {
-    title: "Local storage",
+    title: "Enable local storage",
     type: "boolean",
     default: false,
-    description: "Retain conversation history in local storage",
+    description:
+      "Enable/disable persistence of conversation history in the browser's localStorage. When disabled, messages are not saved between page refreshes.",
     index: 1,
   },
   prefix: {
-    title: "Local storage prefix",
+    title: "Storage key prefix",
     type: "string",
     default: undefined,
     description:
-      "Prefix for local storage keys allowing communication with different bots from the same domain",
+      "Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. If undefined, a default prefix is used.",
     index: 1.1,
     conditions: ["localStorage.enabled"],
   },
   maxNumberMessages: {
-    title: "Maximum messages",
+    title: "Maximum stored messages",
     type: "number",
     default: 20,
-    description: "Maximum number of messages to store in local storage",
+    description:
+      "Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed.",
     index: 2,
     conditions: ["localStorage.enabled"],
   },
 };
 
-const initialization: Initialization = {
+export const initialization: Initialization = {
   extraHeaders: {
     title: "Extra headers",
     type: "KeyValues",
@@ -60,31 +62,31 @@ const initialization: Initialization = {
   },
 };
 
-const preferences: Preferences = {
+export const preferences: Preferences = {
   messages: {
     hideIfNoMessages: {
-      title: "Hide messages if no messages",
+      title: "Hide empty message container",
       type: "boolean",
       default: true,
       description:
-        "Hide messages container if there is no messages to display.",
+        "Hide the messages container when there are no messages to display. Useful for cleaner UI when chat is first loaded.",
       index: 20,
     },
     clearOnNewRequest: {
-      title: "Clear on new request",
+      title: "Clear messages on new request",
       type: "boolean",
       default: false,
       description:
-        "If true, deletes previous messages when a new user request is sent",
+        "When enabled, clears previous conversation history each time the user sends a new message. Creates a fresh context for each new user input.",
       index: 21,
     },
     parseBotResponsesMarkdown: {
-      title: "Markdown evaluation of bot responses",
+      title: "Enable Markdown in bot responses",
       type: "boolean",
       default: true,
       description:
-        "If true, the text of the bot's responses is parsed and transformed into html markup if it contains markdown. This includes syntax highlighting of code blocks and display of Latex and MathML content.",
-      index: 21,
+        "When enabled, bot responses containing Markdown are rendered as HTML with proper formatting (including code syntax highlighting, LaTeX, and MathML support). When disabled, responses are shown as plain text.",
+      index: 22,
     },
 
     message: {
@@ -162,28 +164,28 @@ const preferences: Preferences = {
     },
     footNotes: {
       display: {
-        title: "Display sources",
+        title: "Show sources",
         type: "boolean",
         default: true,
         description:
-          "For RAG answers, display the sources used to generate the answer if any.",
+          "Display source references for RAG (Retrieval-Augmented Generation) responses. Sources appear as footnotes below the bot's answer.",
         index: 50,
       },
       requireSourcesContent: {
-        title: "Request textual content of sources",
+        title: "Include source content",
         type: "boolean",
         default: false,
         description:
-          "For RAG answers, request the textual content of the source in addition to the source title and link.",
+          "When enabled, retrieves and displays the actual content of source documents in addition to just the titles/links. Increases API load but provides more context.",
         index: 51,
         conditions: ["preferences.messages.footNotes.display"],
       },
       parseContentMarkdown: {
-        title: "Markdown evaluation of footnotes content",
+        title: "Format source content",
         type: "boolean",
         default: true,
         description:
-          "If true, the text content of footnotes is parsed and transformed into html markup if it contains markdown.",
+          "Apply Markdown formatting to source document content when requireSourcesContent is enabled. Converts Markdown to HTML with syntax highlighting.",
         index: 52,
         conditions: [
           "preferences.messages.footNotes.display",
@@ -191,11 +193,11 @@ const preferences: Preferences = {
         ],
       },
       clampSourceContent: {
-        title: "Clamp content of sources",
+        title: "Truncate source content",
         type: "boolean",
         default: true,
         description:
-          "For RAG answers with sources content, truncate the textual source content.",
+          "Limit the displayed length of source document content to prevent overly long footnotes. The actual number of lines is controlled by clampSourceContentNbLines.",
         index: 53,
         conditions: [
           "preferences.messages.footNotes.display",
@@ -203,11 +205,11 @@ const preferences: Preferences = {
         ],
       },
       clampSourceContentNbLines: {
-        title: "Number of lines to clamp",
+        title: "Source content line limit",
         type: "number",
         default: 2,
         description:
-          "For RAG answers with sources content, number of lines after which to truncate text.",
+          "Maximum number of lines to display for each source document when clampSourceContent is enabled. Set to 0 to show complete content.",
         index: 54,
         conditions: [
           "preferences.messages.footNotes.display",
@@ -216,25 +218,51 @@ const preferences: Preferences = {
         ],
       },
       displayOnMessageSide: {
-        title: "Display sources on the side of the answer",
+        title: "Side panel for sources",
         type: "boolean",
         default: false,
         description:
-          "For RAG responses, any sources are displayed on one side of the message response rather than directly following the response.",
+          "Display sources in a side panel next to the message instead of below it. Provides better separation between answer and sources but requires more horizontal space.",
         index: 55,
         conditions: ["preferences.messages.footNotes.display"],
       },
       condensedDisplay: {
-        title: "Condensed display of source links",
+        title: "Compact source links",
         type: "boolean",
         default: false,
         description:
-          "Displays source links without their titles but with a number. This parameter has no effect if requireSourcesContent is enabled.",
+          "Display source links as numbered references only (without titles). More compact but less informative. Has no effect when requireSourcesContent is enabled.",
         index: 56,
         conditions: [
           "preferences.messages.footNotes.display",
           "!preferences.messages.footNotes.requireSourcesContent",
         ],
+      },
+    },
+    feedback: {
+      enabled: {
+        title: "Enable feedback buttons",
+        type: "boolean",
+        default: false,
+        description:
+          "Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality.",
+        index: 23,
+      },
+      thumbsUpIcon: {
+        title: "Thumbs up icon",
+        type: "string",
+        default: "bi bi-hand-thumbs-up",
+        description:
+          "CSS class for the thumbs-up icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class.",
+        index: 23.2,
+      },
+      thumbsDownIcon: {
+        title: "Thumbs down icon",
+        type: "string",
+        default: "bi bi-hand-thumbs-down",
+        description:
+          "CSS class for the thumbs-down icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class.",
+        index: 23.3,
       },
     },
   },
@@ -244,14 +272,15 @@ const preferences: Preferences = {
       type: "boolean",
       default: true,
       description:
-        "Whether or not the question input should be cleared on submit.",
+        "Clear the input field after the user submits a message. When disabled, the submitted text remains in the input field for potential editing.",
       index: 60,
     },
     maxUserInputLength: {
-      title: "Max user message length",
+      title: "Maximum input length",
       type: "number",
       default: 500,
-      description: "Max length of the user input message string",
+      description:
+        "Maximum number of characters allowed in user messages. Longer messages are truncated to this limit before being sent to the bot.",
       index: 61,
     },
     clearHistory: {
@@ -260,23 +289,24 @@ const preferences: Preferences = {
         type: "boolean",
         default: true,
         description:
-          "Display the control allowing user to clear discussion history and local storage history, if any",
+          "Display a button that allows users to clear the current conversation history and start fresh.",
         index: 70,
       },
       icon: {
-        title: "Clear history button icon",
+        title: "Clear history icon",
         type: "string",
         default: "bi bi-trash-fill",
         description:
-          "Class name of the clear history control icon (displayed only if no image is defined)",
+          "CSS class for the clear history icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided.",
         index: 71,
         conditions: ["preferences.questionBar.clearHistory.display"],
       },
       image: {
-        title: "Clear history button image",
+        title: "Clear history image",
         type: "ImageDef",
         default: undefined,
-        description: "Image of the clearHistory control",
+        description:
+          "Custom image for the clear history button. Overrides the default icon if provided.",
         index: 72,
         conditions: ["preferences.questionBar.clearHistory.display"],
       },
@@ -287,92 +317,153 @@ const preferences: Preferences = {
         type: "string",
         default: "bi bi-send-fill",
         description:
-          "Class name of the submit control icon (displayed only if no image is defined)",
+          "CSS class for the submit button icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided.",
         index: 80,
       },
       image: {
         title: "Submit button image",
         type: "ImageDef",
         default: undefined,
-        description: "Image of the submit control",
+        description:
+          "Custom image for the submit button. Overrides the default icon if provided.",
         index: 81,
       },
     },
   },
 };
 
-const wording: Wording = {
+export const wording: Wording = {
   messages: {
     message: {
       header: {
         labelUser: {
-          title: "Message header user label",
+          title: "User message label",
           type: "string",
           default: "You",
-          description: undefined,
+          description:
+            "Label displayed next to user messages in the conversation header.",
         },
         labelBot: {
-          title: "Message header bot label",
+          title: "Bot message label",
           type: "string",
           default: "Bot",
-          description: undefined,
+          description:
+            "Label displayed next to bot messages in the conversation header.",
         },
       },
       footnotes: {
         sources: {
-          title: "Footnotes label",
+          title: "Sources label",
           type: "string",
           default: "Sources:",
-          description: undefined,
+          description: "Label prefix for the list of sources in RAG responses.",
         },
         showMoreLink: {
-          title: "Show more link label",
+          title: "Show more text",
           type: "string",
           default: "> Show more",
-          description: undefined,
+          description:
+            "Text for the link that expands truncated source content.",
         },
+      },
+    },
+    feedback: {
+      confirmationMessage: {
+        title: "Feedback confirmation",
+        type: "string",
+        default: "Thank you for your feedback!",
+        description:
+          "Message shown to user after successfully submitting feedback.",
+      },
+      errorMessage: {
+        title: "Feedback error message",
+        type: "string",
+        default:
+          "An error occurred while submitting your feedback. Please try again later.",
+        description: "Message shown to user if feedback submission fails.",
+      },
+      thumbsUpTitle: {
+        title: "Thumbs up tooltip",
+        type: "string",
+        default: "I like this answer",
+        description:
+          "Tooltip text displayed when hovering over the thumbs-up button.",
+      },
+      thumbsDownTitle: {
+        title: "Thumbs down tooltip",
+        type: "string",
+        default: "I don't like this answer",
+        description:
+          "Tooltip text displayed when hovering over the thumbs-down button.",
+      },
+      thumbsUpAriaLabel: {
+        title: "Thumbs up ARIA label",
+        type: "string",
+        default: "Thumbs up feedback button",
+        description:
+          "Accessibility label for the thumbs-up button for screen readers.",
+      },
+      thumbsDownAriaLabel: {
+        title: "Thumbs down ARIA label",
+        type: "string",
+        default: "Thumbs down feedback button",
+        description:
+          "Accessibility label for the thumbs-down button for screen readers.",
       },
     },
   },
   questionBar: {
     clearHistory: {
-      title: "Clear history button label",
+      title: "Clear history button text",
       type: "string",
       default: "",
-      description: undefined,
+      description:
+        "Text label for the clear history button. Leave empty to use icon only.",
+    },
+    clearHistoryTitle: {
+      title: "Clear history tooltip",
+      type: "string",
+      default: "Clear discussion and history",
+      description:
+        "Tooltip text displayed when hovering over the clear history button.",
     },
     clearHistoryAriaLabel: {
-      title: "Clear history button Aria label",
+      title: "Clear history ARIA label",
       type: "string",
       default: "Clear discussion and history button",
-      description: undefined,
+      description:
+        "Accessibility label for the clear history button for screen readers.",
     },
     input: {
       placeholder: {
-        title: "User input placeholder",
+        title: "Input placeholder",
         type: "string",
         default: "Ask me a question...",
-        description: undefined,
+        description:
+          "Placeholder text shown in the input field when empty. Guides users on what to type.",
       },
     },
     submit: {
-      title: "Submit button label",
+      title: "Submit button text",
       type: "string",
       default: "",
-      description: undefined,
+      description:
+        "Text label for the submit button. Leave empty to use icon only.",
     },
     submitAriaLabel: {
-      title: "Submit button Aria label",
+      title: "Submit button ARIA label",
       type: "string",
       default: "Submit button",
-      description: undefined,
+      description:
+        "Accessibility label for the submit button for screen readers.",
     },
   },
   connectionErrorMessage: {
     title: "Connection error message",
     type: "string",
-    default: "An unexpected error occured. Please try again later.",
-    description: undefined,
+    default: "An unexpected error occurred. Please try again later.",
+    description:
+      "Message displayed to users when the connection to the bot service fails.",
   },
 };
 

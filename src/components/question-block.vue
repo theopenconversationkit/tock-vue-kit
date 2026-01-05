@@ -44,6 +44,7 @@ function onClearHistory(): void {
     <button
       v-if="appOptions.preferences.questionBar.clearHistory?.display"
       class="tvk-btn tvk-question-bar-btn-clear-history"
+      :title="appOptions.wording.questionBar.clearHistoryTitle"
       :aria-label="appOptions.wording.questionBar.clearHistoryAriaLabel"
       @click="onClearHistory"
     >
@@ -83,6 +84,7 @@ function onClearHistory(): void {
 
     <button
       :disabled="!typedChars.trim().length || userInputExceedLenth()"
+      :aria-disabled="!typedChars.trim().length || userInputExceedLenth()"
       class="tvk-btn tvk-question-bar-btn-submit"
       :aria-label="appOptions.wording.questionBar.submitAriaLabel"
       @click="onSubmit"

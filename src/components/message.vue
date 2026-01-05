@@ -4,15 +4,32 @@ import messageCard from "./message-card.vue";
 import messageCarousel from "./message-carousel.vue";
 import messageImage from "./message-image.vue";
 import Footnotes from "./footnotes.vue";
-import { MessageAuthor, MessageType, type Message } from "../models/messages";
+import {
+  type ErrorMessage,
+  MessageAuthor,
+  MessageType,
+  FeedbackVoteValue,
+  type Message,
+} from "../models/messages";
 
 import { appOptionsSingleton } from "../utils/app-options-singleton";
+import { useMainStore } from "../stores/main-state";
 
 const appOptions = appOptionsSingleton.getOptions();
 
 const props = defineProps<{
   message: Message;
 }>();
+
+const mainStore = useMainStore();
+
+function onVote(direction: FeedbackVoteValue) {
+  try {
+    mainStore.reportFeedback(props.message, direction);
+  } catch (e) {
+    console.warn("reportFeedback failed", e);
+  }
+}
 </script>
 
 <template>
@@ -117,9 +134,54 @@ const props = defineProps<{
       </div>
 
       <div
+        class="tvk-message-feedback"
+        v-if="props.message!.author === MessageAuthor.bot && appOptions.preferences.messages.feedback.enabled && props.message.actionId"
+      >
+        <button
+          class="tvk-btn"
+          :class="{
+            'tvk-message-feedback-thumbsUpActive':
+              props.message.metadata?.feedback?.vote === FeedbackVoteValue.Up,
+          }"
+          :aria-pressed="
+            props.message.metadata?.feedback?.vote === FeedbackVoteValue.Up
+          "
+          :title="appOptions.wording.messages.feedback.thumbsUpTitle"
+          :aria-label="appOptions.wording.messages.feedback.thumbsUpAriaLabel"
+          @click.prevent="onVote(FeedbackVoteValue.Up)"
+        >
+          <i :class="appOptions.preferences.messages.feedback.thumbsUpIcon"></i>
+        </button>
+        <button
+          class="tvk-btn"
+          :class="{
+            'tvk-message-feedback-thumbsDownActive':
+              props.message.metadata?.feedback?.vote === FeedbackVoteValue.Down,
+          }"
+          :aria-pressed="
+            props.message.metadata?.feedback?.vote === FeedbackVoteValue.Down
+          "
+          :title="appOptions.wording.messages.feedback.thumbsDownTitle"
+          :aria-label="appOptions.wording.messages.feedback.thumbsDownAriaLabel"
+          @click.prevent="onVote(FeedbackVoteValue.Down)"
+        >
+          <i
+            :class="appOptions.preferences.messages.feedback.thumbsDownIcon"
+          ></i>
+        </button>
+      </div>
+
+      <div
         class="tvk-message-body-from-app"
         v-if="props.message!.author === MessageAuthor.app"
       >
+        <div
+          v-if="props.message!.type === MessageType.notification"
+          class="tvk-message-notification"
+          :class="['tvk-message-notification-' + props.message.style]"
+        >
+          {{ props.message.message }}
+        </div>
         <div
           v-if="props.message!.type === MessageType.loader"
           class="tvk-message-loader"
@@ -129,7 +191,7 @@ const props = defineProps<{
           class="tvk-error-connection"
         >
           <i class="tvk-error-icon bi bi-exclamation-triangle"></i>
-          {{ props.message.text }}
+          {{ (props.message as ErrorMessage).text }}
         </div>
       </div>
     </div>
