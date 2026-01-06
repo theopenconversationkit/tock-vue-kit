@@ -1,6 +1,12 @@
 name: Publish to npm
 
 on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Test without publishing (dry run)"
+        required: false
+        default: "false"
   push:
     tags:
       - "v*"
@@ -27,4 +33,9 @@ jobs:
         run: npm run build
 
       - name: Publish to npm
+        if: github.event.inputs.dry-run != 'true'
         run: npm publish --access public
+
+      - name: Dry run (test)
+        if: github.event.inputs.dry-run == 'true'
+        run: npm publish --dry-run
