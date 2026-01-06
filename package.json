@@ -12,6 +12,10 @@
   "author": "Rodolphe Küffer <https://github.com/rkuffer>",
   "homepage": "https://github.com/theopenconversationkit/tock-vue-kit",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theopenconversationkit/tock-vue-kit.git"
+  },
   "scripts": {
     "dev": "vite build --mode development --watch",
     "docs": "tsx ./scripts/generate-docs.ts",
