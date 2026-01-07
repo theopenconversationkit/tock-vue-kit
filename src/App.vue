@@ -39,16 +39,15 @@ watch(darkTheme, async (newState) => {
 });
 
 onMounted(() => {
-  // renderChat(chatTarget.value!, "https://demo-bot.tock.ai/io/tock/tockbot/web");
-  renderChat(
-    chatTarget.value!,
-    "http://localhost:8080/io/app/new_assistant/web",
-    {
-      localStorage: {
-        enabled: true,
-      },
-    }
-  );
+  let tockInstance;
+  tockInstance = "https://demo-bot.tock.ai/io/tock/tockbot/web";
+  // tockInstance =  "http://localhost:8080/io/app/new_assistant/web"
+
+  renderChat(chatTarget.value!, tockInstance, {
+    localStorage: {
+      enabled: true,
+    },
+  });
 
   // setTimeout(() => {
   //   displayEditor.value = true;
