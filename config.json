@@ -4,7 +4,7 @@
     "localPath": "../tock-vue-kit/src"
   },
   "tockVueKitEditor": {
-    "version": "^0.2.0",
+    "version": "^0.2.1",
     "localPath": "../tock-vue-kit-editor/src"
   }
 }
