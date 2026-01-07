@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-@import url("https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css");
-
-@import url("https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css");
+@import "pico.min.css";
 
 :root {
   --pico-font-size: 100%;

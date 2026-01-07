@@ -1,0 +1,10 @@
+{
+  "tockVueKit": {
+    "version": "^2.0.0",
+    "localPath": "../tock-vue-kit/src"
+  },
+  "tockVueKitEditor": {
+    "version": "^0.2.0",
+    "localPath": "../tock-vue-kit-editor/src"
+  }
+}

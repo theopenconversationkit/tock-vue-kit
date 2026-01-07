@@ -4,18 +4,24 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "node scripts/set-dependency-prebuild.js",
+    "postbuild": "node scripts/set-dependency-postbuild.js",
+    "build": "vite build",
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "tock-vue-kit": "^1.0.2",
-    "tock-vue-kit-editor": "^0.1.1",
+    "@picocss/pico": "^2.1.1",
+    "bootstrap-icons": "^1.13.1",
+    "katex": "^0.16.27",
+    "tock-vue-kit": "file:../tock-vue-kit",
+    "tock-vue-kit-editor": "file:../tock-vue-kit-editor",
     "vue": "^3.4.29"
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^6.0.3",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.14.5",
     "@vitejs/plugin-vue": "^5.0.5",

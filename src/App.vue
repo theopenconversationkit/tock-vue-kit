@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import "tock-vue-kit/dist/style.css";
 import "tock-vue-kit-editor/dist/style.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "katex/dist/katex.min.css";
 import { renderChat } from "tock-vue-kit";
 import { TvkEditor } from "tock-vue-kit-editor";
 import { ref, onMounted, watch } from "vue";
@@ -9,7 +11,7 @@ const chatTarget = ref<HTMLElement>();
 
 const displayEditor = ref<boolean>(false);
 
-const theme = ref<string>("light");
+const darkTheme = ref<boolean>(false);
 
 enum DisplayModes {
   default = "default",
@@ -26,7 +28,7 @@ watch(displayEditor, async (newState) => {
   }
 });
 
-watch(theme, async (newState) => {
+watch(darkTheme, async (newState) => {
   if (newState) {
     document.documentElement.setAttribute("data-theme", "dark");
     document.documentElement.setAttribute("data-bs-theme", "dark");
@@ -37,11 +39,30 @@ watch(theme, async (newState) => {
 });
 
 onMounted(() => {
-  renderChat(chatTarget.value!, "https://demo-bot.tock.ai/io/tock/tockbot/web");
+  // renderChat(chatTarget.value!, "https://demo-bot.tock.ai/io/tock/tockbot/web");
+  renderChat(
+    chatTarget.value!,
+    "http://localhost:8080/io/app/new_assistant/web",
+    {
+      localStorage: {
+        enabled: true,
+      },
+    }
+  );
 
   // setTimeout(() => {
   //   displayEditor.value = true;
   // }, 100);
+
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.setAttribute("data-bs-theme", "dark");
+    darkTheme.value = true;
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.setAttribute("data-bs-theme", "light");
+    darkTheme.value = false;
+  }
 });
 </script>
 
@@ -87,7 +108,7 @@ onMounted(() => {
             name="dark"
             type="checkbox"
             role="switch"
-            v-model="theme"
+            v-model="darkTheme"
           />
           dark mode
         </label>
