@@ -428,15 +428,16 @@ Customization options are provided in the form of an object that can contain the
 > [Tock Vue Kit Editor](https://github.com/theopenconversationkit/tock-vue-kit-editor) offers an easy way to define customization options (See [demo page](https://doc.tock.ai/tock-vue-kit/), click _Editor_ switch then see _Preferences_ and _Wording_ tabs)
 
 <!-- LOCAL_STORAGE_TABLE_START -->
+
 ## LocalStorage
 
 Options relating to the persistence in _localStorage_ of messages exchanged by the user with the Tock instance:
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| enabled | Enable/disable persistence of conversation history in the browser's localStorage. When disabled, messages are not saved between page refreshes. | boolean | `false` |
-| prefix | Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. If undefined, a default prefix is used. (*Conditions*: localStorage.enabled) | string | `undefined` |
-| maxNumberMessages | Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed. (*Conditions*: localStorage.enabled) | number | `20` |
+| Property name     | Description                                                                                                                                                                           | Type    | Default     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----------- |
+| enabled           | Enable/disable persistence of conversation history in the browser's localStorage. When disabled, messages are not saved between page refreshes.                                       | boolean | `false`     |
+| prefix            | Unique prefix for localStorage keys to prevent conflicts when multiple bots are used on the same domain. If undefined, a default prefix is used. (_Conditions_: localStorage.enabled) | string  | `undefined` |
+| maxNumberMessages | Maximum number of messages to retain in localStorage. When this limit is reached, oldest messages are automatically removed. (_Conditions_: localStorage.enabled)                     | number  | `20`        |
 
 <!-- LOCAL_STORAGE_TABLE_END -->
 
@@ -457,15 +458,16 @@ TockVueKit.renderChat(
 ```
 
 <!-- INITIALIZATION_TABLE_START -->
+
 ## Initialization
 
 Parameters for the initial setup and first interactions with the bot:
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| extraHeaders | Additional HTTP header key/value pairs to be supplied in requests. Warning : Tock server configuration required. | `Record<string, string>` | `undefined` |
-| welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any. | string | `undefined` |
-| openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | string | `undefined` |
+| Property name  | Description                                                                                                                                                                | Type                     | Default     |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------- |
+| extraHeaders   | Additional HTTP header key/value pairs to be supplied in requests. Warning : Tock server configuration required.                                                           | `Record<string, string>` | `undefined` |
+| welcomeMessage | Initial bot message to be displayed to the user at startup. It will not be sent to the bot and will be stored in local storage, if any.                                    | string                   | `undefined` |
+| openingMessage | Initial user message to be sent to the bot at startup to trigger a welcome sequence. It will not be displayed to the user and will not be stored in local storage, if any. | string                   | `undefined` |
 
 <!-- INITIALIZATION_TABLE_END -->
 
@@ -488,88 +490,90 @@ TockVueKit.renderChat(
 ```
 
 <!-- PREFERENCES_TABLE_START -->
+
 ## Preferences
 
 Customization options for the chat interface and user experience:
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| **messages** | Messages options | [Messages](#Messages) | |
-| **questionBar** | QuestionBar options | [QuestionBar](#QuestionBar) | |
+| Property name   | Description         | Type                        | Default |
+| --------------- | ------------------- | --------------------------- | ------- |
+| **messages**    | Messages options    | [Messages](#Messages)       |         |
+| **questionBar** | QuestionBar options | [QuestionBar](#QuestionBar) |         |
 
 ### Messages
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| hideIfNoMessages | Hide the messages container when there are no messages to display. Useful for cleaner UI when chat is first loaded. | boolean | `true` |
-| clearOnNewRequest | When enabled, clears previous conversation history each time the user sends a new message. Creates a fresh context for each new user input. | boolean | `false` |
-| parseBotResponsesMarkdown | When enabled, bot responses containing Markdown are rendered as HTML with proper formatting (including code syntax highlighting, LaTeX, and MathML support). When disabled, responses are shown as plain text. | boolean | `true` |
-| **message** | Message options | [Message](#Message) | |
-| **footNotes** | FootNotes options | [FootNotes](#FootNotes) | |
-| **feedback** | Feedback options | [Feedback](#Feedback) | |
+| Property name             | Description                                                                                                                                                                                                    | Type                    | Default |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ------- |
+| hideIfNoMessages          | Hide the messages container when there are no messages to display. Useful for cleaner UI when chat is first loaded.                                                                                            | boolean                 | `true`  |
+| clearOnNewRequest         | When enabled, clears previous conversation history each time the user sends a new message. Creates a fresh context for each new user input.                                                                    | boolean                 | `false` |
+| parseBotResponsesMarkdown | When enabled, bot responses containing Markdown are rendered as HTML with proper formatting (including code syntax highlighting, LaTeX, and MathML support). When disabled, responses are shown as plain text. | boolean                 | `true`  |
+| **message**               | Message options                                                                                                                                                                                                | [Message](#Message)     |         |
+| **footNotes**             | FootNotes options                                                                                                                                                                                              | [FootNotes](#FootNotes) |         |
+| **feedback**              | Feedback options                                                                                                                                                                                               | [Feedback](#Feedback)   |         |
 
 #### Message
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| hideUserMessages | If true, user messages are not displayed. | boolean | `false` |
-| **header** | Header options | [Header](#Header) | |
+| Property name    | Description                               | Type              | Default |
+| ---------------- | ----------------------------------------- | ----------------- | ------- |
+| hideUserMessages | If true, user messages are not displayed. | boolean           | `false` |
+| **header**       | Header options                            | [Header](#Header) |         |
 
 ##### Header
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| display | Display a header above message. | boolean | `true` |
-| **avatar** | Avatar options | [Avatar](#Avatar) | |
-| **label** | Label options | [Label](#Label) | |
+| Property name | Description                     | Type              | Default |
+| ------------- | ------------------------------- | ----------------- | ------- |
+| display       | Display a header above message. | boolean           | `true`  |
+| **avatar**    | Avatar options                  | [Avatar](#Avatar) |         |
+| **label**     | Label options                   | [Label](#Label)   |         |
 
 #### FootNotes
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| display | Display source references for RAG (Retrieval-Augmented Generation) responses. Sources appear as footnotes below the bot's answer. | boolean | `true` |
-| requireSourcesContent | When enabled, retrieves and displays the actual content of source documents in addition to just the titles/links. Increases API load but provides more context. (*Conditions*: preferences.messages.footNotes.display) | boolean | `false` |
-| parseContentMarkdown | Apply Markdown formatting to source document content when requireSourcesContent is enabled. Converts Markdown to HTML with syntax highlighting. (*Conditions*: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent) | boolean | `true` |
-| clampSourceContent | Limit the displayed length of source document content to prevent overly long footnotes. The actual number of lines is controlled by clampSourceContentNbLines. (*Conditions*: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent) | boolean | `true` |
-| clampSourceContentNbLines | Maximum number of lines to display for each source document when clampSourceContent is enabled. Set to 0 to show complete content. (*Conditions*: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent, preferences.messages.footNotes.clampSourceContent) | number | `2` |
-| displayOnMessageSide | Display sources in a side panel next to the message instead of below it. Provides better separation between answer and sources but requires more horizontal space. (*Conditions*: preferences.messages.footNotes.display) | boolean | `false` |
-| condensedDisplay | Display source links as numbered references only (without titles). More compact but less informative. Has no effect when requireSourcesContent is enabled. (*Conditions*: preferences.messages.footNotes.display, !preferences.messages.footNotes.requireSourcesContent) | boolean | `false` |
+| Property name             | Description                                                                                                                                                                                                                                                                                        | Type    | Default |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
+| display                   | Display source references for RAG (Retrieval-Augmented Generation) responses. Sources appear as footnotes below the bot's answer.                                                                                                                                                                  | boolean | `true`  |
+| requireSourcesContent     | When enabled, retrieves and displays the actual content of source documents in addition to just the titles/links. Increases API load but provides more context. (_Conditions_: preferences.messages.footNotes.display)                                                                             | boolean | `false` |
+| parseContentMarkdown      | Apply Markdown formatting to source document content when requireSourcesContent is enabled. Converts Markdown to HTML with syntax highlighting. (_Conditions_: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent)                                       | boolean | `true`  |
+| clampSourceContent        | Limit the displayed length of source document content to prevent overly long footnotes. The actual number of lines is controlled by clampSourceContentNbLines. (_Conditions_: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent)                        | boolean | `true`  |
+| clampSourceContentNbLines | Maximum number of lines to display for each source document when clampSourceContent is enabled. Set to 0 to show complete content. (_Conditions_: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent, preferences.messages.footNotes.clampSourceContent) | number  | `2`     |
+| displayOnMessageSide      | Display sources in a side panel next to the message instead of below it. Provides better separation between answer and sources but requires more horizontal space. (_Conditions_: preferences.messages.footNotes.display)                                                                          | boolean | `false` |
+| condensedDisplay          | Display source links as numbered references only (without titles). More compact but less informative. Has no effect when requireSourcesContent is enabled. (_Conditions_: preferences.messages.footNotes.display, !preferences.messages.footNotes.requireSourcesContent)                           | boolean | `false` |
 
 #### Feedback
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| enabled | Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality. | boolean | `false` |
-| thumbsUpIcon | CSS class for the thumbs-up icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class. | string | `bi bi-hand-thumbs-up` |
-| thumbsDownIcon | CSS class for the thumbs-down icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class. | string | `bi bi-hand-thumbs-down` |
+| Property name  | Description                                                                                                       | Type    | Default                  |
+| -------------- | ----------------------------------------------------------------------------------------------------------------- | ------- | ------------------------ |
+| enabled        | Show thumbs up/down buttons below bot messages to allow users to provide feedback on response quality.            | boolean | `false`                  |
+| thumbsUpIcon   | CSS class for the thumbs-up icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class.   | string  | `bi bi-hand-thumbs-up`   |
+| thumbsDownIcon | CSS class for the thumbs-down icon. Uses Bootstrap Icons by default. Can be replaced with any icon library class. | string  | `bi bi-hand-thumbs-down` |
 
 ### QuestionBar
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| clearTypedCharsOnSubmit | Clear the input field after the user submits a message. When disabled, the submitted text remains in the input field for potential editing. | boolean | `true` |
-| maxUserInputLength | Maximum number of characters allowed in user messages. Longer messages are truncated to this limit before being sent to the bot. | number | `500` |
-| **clearHistory** | ClearHistory options | [ClearHistory](#ClearHistory) | |
-| **submit** | Submit options | [Submit](#Submit) | |
+| Property name           | Description                                                                                                                                 | Type                          | Default |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------- |
+| clearTypedCharsOnSubmit | Clear the input field after the user submits a message. When disabled, the submitted text remains in the input field for potential editing. | boolean                       | `true`  |
+| maxUserInputLength      | Maximum number of characters allowed in user messages. Longer messages are truncated to this limit before being sent to the bot.            | number                        | `500`   |
+| **clearHistory**        | ClearHistory options                                                                                                                        | [ClearHistory](#ClearHistory) |         |
+| **submit**              | Submit options                                                                                                                              | [Submit](#Submit)             |         |
 
 #### ClearHistory
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| display | Display a button that allows users to clear the current conversation history and start fresh. | boolean | `true` |
-| icon | CSS class for the clear history icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided. (*Conditions*: preferences.questionBar.clearHistory.display) | string | `bi bi-trash-fill` |
-| image | Custom image for the clear history button. Overrides the default icon if provided. (*Conditions*: preferences.questionBar.clearHistory.display) | [ImageDef](#ImageDef) | `undefined` |
+| Property name | Description                                                                                                                                                                        | Type                  | Default            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------ |
+| display       | Display a button that allows users to clear the current conversation history and start fresh.                                                                                      | boolean               | `true`             |
+| icon          | CSS class for the clear history icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided. (_Conditions_: preferences.questionBar.clearHistory.display) | string                | `bi bi-trash-fill` |
+| image         | Custom image for the clear history button. Overrides the default icon if provided. (_Conditions_: preferences.questionBar.clearHistory.display)                                    | [ImageDef](#ImageDef) | `undefined`        |
 
 #### Submit
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| icon | CSS class for the submit button icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided. | string | `bi bi-send-fill` |
-| image | Custom image for the submit button. Overrides the default icon if provided. | [ImageDef](#ImageDef) | `undefined` |
+| Property name | Description                                                                                                           | Type                  | Default           |
+| ------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------------- |
+| icon          | CSS class for the submit button icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided. | string                | `bi bi-send-fill` |
+| image         | Custom image for the submit button. Overrides the default icon if provided.                                           | [ImageDef](#ImageDef) | `undefined`       |
 
 <!-- PREFERENCES_TABLE_END -->
 
 <!-- TYPES_TABLE_START -->
+
 ### Types
 
 Complex type definitions used in the configuration:
@@ -578,11 +582,11 @@ Complex type definitions used in the configuration:
 
 Option object for ImageDef.
 
-| Property name | Description | Type |
-| ------------- | ----------- | ---- |
-| src | Src of the image (url or svg data image) | string |
-| width | Width in which to display the image. | string |
-| height | Height in which to display the image. | string |
+| Property name | Description                              | Type   |
+| ------------- | ---------------------------------------- | ------ |
+| src           | Src of the image (url or svg data image) | string |
+| width         | Width in which to display the image.     | string |
+| height        | Height in which to display the image.    | string |
 
 <!-- TYPES_TABLE_END -->
 
@@ -626,71 +630,72 @@ TockVueKit.renderChat(
 ```
 
 <!-- WORDING_TABLE_START -->
+
 ## Wording
 
 Text labels and messages displayed in the interface (can be customized for internationalization):
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| connectionErrorMessage | Message displayed to users when the connection to the bot service fails. | string | `An unexpected error occurred. Please try again later.` |
-| **messages** | Messages options | [Messages](#Messages) | |
-| **questionBar** | QuestionBar options | [QuestionBar](#QuestionBar) | |
+| Property name          | Description                                                              | Type                        | Default                                                 |
+| ---------------------- | ------------------------------------------------------------------------ | --------------------------- | ------------------------------------------------------- |
+| connectionErrorMessage | Message displayed to users when the connection to the bot service fails. | string                      | `An unexpected error occurred. Please try again later.` |
+| **messages**           | Messages options                                                         | [Messages](#Messages)       |                                                         |
+| **questionBar**        | QuestionBar options                                                      | [QuestionBar](#QuestionBar) |                                                         |
 
 ### Messages
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| **message** | Message options | [Message](#Message) | |
-| **feedback** | Feedback options | [Feedback](#Feedback) | |
+| Property name | Description      | Type                  | Default |
+| ------------- | ---------------- | --------------------- | ------- |
+| **message**   | Message options  | [Message](#Message)   |         |
+| **feedback**  | Feedback options | [Feedback](#Feedback) |         |
 
 #### Message
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| **header** | Header options | [Header](#Header) | |
-| **footnotes** | Footnotes options | [Footnotes](#Footnotes) | |
+| Property name | Description       | Type                    | Default |
+| ------------- | ----------------- | ----------------------- | ------- |
+| **header**    | Header options    | [Header](#Header)       |         |
+| **footnotes** | Footnotes options | [Footnotes](#Footnotes) |         |
 
 ##### Header
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| labelUser | Label displayed next to user messages in the conversation header. | string | `You` |
-| labelBot | Label displayed next to bot messages in the conversation header. | string | `Bot` |
+| Property name | Description                                                       | Type   | Default |
+| ------------- | ----------------------------------------------------------------- | ------ | ------- |
+| labelUser     | Label displayed next to user messages in the conversation header. | string | `You`   |
+| labelBot      | Label displayed next to bot messages in the conversation header.  | string | `Bot`   |
 
 ##### Footnotes
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| sources | Label prefix for the list of sources in RAG responses. | string | `Sources:` |
-| showMoreLink | Text for the link that expands truncated source content. | string | `> Show more` |
+| Property name | Description                                              | Type   | Default       |
+| ------------- | -------------------------------------------------------- | ------ | ------------- |
+| sources       | Label prefix for the list of sources in RAG responses.   | string | `Sources:`    |
+| showMoreLink  | Text for the link that expands truncated source content. | string | `> Show more` |
 
 #### Feedback
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| confirmationMessage | Message shown to user after successfully submitting feedback. | string | `Thank you for your feedback!` |
-| errorMessage | Message shown to user if feedback submission fails. | string | `An error occurred while submitting your feedback. Please try again later.` |
-| thumbsUpTitle | Tooltip text displayed when hovering over the thumbs-up button. | string | `I like this answer` |
-| thumbsDownTitle | Tooltip text displayed when hovering over the thumbs-down button. | string | `I don't like this answer` |
-| thumbsUpAriaLabel | Accessibility label for the thumbs-up button for screen readers. | string | `Thumbs up feedback button` |
-| thumbsDownAriaLabel | Accessibility label for the thumbs-down button for screen readers. | string | `Thumbs down feedback button` |
+| Property name       | Description                                                        | Type   | Default                                                                     |
+| ------------------- | ------------------------------------------------------------------ | ------ | --------------------------------------------------------------------------- |
+| confirmationMessage | Message shown to user after successfully submitting feedback.      | string | `Thank you for your feedback!`                                              |
+| errorMessage        | Message shown to user if feedback submission fails.                | string | `An error occurred while submitting your feedback. Please try again later.` |
+| thumbsUpTitle       | Tooltip text displayed when hovering over the thumbs-up button.    | string | `I like this answer`                                                        |
+| thumbsDownTitle     | Tooltip text displayed when hovering over the thumbs-down button.  | string | `I don't like this answer`                                                  |
+| thumbsUpAriaLabel   | Accessibility label for the thumbs-up button for screen readers.   | string | `Thumbs up feedback button`                                                 |
+| thumbsDownAriaLabel | Accessibility label for the thumbs-down button for screen readers. | string | `Thumbs down feedback button`                                               |
 
 ### QuestionBar
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| clearHistory | Text label for the clear history button. Leave empty to use icon only. | string | `` |
-| clearHistoryTitle | Tooltip text displayed when hovering over the clear history button. | string | `Clear discussion and history` |
-| clearHistoryAriaLabel | Accessibility label for the clear history button for screen readers. | string | `Clear discussion and history button` |
-| submit | Text label for the submit button. Leave empty to use icon only. | string | `` |
-| submitAriaLabel | Accessibility label for the submit button for screen readers. | string | `Submit button` |
-| **input** | Input options | [Input](#Input) | |
+| Property name         | Description                                                            | Type            | Default                               |
+| --------------------- | ---------------------------------------------------------------------- | --------------- | ------------------------------------- |
+| clearHistory          | Text label for the clear history button. Leave empty to use icon only. | string          | ``                                    |
+| clearHistoryTitle     | Tooltip text displayed when hovering over the clear history button.    | string          | `Clear discussion and history`        |
+| clearHistoryAriaLabel | Accessibility label for the clear history button for screen readers.   | string          | `Clear discussion and history button` |
+| submit                | Text label for the submit button. Leave empty to use icon only.        | string          | ``                                    |
+| submitAriaLabel       | Accessibility label for the submit button for screen readers.          | string          | `Submit button`                       |
+| **input**             | Input options                                                          | [Input](#Input) |                                       |
 
 #### Input
 
-| Property name | Description | Type | Default |
-| ------------- | ----------- | ---- | ------- |
-| placeholder | Placeholder text shown in the input field when empty. Guides users on what to type. | string | `Ask me a question...` |
+| Property name | Description                                                                         | Type   | Default                |
+| ------------- | ----------------------------------------------------------------------------------- | ------ | ---------------------- |
+| placeholder   | Placeholder text shown in the input field when empty. Guides users on what to type. | string | `Ask me a question...` |
 
 <!-- WORDING_TABLE_END -->
 
@@ -1119,9 +1124,7 @@ For effective theme customization:
 
 Pull requests are welcome! For any kind of change, please open an issue first.
 
-- Fork the repository.
-- Install dependencies: `npm install`.
-- Build: `npm run build`.
+- See the `demo` branch of this repository for more information.
 
 ## Support
 
