@@ -95,6 +95,7 @@ export interface MessageFootnote {
   title: string;
   url: string;
   content?: string;
+  isTitleFallback?: boolean;
 }
 
 export interface WebMediaFile {
