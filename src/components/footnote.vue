@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import { Marked } from "marked";
 import DOMPurify from "dompurify";
@@ -22,6 +22,39 @@ const props = defineProps<{
 }>();
 
 const showFullText = ref<boolean>(false);
+
+function isMissingTitle(footnote: MessageFootnote): boolean {
+  if (footnote.isTitleFallback) return true;
+
+  const trimmedTitle = footnote.title?.trim();
+  if (!trimmedTitle) return true;
+
+  return trimmedTitle === "No page title found";
+}
+
+const displayLabel = computed(() => {
+  if (appOptions.preferences.messages.footNotes.condensedDisplay) {
+    return String(props.index + 1);
+  }
+
+  if (isMissingTitle(props.footnote)) {
+    return String(props.index + 1);
+  }
+
+  return props.footnote.title;
+});
+
+const titleAttr = computed(() => {
+  const trimmedTitle = props.footnote.title?.trim();
+  if (trimmedTitle && !isMissingTitle(props.footnote)) {
+    return trimmedTitle;
+  }
+
+  const url = props.footnote.url?.trim();
+  if (url) return url;
+
+  return `Source ${props.index + 1}`;
+});
 
 DOMPurify.addHook("afterSanitizeAttributes", (node) => {
   if (node.tagName === "A") {
@@ -71,20 +104,13 @@ function sanitizeUrl(url: string): string | undefined {
       :href="sanitizeUrl(props.footnote!.url)"
       target="_blank"
       class="tvk-footnote-title"
-      :title="props.footnote!.title"
+      :title="titleAttr"
     >
-      <template
-        v-if="!appOptions.preferences.messages.footNotes.condensedDisplay"
-        >{{ props.footnote!.title }}</template
-      >
-      <template
-        v-if="appOptions.preferences.messages.footNotes.condensedDisplay"
-        >{{ props.index + 1 }}</template
-      >
+      {{ displayLabel }}
     </a>
 
     <span v-if="!props.footnote!.url" class="tvk-footnote-title">
-      {{ props.footnote!.title }}
+      {{ displayLabel }}
     </span>
 
     <div class="tvk-footnote-content" v-if="props.footnote!.content">

@@ -10,7 +10,7 @@ const props = defineProps<{
   footnotes: MessageFootnote[];
 }>();
 
-function hasMissingTitle(footnote: MessageFootnote): boolean {
+function isMissingTitle(footnote: MessageFootnote): boolean {
   if (footnote.isTitleFallback) return true;
 
   const trimmedTitle = footnote.title?.trim();
@@ -19,13 +19,33 @@ function hasMissingTitle(footnote: MessageFootnote): boolean {
   return trimmedTitle === "No page title found";
 }
 
+function hasDisplayableData(footnote: MessageFootnote): boolean {
+  const hasUrl = Boolean(footnote.url?.trim());
+  const hasContent = Boolean(footnote.content?.trim());
+
+  return !isMissingTitle(footnote) || hasUrl || hasContent;
+}
+
+function getDeduplicationKey(footnote: MessageFootnote): string {
+  const identifier = footnote.identifier?.trim();
+  if (identifier) return identifier;
+
+  const url = footnote.url?.trim() ?? "";
+  const content = footnote.content?.trim() ?? "";
+  const title = isMissingTitle(footnote) ? "" : footnote.title?.trim() ?? "";
+
+  if (!title && content) return `${url}|${content}`;
+
+  return `${url}|${title}`;
+}
+
 const deduplicatedFootnotes: ComputedRef<MessageFootnote[]> = computed(() => {
   const seen = new Set<string>();
   const result: MessageFootnote[] = [];
 
   for (const item of props.footnotes) {
-    if (hasMissingTitle(item)) continue;
-    const key = `${item.url}|${item.title}`;
+    if (!hasDisplayableData(item)) continue;
+    const key = getDeduplicationKey(item);
     if (!seen.has(key)) {
       seen.add(key);
       result.push(item);
