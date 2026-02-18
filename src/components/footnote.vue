@@ -13,6 +13,7 @@ import { katexBlockExtension, katexInlineExtension } from "../utils/markup";
 
 import type { MessageFootnote } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
+import { isFootnoteUntitled } from "../utils/footnotes";
 
 const appOptions = appOptionsSingleton.getOptions();
 
@@ -23,21 +24,12 @@ const props = defineProps<{
 
 const showFullText = ref<boolean>(false);
 
-function isMissingTitle(footnote: MessageFootnote): boolean {
-  if (footnote.isTitleFallback) return true;
-
-  const trimmedTitle = footnote.title?.trim();
-  if (!trimmedTitle) return true;
-
-  return trimmedTitle === "No page title found";
-}
-
 const displayLabel = computed(() => {
   if (appOptions.preferences.messages.footNotes.condensedDisplay) {
     return String(props.index + 1);
   }
 
-  if (isMissingTitle(props.footnote)) {
+  if (isFootnoteUntitled(props.footnote)) {
     return String(props.index + 1);
   }
 
@@ -46,7 +38,7 @@ const displayLabel = computed(() => {
 
 const titleAttr = computed(() => {
   const trimmedTitle = props.footnote.title?.trim();
-  if (trimmedTitle && !isMissingTitle(props.footnote)) {
+  if (trimmedTitle && !isFootnoteUntitled(props.footnote)) {
     return trimmedTitle;
   }
 

@@ -95,7 +95,9 @@ export interface MessageFootnote {
   title: string;
   url: string;
   content?: string;
-  isTitleFallback?: boolean;
+  metadata?: Record<string, unknown> & {
+    is_untitled?: boolean;
+  };
 }
 
 export interface WebMediaFile {
