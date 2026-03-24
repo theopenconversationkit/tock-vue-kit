@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { useMainStore } from "../stores/main-state";
 import message from "./message.vue";
 
 const mainStore = useMainStore();
-const messagesWrapper = ref();
+const messagesWrapper = ref<HTMLElement>();
 const messageRefs = ref<InstanceType<typeof message>[]>([]);
 
 function scrollBottom(): void {
@@ -18,8 +18,10 @@ async function scrollToLastBotMessage(): Promise<void> {
   const wrapper = messagesWrapper.value;
   if (!wrapper) return;
 
-  // Récupère le dernier élément DOM parmi les message refs
-  const lastEl = messageRefs.value.at(-1)?.$el as HTMLElement | undefined;
+  // Get the last message DOM element from the message refs
+  const lastEl = messageRefs.value[messageRefs.value.length - 1]?.$el as
+    | HTMLElement
+    | undefined;
   if (!lastEl) {
     scrollBottom();
     return;
@@ -29,10 +31,10 @@ async function scrollToLastBotMessage(): Promise<void> {
   const messageHeight = lastEl.offsetHeight;
 
   if (messageHeight >= wrapperHeight) {
-    // Le message dépasse la zone : on positionne son début en haut
+    // Message overflows the visible area: scroll to its top so the user reads from the beginning
     lastEl.scrollIntoView({ block: "start", behavior: "smooth" });
   } else {
-    // Le message tient dans la zone : comportement classique scroll to bottom
+    // Message fits in the visible area: default scroll to bottom behavior
     scrollBottom();
   }
 }
