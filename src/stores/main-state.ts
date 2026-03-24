@@ -58,7 +58,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   }
 
   const getMessages: ComputedRef<Message[]> = computed(
-    () => state.value.messages
+    () => state.value.messages,
   );
 
   function clearLoaderMessages(): void {
@@ -81,11 +81,11 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     const mainStoreInstance = useMainStore();
     mainStoreInstance.clearNotificationMessages();
     mainStoreInstance.clearLoaderMessages();
-    mainStoreInstance.scrollMessages();
 
     // TEMP_ReplaceImageByPlaceholder(message);
 
     state.value.messages.push(message);
+    mainStoreInstance.scrollMessages();
   }
 
   // function TEMP_ReplaceImageByPlaceholder(message: Message) {
@@ -122,7 +122,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       Object.entries(appOptions.initialization.extraHeaders).forEach(
         (entry) => {
           headers.append(entry[0], entry[1]);
-        }
+        },
       );
     }
 
@@ -141,7 +141,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
   async function sendUserMessage(
     message: string,
-    addToHistory = true
+    addToHistory = true,
   ): Promise<void> {
     const mainStoreInstance = useMainStore();
 
@@ -250,13 +250,13 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         const startIndex =
           stateRevived.messages.length -
           parseInt(
-            appOptions.localStorage.maxNumberMessages as unknown as string
+            appOptions.localStorage.maxNumberMessages as unknown as string,
           );
 
         if (startIndex) {
           stateRevived.messages = stateRevived.messages.slice(
             startIndex,
-            stateRevived.messages.length + 1
+            stateRevived.messages.length + 1,
           );
         }
 
@@ -269,6 +269,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
   function clearHistory(): void {
     state.value.messages = [];
+    state.value.userId = forgeNewUserId(); // New userId = new session on the server side
     if (appOptions.localStorage.enabled) {
       localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
     }
@@ -276,7 +277,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
   async function reportFeedback(
     message: Message,
-    vote: FeedbackVoteValue | null
+    vote: FeedbackVoteValue | null,
   ): Promise<void> {
     const mainStoreInstance = useMainStore();
 
