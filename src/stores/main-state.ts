@@ -139,131 +139,141 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     });
   }
 
+  const isLoading: Ref<boolean> = ref(false);
+
   async function sendUserMessage(
     message: string,
     addToHistory = true,
   ): Promise<void> {
-    const mainStoreInstance = useMainStore();
+    if (isLoading.value) return;
+    isLoading.value = true;
 
-    if (appOptions.preferences.messages.clearOnNewRequest) {
-      state.value.messages = [];
-    }
-
-    if (addToHistory) {
-      mainStoreInstance.addMessage({
-        type: MessageType.message,
-        author: MessageAuthor.user,
-        text: message,
-        date: Date.now(),
-      });
-    }
-
-    mainStoreInstance.addMessage({
-      type: MessageType.loader,
-      author: MessageAuthor.app,
-      date: Date.now(),
-    });
-
-    const locale = navigator.language;
-    const payload: TockQuery = {
-      query: message,
-      userId: state.value.userId,
-      locale: locale,
-      sourceWithContent:
-        appOptions.preferences.messages.footNotes.requireSourcesContent,
-    };
-
-    let query;
     try {
-      query = await fetch(tockEndPoint!, {
-        method: "post",
-        body: JSON.stringify(payload),
-        headers: getHeaders(),
-      });
-    } catch (error) {
-      console.log(error);
-      notifyError();
-      return;
-    }
+      const mainStoreInstance = useMainStore();
 
-    if (!query.ok) {
-      console.log(query);
-      notifyError();
-      return;
-    }
+      if (appOptions.preferences.messages.clearOnNewRequest) {
+        state.value.messages = [];
+      }
 
-    let res;
-    try {
-      res = await query.json();
-    } catch (error) {
-      console.log(error);
-      notifyError();
-      return;
-    }
-
-    mainStoreInstance.clearLoaderMessages();
-
-    res.responses.forEach((response: any) => {
-      delete response.type;
-      delete response.version;
-
-      if ("text" in response) {
+      if (addToHistory) {
         mainStoreInstance.addMessage({
           type: MessageType.message,
-          author: MessageAuthor.bot,
+          author: MessageAuthor.user,
+          text: message,
           date: Date.now(),
-          ...response,
-        });
-      } else if ("card" in response) {
-        mainStoreInstance.addMessage({
-          type: MessageType.card,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...response.card,
-        });
-      } else if ("image" in response) {
-        mainStoreInstance.addMessage({
-          type: MessageType.image,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...response.image,
-        });
-      } else if ("carousel" in response) {
-        mainStoreInstance.addMessage({
-          type: MessageType.carousel,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...response.carousel,
         });
       }
-    });
 
-    if (appOptions.localStorage.enabled) {
-      let stateCopy = JSON.stringify(state.value);
+      mainStoreInstance.addMessage({
+        type: MessageType.loader,
+        author: MessageAuthor.app,
+        date: Date.now(),
+      });
 
-      if (
-        appOptions.localStorage.maxNumberMessages &&
-        state.value.messages.length > appOptions.localStorage.maxNumberMessages
-      ) {
-        const stateRevived = JSON.parse(stateCopy);
+      const locale = navigator.language;
+      const payload: TockQuery = {
+        query: message,
+        userId: state.value.userId,
+        locale: locale,
+        sourceWithContent:
+          appOptions.preferences.messages.footNotes.requireSourcesContent,
+      };
 
-        const startIndex =
-          stateRevived.messages.length -
-          parseInt(
-            appOptions.localStorage.maxNumberMessages as unknown as string,
-          );
+      let query;
+      try {
+        query = await fetch(tockEndPoint!, {
+          method: "post",
+          body: JSON.stringify(payload),
+          headers: getHeaders(),
+        });
+      } catch (error) {
+        console.log(error);
+        notifyError();
+        return;
+      }
 
-        if (startIndex) {
-          stateRevived.messages = stateRevived.messages.slice(
-            startIndex,
-            stateRevived.messages.length + 1,
-          );
+      if (!query.ok) {
+        console.log(query);
+        notifyError();
+        return;
+      }
+
+      let res;
+      try {
+        res = await query.json();
+      } catch (error) {
+        console.log(error);
+        notifyError();
+        return;
+      }
+
+      mainStoreInstance.clearLoaderMessages();
+
+      res.responses.forEach((response: any) => {
+        delete response.type;
+        delete response.version;
+
+        if ("text" in response) {
+          mainStoreInstance.addMessage({
+            type: MessageType.message,
+            author: MessageAuthor.bot,
+            date: Date.now(),
+            ...response,
+          });
+        } else if ("card" in response) {
+          mainStoreInstance.addMessage({
+            type: MessageType.card,
+            author: MessageAuthor.bot,
+            date: Date.now(),
+            ...response.card,
+          });
+        } else if ("image" in response) {
+          mainStoreInstance.addMessage({
+            type: MessageType.image,
+            author: MessageAuthor.bot,
+            date: Date.now(),
+            ...response.image,
+          });
+        } else if ("carousel" in response) {
+          mainStoreInstance.addMessage({
+            type: MessageType.carousel,
+            author: MessageAuthor.bot,
+            date: Date.now(),
+            ...response.carousel,
+          });
+        }
+      });
+
+      if (appOptions.localStorage.enabled) {
+        let stateCopy = JSON.stringify(state.value);
+
+        if (
+          appOptions.localStorage.maxNumberMessages &&
+          state.value.messages.length >
+            appOptions.localStorage.maxNumberMessages
+        ) {
+          const stateRevived = JSON.parse(stateCopy);
+
+          const startIndex =
+            stateRevived.messages.length -
+            parseInt(
+              appOptions.localStorage.maxNumberMessages as unknown as string,
+            );
+
+          if (startIndex) {
+            stateRevived.messages = stateRevived.messages.slice(
+              startIndex,
+              stateRevived.messages.length + 1,
+            );
+          }
+
+          stateCopy = JSON.stringify(stateRevived);
         }
 
-        stateCopy = JSON.stringify(stateRevived);
+        localStorage.setItem(getStorageKey(), stateCopy);
       }
-
-      localStorage.setItem(getStorageKey(), stateCopy);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -363,5 +373,6 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     clearLoaderMessages,
     scrollMessages,
     reportFeedback,
+    isLoading,
   };
 });
