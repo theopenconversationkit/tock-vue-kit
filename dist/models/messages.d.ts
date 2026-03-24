@@ -75,6 +75,9 @@ export interface MessageFootnote {
     title: string;
     url: string;
     content?: string;
+    metadata?: Record<string, unknown> & {
+        is_untitled?: boolean;
+    };
 }
 export interface WebMediaFile {
     url: string;
