@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useMainStore } from "../stores/main-state";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
 
@@ -25,8 +25,15 @@ function userInputExceedLenth(): boolean {
   return nbTypedChars() > maxChars;
 }
 
+const isDisabled = computed(
+  () =>
+    !typedChars.value.trim().length ||
+    userInputExceedLenth() ||
+    mainStore.isLoading,
+);
+
 function onSubmit(): void {
-  if (nbTypedChars() && !userInputExceedLenth()) {
+  if (nbTypedChars() && !userInputExceedLenth() && !mainStore.isLoading) {
     mainStore.sendUserMessage(typedChars.value);
     if (appOptions.preferences.questionBar.clearTypedCharsOnSubmit) {
       typedChars.value = "";
@@ -44,6 +51,8 @@ function onClearHistory(): void {
     <button
       v-if="appOptions.preferences.questionBar.clearHistory?.display"
       class="tvk-btn tvk-question-bar-btn-clear-history"
+      :disabled="mainStore.isLoading"
+      :aria-disabled="mainStore.isLoading"
       :title="appOptions.wording.questionBar.clearHistoryTitle"
       :aria-label="appOptions.wording.questionBar.clearHistoryAriaLabel"
       @click="onClearHistory"
@@ -83,8 +92,8 @@ function onClearHistory(): void {
     </form>
 
     <button
-      :disabled="!typedChars.trim().length || userInputExceedLenth()"
-      :aria-disabled="!typedChars.trim().length || userInputExceedLenth()"
+      :disabled="isDisabled"
+      :aria-disabled="isDisabled"
       class="tvk-btn tvk-question-bar-btn-submit"
       :aria-label="appOptions.wording.questionBar.submitAriaLabel"
       @click="onSubmit"
