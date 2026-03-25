@@ -52,3 +52,14 @@ or
 ```javascript
 import "bootstrap-icons/font/bootstrap-icons.css";
 ```
+
+---
+
+## [2.1.0] - 2026-03-25
+
+### Added
+
+- Auto-scroll to the **start** of a new bot message (instead of the end) for better readability.
+- Prevent sending a new question while waiting for the server's response to the previous one.
+- Generate a new `userId` when the chat history is cleared, ensuring a fresh session context.
+- Better handling of untitled rag sources.
