@@ -42,6 +42,7 @@ onMounted(() => {
   let tockInstance;
   tockInstance = "https://demo-bot.tock.ai/io/tock/tockbot/web";
   // tockInstance =  "http://localhost:8080/io/app/new_assistant/web"
+  // tockInstance = "http://localhost:9090/io/ops/ops/web";
 
   renderChat(chatTarget.value!, tockInstance, {
     localStorage: {
