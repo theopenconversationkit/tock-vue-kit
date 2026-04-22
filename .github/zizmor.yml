@@ -1,0 +1,5 @@
+rules:
+  cache-poisoning:
+    ignore:
+      # setup-node is not configured with `cache:`, so no cache is used on publish.
+      - publish.yml
