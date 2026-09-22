@@ -59,6 +59,7 @@ export interface Preferences {
       clampSourceContentNbLines: OptionDefinition<number>;
       displayOnMessageSide: OptionDefinition<boolean>;
       condensedDisplay: OptionDefinition<boolean>;
+      hideSourcesWithoutUrl: OptionDefinition<boolean>;
     };
     feedback: {
       enabled: OptionDefinition<boolean>;
