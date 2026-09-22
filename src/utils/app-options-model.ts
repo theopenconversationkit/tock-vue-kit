@@ -238,6 +238,15 @@ export const preferences: Preferences = {
           "!preferences.messages.footNotes.requireSourcesContent",
         ],
       },
+      hideSourcesWithoutUrl: {
+        title: "Hide sources without URL",
+        type: "boolean",
+        default: false,
+        description:
+          "When enabled, sources that do not have a URL are filtered out and not displayed. Useful when some ingested sources lack public URLs and clicking is not possible.",
+        index: 57,
+        conditions: ["preferences.messages.footNotes.display"],
+      },
     },
     feedback: {
       enabled: {

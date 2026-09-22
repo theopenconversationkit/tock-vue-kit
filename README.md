@@ -534,6 +534,7 @@ Customization options for the chat interface and user experience:
 | clampSourceContentNbLines | Maximum number of lines to display for each source document when clampSourceContent is enabled. Set to 0 to show complete content. (*Conditions*: preferences.messages.footNotes.display, preferences.messages.footNotes.requireSourcesContent, preferences.messages.footNotes.clampSourceContent) | number | `2` |
 | displayOnMessageSide | Display sources in a side panel next to the message instead of below it. Provides better separation between answer and sources but requires more horizontal space. (*Conditions*: preferences.messages.footNotes.display) | boolean | `false` |
 | condensedDisplay | Display source links as numbered references only (without titles). More compact but less informative. Has no effect when requireSourcesContent is enabled. (*Conditions*: preferences.messages.footNotes.display, !preferences.messages.footNotes.requireSourcesContent) | boolean | `false` |
+| hideSourcesWithoutUrl | When enabled, sources that do not have a URL are filtered out and not displayed. Useful when some ingested sources lack public URLs and clicking is not possible. (*Conditions*: preferences.messages.footNotes.display) | boolean | `false` |
 
 #### Feedback
 

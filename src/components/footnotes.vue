@@ -15,13 +15,14 @@ function hasDisplayableData(footnote: MessageFootnote): boolean {
   const hasUrl = Boolean(footnote.url?.trim());
   const hasContent = Boolean(footnote.content?.trim());
 
+  if (appOptions.preferences.messages.footNotes.hideSourcesWithoutUrl && !hasUrl) {
+    return false;
+  }
+
   return !isFootnoteUntitled(footnote) || hasUrl || hasContent;
 }
 
 function getDeduplicationKey(footnote: MessageFootnote): string {
-  const identifier = footnote.identifier?.trim();
-  if (identifier) return identifier;
-
   const url = footnote.url?.trim() ?? "";
   const content = footnote.content?.trim() ?? "";
   const title = isFootnoteUntitled(footnote)
