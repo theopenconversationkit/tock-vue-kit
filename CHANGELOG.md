@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.2.0] - 2026-09-22
+
+### Added
+
+- **`preferences.messages.footNotes.hideSourcesWithoutUrl`**: New option to filter out sources without clickable URLs. Useful when some ingested sources lack public URLs.
+
+### Fixed
+
+- **Source deduplication**: Fixed incorrect deduplication logic that was based on `identifier` field. Sources are now properly deduplicated by `url|title`, allowing multiple chunks from the same document to be correctly grouped.
+
+---
+
 ## [1.0.2] - 2025-06-30
 
 ### Added
