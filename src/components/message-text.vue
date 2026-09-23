@@ -102,21 +102,31 @@ function injectCopyButton(preEl: HTMLElement) {
   </template>
 
   <span
-    v-if="!appOptions.preferences.messages.parseBotResponsesMarkdown && props.message!.author === MessageAuthor.bot"
+    v-if="
+      !appOptions.preferences.messages.parseBotResponsesMarkdown &&
+      props.message!.author === MessageAuthor.bot
+    "
     style="white-space: pre-wrap"
     >{{ props.message!.text }}</span
   >
 
   <div
-    v-if="appOptions.preferences.messages.parseBotResponsesMarkdown && props.message!.author === MessageAuthor.bot"
+    v-if="
+      appOptions.preferences.messages.parseBotResponsesMarkdown &&
+      props.message!.author === MessageAuthor.bot
+    "
     ref="messageContentWrapper"
     class="tvk-message-content-wrapper"
     v-html="getMarkUp()"
-    tabindex="1"
+    tabindex="0"
   ></div>
 
   <Footnotes
-    v-if="props.message!.footnotes?.length && appOptions.preferences.messages.footNotes.display && !appOptions.preferences.messages.footNotes.displayOnMessageSide"
+    v-if="
+      props.message!.footnotes?.length &&
+      appOptions.preferences.messages.footNotes.display &&
+      !appOptions.preferences.messages.footNotes.displayOnMessageSide
+    "
     :footnotes="props.message!.footnotes"
   ></Footnotes>
 
