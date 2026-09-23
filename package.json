@@ -16,7 +16,7 @@
     "@picocss/pico": "^2.1.1",
     "bootstrap-icons": "^1.13.1",
     "katex": "^0.16.27",
-    "tock-vue-kit": "file:../tock-vue-kit",
+    "tock-vue-kit": "2.2.0",
     "tock-vue-kit-editor": "file:../tock-vue-kit-editor",
     "vue": "^3.4.29"
   },
