@@ -38,10 +38,10 @@ export default defineConfig(({ command, mode }) => {
         "tock-vue-kit": isProduction
           ? "tock-vue-kit"
           : fileURLToPath(
-              new URL(config.tockVueKit.localPath, import.meta.url)
+              new URL(config.tockVueKit.localPath, import.meta.url),
             ),
       },
-      dedupe: ["vue"],
+      dedupe: ["vue", "tock-vue-kit"],
     },
     optimizeDeps: {
       exclude: ["tock-vue-kit"],
