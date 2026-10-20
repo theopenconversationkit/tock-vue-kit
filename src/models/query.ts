@@ -7,4 +7,5 @@ export interface TockQuery {
   connectorId?: String;
   returnsHistory?: Boolean;
   sourceWithContent?: Boolean;
+  streamedResponse?: Boolean;
 }

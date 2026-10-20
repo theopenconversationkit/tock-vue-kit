@@ -88,6 +88,14 @@ export const preferences: Preferences = {
         "When enabled, bot responses containing Markdown are rendered as HTML with proper formatting (including code syntax highlighting, LaTeX, and MathML support). When disabled, responses are shown as plain text.",
       index: 22,
     },
+    streamedResponse: {
+      title: "Streamed response",
+      type: "boolean",
+      default: false,
+      description:
+        "When enabled, bot responses are streamed via SSE (Server-Sent Events) and displayed progressively as they arrive. Requires tock_web_direct_sse=true on the server.",
+      index: 23,
+    },
 
     message: {
       hideUserMessages: {

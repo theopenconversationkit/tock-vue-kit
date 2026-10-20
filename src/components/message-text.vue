@@ -121,6 +121,8 @@ function injectCopyButton(preEl: HTMLElement) {
     tabindex="0"
   ></div>
 
+  <span v-if="props.message?.streaming" class="tvk-streaming-cursor" aria-hidden="true"></span>
+
   <Footnotes
     v-if="
       props.message!.footnotes?.length &&
@@ -134,3 +136,24 @@ function injectCopyButton(preEl: HTMLElement) {
     {{ button.title }}
   </Button>
 </template>
+
+<style scoped>
+.tvk-streaming-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background-color: currentColor;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: tvk-blink 0.7s step-end infinite;
+}
+
+@keyframes tvk-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+</style>
