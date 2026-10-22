@@ -34,6 +34,7 @@ export interface Preferences {
     clearOnNewRequest: OptionDefinition<boolean>;
     hideIfNoMessages: OptionDefinition<boolean>;
     parseBotResponsesMarkdown: OptionDefinition<boolean>;
+    streamedResponse: OptionDefinition<boolean>;
 
     message: {
       hideUserMessages: OptionDefinition<boolean>;
