@@ -93,7 +93,11 @@ export const preferences: Preferences = {
       type: "boolean",
       default: false,
       description:
-        "When enabled, bot responses are streamed via SSE (Server-Sent Events) and displayed progressively as they arrive. Requires tock_web_direct_sse=true on the server.",
+        "When enabled, bot responses are streamed via SSE (Server-Sent Events) and displayed progressively as they arrive. " +
+        "⚠️ Prerequisites: (1) tock_web_direct_sse=true on server, " +
+        "(2) RAG enabled on bot, (3) Modern browser with ReadableStream support. " +
+        "Timeout: 60 seconds. " +
+        "See: docs-vue-kit-streaming-integration.md for details.",
       index: 23,
     },
 

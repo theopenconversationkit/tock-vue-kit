@@ -214,14 +214,13 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     console.log(`🔄 SSE: POST to ${ssePath}`);
 
     try {
-      // Send JSON body with text/plain content-type to avoid CORS preflight
-      // (backend parses body as JSON regardless of content-type)
+      // Send with proper JSON content-type (backend CORS should allow it)
       console.log(`🔄 SSE: Sending payload:`, payload);
       const response = await fetch(ssePath, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
-          "Content-Type": "text/plain",
+          "Content-Type": "application/json",
         },
       });
 
@@ -262,6 +261,22 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     ] as TextMessage;
     console.log("🔄 SSE: Added streaming message to store");
 
+    // Timeout protection: abort if no LAST_ANSWER after 60 seconds
+    // (backend timeout is 55s, this gives 5s buffer)
+    const STREAMING_TIMEOUT_MS = 60000;
+    const timeoutHandle = setTimeout(() => {
+      console.warn("🔄 SSE: Streaming timeout after 60s - no LAST_ANSWER received");
+      reactiveMsg.streaming = false;
+      if (!reactiveMsg.text) {
+        reactiveMsg.text = "[Response timeout - no data received]";
+      }
+      reader?.cancel().catch(() => {
+        /* ignore cancel errors */
+      });
+    }, STREAMING_TIMEOUT_MS);
+
+    let reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
+
     try {
       if (!response.body) {
         console.error("🔄 SSE: response.body is null!");
@@ -269,7 +284,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         return;
       }
 
-      const reader = response.body.getReader();
+      reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
       let chunkCount = 0;
@@ -307,15 +322,19 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
           // Progressive token delta emitted by the web connector during RAG
           // streaming: append it immediately for word-by-word display.
+          // See: docs-vue-kit-streaming-integration.md § 3.1
           if (eventType === "token" && data) {
             try {
               const tok = JSON.parse(data);
-              if (typeof tok.content === "string") {
-                reactiveMsg.text = (reactiveMsg.text ?? "") + tok.content;
-                mainStoreInstance.scrollMessages();
+              if (!tok.content || typeof tok.content !== "string") {
+                console.error("🔄 SSE: Invalid token format (missing/non-string content):", tok);
+                continue;
               }
+              reactiveMsg.text = (reactiveMsg.text ?? "") + tok.content;
+              mainStoreInstance.scrollMessages();
             } catch (tokErr) {
-              console.warn("🔄 SSE: Failed to parse token data:", tokErr);
+              console.error("🔄 SSE: Failed to parse token data:", tokErr);
+              // Continue on token parse error - don't abort entire stream
             }
             continue;
           }
@@ -332,6 +351,19 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
             if (res.responses?.length > 0) {
               const first = res.responses[0];
               if ("text" in first && first.text) {
+                // Detect text divergence (guardrails, rewrite, etc.)
+                // See: docs-vue-kit-streaming-integration.md § 5.3
+                const tokenAccumulated = reactiveMsg.text || "";
+                if (tokenAccumulated !== first.text && tokenAccumulated.length > 0) {
+                  console.warn(
+                    "🔄 SSE: Text rewrite detected (guardrails/condensation):",
+                    {
+                      fromTokens: tokenAccumulated.length,
+                      final: first.text.length,
+                    },
+                  );
+                }
+                // Replace with canonical text (source of truth from backend)
                 reactiveMsg.text = first.text;
                 console.log(`🔄 SSE: Updated text length: ${first.text.length}`);
               }
@@ -345,8 +377,9 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
             mainStoreInstance.scrollMessages();
 
-            // Backend sends metadata key LAST_ANSWER (uppercase) = "true"
-            // on the final chunk.
+            // Backend sends metadata key LAST_ANSWER = "true" on the final message event.
+            // Accepts both uppercase (LAST_ANSWER) and camelCase (lastAnswer) for compatibility.
+            // See: docs-streaming-rag-activation.md § 2
             if (
               res.metadata?.LAST_ANSWER === "true" ||
               res.metadata?.lastAnswer === "true"
@@ -358,7 +391,8 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
               break;
             }
           } catch (parseError) {
-            console.warn("🔄 SSE: Failed to parse SSE data:", parseError);
+            console.error("🔄 SSE: Failed to parse message event data:", parseError);
+            // Continue on parse error - don't abort entire stream
           }
         }
       }
@@ -369,6 +403,8 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       console.error("🔄 SSE: Streaming error:", error);
       reactiveMsg.streaming = false;
       notifyError();
+    } finally {
+      clearTimeout(timeoutHandle);
     }
   }
 
