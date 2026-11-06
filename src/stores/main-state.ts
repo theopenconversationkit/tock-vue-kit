@@ -153,11 +153,19 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       return;
     }
 
+    const responseId: string | undefined = res.metadata?.RESPONSE_ID;
+    const streamed = findMessageByResponseId(responseId);
+    if (responseId) finishedResponseIds.add(responseId);
+
     res.responses.forEach((resp: any) => {
       delete resp.type;
       delete resp.version;
 
-      if ("text" in resp) {
+      if ("text" in resp && streamed) {
+        // final answer: replaces the partial text received through SSE
+        Object.assign(streamed, resp, { streaming: false });
+        mainStoreInstance.scrollMessages();
+      } else if ("text" in resp) {
         mainStoreInstance.addMessage({
           type: MessageType.message,
           author: MessageAuthor.bot,
@@ -187,226 +195,88 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         });
       }
     });
+
+    if (streamed) streamed.streaming = false;
   }
 
-  async function handleStreamedResponseDirect(
-    tockEndPoint: string,
-    message: string,
-    userId: string,
-    locale: string,
-    mainStoreInstance: ReturnType<typeof useMainStore>,
-    headers: Headers,
-  ): Promise<void> {
-    console.log("🔄 SSE: Starting direct SSE request to /sse/direct");
+  // Streaming: the bot pushes partial answers on the standard SSE channel (GET /sse),
+  // flagged TOCK_STREAM_RESPONSE and identified by RESPONSE_ID. The final answer
+  // comes back in the POST response and replaces the streamed message.
+  const STREAM_RESPONSE_METADATA = "TOCK_STREAM_RESPONSE";
+  const SSE_OPEN_TIMEOUT_MS = 3000;
 
-    // Prepare the request body with streamedResponse flag (required for SSE mode)
-    const payload: TockQuery = {
-      query: message,
-      userId: userId,
-      locale: locale,
-      sourceWithContent:
-        appOptions.preferences.messages.footNotes.requireSourcesContent,
-      streamedResponse: true,
-    };
+  let eventSource: EventSource | null = null;
+  let eventSourceUserId: string | null = null;
+  const finishedResponseIds = new Set<string>();
 
-    // Use the /sse/direct endpoint
-    const ssePath = tockEndPoint.replace(/\/$/, "") + "/sse/direct";
-    console.log(`🔄 SSE: POST to ${ssePath}`);
+  function closeEventSource(): void {
+    eventSource?.close();
+    eventSource = null;
+    eventSourceUserId = null;
+  }
 
-    try {
-      // Send with proper JSON content-type (backend CORS should allow it)
-      console.log(`🔄 SSE: Sending payload:`, payload);
-      const response = await fetch(ssePath, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        console.error(
-          `🔄 SSE: Request failed with status ${response.status}`,
-        );
-        notifyError();
-        return;
-      }
-
-      console.log(`🔄 SSE: Response received, content-type: ${response.headers.get("content-type")}`);
-      await handleStreamedResponse(response, mainStoreInstance);
-    } catch (error) {
-      console.error("🔄 SSE: Direct SSE request error:", error);
-      notifyError();
+  function ensureEventSource(): Promise<void> {
+    const userId = state.value.userId;
+    if (eventSource && eventSourceUserId === userId) {
+      return Promise.resolve();
     }
+    closeEventSource();
+
+    const url = `${tockEndPoint!.replace(/\/$/, "")}/sse?userid=${encodeURIComponent(userId)}`;
+    const source = new EventSource(url);
+    eventSource = source;
+    eventSourceUserId = userId;
+
+    source.addEventListener("message", (event) => {
+      try {
+        handleSseMessage(JSON.parse((event as MessageEvent).data));
+      } catch (error) {
+        console.error("Failed to parse SSE message", error);
+      }
+    });
+
+    // If the channel cannot be opened, the answer simply arrives in one piece with the POST response
+    return new Promise<void>((resolve) => {
+      const done = () => resolve();
+      source.addEventListener("open", done, { once: true });
+      source.addEventListener("error", done, { once: true });
+      setTimeout(done, SSE_OPEN_TIMEOUT_MS);
+    });
   }
 
-  async function handleStreamedResponse(
-    response: Response,
-    mainStoreInstance: ReturnType<typeof useMainStore>,
-  ): Promise<void> {
-    console.log("🔄 SSE: Starting streaming response handler");
+  function findMessageByResponseId(responseId?: string): TextMessage | undefined {
+    if (!responseId) return undefined;
+    return state.value.messages.find(
+      (m) => m.type === MessageType.message && m.responseId === responseId,
+    ) as TextMessage | undefined;
+  }
 
-    const streamingMsg: Message = {
+  function handleSseMessage(res: any): void {
+    const responseId: string | undefined = res.metadata?.RESPONSE_ID;
+    if (res.metadata?.[STREAM_RESPONSE_METADATA] !== "true" || !responseId) return;
+    // a partial answer can arrive after the final POST response
+    if (finishedResponseIds.has(responseId)) return;
+
+    const first = res.responses?.[0];
+    if (!first || !("text" in first)) return;
+
+    const existing = findMessageByResponseId(responseId);
+    if (existing) {
+      existing.text = first.text;
+      useMainStore().scrollMessages();
+      return;
+    }
+
+    useMainStore().addMessage({
       type: MessageType.message,
       author: MessageAuthor.bot,
-      text: "",
-      streaming: true,
       date: Date.now(),
-    };
-    mainStoreInstance.addMessage(streamingMsg);
-    // Grab the reactive proxy that Vue created on push; mutating the raw
-    // `streamingMsg` object would not trigger reactivity.
-    const reactiveMsg = state.value.messages[
-      state.value.messages.length - 1
-    ] as TextMessage;
-    console.log("🔄 SSE: Added streaming message to store");
-
-    // Timeout protection: abort if no LAST_ANSWER after 60 seconds
-    // (backend timeout is 55s, this gives 5s buffer)
-    const STREAMING_TIMEOUT_MS = 60000;
-    const timeoutHandle = setTimeout(() => {
-      console.warn("🔄 SSE: Streaming timeout after 60s - no LAST_ANSWER received");
-      reactiveMsg.streaming = false;
-      if (!reactiveMsg.text) {
-        reactiveMsg.text = "[Response timeout - no data received]";
-      }
-      reader?.cancel().catch(() => {
-        /* ignore cancel errors */
-      });
-    }, STREAMING_TIMEOUT_MS);
-
-    let reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
-
-    try {
-      if (!response.body) {
-        console.error("🔄 SSE: response.body is null!");
-        notifyError();
-        return;
-      }
-
-      reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let chunkCount = 0;
-      let finished = false;
-
-      while (!finished) {
-        const { done, value } = await reader.read();
-        if (done) {
-          console.log(`🔄 SSE: Stream ended after ${chunkCount} chunks`);
-          break;
-        }
-
-        chunkCount++;
-        buffer += decoder.decode(value, { stream: true });
-        console.log(`🔄 SSE: Received chunk ${chunkCount}, buffer length: ${buffer.length}`);
-
-        const events = buffer.split("\n\n");
-        buffer = events.pop() || "";
-
-        for (const rawEvent of events) {
-          if (!rawEvent.trim()) continue;
-
-          console.log(`🔄 SSE: Processing event: ${rawEvent.substring(0, 50)}...`);
-
-          const lines = rawEvent.split("\n");
-          let eventType = "";
-          let data = "";
-
-          for (const line of lines) {
-            if (line.startsWith("event: ")) eventType = line.slice(7);
-            if (line.startsWith("data: ")) data = line.slice(6);
-          }
-
-          console.log(`🔄 SSE: Event type: ${eventType}`);
-
-          // Progressive token delta emitted by the web connector during RAG
-          // streaming: append it immediately for word-by-word display.
-          // See: docs-vue-kit-streaming-integration.md § 3.1
-          if (eventType === "token" && data) {
-            try {
-              const tok = JSON.parse(data);
-              if (!tok.content || typeof tok.content !== "string") {
-                console.error("🔄 SSE: Invalid token format (missing/non-string content):", tok);
-                continue;
-              }
-              reactiveMsg.text = (reactiveMsg.text ?? "") + tok.content;
-              mainStoreInstance.scrollMessages();
-            } catch (tokErr) {
-              console.error("🔄 SSE: Failed to parse token data:", tokErr);
-              // Continue on token parse error - don't abort entire stream
-            }
-            continue;
-          }
-
-          if (eventType !== "message" || !data) {
-            console.log(`🔄 SSE: Skipping event (type: ${eventType}, hasData: ${!!data})`);
-            continue;
-          }
-
-          try {
-            const res = JSON.parse(data);
-            console.log(`🔄 SSE: Parsed response:`, res);
-
-            if (res.responses?.length > 0) {
-              const first = res.responses[0];
-              if ("text" in first && first.text) {
-                // Detect text divergence (guardrails, rewrite, etc.)
-                // See: docs-vue-kit-streaming-integration.md § 5.3
-                const tokenAccumulated = reactiveMsg.text || "";
-                if (tokenAccumulated !== first.text && tokenAccumulated.length > 0) {
-                  console.warn(
-                    "🔄 SSE: Text rewrite detected (guardrails/condensation):",
-                    {
-                      fromTokens: tokenAccumulated.length,
-                      final: first.text.length,
-                    },
-                  );
-                }
-                // Replace with canonical text (source of truth from backend)
-                reactiveMsg.text = first.text;
-                console.log(`🔄 SSE: Updated text length: ${first.text.length}`);
-              }
-              if (first.buttons) {
-                reactiveMsg.buttons = first.buttons;
-              }
-              if (first.footnotes) {
-                reactiveMsg.footnotes = first.footnotes;
-              }
-            }
-
-            mainStoreInstance.scrollMessages();
-
-            // Backend sends metadata key LAST_ANSWER = "true" on the final message event.
-            // Accepts both uppercase (LAST_ANSWER) and camelCase (lastAnswer) for compatibility.
-            // See: docs-streaming-rag-activation.md § 2
-            if (
-              res.metadata?.LAST_ANSWER === "true" ||
-              res.metadata?.lastAnswer === "true"
-            ) {
-              console.log("🔄 SSE: lastAnswer detected, stopping stream");
-              reactiveMsg.streaming = false;
-              await reader.cancel();
-              finished = true;
-              break;
-            }
-          } catch (parseError) {
-            console.error("🔄 SSE: Failed to parse message event data:", parseError);
-            // Continue on parse error - don't abort entire stream
-          }
-        }
-      }
-
-      reactiveMsg.streaming = false;
-      console.log("🔄 SSE: Stream completed successfully");
-    } catch (error) {
-      console.error("🔄 SSE: Streaming error:", error);
-      reactiveMsg.streaming = false;
-      notifyError();
-    } finally {
-      clearTimeout(timeoutHandle);
-    }
+      text: first.text,
+      responseId,
+      streaming: true,
+    });
   }
+
 
   const isLoading: Ref<boolean> = ref(false);
 
@@ -451,38 +321,29 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       mainStoreInstance.clearLoaderMessages();
 
       if (appOptions.preferences.messages.streamedResponse) {
-        console.log("🔄 SSE: Using streaming GET /sse/direct endpoint");
-        await handleStreamedResponseDirect(
-          tockEndPoint!,
-          message,
-          state.value.userId,
-          locale,
-          mainStoreInstance,
-          getHeaders(),
-        );
-      } else {
-        console.log("📦 Buffered: Using normal POST endpoint");
-        let query;
-        try {
-          query = await fetch(tockEndPoint!, {
-            method: "post",
-            body: JSON.stringify(payload),
-            headers: getHeaders(),
-          });
-        } catch (error) {
-          console.log(error);
-          notifyError();
-          return;
-        }
-
-        if (!query.ok) {
-          console.log(query);
-          notifyError();
-          return;
-        }
-
-        await handleBufferedResponse(query, mainStoreInstance);
+        await ensureEventSource();
       }
+
+      let query;
+      try {
+        query = await fetch(tockEndPoint!, {
+          method: "post",
+          body: JSON.stringify(payload),
+          headers: getHeaders(),
+        });
+      } catch (error) {
+        console.log(error);
+        notifyError();
+        return;
+      }
+
+      if (!query.ok) {
+        console.log(query);
+        notifyError();
+        return;
+      }
+
+      await handleBufferedResponse(query, mainStoreInstance);
 
       if (appOptions.localStorage.enabled) {
         let stateCopy = JSON.stringify(state.value);
@@ -520,6 +381,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   function clearHistory(): void {
     state.value.messages = [];
     state.value.userId = forgeNewUserId(); // New userId = new session on the server side
+    closeEventSource();
     if (appOptions.localStorage.enabled) {
       localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
     }

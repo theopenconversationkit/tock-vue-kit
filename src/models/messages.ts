@@ -33,6 +33,7 @@ interface MessageBase {
   type: MessageType;
   author: MessageAuthor;
   actionId?: string;
+  responseId?: string;
   metadata?: Record<string, string> & {
     feedback?: {
       vote: FeedbackVoteValue | null;
