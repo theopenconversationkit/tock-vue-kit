@@ -8,6 +8,7 @@ import {
   MessageType,
   FeedbackVoteValue,
   type Message,
+  type TextMessage,
   NotificationMessageStyle,
 } from "../models/messages";
 import { appOptionsSingleton } from "../utils/app-options-singleton";
@@ -139,6 +140,144 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     });
   }
 
+  async function handleBufferedResponse(
+    response: Response,
+    mainStoreInstance: ReturnType<typeof useMainStore>,
+  ): Promise<void> {
+    let res;
+    try {
+      res = await response.json();
+    } catch (error) {
+      console.log(error);
+      notifyError();
+      return;
+    }
+
+    const responseId: string | undefined = res.metadata?.RESPONSE_ID;
+    const streamed = findMessageByResponseId(responseId);
+    if (responseId) finishedResponseIds.add(responseId);
+
+    res.responses.forEach((resp: any) => {
+      delete resp.type;
+      delete resp.version;
+
+      if ("text" in resp && streamed) {
+        // final answer: replaces the partial text received through SSE
+        Object.assign(streamed, resp, { streaming: false });
+        mainStoreInstance.scrollMessages();
+      } else if ("text" in resp) {
+        mainStoreInstance.addMessage({
+          type: MessageType.message,
+          author: MessageAuthor.bot,
+          date: Date.now(),
+          ...resp,
+        });
+      } else if ("card" in resp) {
+        mainStoreInstance.addMessage({
+          type: MessageType.card,
+          author: MessageAuthor.bot,
+          date: Date.now(),
+          ...resp.card,
+        });
+      } else if ("image" in resp) {
+        mainStoreInstance.addMessage({
+          type: MessageType.image,
+          author: MessageAuthor.bot,
+          date: Date.now(),
+          ...resp.image,
+        });
+      } else if ("carousel" in resp) {
+        mainStoreInstance.addMessage({
+          type: MessageType.carousel,
+          author: MessageAuthor.bot,
+          date: Date.now(),
+          ...resp.carousel,
+        });
+      }
+    });
+
+    if (streamed) streamed.streaming = false;
+  }
+
+  // Streaming: the bot pushes partial answers on the standard SSE channel (GET /sse),
+  // flagged TOCK_STREAM_RESPONSE and identified by RESPONSE_ID. The final answer
+  // comes back in the POST response and replaces the streamed message.
+  const STREAM_RESPONSE_METADATA = "TOCK_STREAM_RESPONSE";
+  const SSE_OPEN_TIMEOUT_MS = 3000;
+
+  let eventSource: EventSource | null = null;
+  let eventSourceUserId: string | null = null;
+  const finishedResponseIds = new Set<string>();
+
+  function closeEventSource(): void {
+    eventSource?.close();
+    eventSource = null;
+    eventSourceUserId = null;
+  }
+
+  function ensureEventSource(): Promise<void> {
+    const userId = state.value.userId;
+    if (eventSource && eventSourceUserId === userId) {
+      return Promise.resolve();
+    }
+    closeEventSource();
+
+    const url = `${tockEndPoint!.replace(/\/$/, "")}/sse?userid=${encodeURIComponent(userId)}`;
+    const source = new EventSource(url);
+    eventSource = source;
+    eventSourceUserId = userId;
+
+    source.addEventListener("message", (event) => {
+      try {
+        handleSseMessage(JSON.parse((event as MessageEvent).data));
+      } catch (error) {
+        console.error("Failed to parse SSE message", error);
+      }
+    });
+
+    // If the channel cannot be opened, the answer simply arrives in one piece with the POST response
+    return new Promise<void>((resolve) => {
+      const done = () => resolve();
+      source.addEventListener("open", done, { once: true });
+      source.addEventListener("error", done, { once: true });
+      setTimeout(done, SSE_OPEN_TIMEOUT_MS);
+    });
+  }
+
+  function findMessageByResponseId(responseId?: string): TextMessage | undefined {
+    if (!responseId) return undefined;
+    return state.value.messages.find(
+      (m) => m.type === MessageType.message && m.responseId === responseId,
+    ) as TextMessage | undefined;
+  }
+
+  function handleSseMessage(res: any): void {
+    const responseId: string | undefined = res.metadata?.RESPONSE_ID;
+    if (res.metadata?.[STREAM_RESPONSE_METADATA] !== "true" || !responseId) return;
+    // a partial answer can arrive after the final POST response
+    if (finishedResponseIds.has(responseId)) return;
+
+    const first = res.responses?.[0];
+    if (!first || !("text" in first)) return;
+
+    const existing = findMessageByResponseId(responseId);
+    if (existing) {
+      existing.text = first.text;
+      useMainStore().scrollMessages();
+      return;
+    }
+
+    useMainStore().addMessage({
+      type: MessageType.message,
+      author: MessageAuthor.bot,
+      date: Date.now(),
+      text: first.text,
+      responseId,
+      streaming: true,
+    });
+  }
+
+
   const isLoading: Ref<boolean> = ref(false);
 
   async function sendUserMessage(
@@ -179,6 +318,12 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
           appOptions.preferences.messages.footNotes.requireSourcesContent,
       };
 
+      mainStoreInstance.clearLoaderMessages();
+
+      if (appOptions.preferences.messages.streamedResponse) {
+        await ensureEventSource();
+      }
+
       let query;
       try {
         query = await fetch(tockEndPoint!, {
@@ -198,51 +343,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         return;
       }
 
-      let res;
-      try {
-        res = await query.json();
-      } catch (error) {
-        console.log(error);
-        notifyError();
-        return;
-      }
-
-      mainStoreInstance.clearLoaderMessages();
-
-      res.responses.forEach((response: any) => {
-        delete response.type;
-        delete response.version;
-
-        if ("text" in response) {
-          mainStoreInstance.addMessage({
-            type: MessageType.message,
-            author: MessageAuthor.bot,
-            date: Date.now(),
-            ...response,
-          });
-        } else if ("card" in response) {
-          mainStoreInstance.addMessage({
-            type: MessageType.card,
-            author: MessageAuthor.bot,
-            date: Date.now(),
-            ...response.card,
-          });
-        } else if ("image" in response) {
-          mainStoreInstance.addMessage({
-            type: MessageType.image,
-            author: MessageAuthor.bot,
-            date: Date.now(),
-            ...response.image,
-          });
-        } else if ("carousel" in response) {
-          mainStoreInstance.addMessage({
-            type: MessageType.carousel,
-            author: MessageAuthor.bot,
-            date: Date.now(),
-            ...response.carousel,
-          });
-        }
-      });
+      await handleBufferedResponse(query, mainStoreInstance);
 
       if (appOptions.localStorage.enabled) {
         let stateCopy = JSON.stringify(state.value);
@@ -280,6 +381,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   function clearHistory(): void {
     state.value.messages = [];
     state.value.userId = forgeNewUserId(); // New userId = new session on the server side
+    closeEventSource();
     if (appOptions.localStorage.enabled) {
       localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
     }
