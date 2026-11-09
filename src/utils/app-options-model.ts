@@ -93,12 +93,21 @@ export const preferences: Preferences = {
       type: "boolean",
       default: false,
       description:
-        "When enabled, bot responses are streamed via SSE (Server-Sent Events) and displayed progressively as they arrive. " +
-        "⚠️ Prerequisites: (1) tock_web_direct_sse=true on server, " +
-        "(2) RAG enabled on bot, (3) Modern browser with ReadableStream support. " +
-        "Timeout: 60 seconds. " +
-        "See: docs-vue-kit-streaming-integration.md for details.",
+        "When enabled, bot responses are displayed progressively as they are generated. " +
+        "The partial answers are pushed on the standard SSE channel (GET /sse), flagged TOCK_STREAM_RESPONSE and identified by RESPONSE_ID, " +
+        "and the final answer replaces them. " +
+        "Prerequisites: tock_web_sse=true on the server and RAG enabled on the bot.",
       index: 23,
+    },
+    streamMode: {
+      title: "Stream mode",
+      type: "string",
+      default: undefined,
+      description:
+        "Only used when streamedResponse is enabled. Use 'delta' to receive only what changed at the end of the text (token by token) instead of the whole text so far in each partial answer. The displayed text is the same. " +
+        "Requires a Tock server supporting TOCK_STREAM_MODE. Default: whole text so far.",
+      index: 23.1,
+      conditions: ["preferences.messages.streamedResponse"],
     },
 
     message: {

@@ -8,4 +8,5 @@ export interface TockQuery {
   returnsHistory?: Boolean;
   sourceWithContent?: Boolean;
   streamedResponse?: Boolean;
+  streamMode?: String;
 }

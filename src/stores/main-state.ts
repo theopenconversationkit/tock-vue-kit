@@ -203,6 +203,10 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   // flagged TOCK_STREAM_RESPONSE and identified by RESPONSE_ID. The final answer
   // comes back in the POST response and replaces the streamed message.
   const STREAM_RESPONSE_METADATA = "TOCK_STREAM_RESPONSE";
+  // Partial frames flagged "delta" only carry the end of the text: keep the first
+  // TOCK_STREAM_KEEP characters of the current message and append the frame text
+  const STREAM_MODE_METADATA = "TOCK_STREAM_MODE";
+  const STREAM_KEEP_METADATA = "TOCK_STREAM_KEEP";
   const SSE_OPEN_TIMEOUT_MS = 3000;
 
   let eventSource: EventSource | null = null;
@@ -260,9 +264,11 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     const first = res.responses?.[0];
     if (!first || !("text" in first)) return;
 
+    const delta = res.metadata?.[STREAM_MODE_METADATA] === "delta";
     const existing = findMessageByResponseId(responseId);
     if (existing) {
-      existing.text = first.text;
+      const keep = Number(res.metadata?.[STREAM_KEEP_METADATA] ?? existing.text.length);
+      existing.text = delta ? existing.text.slice(0, keep) + first.text : first.text;
       useMainStore().scrollMessages();
       return;
     }
@@ -317,6 +323,12 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         sourceWithContent:
           appOptions.preferences.messages.footNotes.requireSourcesContent,
       };
+      if (
+        appOptions.preferences.messages.streamedResponse &&
+        appOptions.preferences.messages.streamMode === "delta"
+      ) {
+        payload.streamMode = "delta";
+      }
 
       mainStoreInstance.clearLoaderMessages();
 
