@@ -117,11 +117,16 @@ function injectCopyButton(preEl: HTMLElement) {
     "
     ref="messageContentWrapper"
     class="tvk-message-content-wrapper"
+    :class="{ 'tvk-streaming': props.message?.streaming }"
     v-html="getMarkUp()"
     tabindex="0"
   ></div>
 
-  <span v-if="props.message?.streaming" class="tvk-streaming-cursor" aria-hidden="true"></span>
+  <span
+    v-if="props.message?.streaming && !appOptions.preferences.messages.parseBotResponsesMarkdown"
+    class="tvk-streaming-cursor"
+    aria-hidden="true"
+  ></span>
 
   <Footnotes
     v-if="
@@ -138,7 +143,9 @@ function injectCopyButton(preEl: HTMLElement) {
 </template>
 
 <style scoped>
-.tvk-streaming-cursor {
+.tvk-streaming-cursor,
+.tvk-message-content-wrapper.tvk-streaming > :deep(:last-child)::after {
+  content: "";
   display: inline-block;
   width: 0.5em;
   height: 1em;
