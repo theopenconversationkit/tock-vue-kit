@@ -96,7 +96,9 @@ export const preferences: Preferences = {
         "When enabled, bot responses are displayed progressively as they are generated. " +
         "The partial answers are pushed on the standard SSE channel (GET /sse), flagged TOCK_STREAM_RESPONSE and identified by RESPONSE_ID, " +
         "and the final answer replaces them. " +
-        "Prerequisites: tock_web_sse=true on the server and RAG enabled on the bot.",
+        "Prerequisites: tock_web_sse=true on the server and RAG enabled on the bot. " +
+        "With several server instances behind a load balancer, GET /sse and POST must reach the same instance (sticky sessions), otherwise the answer arrives in one piece, without error. " +
+        "This option is not sent in the request body: the server field of the same name selects direct streaming, which disables RAG streaming on /sse.",
       index: 23,
     },
     streamMode: {
