@@ -88,6 +88,26 @@ export const preferences: Preferences = {
         "When enabled, bot responses containing Markdown are rendered as HTML with proper formatting (including code syntax highlighting, LaTeX, and MathML support). When disabled, responses are shown as plain text.",
       index: 22,
     },
+    streamedResponse: {
+      title: "Streamed response",
+      type: "boolean",
+      default: true,
+      description:
+        "When enabled, bot responses are displayed progressively as they are generated (RAG answers, Bot API streaming). " +
+        "Requires tock_web_sse=true on the Tock server; otherwise responses are displayed in one piece, as without this option. " +
+        "See [Streaming](#Streaming).",
+      index: 24,
+    },
+    deltaStreaming: {
+      title: "Stream mode",
+      type: "boolean",
+      default: true,
+      description:
+        "When enabled, each partial answer only carries what changed at the end of the text instead of the whole text so far, which reduces the data sent for long answers. The displayed text is the same. " +
+        "Ignored by Tock servers that do not support it.",
+      index: 24.1,
+      conditions: ["preferences.messages.streamedResponse"],
+    },
 
     message: {
       hideUserMessages: {

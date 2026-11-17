@@ -33,6 +33,7 @@ interface MessageBase {
   type: MessageType;
   author: MessageAuthor;
   actionId?: string;
+  responseId?: string;
   metadata?: Record<string, string> & {
     feedback?: {
       vote: FeedbackVoteValue | null;
@@ -46,6 +47,7 @@ export interface TextMessage extends Partial<MessageBase> {
   type: MessageType.message;
   text: string;
   buttons?: Button[];
+  streaming?: boolean;
 }
 
 export interface CardMessage extends Partial<MessageBase> {

@@ -7,4 +7,6 @@ export interface TockQuery {
   connectorId?: String;
   returnsHistory?: Boolean;
   sourceWithContent?: Boolean;
+  streamMode?: "delta";
+  requestId?: string;
 }

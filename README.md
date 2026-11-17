@@ -77,7 +77,7 @@ Include js and css files:
 <script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
 <link
   rel="stylesheet"
-  href="https://unpkg.com/tock-vue-kit@2.1.0/dist/style.css"
+  href="https://unpkg.com/tock-vue-kit@2.3.0/dist/style.css"
 />
 <link
   rel="stylesheet"
@@ -85,7 +85,7 @@ Include js and css files:
 />
 <script
   crossorigin
-  src="https://unpkg.com/tock-vue-kit@2.1.0/dist/tock-vue-kit.iife.js"
+  src="https://unpkg.com/tock-vue-kit@2.3.0/dist/tock-vue-kit.iife.js"
 ></script>
 
 <!-- Next line can be omitted if no Latex formula is expected in bot responses -->
@@ -103,7 +103,7 @@ Display the chat widget in desired target:
 <script>
   TockVueKit.renderChat(
     document.getElementById("chat-wrapper"),
-    "<TOCK_BOT_API_URL>"
+    "<TOCK_BOT_API_URL>",
   );
 </script>
 ```
@@ -123,16 +123,16 @@ Create a simple `index.html` file:
     />
     <link
       rel="stylesheet"
-      href="https://unpkg.com/tock-vue-kit@2.1.0/dist/style.css"
+      href="https://unpkg.com/tock-vue-kit@2.3.0/dist/style.css"
     />
-    <script src="https://unpkg.com/tock-vue-kit@2.1.0/dist/tock-vue-kit.iife.js"></script>
+    <script src="https://unpkg.com/tock-vue-kit@2.3.0/dist/tock-vue-kit.iife.js"></script>
   </head>
   <body>
     <div id="chat-wrapper"></div>
     <script>
       TockVueKit.renderChat(
         document.getElementById("chat-wrapper"),
-        "https://your-tock-bot-api-url.com"
+        "https://your-tock-bot-api-url.com",
       );
     </script>
   </body>
@@ -231,17 +231,17 @@ import "bootstrap-icons/font/bootstrap-icons.css";
   standalone: true,
   template: `<div #chatTarget></div>`,
   styles: `
-  :root {
-    --tvk_colors_brand-hue: 214;
-    --tvk_colors_brand-lightness: 42%;
-    --tvk_colors_brand-saturation: 40%;
-    --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
-    --tvk_colors_dark_neutral: white;
-    --tvk_colors_dark_text1: white;
-    --tvk_colors_dark_text2: white;
-    --tvk_wrapper_height: calc(100vh - 5em);
-    --tvk_wrapper_max-height: calc(100vh - 5em);
-  }
+    :root {
+      --tvk_colors_brand-hue: 214;
+      --tvk_colors_brand-lightness: 42%;
+      --tvk_colors_brand-saturation: 40%;
+      --tvk_colors_light_background: hsl(var(--tvk_colors_brand-hue) 50% 90%);
+      --tvk_colors_dark_neutral: white;
+      --tvk_colors_dark_text1: white;
+      --tvk_colors_dark_text2: white;
+      --tvk_wrapper_height: calc(100vh - 5em);
+      --tvk_wrapper_max-height: calc(100vh - 5em);
+    }
   `,
   encapsulation: ViewEncapsulation.None,
 })
@@ -504,6 +504,8 @@ Customization options for the chat interface and user experience:
 | hideIfNoMessages | Hide the messages container when there are no messages to display. Useful for cleaner UI when chat is first loaded. | boolean | `true` |
 | clearOnNewRequest | When enabled, clears previous conversation history each time the user sends a new message. Creates a fresh context for each new user input. | boolean | `false` |
 | parseBotResponsesMarkdown | When enabled, bot responses containing Markdown are rendered as HTML with proper formatting (including code syntax highlighting, LaTeX, and MathML support). When disabled, responses are shown as plain text. | boolean | `true` |
+| streamedResponse | When enabled, bot responses are displayed progressively as they are generated (RAG answers, Bot API streaming). Requires tock_web_sse=true on the Tock server; otherwise responses are displayed in one piece, as without this option. See [Streaming](#Streaming). | boolean | `true` |
+| deltaStreaming | When enabled, each partial answer only carries what changed at the end of the text instead of the whole text so far, which reduces the data sent for long answers. The displayed text is the same. Ignored by Tock servers that do not support it. (*Conditions*: preferences.messages.streamedResponse) | boolean | `true` |
 | **message** | Message options | [Message](#Message) | |
 | **footNotes** | FootNotes options | [FootNotes](#FootNotes) | |
 | **feedback** | Feedback options | [Feedback](#Feedback) | |
@@ -620,6 +622,39 @@ TockVueKit.renderChat(
         "submit": {
           "icon": "bi bi-arrow-right-circle-fill"
         }
+      }
+    }
+  }
+)
+```
+
+### Streaming
+
+With `preferences.messages.streamedResponse` (enabled by default), the widget displays bot responses progressively as they are generated: RAG answers, and messages sent with Bot API streaming (`enableStreaming()`).
+
+How it works: the widget opens the standard SSE channel of the Tock web connector (`GET /sse`) and sends the question with a `POST` request. Partial answers arrive on the SSE channel and are displayed in a single message bubble; the final response of the `POST` request then replaces it.
+
+Server prerequisites:
+
+- `tock_web_sse=true` on the Tock web connector. Otherwise the SSE channel is not available and responses are displayed in one piece, as without streaming (the failed `GET /sse` request appears in the browser console).
+- With several server instances behind a load balancer, `GET /sse` and `POST` must reach the same instance (sticky sessions). Otherwise responses are displayed in one piece, without error.
+
+Compatibility:
+
+- RAG answer streaming requires a recent Tock server. Older servers still answer normally, in one piece.
+- Bot API streaming is supported with older servers too.
+- Only the responses to the questions asked in the current tab are streamed: messages pushed by the bot outside a request are not displayed.
+
+To disable streaming:
+
+```Javascript
+TockVueKit.renderChat(
+  document.getElementById("<TARGET_ELEMENT_ID>"),
+  "<TOCK_BOT_API_URL>",
+  {
+    "preferences": {
+      "messages": {
+        "streamedResponse": false
       }
     }
   }
@@ -753,10 +788,10 @@ Example :
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
     <script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/tock-vue-kit@2.1.0/dist/tock-vue-kit.iife.js"></script>
+    <script src="https://unpkg.com/tock-vue-kit@2.3.0/dist/tock-vue-kit.iife.js"></script>
     <link
       rel="stylesheet"
-      href="https://unpkg.com/tock-vue-kit@2.1.0/dist/style.css"
+      href="https://unpkg.com/tock-vue-kit@2.3.0/dist/style.css"
     />
     <link
       rel="stylesheet"
@@ -808,10 +843,10 @@ Main html page
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
     <script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/tock-vue-kit@2.1.0/dist/tock-vue-kit.iife.js"></script>
+    <script src="https://unpkg.com/tock-vue-kit@2.3.0/dist/tock-vue-kit.iife.js"></script>
     <link
       rel="stylesheet"
-      href="https://unpkg.com/tock-vue-kit@2.1.0/dist/style.css"
+      href="https://unpkg.com/tock-vue-kit@2.3.0/dist/style.css"
     />
     <link
       rel="stylesheet"
@@ -866,10 +901,10 @@ Example :
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>My Website</title>
     <script src="https://unpkg.com/vue@3.4/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/tock-vue-kit@2.1.0/dist/tock-vue-kit.iife.js"></script>
+    <script src="https://unpkg.com/tock-vue-kit@2.3.0/dist/tock-vue-kit.iife.js"></script>
     <link
       rel="stylesheet"
-      href="https://unpkg.com/tock-vue-kit@2.1.0/dist/style.css"
+      href="https://unpkg.com/tock-vue-kit@2.3.0/dist/style.css"
     />
     <link
       rel="stylesheet"
@@ -948,7 +983,8 @@ The system automatically generates light and dark variants from the foundation v
 ```css
 /* Light mode vars - automatically generated from base variables */
 --tvk_colors_light_brand: hsl(
-  var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation) var(--tvk_colors_brand-lightness)
+  var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
+    var(--tvk_colors_brand-lightness)
 );
 
 --tvk_colors_light_surface1: var(--tvk_colors_light_brand);
@@ -961,7 +997,8 @@ The system automatically generates light and dark variants from the foundation v
 
 /* Dark mode vars - also automatically generated */
 --tvk_colors_dark_brand: hsl(
-  var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation) var(--tvk_colors_brand-lightness)
+  var(--tvk_colors_brand-hue) var(--tvk_colors_brand-saturation)
+    var(--tvk_colors_brand-lightness)
 );
 
 --tvk_colors_dark_surface1: var(--tvk_colors_dark_brand);
