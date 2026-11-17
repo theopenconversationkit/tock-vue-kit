@@ -91,24 +91,21 @@ export const preferences: Preferences = {
     streamedResponse: {
       title: "Streamed response",
       type: "boolean",
-      default: false,
+      default: true,
       description:
-        "When enabled, bot responses are displayed progressively as they are generated. " +
-        "The partial answers are pushed on the standard SSE channel (GET /sse), flagged TOCK_STREAM_RESPONSE and identified by RESPONSE_ID, " +
-        "and the final answer replaces them. " +
-        "Prerequisites: tock_web_sse=true on the server and RAG enabled on the bot. " +
-        "With several server instances behind a load balancer, GET /sse and POST must reach the same instance (sticky sessions), otherwise the answer arrives in one piece, without error. " +
-        "This option is not sent in the request body: the server field of the same name selects direct streaming, which disables RAG streaming on /sse.",
-      index: 23,
+        "When enabled, bot responses are displayed progressively as they are generated (RAG answers, Bot API streaming). " +
+        "Requires tock_web_sse=true on the Tock server; otherwise responses are displayed in one piece, as without this option. " +
+        "See [Streaming](#Streaming).",
+      index: 24,
     },
-    streamMode: {
+    deltaStreaming: {
       title: "Stream mode",
-      type: "string",
-      default: undefined,
+      type: "boolean",
+      default: true,
       description:
-        "Only used when streamedResponse is enabled. Use 'delta' to receive only what changed at the end of the text (token by token) instead of the whole text so far in each partial answer. The displayed text is the same. " +
-        "Requires a Tock server supporting TOCK_STREAM_MODE. Default: whole text so far.",
-      index: 23.1,
+        "When enabled, each partial answer only carries what changed at the end of the text instead of the whole text so far, which reduces the data sent for long answers. The displayed text is the same. " +
+        "Ignored by Tock servers that do not support it.",
+      index: 24.1,
       conditions: ["preferences.messages.streamedResponse"],
     },
 

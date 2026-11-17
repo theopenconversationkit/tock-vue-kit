@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.0] - 2026-11-17
+
+### Added
+
+- **Streaming**: bot responses (RAG answers, Bot API streaming) are displayed progressively as they are generated, through the SSE channel of the Tock web connector. See [Streaming](README.md#streaming).
+- **`preferences.messages.streamedResponse`**: enables streaming. **Enabled by default**: requires `tock_web_sse=true` on the Tock server, otherwise responses are displayed in one piece, as before. Set it to `false` to disable streaming.
+- **`preferences.messages.deltaStreaming`**: partial answers only carry what changed at the end of the text. Enabled by default, ignored by Tock servers that do not support it.
+
+---
+
+---
+
 ## [2.2.0] - 2026-09-22
 
 ### Added

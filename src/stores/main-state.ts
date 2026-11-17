@@ -50,7 +50,8 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       const parsed = JSON.parse(storage);
       // a message restored from the storage can never still be streaming
       parsed.messages?.forEach((m: Message) => {
-        if (m.type === MessageType.message) (m as TextMessage).streaming = false;
+        if (m.type === MessageType.message)
+          (m as TextMessage).streaming = false;
       });
       return parsed;
     }
@@ -179,14 +180,25 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     }
 
     const metadata = res.metadata ?? {};
-    const responseId: string | undefined = metadata.RESPONSE_ID ?? activeResponseId ?? undefined;
+    const replaceActionId: string | undefined =
+      metadata[STREAM_REPLACE_METADATA];
+
+    // Legacy streaming (Bot API enableStreaming, or a server without the common contract):
+    // each SSE frame of the request is also an entry of the POST response, at the same position,
+    // the streamed fragments included. The fragments are already merged in their bubble: skip them.
+    if (!replaceActionId && sseFrames.some((frame) => frame !== null)) {
+      handleLegacyStreamedResponse(res.responses, mainStoreInstance);
+      return;
+    }
+
+    const responseId: string | undefined =
+      metadata.RESPONSE_ID ?? activeResponseId ?? undefined;
     const streamed = findMessageByResponseId(responseId);
     if (responseId) finishedResponseIds.add(responseId);
     desyncedResponseIds.delete(responseId ?? "");
 
     // Only one final message replaces the streamed bubble: the one designated by the server
     // (its actionId); without designation (older server), the first text. The others are added in order.
-    const replaceActionId: string | undefined = metadata[STREAM_REPLACE_METADATA];
     let replaced = false;
 
     res.responses.forEach((resp: any) => {
@@ -204,40 +216,76 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
         Object.assign(streamed, resp, { streaming: false });
         replaced = true;
         mainStoreInstance.scrollMessages();
-      } else if ("text" in resp) {
-        mainStoreInstance.addMessage({
-          type: MessageType.message,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...resp,
-        });
-      } else if ("card" in resp) {
-        mainStoreInstance.addMessage({
-          type: MessageType.card,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...resp.card,
-        });
-      } else if ("image" in resp) {
-        mainStoreInstance.addMessage({
-          type: MessageType.image,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...resp.image,
-        });
-      } else if ("carousel" in resp) {
-        mainStoreInstance.addMessage({
-          type: MessageType.carousel,
-          author: MessageAuthor.bot,
-          date: Date.now(),
-          ...resp.carousel,
-        });
+      } else {
+        addBotResponse(resp, mainStoreInstance);
       }
     });
 
     // No final message replaced the streamed text (explicit discard, redirection, empty answer): remove it
     if (streamed && !replaced) removeMessage(streamed);
     activeResponseId = null;
+  }
+
+  function handleLegacyStreamedResponse(
+    responses: any[],
+    mainStoreInstance: ReturnType<typeof useMainStore>,
+  ): void {
+    const frames = sseFrames;
+    responses.forEach((resp: any, index: number) => {
+      // streamed fragment already displayed in its bubble
+      if (index < frames.length && frames[index] !== null) return;
+      delete resp.type;
+      delete resp.version;
+      addBotResponse(resp, mainStoreInstance);
+    });
+
+    // the streamed bubbles keep their merged text
+    new Set(frames.filter((frame): frame is string => frame !== null)).forEach(
+      (streamId) => {
+        finishedResponseIds.add(streamId);
+        desyncedResponseIds.delete(streamId);
+        const bubble = findMessageByResponseId(streamId);
+        if (bubble) bubble.streaming = false;
+      },
+    );
+    sseFrames = [];
+    activeResponseId = null;
+    mainStoreInstance.scrollMessages();
+  }
+
+  function addBotResponse(
+    resp: any,
+    mainStoreInstance: ReturnType<typeof useMainStore>,
+  ): void {
+    if ("text" in resp) {
+      mainStoreInstance.addMessage({
+        type: MessageType.message,
+        author: MessageAuthor.bot,
+        date: Date.now(),
+        ...resp,
+      });
+    } else if ("card" in resp) {
+      mainStoreInstance.addMessage({
+        type: MessageType.card,
+        author: MessageAuthor.bot,
+        date: Date.now(),
+        ...resp.card,
+      });
+    } else if ("image" in resp) {
+      mainStoreInstance.addMessage({
+        type: MessageType.image,
+        author: MessageAuthor.bot,
+        date: Date.now(),
+        ...resp.image,
+      });
+    } else if ("carousel" in resp) {
+      mainStoreInstance.addMessage({
+        type: MessageType.carousel,
+        author: MessageAuthor.bot,
+        date: Date.now(),
+        ...resp.carousel,
+      });
+    }
   }
 
   // Streaming: the bot pushes partial answers on the standard SSE channel (GET /sse),
@@ -266,6 +314,9 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   // Request in flight and response id of its streamed bubble, if any
   let activeRequestId: string | null = null;
   let activeResponseId: string | null = null;
+  // SSE frames received for the request in flight, in order (partial frames excluded, as in the
+  // react kit): RESPONSE_ID of a legacy streamed fragment, null for any other frame
+  let sseFrames: (string | null)[] = [];
 
   function closeEventSource(): void {
     eventSource?.close();
@@ -306,7 +357,9 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     });
   }
 
-  function findMessageByResponseId(responseId?: string): TextMessage | undefined {
+  function findMessageByResponseId(
+    responseId?: string,
+  ): TextMessage | undefined {
     if (!responseId) return undefined;
     return state.value.messages.find(
       (m) => m.type === MessageType.message && m.responseId === responseId,
@@ -317,9 +370,22 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     const metadata = res.metadata ?? {};
     const responseId: string | undefined = metadata.RESPONSE_ID;
     // frames of a request that is not ours (other tab or device of the same user) or received at rest
-    if (!activeRequestId || !responseId) return;
+    if (!activeRequestId) return;
     const requestId: string | undefined = metadata[REQUEST_ID_METADATA];
     if (requestId && requestId !== activeRequestId) return;
+
+    // Every frame of the request is also in the POST response (legacy contract): remember its position
+    if (metadata[STREAM_PARTIAL_METADATA] !== "true") {
+      const legacyFragment =
+        !!responseId &&
+        metadata[STREAM_RESPONSE_METADATA] === "true" &&
+        !metadata[STREAM_REPLACE_METADATA] &&
+        metadata[STREAM_DISCARD_METADATA] !== "true" &&
+        !finishedResponseIds.has(responseId);
+      sseFrames.push(legacyFragment ? responseId! : null);
+    }
+
+    if (!responseId) return;
     // a frame can arrive after the final POST response
     if (finishedResponseIds.has(responseId)) return;
 
@@ -338,7 +404,10 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     const existing = findMessageByResponseId(responseId);
 
     // final frame designated as the replacement of the streamed bubble
-    if (metadata[STREAM_REPLACE_METADATA] && metadata[STREAM_PARTIAL_METADATA] !== "true") {
+    if (
+      metadata[STREAM_REPLACE_METADATA] &&
+      metadata[STREAM_PARTIAL_METADATA] !== "true"
+    ) {
       if (existing && first.actionId === metadata[STREAM_REPLACE_METADATA]) {
         delete first.type;
         delete first.version;
@@ -354,7 +423,11 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     if (existing) {
       if (delta) {
         const keep = Number(metadata[STREAM_KEEP_METADATA]);
-        if (!Number.isInteger(keep) || keep < 0 || keep > existing.text.length) {
+        if (
+          !Number.isInteger(keep) ||
+          keep < 0 ||
+          keep > existing.text.length
+        ) {
           // out of sync: keep what is displayed and wait for the final response
           desyncedResponseIds.add(responseId);
           return;
@@ -419,11 +492,12 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       };
       if (appOptions.preferences.messages.streamedResponse) {
         payload.requestId = forgeRequestId();
-        if (appOptions.preferences.messages.streamMode === "delta") {
+        if (appOptions.preferences.messages.deltaStreaming) {
           payload.streamMode = "delta";
         }
         activeRequestId = payload.requestId;
         activeResponseId = null;
+        sseFrames = [];
         await ensureEventSource();
       }
 
@@ -481,6 +555,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     } finally {
       activeRequestId = null;
       activeResponseId = null;
+      sseFrames = [];
       isLoading.value = false;
     }
   }
@@ -491,6 +566,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     closeEventSource();
     finishedResponseIds.clear();
     desyncedResponseIds.clear();
+    sseFrames = [];
     if (appOptions.localStorage.enabled) {
       localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
     }
