@@ -560,6 +560,7 @@ Customization options for the chat interface and user experience:
 | display | Display a button that allows users to clear the current conversation history and start fresh. | boolean | `true` |
 | icon | CSS class for the clear history icon. Uses Bootstrap Icons by default. Only displayed if no custom image is provided. (*Conditions*: preferences.questionBar.clearHistory.display) | string | `bi bi-trash-fill` |
 | image | Custom image for the clear history button. Overrides the default icon if provided. (*Conditions*: preferences.questionBar.clearHistory.display) | [ImageDef](#ImageDef) | `undefined` |
+| restartKeyword | Keyword sent to the bot when the user clears the history, to restart the conversation on the server side (`_restart_` with the default Tock configuration). The keyword is not displayed and the userId is kept. When not set, a new userId is generated instead. (*Conditions*: preferences.questionBar.clearHistory.display) | string | `undefined` |
 
 #### Submit
 

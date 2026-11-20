@@ -277,11 +277,19 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
     }
   }
 
-  function clearHistory(): void {
+  async function clearHistory(): Promise<void> {
     state.value.messages = [];
-    state.value.userId = forgeNewUserId(); // New userId = new session on the server side
+    const restartKeyword =
+      appOptions.preferences.questionBar.clearHistory.restartKeyword;
+    if (!restartKeyword) {
+      state.value.userId = forgeNewUserId(); // New userId = new session on the server side
+    }
     if (appOptions.localStorage.enabled) {
       localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
+    }
+    if (restartKeyword) {
+      // The bot starts a new dialog and keeps the user (analytics, consents...)
+      await sendUserMessage(restartKeyword, false);
     }
   }
 
