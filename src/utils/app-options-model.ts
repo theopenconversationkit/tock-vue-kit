@@ -319,6 +319,15 @@ export const preferences: Preferences = {
         index: 72,
         conditions: ["preferences.questionBar.clearHistory.display"],
       },
+      restartKeyword: {
+        title: "Restart keyword",
+        type: "string",
+        default: undefined,
+        description:
+          "Keyword sent to the bot when the user clears the history, to restart the conversation on the server side (`_restart_` with the default Tock configuration). The keyword is not displayed and the userId is kept. When not set, a new userId is generated instead.",
+        index: 73,
+        conditions: ["preferences.questionBar.clearHistory.display"],
+      },
     },
     submit: {
       icon: {
