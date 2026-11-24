@@ -324,7 +324,7 @@ export const preferences: Preferences = {
         type: "string",
         default: undefined,
         description:
-          "Keyword sent to the bot when the user clears the history, to restart the conversation on the server side (`_restart_` with the default Tock configuration). The keyword is not displayed and the userId is kept. When not set, a new userId is generated instead.",
+          "Keyword sent to the bot when the user clears the history, to restart the conversation on the server side (`_restart_` with the default Tock configuration). The keyword is not displayed and the userId is kept. The bot's reply to the keyword (usually the greeting story) is displayed in the cleared history, while `initialization.welcomeMessage` is not displayed again. If the restart request fails, a new userId is generated. When not set, a new userId is generated instead.",
         index: 73,
         conditions: ["preferences.questionBar.clearHistory.display"],
       },

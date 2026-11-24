@@ -42,7 +42,7 @@ function onSubmit(): void {
 }
 
 function onClearHistory(): void {
-  mainStore.clearHistory();
+  void mainStore.clearHistory();
 }
 </script>
 

@@ -144,8 +144,8 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
   async function sendUserMessage(
     message: string,
     addToHistory = true,
-  ): Promise<void> {
-    if (isLoading.value) return;
+  ): Promise<boolean> {
+    if (isLoading.value) return false;
     isLoading.value = true;
 
     try {
@@ -189,13 +189,13 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       } catch (error) {
         console.log(error);
         notifyError();
-        return;
+        return false;
       }
 
       if (!query.ok) {
         console.log(query);
         notifyError();
-        return;
+        return false;
       }
 
       let res;
@@ -204,7 +204,7 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
       } catch (error) {
         console.log(error);
         notifyError();
-        return;
+        return false;
       }
 
       mainStoreInstance.clearLoaderMessages();
@@ -272,24 +272,40 @@ export const useMainStore = defineStore(MAIN_STORE_NAME, () => {
 
         localStorage.setItem(getStorageKey(), stateCopy);
       }
+
+      return true;
     } finally {
       isLoading.value = false;
     }
   }
 
-  async function clearHistory(): Promise<void> {
-    state.value.messages = [];
-    const restartKeyword =
-      appOptions.preferences.questionBar.clearHistory.restartKeyword;
-    if (!restartKeyword) {
-      state.value.userId = forgeNewUserId(); // New userId = new session on the server side
-    }
+  function persistState(): void {
     if (appOptions.localStorage.enabled) {
       localStorage.setItem(getStorageKey(), JSON.stringify(state.value));
     }
-    if (restartKeyword) {
-      // The bot starts a new dialog and keeps the user (analytics, consents...)
-      await sendUserMessage(restartKeyword, false);
+  }
+
+  async function clearHistory(): Promise<void> {
+    // A pending response would land in the cleared history and the restart would be skipped
+    if (isLoading.value) return;
+
+    state.value.messages = [];
+    const restartKeyword =
+      appOptions.preferences.questionBar.clearHistory.restartKeyword?.trim();
+    if (!restartKeyword) {
+      state.value.userId = forgeNewUserId(); // New userId = new session on the server side
+      persistState();
+      return;
+    }
+
+    persistState();
+    // The bot starts a new dialog and keeps the user (analytics, consents...)
+    const restarted = await sendUserMessage(restartKeyword, false);
+    if (!restarted) {
+      // Fall back to a new userId to guarantee a fresh conversation on the server side
+      state.value.messages = [];
+      state.value.userId = forgeNewUserId();
+      persistState();
     }
   }
 
