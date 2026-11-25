@@ -74,6 +74,7 @@ export interface Preferences {
       display: OptionDefinition<boolean>;
       icon: OptionDefinition<string>;
       image: OptionDefinition<ImageDef>;
+      restartKeyword: OptionDefinition<string>;
     };
     submit: {
       icon: OptionDefinition<string>;
